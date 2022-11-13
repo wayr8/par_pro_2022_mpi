@@ -1,5 +1,6 @@
 // Copyright 2022 Churkin Alexander
 #include <mpi.h>
+#include <iostream>
 #include <vector>
 #include <string>
 #include <random>
