@@ -54,13 +54,11 @@ int getSumParallel(const std::vector<int>& globalVector, int global_vector_size)
     const int diff = global_vector_size - comm_size * delta;
 
     if (rank == 0) {
-        // Рассылка частей вектора всем процессам, кроме последнего
         for (int procNum = 1; procNum < comm_size - 1; procNum++) {
             MPI_Send(globalVector.data() + procNum * delta, delta,
                         MPI_INT, procNum, 0, MPI_COMM_WORLD);
         }
-        // Рассылка последнему отдельно
-        // (для фикса ситуации, когда одно/несколько последних чисел никому не достанутся)
+		
         if (comm_size > 1) {
             if (diff > 0) {
                 MPI_Send(globalVector.data() + (comm_size - 1) * delta, delta + diff,
