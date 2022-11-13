@@ -29,7 +29,7 @@ TEST(DiningPhilosophers, ThreeProcesesOneLoop) {
 
     if (rank == 0) {
         executeWaiterLoop(activePhilosophersCount, 1);
-    } else if(rank < 3) {
+    } else if (rank < 3) {
         executePhilosopherLoop(rank, 1);
     }
     MPI_Barrier(MPI_COMM_WORLD);

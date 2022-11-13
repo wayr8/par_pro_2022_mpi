@@ -13,8 +13,8 @@ namespace TAG {
 void printForksStatuses(const std::deque<bool>& statuses);
 
 bool isForksAroundAreFree(const std::deque<bool>& statuses, int philosopher, int philosophersCount);
-void markForksAroundAsLocked(std::deque<bool>& statuses, int philosopher, int philosophesCount);
-void markForksAroundAsFree(std::deque<bool>& statuses, int philosopher, int philosophesCount);
+void markForksAroundAsLocked(std::deque<bool>* statuses, int philosopher, int philosophesCount);
+void markForksAroundAsFree(std::deque<bool>* statuses, int philosopher, int philosophesCount);
 
 void executePhilosopherLoop(int rank, int cycleCount);
 void executeWaiterLoop(int philosophersCount, int cycleCount);
