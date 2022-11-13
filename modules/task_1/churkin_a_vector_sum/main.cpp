@@ -2,6 +2,7 @@
 #include <gtest/gtest.h>
 #include <vector>
 #include "./vector_sum.h"
+#include <iostream>
 #include <gtest-mpi-listener.hpp>
 
 TEST(Vector_Sum_MPI, Test_Vector_Sum_1) {
