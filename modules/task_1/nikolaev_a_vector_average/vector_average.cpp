@@ -7,6 +7,7 @@
 #include <algorithm>
 #include "../../../modules/task_1/nikolaev_a_vector_average/vector_average.h"
 
+#define FIRST_THREAD 0
 
 std::vector<int> getRandomVector(int size) {
     std::random_device dev;
@@ -27,34 +28,28 @@ int getAverageVectorSequential(std::vector<int> vec) {
     return sum/size;
 }
 
-int getAverageVectorParallel(std::vector<int> global_vec,
-                          int count_size_vector, const std::string& ops) {
-    int size, rank;
+int getAverageVectorParallel(std::vector<int> vec) {
+    int size, rank, sum=0, n, i, ibeg, iend;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    const int delta = count_size_vector / size;
+    const int SizeVector = vec.size();
 
-    if (rank == 0) {
-        for (int proc = 1; proc < size; proc++) {
-            MPI_Send(global_vec.data() + proc * delta, delta,
-                        MPI_INT, proc, 0, MPI_COMM_WORLD);
-        }
-    }
+    n = (SizeVector - 1) / size + 1;
+    ibeg = rank*n;
+    iend = (rank + 1) * n;
 
-    std::vector<int> local_vec(delta);
-    if (rank == 0) {
-        local_vec = std::vector<int>(global_vec.begin(),
-                                     global_vec.begin() + delta);
-    } else {
+    if(rank != FIRST_THREAD) {
         MPI_Status status;
-        MPI_Recv(local_vec.data(), delta, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+        MPI_Recv(&sum, 1, MPI_INT, rank-1, 10, MPI_COMM_WORLD, &status);
     }
 
-    int global_sum = 0;
-    int local_sum = getSequentialOperations(local_vec, ops);
-    MPI_Op op_code = MPI_OP_NULL;
-    if (ops == "+" || ops == "-") { op_code = MPI_SUM; }
-    if (ops == "max") { op_code = MPI_MAX; }
-    MPI_Reduce(&local_sum, &global_sum, 1, MPI_INT, op_code, 0, MPI_COMM_WORLD);
-    return global_sum;
+    for(i=ibeg; i<((iend>SizeVector)?SizeVector:iend); i++) {
+      sum = sum + vec[i];
+    }
+
+    if(rank != size-1) {
+        MPI_Send(&sum, 1, MPI_INT, rank + 1, 10, MPI_COMM_WORLD);
+    }
+
+    return sum/SizeVector;
 }

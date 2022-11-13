@@ -1,98 +1,78 @@
 // Copyright 2022 Nikolaev Alexander
 #include <gtest/gtest.h>
 #include <vector>
-#include "./ops_mpi.h"
+#include "./vector_average.h"
 #include <gtest-mpi-listener.hpp>
 
-TEST(Parallel_Operations_MPI, Test_Sum) {
+TEST(Vector_Average_MPI, Test_Average1) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
-    const int count_size_vector = 120;
+    const int count_size_vector = 200;
 
     if (rank == 0) {
         global_vec = getRandomVector(count_size_vector);
     }
 
-    int global_sum = getParallelOperations(global_vec, count_size_vector, "+");
+    int parallel_average = getAverageVectorParallel(global_vec);
 
     if (rank == 0) {
-        int reference_sum = getSequentialOperations(global_vec, "+");
-        ASSERT_EQ(reference_sum, global_sum);
+        int sequential_average = getAverageVectorSequential(global_vec);
+        ASSERT_EQ(sequential_average, parallel_average);
     }
 }
 
-TEST(Parallel_Operations_MPI, Test_Diff) {
+TEST(Vector_Average_MPI, Test_Average2) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
-    const int count_size_vector = 120;
+    const int count_size_vector = 2000;
 
     if (rank == 0) {
         global_vec = getRandomVector(count_size_vector);
     }
 
-    int global_diff = getParallelOperations(global_vec, count_size_vector, "-");
+    int parallel_average = getAverageVectorParallel(global_vec);
 
     if (rank == 0) {
-        int reference_diff = getSequentialOperations(global_vec, "-");
-        ASSERT_EQ(reference_diff, global_diff);
+        int sequential_average = getAverageVectorSequential(global_vec);
+        ASSERT_EQ(sequential_average, parallel_average);
     }
 }
 
-TEST(Parallel_Operations_MPI, Test_Diff_2) {
+TEST(Vector_Average_MPI, Test_Average3) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
-    const int count_size_vector = 120;
+    const int count_size_vector = 20000;
 
     if (rank == 0) {
         global_vec = getRandomVector(count_size_vector);
     }
 
-    int global_diff = getParallelOperations(global_vec, count_size_vector, "-");
+    int parallel_average = getAverageVectorParallel(global_vec);
 
     if (rank == 0) {
-        int reference_diff = getSequentialOperations(global_vec, "-");
-        ASSERT_EQ(reference_diff, global_diff);
+        int sequential_average = getAverageVectorSequential(global_vec);
+        ASSERT_EQ(sequential_average, parallel_average);
     }
 }
 
-TEST(Parallel_Operations_MPI, Test_Max) {
+TEST(Vector_Average_MPI, Test_Average4) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
-    const int count_size_vector = 120;
+    const int count_size_vector = 200000;
 
     if (rank == 0) {
         global_vec = getRandomVector(count_size_vector);
     }
 
-    int global_max;
-    global_max = getParallelOperations(global_vec, count_size_vector, "max");
+    int parallel_average = getAverageVectorParallel(global_vec);
 
     if (rank == 0) {
-        int reference_max = getSequentialOperations(global_vec, "max");
-        ASSERT_EQ(reference_max, global_max);
-    }
-}
-
-TEST(Parallel_Operations_MPI, Test_Max_2) {
-    int rank;
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    std::vector<int> global_vec;
-    const int count_size_vector = 120;
-
-    if (rank == 0) {
-        global_vec = getRandomVector(count_size_vector);
-    }
-
-    int global_max;
-    global_max = getParallelOperations(global_vec, count_size_vector, "max");
-
-    if (rank == 0) {
-        int reference_max = getSequentialOperations(global_vec, "max");
-        ASSERT_EQ(reference_max, global_max);
+        int sequential_average = getAverageVectorSequential(global_vec);
+        ASSERT_EQ(sequential_average, parallel_average);
     }
 }
 
