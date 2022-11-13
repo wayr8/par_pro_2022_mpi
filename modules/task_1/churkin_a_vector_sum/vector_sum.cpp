@@ -58,7 +58,6 @@ int getSumParallel(const std::vector<int>& globalVector, int global_vector_size)
             MPI_Send(globalVector.data() + procNum * delta, delta,
                         MPI_INT, procNum, 0, MPI_COMM_WORLD);
         }
-		
         if (comm_size > 1) {
             if (diff > 0) {
                 MPI_Send(globalVector.data() + (comm_size - 1) * delta, delta + diff,
