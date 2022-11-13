@@ -1,3 +1,4 @@
+// Copyright 2022 Strogantsev Anton
 #include <gtest/gtest.h>
 #include <vector>
 #include "./matrix_column_sum.h"

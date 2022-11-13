@@ -1,7 +1,9 @@
+// Copyright 2022 Strogantsev Anton
 #include <mpi.h>
 #include <vector>
 #include <random>
-#include "matrix_column_sum.h"
+#include <algorithm>
+#include "../../../modules/task_1/strogantsev_a_matrix_column_sum/matrix_column_sum.h"
 
 std::vector<int> generateRandomMatrix(int xSize, int ySize) {
     std::mt19937 gen(10);
@@ -18,7 +20,13 @@ int linearizeCoordinates(int x, int y, int xSize) {
     return y * xSize + x;
 }
 
-std::vector<int> calculateMatrixSumSequentially(const std::vector<int>& matrix, int xSize, int ySize, int fromX, int toX) {
+std::vector<int> calculateMatrixSumSequentially(
+    const std::vector<int>& matrix,
+    int xSize,
+    int ySize,
+    int fromX,
+    int toX
+) {
     std::vector<int> result;
     for (int x = fromX; x < toX; x++) {
         int columnSum = 0;
@@ -35,7 +43,7 @@ std::vector<int> calculateMatrixSumSequentially(const std::vector<int>& matrix, 
     return calculateMatrixSumSequentially(matrix, xSize, ySize, 0, xSize);
 }
 
-std::vector<int> calculateMatrixSumParallel(std::vector<int>& matrix, int xSize, int ySize) {
+std::vector<int> calculateMatrixSumParallel(const std::vector<int>& matrix, int xSize, int ySize) {
     if (xSize == 0 || ySize == 0) return std::vector<int>();
 
     int workersCount, currentWorkerRank;
@@ -50,7 +58,7 @@ std::vector<int> calculateMatrixSumParallel(std::vector<int>& matrix, int xSize,
 
     if (currentWorkerRank == 0) {
         localMatrix = matrix;
-        MPI_Bcast(matrix.data(), matrixElementsCount, MPI_INT, 0, MPI_COMM_WORLD);
+        MPI_Bcast(localMatrix.data(), matrixElementsCount, MPI_INT, 0, MPI_COMM_WORLD);
     } else {
         MPI_Bcast(localMatrix.data(), matrixElementsCount, MPI_INT, 0, MPI_COMM_WORLD);
     }
