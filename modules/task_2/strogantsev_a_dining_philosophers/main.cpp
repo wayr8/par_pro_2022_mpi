@@ -66,8 +66,7 @@ TEST(DiningPhilosophers, TwoNProcessesOneLoop) {
 
     if (rank == 0) {
         executeWaiterLoop(activePhilosophersCount, 1);
-    }
-    else if (rank <= activePhilosophersCount) {
+    } else if (rank <= activePhilosophersCount) {
         executePhilosopherLoop(rank, 1);
     }
     MPI_Barrier(MPI_COMM_WORLD);

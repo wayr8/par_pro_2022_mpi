@@ -62,8 +62,7 @@ void executeWaiterLoop(int philosophersCount, int cycleCount) {
 
         printForksStatuses(forkStatuses);
 
-        switch (status.MPI_TAG)
-        {
+        switch (status.MPI_TAG) {
         case TAG::REQUEST: {
             std::cout << "Waiter got philosopher " << handledPhilosopher << " request\n";
 
@@ -96,6 +95,6 @@ void executeWaiterLoop(int philosophersCount, int cycleCount) {
         default:
             std::cout << "Waiter got not valid tag";
             break;
-        } 
+        }
     }
 }
