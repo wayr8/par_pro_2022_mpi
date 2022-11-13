@@ -1,41 +1,33 @@
 // Copyright 2022 Nikolaev Alexander
+#include <iostream>
 #include <mpi.h>
 #include <vector>
 #include <string>
 #include <random>
 #include <algorithm>
-#include "../../../modules/test_tasks/test_mpi/ops_mpi.h"
+#include "../../../modules/task_1/nikolaev_a_vector_average/vector_average.h"
 
 
-std::vector<int> getRandomVector(int sz) {
+std::vector<int> getRandomVector(int size) {
     std::random_device dev;
     std::mt19937 gen(dev());
-    std::vector<int> vec(sz);
-    for (int  i = 0; i < sz; i++) { vec[i] = gen() % 100; }
+    std::vector<int> vec(size);
+    for (int  i = 0; i < size; i++) { vec[i] = gen() % 100; }
     return vec;
 }
 
-int getSequentialOperations(std::vector<int> vec, const std::string& ops) {
-    const int  sz = vec.size();
-    int reduction_elem = 0;
-    if (ops == "+") {
-        for (int  i = 0; i < sz; i++) {
-            reduction_elem += vec[i];
-        }
-    } else if (ops == "-") {
-        for (int  i = 0; i < sz; i++) {
-            reduction_elem -= vec[i];
-        }
-    } else if (ops == "max") {
-        reduction_elem = vec[0];
-        for (int  i = 1; i < sz; i++) {
-            reduction_elem = std::max(reduction_elem, vec[i]);
-        }
+int getAverageVectorSequential(std::vector<int> vec) {
+    const int size = vec.size();
+    int sum = 0;
+    
+    for(int i=0; i<size; i++) {
+        sum += vec[i];
     }
-    return reduction_elem;
+
+    return sum/size;
 }
 
-int getParallelOperations(std::vector<int> global_vec,
+int getAverageVectorParallel(std::vector<int> global_vec,
                           int count_size_vector, const std::string& ops) {
     int size, rank;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
