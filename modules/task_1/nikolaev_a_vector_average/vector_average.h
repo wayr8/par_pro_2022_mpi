@@ -7,7 +7,7 @@
 
 std::vector<int> getRandomVector(int size);
 
-int getAverageVectorParallel(std::vector<int> vec);
+int getAverageVectorParallel(std::vector<int> vec, int count_size_vector);
 
 int getAverageVectorSequential(std::vector<int> vec);
 
