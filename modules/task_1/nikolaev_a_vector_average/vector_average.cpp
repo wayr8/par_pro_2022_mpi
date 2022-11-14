@@ -51,5 +51,6 @@ int getAverageVectorParallel(std::vector<int> vec) {
         MPI_Send(&sum, 1, MPI_INT, rank + 1, 10, MPI_COMM_WORLD);
     }
 
+    MPI_Finalize();
     return sum/SizeVector;
 }
