@@ -29,28 +29,53 @@ int getAverageVectorSequential(std::vector<int> vec) {
 }
 
 int getAverageVectorParallel(std::vector<int> vec) {
-    int size, rank, sum=0, n, i, ibeg, iend;
+    // int size, rank, sum=0, n, i, ibeg, iend;
+    // MPI_Comm_size(MPI_COMM_WORLD, &size);
+    // MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    // const int SizeVector = vec.size();
+
+    // n = (SizeVector - 1) / size + 1;
+    // ibeg = rank*n;
+    // iend = (rank + 1) * n;
+
+    // if(rank != FIRST_THREAD) {
+    //     MPI_Status status;
+    //     MPI_Recv(&sum, 1, MPI_INT, rank-1, 10, MPI_COMM_WORLD, &status);
+    // }
+
+    // for(i=ibeg; i<((iend>SizeVector)?SizeVector:iend); i++) {
+    //   sum = sum + vec[i];
+    // }
+
+    // if(rank != size-1) {
+    //     MPI_Send(&sum, 1, MPI_INT, rank + 1, 10, MPI_COMM_WORLD);
+    // }
+
+    int size, rank;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    const int SizeVector = vec.size();
+    const int delta = vec.size() / size;
 
-    n = (SizeVector - 1) / size + 1;
-    ibeg = rank*n;
-    iend = (rank + 1) * n;
+    if (rank == 0) {
+        for (int proc = 1; proc < size; proc++) {
+            MPI_Send(vec.data() + proc * delta, delta,
+                        MPI_INT, proc, 0, MPI_COMM_WORLD);
+        }
+    }
 
-    if(rank != FIRST_THREAD) {
+    std::vector<int> local_vec(delta);
+    if (rank == 0) {
+        local_vec = std::vector<int>(vec.begin(),
+                                     vec.begin() + delta);
+    } else {
         MPI_Status status;
-        MPI_Recv(&sum, 1, MPI_INT, rank-1, 10, MPI_COMM_WORLD, &status);
+        MPI_Recv(local_vec.data(), delta, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
     }
 
-    for(i=ibeg; i<((iend>SizeVector)?SizeVector:iend); i++) {
-      sum = sum + vec[i];
-    }
+    int global_sum = 0;
+    int local_sum = getSequentialOperations(local_vec, ops);
+    MPI_Op op_code = MPI_OP_NULL;
+    MPI_Reduce(&local_sum, &global_sum, 1, MPI_INT, op_code, 0, MPI_COMM_WORLD);
 
-    if(rank != size-1) {
-        MPI_Send(&sum, 1, MPI_INT, rank + 1, 10, MPI_COMM_WORLD);
-    }
-
-    MPI_Finalize();
-    return sum/SizeVector;
+    return global_sum/vec.size();
 }
