@@ -1,8 +1,6 @@
 // Copyright 2022 Nikolaev Alexander
-#include <iostream>
 #include <mpi.h>
 #include <vector>
-#include <string>
 #include <random>
 #include <algorithm>
 #include "../../../modules/task_1/nikolaev_a_vector_average/vector_average.h"
@@ -74,8 +72,7 @@ int getAverageVectorParallel(std::vector<int> vec) {
 
     int global_sum = 0;
     int local_average = getAverageVectorSequential(local_vec);
-    MPI_Op op_code = MPI_OP_NULL;
-    MPI_Reduce(&local_average, &global_sum, 1, MPI_INT, op_code, 0, MPI_COMM_WORLD);
+    MPI_Reduce(&local_average, &global_sum, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
 
     return global_sum/vec.size();
 }
