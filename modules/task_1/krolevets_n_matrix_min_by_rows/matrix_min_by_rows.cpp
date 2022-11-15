@@ -1,11 +1,17 @@
 // Copyright 2022 me
 #include "../../../modules/task_1/krolevets_n_matrix_min_by_rows/matrix_min_by_rows.h"
 
+#include <random>
+
 void generate_matrix(int* matrix, int size_x, int size_y) {
   assert(size_x > 0 && size_y > 0);
-  uint32_t seed = 42;
+  std::random_device
+      rd;  // Will be used to obtain a seed for the random number engine
+  std::mt19937 gen(rd());  // Standard mersenne_twister_engine seeded with rd()
+  std::uniform_int_distribution<> distrib(std::numeric_limits<int>::min(),
+                                          std::numeric_limits<int>::max());
   for (int i = 0; i < size_x * size_y; ++i) {
-    matrix[i] = rand_r(&seed);
+    matrix[i] = distrib(gen);
   }
 }
 

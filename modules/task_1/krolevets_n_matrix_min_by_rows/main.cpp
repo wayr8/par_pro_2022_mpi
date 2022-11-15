@@ -5,37 +5,35 @@
 
 #include "./matrix_min_by_rows.h"
 
-TEST(min_by_rows_test, can_generate_square_matrix) {
-  int32_t size_x = 10000;
-  int32_t size_y = 10000;
+TEST(min_by_rows_test, find_minimums_in_small_square_matrix) {
+  int32_t size_x = 10;
+  int32_t size_y = 10;
   uint64_t total = static_cast<uint64_t>(size_x) * size_y;
-  uint32_t* matrix = new uint32_t[total];
-  for (uint64_t i = 0; i < total; ++i) {
-    matrix[i] = std::numeric_limits<uint32_t>::max();
+  int32_t* matrix = nullptr;
+  int32_t* mpi_result = nullptr;
+  int32_t* seq_result = nullptr;
+  int32_t rank;
+
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  if (rank == 0) {
+    matrix = new int32_t[total];
+    mpi_result = new int32_t[size_y];
+    seq_result = new int32_t[size_y];
+    generate_matrix(matrix, size_x, size_y);
+    min_by_rows_seq(matrix, seq_result, size_x, size_y);
   }
-  generate_matrix(reinterpret_cast<int32_t*>(matrix), size_x, size_y);
-  for (uint64_t i = 0; i < total; ++i) {
-    ASSERT_NE(matrix[i], std::numeric_limits<uint32_t>::min());
+  min_by_rows(matrix, mpi_result, size_x, size_y);
+  if (rank == 0) {
+    for (int i = 0; i < size_y; ++i) {
+      EXPECT_EQ(mpi_result[i], seq_result[i]);
+    }
+    delete[] matrix;
+    delete[] mpi_result;
+    delete[] seq_result;
   }
-  delete[] matrix;
 }
 
-TEST(min_by_rows_test, can_generate_rectangle_matrix) {
-  int32_t size_x = 10000;
-  int32_t size_y = 1000;
-  uint64_t total = static_cast<uint64_t>(size_x) * size_y;
-  uint32_t* matrix = new uint32_t[total];
-  for (uint64_t i = 0; i < total; ++i) {
-    matrix[i] = std::numeric_limits<uint32_t>::max();
-  }
-  generate_matrix(reinterpret_cast<int32_t*>(matrix), size_x, size_y);
-  for (uint64_t i = 0; i < total; ++i) {
-    ASSERT_NE(matrix[i], std::numeric_limits<uint32_t>::min());
-  }
-  delete[] matrix;
-}
-
-TEST(min_by_rows_test, find_minimums_in_square_matrix) {
+TEST(min_by_rows_test, find_minimums_in_big_square_matrix) {
   int32_t size_x = 10000;
   int32_t size_y = 10000;
   uint64_t total = static_cast<uint64_t>(size_x) * size_y;
@@ -63,7 +61,7 @@ TEST(min_by_rows_test, find_minimums_in_square_matrix) {
   }
 }
 
-TEST(min_by_rows_test, find_minimums_in_rectangle_matrix) {
+TEST(min_by_rows_test, find_minimums_in_big_rectangle_matrix) {
   int32_t size_x = 1000;
   int32_t size_y = 10000;
   uint64_t total = static_cast<uint64_t>(size_x) * size_y;
@@ -91,7 +89,35 @@ TEST(min_by_rows_test, find_minimums_in_rectangle_matrix) {
   }
 }
 
-TEST(min_by_rows_test, size_y_less_then_num_of_processes) {
+TEST(min_by_rows_test, find_minimums_in_small_rectangle_matrix) {
+  int32_t size_x = 20;
+  int32_t size_y = 10;
+  uint64_t total = static_cast<uint64_t>(size_x) * size_y;
+  int32_t* matrix = nullptr;
+  int32_t* mpi_result = nullptr;
+  int32_t* seq_result = nullptr;
+  int32_t rank;
+
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  if (rank == 0) {
+    matrix = new int32_t[total];
+    mpi_result = new int32_t[size_y];
+    seq_result = new int32_t[size_y];
+    generate_matrix(matrix, size_x, size_y);
+    min_by_rows_seq(matrix, seq_result, size_x, size_y);
+  }
+  min_by_rows(matrix, mpi_result, size_x, size_y);
+  if (rank == 0) {
+    for (int i = 0; i < size_y; ++i) {
+      EXPECT_EQ(mpi_result[i], seq_result[i]);
+    }
+    delete[] matrix;
+    delete[] mpi_result;
+    delete[] seq_result;
+  }
+}
+
+TEST(min_by_rows_test, num_of_rows_less_than_processes) {
   int32_t size_x = 10000;
   int32_t size_y = 1;
   uint64_t total = static_cast<uint64_t>(size_x) * size_y;
