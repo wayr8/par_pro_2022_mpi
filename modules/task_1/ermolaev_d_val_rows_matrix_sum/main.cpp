@@ -4,7 +4,7 @@
 #include "./val_rows_matrix_sum.h"
 #include <gtest-mpi-listener.hpp>
 
-TEST(Sequential_Operations_MPI,
+TEST(Parallel_Operations_MPI,
     Test_Sum_of_values_​​by_matrix_row_sequential_1) {
     int rank;
     int x = 50;
@@ -25,7 +25,7 @@ TEST(Sequential_Operations_MPI,
     delete[] result1;
     delete[] mymatrix;
 }
-TEST(Sequential_Operations_MPI,
+TEST(Parallel_Operations_MPI,
     Test_Sum_of_values_​​by_matrix_row_sequential_2) {
     int rank;
     int x = 500;
@@ -46,7 +46,7 @@ TEST(Sequential_Operations_MPI,
     delete[] result1;
     delete[] mymatrix;
 }
-TEST(Sequential_Operations_MPI,
+TEST(Parallel_Operations_MPI,
     Test_Sum_of_values_​​by_matrix_row_sequential_3) {
     int rank;
     int x = 2;

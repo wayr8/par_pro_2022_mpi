@@ -1,7 +1,13 @@
 // Copyright 2022 Ermolaev Danila
 #include <mpi.h>
-#include "val_rows_matrix_sum.h"
+#include <vector>
+#include <string>
+#include <numeric>
+#include <random>
+#include <algorithm>
+#include <iostream>
 #include "../../../modules/test_tasks/test_mpi/ops_mpi.h"
+#include "val_rows_matrix_sum.h"
 
 int* getRandomMatrix(int x, int y) {
     std::mt19937 mt(time(nullptr));
