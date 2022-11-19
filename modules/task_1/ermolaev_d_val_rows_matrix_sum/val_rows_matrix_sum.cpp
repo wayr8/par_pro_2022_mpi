@@ -1,4 +1,5 @@
-// Copyright 2022 Ermolaev Danila
+// Copyright 2022 Ermolaev Danila  
+#include "../../../modules/task_1/ermolaev_d_val_rows_matrix_sum/val_rows_matrix_sum.h"
 #include <mpi.h>
 #include <vector>
 #include <string>
@@ -6,8 +7,6 @@
 #include <random>
 #include <algorithm>
 #include <iostream>
-#include "../../../modules/test_tasks/test_mpi/ops_mpi.h"
-#include "./val_rows_matrix_sum.h"
 
 int* getRandomMatrix(int x, int y) {
     std::mt19937 mt(time(nullptr));
@@ -71,25 +70,22 @@ void getParallelOperation(int* matrix, int* result, int x, int y) {
             result[i] =
                 (std::accumulate(matrix + x * i, matrix + x * (i + 1), result[i]));
         }
-    }
-    else {
-        if (id < y) {
-            local_matrix = new int[x * data_in_process];
-            for (int i = 0; i < x * data_in_process; ++i) {
-                local_matrix[i] = 0;
-            }
-
-            local_result = new int[data_in_process];
-            for (int i = 0; i < data_in_process; ++i) {
-                local_result[i] = 0;
-            }
-            MPI_Recv(local_matrix, x * data_in_process, MPI_INT, 0, 0, MPI_COMM_WORLD,
-                &status);
-            for (int i = 0; i < data_in_process; ++i) {
-                local_result[i] = (std::accumulate(
-                    local_matrix + x * i, local_matrix + x * (i + 1), local_result[i]));
-            }
-            MPI_Send(local_result, data_in_process, MPI_INT, 0, 0, MPI_COMM_WORLD);
+    }else if (id < y) {
+        local_matrix = new int[x * data_in_process];
+        for (int i = 0; i < x * data_in_process; ++i) {
+            local_matrix[i] = 0;
         }
+
+        local_result = new int[data_in_process];
+        for (int i = 0; i < data_in_process; ++i) {
+            local_result[i] = 0;
+        }
+        MPI_Recv(local_matrix, x * data_in_process, MPI_INT, 0, 0, MPI_COMM_WORLD,
+            &status);
+        for (int i = 0; i < data_in_process; ++i) {
+            local_result[i] = (std::accumulate(
+                local_matrix + x * i, local_matrix + x * (i + 1), local_result[i]));
+        }
+        MPI_Send(local_result, data_in_process, MPI_INT, 0, 0, MPI_COMM_WORLD);
     }
 }
