@@ -1,6 +1,7 @@
 // Copyright 2022 Strogantsev Anton
 #include <gtest/gtest.h>
 #include <iostream>
+#include <cmath>
 #include "./global_search.h"
 #include <gtest-mpi-listener.hpp>
 
