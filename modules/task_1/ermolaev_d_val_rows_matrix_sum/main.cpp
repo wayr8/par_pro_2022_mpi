@@ -1,7 +1,7 @@
-﻿#include <gtest/gtest.h>
+﻿// Copyright 2022 Ermolaev Danila
+#include <gtest/gtest.h>
 #include <vector>
 #include <gtest-mpi-listener.hpp>
-
 #include "../../../modules/task_1/ermolaev_d_val_rows_matrix_sum/val_rows_matrix_sum.h"
 
 TEST(Parallel_Operations_MPI, Test_1) {
