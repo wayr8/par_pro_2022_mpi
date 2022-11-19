@@ -4,8 +4,7 @@
 #include "./val_rows_matrix_sum.h"
 #include <gtest-mpi-listener.hpp>
 
-TEST(Parallel_Operations_MPI,
-    Test_Sum_of_values_​​by_matrix_row_sequential_1) {
+TEST(Parallel_Operations_MPI, Test_1) {
     int rank;
     int x = 50;
     int y = 50;
@@ -25,8 +24,7 @@ TEST(Parallel_Operations_MPI,
     delete[] result1;
     delete[] mymatrix;
 }
-TEST(Parallel_Operations_MPI,
-    Test_Sum_of_values_​​by_matrix_row_sequential_2) {
+TEST(Parallel_Operations_MPI, Test_2) {
     int rank;
     int x = 500;
     int y = 2;
@@ -46,8 +44,7 @@ TEST(Parallel_Operations_MPI,
     delete[] result1;
     delete[] mymatrix;
 }
-TEST(Parallel_Operations_MPI,
-    Test_Sum_of_values_​​by_matrix_row_sequential_3) {
+TEST(Parallel_Operations_MPI, Test_3) {
     int rank;
     int x = 2;
     int y = 500;
@@ -67,7 +64,7 @@ TEST(Parallel_Operations_MPI,
     delete[] result1;
     delete[] mymatrix;
 }
-TEST(Parallel_Operations_MPI, Test_1) {
+TEST(Parallel_Operations_MPI, Test_4) {
     int rank;
     int x = 500;
     int y = 400;
@@ -102,7 +99,7 @@ TEST(Parallel_Operations_MPI, Test_1) {
     delete[] result2;
     delete[] mymatrix;
 }
-TEST(Parallel_Operations_MPI, Test_2) {
+TEST(Parallel_Operations_MPI, Test_5) {
     int rank;
     int x = 100;
     int y = 1;
@@ -137,7 +134,7 @@ TEST(Parallel_Operations_MPI, Test_2) {
     delete[] result2;
     delete[] mymatrix;
 }
-TEST(Parallel_Operations_MPI, Test_3) {
+TEST(Parallel_Operations_MPI, Test_6) {
     int rank;
     int x = 1;
     int y = 100;
