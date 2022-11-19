@@ -29,7 +29,7 @@ void getSequentialOperation(int* matrix, int* result, int x, int y) {
 void getParallelOperation(int* matrix, int* result, int x, int y) {
     int* local_matrix;
     int* local_result;
-    int id, col_proc;  // id - индекс процесса col_proc - количество процессов
+    int id, col_proc;
     MPI_Status status;
 
     MPI_Comm_rank(MPI_COMM_WORLD, &id);

@@ -121,11 +121,6 @@ TEST(Parallel_Operations_MPI, Test_2) {
     if (rank == 0) {
         mymatrix = getRandomMatrix(x, y);
         getSequentialOperation(mymatrix, result2, x, y);
-        /*std::cout << "\n{";
-        for (int j = 0; j < y * x; j++) {
-            std::cout << mymatrix[j] << ",";
-        }
-        std::cout << "}";*/
     }
 
     getParallelOperation(mymatrix, result1, x, y);
