@@ -1,5 +1,4 @@
-// Copyright 2022 Ermolaev Danila  
-#include "../../../modules/task_1/ermolaev_d_val_rows_matrix_sum/val_rows_matrix_sum.h"
+// Copyright 2022 Ermolaev Danila
 #include <mpi.h>
 #include <vector>
 #include <string>
@@ -7,6 +6,7 @@
 #include <random>
 #include <algorithm>
 #include <iostream>
+#include "../../../modules/task_1/ermolaev_d_val_rows_matrix_sum/val_rows_matrix_sum.h"
 
 int* getRandomMatrix(int x, int y) {
     std::mt19937 mt(time(nullptr));
@@ -70,7 +70,7 @@ void getParallelOperation(int* matrix, int* result, int x, int y) {
             result[i] =
                 (std::accumulate(matrix + x * i, matrix + x * (i + 1), result[i]));
         }
-    }else if (id < y) {
+    } else if (id < y) {
         local_matrix = new int[x * data_in_process];
         for (int i = 0; i < x * data_in_process; ++i) {
             local_matrix[i] = 0;
