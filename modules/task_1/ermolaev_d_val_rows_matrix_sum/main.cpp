@@ -1,5 +1,4 @@
-﻿// Copyright 2022 Ermolaev Danila
-#include <gtest/gtest.h>
+﻿#include <gtest/gtest.h>
 #include <vector>
 #include <gtest-mpi-listener.hpp>
 
