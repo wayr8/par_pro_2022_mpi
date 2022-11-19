@@ -7,7 +7,6 @@
 TEST(Parallel_Operations_MPI, Test_1) {
     int x = 50;
     int y = 50;
-    int rank;
     int* mymatrix = nullptr;
     int* result1 = new int[y];
     for (int j = 0; j < y; j++) {
@@ -25,7 +24,6 @@ TEST(Parallel_Operations_MPI, Test_1) {
     delete[] mymatrix;
 }
 TEST(Parallel_Operations_MPI, Test_2) {
-    int rank;
     int x = 500;
     int y = 2;
     int* mymatrix = nullptr;
@@ -45,7 +43,6 @@ TEST(Parallel_Operations_MPI, Test_2) {
     delete[] mymatrix;
 }
 TEST(Parallel_Operations_MPI, Test_3) {
-    int rank;
     int x = 2;
     int y = 500;
     int* mymatrix = nullptr;
