@@ -1,4 +1,4 @@
-﻿// Copyright 2022 Ermolaev Danila
+﻿  // Copyright 2022 Ermolaev Danila
 #include <gtest/gtest.h>
 #include <vector>
 #include "./val_rows_matrix_sum.h"

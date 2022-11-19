@@ -1,4 +1,4 @@
-// Copyright 2022 Ermolaev Danila
+  // Copyright 2022 Ermolaev Danila
 #include <mpi.h>
 #include <vector>
 #include <string>
