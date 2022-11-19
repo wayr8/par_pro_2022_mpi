@@ -5,9 +5,9 @@
 #include <gtest-mpi-listener.hpp>
 
 TEST(Parallel_Operations_MPI, Test_1) {
-    int rank;
     int x = 50;
     int y = 50;
+    int rank;
     int* mymatrix = nullptr;
     int* result1 = new int[y];
     for (int j = 0; j < y; j++) {
