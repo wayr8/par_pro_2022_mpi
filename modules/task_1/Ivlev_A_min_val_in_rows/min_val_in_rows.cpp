@@ -5,7 +5,7 @@
 #include <random>
 #include <algorithm>
 #include "../../../modules/task_1/Ivlev_A_min_val_in_rows/min_val_in_rows.h"
-#include <iostream>
+//#include <iostream>
 
 int* getRandomMatrix(unsigned int m, unsigned int n)
 {

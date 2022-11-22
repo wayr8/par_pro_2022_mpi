@@ -3,11 +3,10 @@
 #include <vector>
 #include "./min_val_in_rows.h"
 #include <gtest-mpi-listener.hpp>
-#include <iostream>
+//#include <iostream>
 
 
-TEST(test_MPI, test_min_0)
-{
+TEST(test_MPI, test_min_0) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     int* global_matrix;
@@ -47,8 +46,7 @@ TEST(test_MPI, test_min_0)
     }
 }
 
-TEST(test_MPI, test_min_1)
-{
+TEST(test_MPI, test_min_1) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     int* global_matrix;
@@ -88,8 +86,7 @@ TEST(test_MPI, test_min_1)
     }
 }
 
-TEST(test_MPI, test_min_2)
-{
+TEST(test_MPI, test_min_2) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     int* global_matrix;
@@ -129,8 +126,7 @@ TEST(test_MPI, test_min_2)
     }
 }
 
-TEST(test_MPI, test_min_3)
-{
+TEST(test_MPI, test_min_3) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     int* global_matrix;
@@ -170,8 +166,7 @@ TEST(test_MPI, test_min_3)
     }
 }
 
-TEST(test_MPI, test_min_4)
-{
+TEST(test_MPI, test_min_4) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     int* global_matrix;
