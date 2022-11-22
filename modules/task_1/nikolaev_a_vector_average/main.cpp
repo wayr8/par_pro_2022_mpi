@@ -19,6 +19,7 @@ TEST(Vector_Average_MPI, Test_Average1) {
     std::cout<<"parallel_average: "<<parallel_average;
     if (rank == 0) {
         float sequential_average = getAverageVectorSequential(global_vec, count_size_vector);
+        std::cout<<"parallel_average: "<<parallel_average;
         std::cout<<"sequential_average: "<<sequential_average;
         ASSERT_EQ(sequential_average, parallel_average);
     }
@@ -38,6 +39,8 @@ TEST(Vector_Average_MPI, Test_Average2) {
 
     if (rank == 0) {
         float sequential_average = getAverageVectorSequential(global_vec, count_size_vector);
+        std::cout<<"parallel_average: "<<parallel_average<<std::endl;
+        std::cout<<"sequential_average: "<<sequential_average<<std::endl;
         ASSERT_EQ(sequential_average, parallel_average);
     }
 }
