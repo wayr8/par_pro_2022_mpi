@@ -6,7 +6,7 @@
 #include <iostream>
 
 
-TEST(MPI, test)
+TEST(test_MPI, test_min_0)
 {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -47,7 +47,7 @@ TEST(MPI, test)
     }
 }
 
-TEST(MPI_2, test)
+TEST(test_MPI, test_min_1)
 {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -55,6 +55,129 @@ TEST(MPI_2, test)
 
     int m = 4;
     int n = 5;
+
+    if (rank == 0)
+    {
+        global_matrix = getRandomMatrix(m, n);
+        /*
+        for(size_t i = 0; i < m; i++)
+        {
+            for(size_t j = 0; j < n; j++)
+            {
+                std::cout << (global_matrix[i*n+j]) << ' ';
+            }
+            std::cout << '\n';
+        }
+        */
+    }
+    
+    int* global_min = getParallelMin(global_matrix, m, n);
+
+    if(rank == 0)
+    {   
+        int* global_min_local = getMatrixMinbyRow(global_matrix, m, n);
+        for(size_t i = 0; i < m; i++)
+        {
+            //std::cout << global_min_local[i] << ' ' << global_min[i] << '\n';
+            ASSERT_EQ(global_min_local[i], global_min[i]);
+        }
+        
+        delete [] global_matrix;
+        delete [] global_min;
+        delete [] global_min_local;
+    }
+}
+
+TEST(test_MPI, test_min_2)
+{
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    int* global_matrix;
+
+    int m = 4;
+    int n = 4;
+
+    if (rank == 0)
+    {
+        global_matrix = getRandomMatrix(m, n);
+        /*
+        for(size_t i = 0; i < m; i++)
+        {
+            for(size_t j = 0; j < n; j++)
+            {
+                std::cout << (global_matrix[i*n+j]) << ' ';
+            }
+            std::cout << '\n';
+        }
+        */
+    }
+    
+    int* global_min = getParallelMin(global_matrix, m, n);
+
+    if(rank == 0)
+    {   
+        int* global_min_local = getMatrixMinbyRow(global_matrix, m, n);
+        for(size_t i = 0; i < m; i++)
+        {
+            //std::cout << global_min_local[i] << ' ' << global_min[i] << '\n';
+            ASSERT_EQ(global_min_local[i], global_min[i]);
+        }
+        
+        delete [] global_matrix;
+        delete [] global_min;
+        delete [] global_min_local;
+    }
+}
+
+TEST(test_MPI, test_min_3)
+{
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    int* global_matrix;
+
+    int m = 11;
+    int n = 12;
+
+    if (rank == 0)
+    {
+        global_matrix = getRandomMatrix(m, n);
+        /*
+        for(size_t i = 0; i < m; i++)
+        {
+            for(size_t j = 0; j < n; j++)
+            {
+                std::cout << (global_matrix[i*n+j]) << ' ';
+            }
+            std::cout << '\n';
+        }
+        */
+    }
+    
+    int* global_min = getParallelMin(global_matrix, m, n);
+
+    if(rank == 0)
+    {   
+        int* global_min_local = getMatrixMinbyRow(global_matrix, m, n);
+        for(size_t i = 0; i < m; i++)
+        {
+            //std::cout << global_min_local[i] << ' ' << global_min[i] << '\n';
+            ASSERT_EQ(global_min_local[i], global_min[i]);
+        }
+        
+        delete [] global_matrix;
+        delete [] global_min;
+        delete [] global_min_local;
+    }
+}
+
+TEST(test_MPI, test_min_4)
+{
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    int* global_matrix;
+
+    int m = 2;
+    int n = 20;
 
     if (rank == 0)
     {
