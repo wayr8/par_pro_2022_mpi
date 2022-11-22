@@ -23,7 +23,7 @@ TEST(test_MPI, test_min_0) {
     if(rank == 0){   
         int* global_min_local = getMatrixMinbyRow(global_matrix, m, n);
 
-        for(size_t i = 0; i < m; i++){
+        for(size_t i = 0; i < m; i++) {
             ASSERT_EQ(global_min_local[i], global_min[i]);
         }
         
@@ -50,7 +50,7 @@ TEST(test_MPI, test_min_1) {
     if(rank == 0){   
         int* global_min_local = getMatrixMinbyRow(global_matrix, m, n);
 
-        for(size_t i = 0; i < m; i++){
+        for(size_t i = 0; i < m; i++) {
             ASSERT_EQ(global_min_local[i], global_min[i]);
         }
         
@@ -77,7 +77,7 @@ TEST(test_MPI, test_min_2) {
     if(rank == 0){   
         int* global_min_local = getMatrixMinbyRow(global_matrix, m, n);
 
-        for(size_t i = 0; i < m; i++){
+        for(size_t i = 0; i < m; i++) {
             ASSERT_EQ(global_min_local[i], global_min[i]);
         }
         
@@ -104,7 +104,7 @@ TEST(test_MPI, test_min_3) {
     if(rank == 0){   
         int* global_min_local = getMatrixMinbyRow(global_matrix, m, n);
 
-        for(size_t i = 0; i < m; i++){
+        for(size_t i = 0; i < m; i++) {
             ASSERT_EQ(global_min_local[i], global_min[i]);
         }
         
@@ -131,7 +131,7 @@ TEST(test_MPI, test_min_4) {
     if(rank == 0){   
         int* global_min_local = getMatrixMinbyRow(global_matrix, m, n);
 
-        for(size_t i = 0; i < m; i++){
+        for(size_t i = 0; i < m; i++) {
             ASSERT_EQ(global_min_local[i], global_min[i]);
         }
         
