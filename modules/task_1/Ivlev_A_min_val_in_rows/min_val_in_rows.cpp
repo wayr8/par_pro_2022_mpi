@@ -1,65 +1,63 @@
-// Copyright 2022 Ivlev A
+  // Copyright 2022 Ivlev A
 #include <mpi.h>
 #include <vector>
 #include <string>
 #include <random>
 #include <algorithm>
 #include "../../../modules/task_1/Ivlev_A_min_val_in_rows/min_val_in_rows.h"
-//#include <iostream>
 
-int* getRandomMatrix(unsigned int m, unsigned int n)
+
+int* getRandomMatrix(int m, int n)
 {
     std::random_device dev;
     std::mt19937 gen(dev());
 
     int* matrix = new int[m*n];
 
-    for (size_t  i = 0; i < m*n; i++) {
+    for (int i = 0; i < m*n; i++) {
         matrix[i] = gen() % 100;
     }
 
     return matrix;
 }
 
-int min_in_vec(int* vec, size_t size) {
+int min_in_vec(int* vec, int size) {
     if(vec == nullptr) {
         return 0;
     }
 
     int min_elem = vec[0];
 
-    for (size_t i = 1; i < size; i++) {
+    for (int i = 1; i < size; i++) {
         min_elem = std::min(min_elem, vec[i]);
     }
 
     return min_elem;
 }
 
-int* getMatrixMinbyRow(int* global_matrix, size_t row_num, size_t column_num) {
+int* getMatrixMinbyRow(int* global_matrix, int row_num, int column_num) {
     int* global_min = new int[row_num];
 
-    for(size_t i = 0; i < row_num; i++) {
+    for(int i = 0; i < row_num; i++) {
         global_min[i] = min_in_vec(global_matrix+i*column_num, column_num);
     }
 
     return global_min;
 }
 
-int* getParallelMin(int* global_matrix, size_t row_num, size_t column_num) {
+int* getParallelMin(int* global_matrix, int row_num, int column_num) {
     int size, rank;
 
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    const size_t block_size = row_num/size;
-    const size_t block_overflow = row_num%size;
+    int block_size = row_num/size;
+    int block_overflow = row_num%size;
     int block_size_all, delta;
     int* vec_row;
     int* global_min;
 
     if (rank == 0) {
-        //std::cout << rank << ' ' << size << ' ' << row_num << ' ' << column_num << "!!\n";
-        //std::cout << block_size << ' ' << block_overflow << "!\n";
         for (int proc = 1; proc < size; proc++) {
             if(proc < block_overflow) {
                 delta = proc * (block_size+1) * column_num;
@@ -80,7 +78,7 @@ int* getParallelMin(int* global_matrix, size_t row_num, size_t column_num) {
             delta = (block_size)*column_num;
         }
         vec_row = new int[delta];
-        for(size_t i = 0; i < delta; i++) {
+        for(int i = 0; i < delta; i++) {
            vec_row[i] = global_matrix[i];
         }
 
@@ -88,13 +86,13 @@ int* getParallelMin(int* global_matrix, size_t row_num, size_t column_num) {
         int rows = delta/column_num;
         int counts = 0;
 
-        for(size_t i = 0; i < rows; i++) {
+        for(int i = 0; i < rows; i++) {
             global_min[i] = min_in_vec(vec_row + i*column_num, column_num);
             counts++;
         }
         delete [] vec_row;
 
-        for(size_t i = 1; i < size; i++) {
+        for(int i = 1; i < size; i++) {
             int count;
             MPI_Status status;
             MPI_Probe(i, i, MPI_COMM_WORLD, &status);
@@ -121,11 +119,11 @@ int* getParallelMin(int* global_matrix, size_t row_num, size_t column_num) {
         
         int rows = count/column_num;
         int* local_min = new int[rows];
-        for(size_t i = 0; i < rows; i++) {
+        for(int i = 0; i < rows; i++) {
             local_min[i] = min_in_vec(vec_row + i*column_num, column_num);
         }
         MPI_Send(local_min, rows, MPI_INT, 0, rank, MPI_COMM_WORLD);
-        
+
         delete [] local_min;
     }
 
