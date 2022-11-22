@@ -14,29 +14,16 @@ TEST(test_MPI, test_min_0) {
     int m = 5;
     int n = 4;
 
-    if (rank == 0)
-    {
+    if (rank == 0) {
         global_matrix = getRandomMatrix(m, n);
-        /*
-        for(size_t i = 0; i < m; i++)
-        {
-            for(size_t j = 0; j < n; j++)
-            {
-                std::cout << (global_matrix[i*n+j]) << ' ';
-            }
-            std::cout << '\n';
-        }
-        */
     }
     
     int* global_min = getParallelMin(global_matrix, m, n);
 
-    if(rank == 0)
-    {   
+    if(rank == 0){   
         int* global_min_local = getMatrixMinbyRow(global_matrix, m, n);
-        for(size_t i = 0; i < m; i++)
-        {
-            //std::cout << global_min_local[i] << ' ' << global_min[i] << '\n';
+
+        for(size_t i = 0; i < m; i++){
             ASSERT_EQ(global_min_local[i], global_min[i]);
         }
         
@@ -52,31 +39,18 @@ TEST(test_MPI, test_min_1) {
     int* global_matrix;
 
     int m = 4;
-    int n = 5;
+    int n = 6;
 
-    if (rank == 0)
-    {
+    if (rank == 0) {
         global_matrix = getRandomMatrix(m, n);
-        /*
-        for(size_t i = 0; i < m; i++)
-        {
-            for(size_t j = 0; j < n; j++)
-            {
-                std::cout << (global_matrix[i*n+j]) << ' ';
-            }
-            std::cout << '\n';
-        }
-        */
     }
     
     int* global_min = getParallelMin(global_matrix, m, n);
 
-    if(rank == 0)
-    {   
+    if(rank == 0){   
         int* global_min_local = getMatrixMinbyRow(global_matrix, m, n);
-        for(size_t i = 0; i < m; i++)
-        {
-            //std::cout << global_min_local[i] << ' ' << global_min[i] << '\n';
+
+        for(size_t i = 0; i < m; i++){
             ASSERT_EQ(global_min_local[i], global_min[i]);
         }
         
@@ -94,29 +68,16 @@ TEST(test_MPI, test_min_2) {
     int m = 4;
     int n = 4;
 
-    if (rank == 0)
-    {
+    if (rank == 0) {
         global_matrix = getRandomMatrix(m, n);
-        /*
-        for(size_t i = 0; i < m; i++)
-        {
-            for(size_t j = 0; j < n; j++)
-            {
-                std::cout << (global_matrix[i*n+j]) << ' ';
-            }
-            std::cout << '\n';
-        }
-        */
     }
     
     int* global_min = getParallelMin(global_matrix, m, n);
 
-    if(rank == 0)
-    {   
+    if(rank == 0){   
         int* global_min_local = getMatrixMinbyRow(global_matrix, m, n);
-        for(size_t i = 0; i < m; i++)
-        {
-            //std::cout << global_min_local[i] << ' ' << global_min[i] << '\n';
+
+        for(size_t i = 0; i < m; i++){
             ASSERT_EQ(global_min_local[i], global_min[i]);
         }
         
@@ -134,29 +95,16 @@ TEST(test_MPI, test_min_3) {
     int m = 11;
     int n = 12;
 
-    if (rank == 0)
-    {
+    if (rank == 0) {
         global_matrix = getRandomMatrix(m, n);
-        /*
-        for(size_t i = 0; i < m; i++)
-        {
-            for(size_t j = 0; j < n; j++)
-            {
-                std::cout << (global_matrix[i*n+j]) << ' ';
-            }
-            std::cout << '\n';
-        }
-        */
     }
     
     int* global_min = getParallelMin(global_matrix, m, n);
 
-    if(rank == 0)
-    {   
+    if(rank == 0){   
         int* global_min_local = getMatrixMinbyRow(global_matrix, m, n);
-        for(size_t i = 0; i < m; i++)
-        {
-            //std::cout << global_min_local[i] << ' ' << global_min[i] << '\n';
+
+        for(size_t i = 0; i < m; i++){
             ASSERT_EQ(global_min_local[i], global_min[i]);
         }
         
@@ -174,29 +122,16 @@ TEST(test_MPI, test_min_4) {
     int m = 2;
     int n = 20;
 
-    if (rank == 0)
-    {
+    if (rank == 0) {
         global_matrix = getRandomMatrix(m, n);
-        /*
-        for(size_t i = 0; i < m; i++)
-        {
-            for(size_t j = 0; j < n; j++)
-            {
-                std::cout << (global_matrix[i*n+j]) << ' ';
-            }
-            std::cout << '\n';
-        }
-        */
     }
     
     int* global_min = getParallelMin(global_matrix, m, n);
 
-    if(rank == 0)
-    {   
+    if(rank == 0){   
         int* global_min_local = getMatrixMinbyRow(global_matrix, m, n);
-        for(size_t i = 0; i < m; i++)
-        {
-            //std::cout << global_min_local[i] << ' ' << global_min[i] << '\n';
+
+        for(size_t i = 0; i < m; i++){
             ASSERT_EQ(global_min_local[i], global_min[i]);
         }
         
