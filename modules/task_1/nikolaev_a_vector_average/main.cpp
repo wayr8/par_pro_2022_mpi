@@ -16,12 +16,11 @@ TEST(Vector_Average_MPI, Test_Average1) {
     }
 
     float parallel_average = getAverageVectorParallel(global_vec, count_size_vector);
-    std::cout<<"parallel_average: "<<parallel_average;
     if (rank == 0) {
         float sequential_average = getAverageVectorSequential(global_vec, count_size_vector);
         std::cout<<"parallel_average: "<<parallel_average;
         std::cout<<"sequential_average: "<<sequential_average;
-        ASSERT_EQ(sequential_average, parallel_average);
+        ASSERT_EQ((int)sequential_average, (int)parallel_average);
     }
 }
 
@@ -41,7 +40,7 @@ TEST(Vector_Average_MPI, Test_Average2) {
         float sequential_average = getAverageVectorSequential(global_vec, count_size_vector);
         std::cout<<"parallel_average: "<<parallel_average<<std::endl;
         std::cout<<"sequential_average: "<<sequential_average<<std::endl;
-        ASSERT_EQ(sequential_average, parallel_average);
+        ASSERT_EQ((int)sequential_average, (int)parallel_average);
     }
 }
 
@@ -59,7 +58,9 @@ TEST(Vector_Average_MPI, Test_Average3) {
 
     if (rank == 0) {
         float sequential_average = getAverageVectorSequential(global_vec, count_size_vector);
-        ASSERT_EQ(sequential_average, parallel_average);
+        std::cout<<"parallel_average: "<<parallel_average;
+        std::cout<<"sequential_average: "<<sequential_average;
+        ASSERT_EQ((int)sequential_average, (int)parallel_average);
     }
 }
 
@@ -77,7 +78,9 @@ TEST(Vector_Average_MPI, Test_Average4) {
 
     if (rank == 0) {
         float sequential_average = getAverageVectorSequential(global_vec, count_size_vector);
-        ASSERT_EQ(sequential_average, parallel_average);
+        std::cout<<"parallel_average: "<<parallel_average;
+        std::cout<<"sequential_average: "<<sequential_average;
+        ASSERT_EQ((int)sequential_average, (int)parallel_average);
     }
 }
 
@@ -95,7 +98,9 @@ TEST(Vector_Average_MPI, Test_Average5) {
 
     if (rank == 0) {
         float sequential_average = getAverageVectorSequential(global_vec, count_size_vector);
-        ASSERT_EQ(sequential_average, parallel_average);
+        std::cout<<"parallel_average: "<<parallel_average;
+        std::cout<<"sequential_average: "<<sequential_average;
+        ASSERT_EQ((int)sequential_average, (int)parallel_average);
     }
 }
 
