@@ -7,8 +7,8 @@
 
 std::vector<int> getRandomVector(int size);
 
-int getAverageVectorParallel(std::vector<int> vec, int count_size_vector);
+float getAverageVectorParallel(std::vector<int> vec, int count_size_vector);
 
-int getAverageVectorSequential(std::vector<int> vec);
+float getAverageVectorSequential(std::vector<int> vec, const int GlobVecSize);
 
 #endif  // MODULES_TASK_1_NIKOLAEV_A_VECTOR_AVERAGE_VECTOR_AVERAGE_H_
