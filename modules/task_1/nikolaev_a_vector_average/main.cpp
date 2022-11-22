@@ -1,6 +1,7 @@
 // Copyright 2022 Nikolaev Alexander
 #include <gtest/gtest.h>
 #include <vector>
+#include <iostream>
 #include "./vector_average.h"
 #include <gtest-mpi-listener.hpp>
 
@@ -15,9 +16,10 @@ TEST(Vector_Average_MPI, Test_Average1) {
     }
 
     float parallel_average = getAverageVectorParallel(global_vec, count_size_vector);
-
+    std::cout<<"parallel_average: "<<parallel_average;
     if (rank == 0) {
         float sequential_average = getAverageVectorSequential(global_vec, count_size_vector);
+        std::cout<<"sequential_average: "<<sequential_average;
         ASSERT_EQ(sequential_average, parallel_average);
     }
 }
