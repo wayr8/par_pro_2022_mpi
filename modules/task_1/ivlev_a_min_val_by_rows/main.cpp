@@ -1,7 +1,7 @@
   // Copyright 2022 Ivlev A
 #include <gtest/gtest.h>
 #include <vector>
-#include "./min_val_in_rows.h"
+#include "./min_val_by_rows.h"
 #include <gtest-mpi-listener.hpp>
 
 

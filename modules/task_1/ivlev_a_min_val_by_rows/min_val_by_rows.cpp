@@ -4,7 +4,7 @@
 #include <string>
 #include <random>
 #include <algorithm>
-#include "../../../modules/task_1/Ivlev_A_min_val_in_rows/min_val_in_rows.h"
+#include "../../../modules/task_1/ivlev_a_min_val_by_rows/min_val_by_rows.h"
 
 
 int* getRandomMatrix(int m, int n)
