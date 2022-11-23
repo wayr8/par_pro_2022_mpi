@@ -7,17 +7,17 @@
 
 float getAverageVectorSequential(std::vector<int> vec, const int GlobalVecSize) {
     int sum = 0;
-    for(int i=0; i<vec.size(); i++) {
+    for (int i = 0; i < vec.size(); i++) {
         sum += vec[i];
     }
-    return sum/(float)GlobalVecSize;
+    return sum/static_cast<float>(GlobalVecSize);
 }
 
 int SumVector(std::vector<int> vec) {
     const int size = vec.size();
     int sum = 0;
-    for(int i=0; i<size; i++) {
-	    sum += vec[i];
+    for (int i = 0; i < size; i++) {
+        sum += vec[i];
     }
     return sum;
 }
@@ -34,10 +34,10 @@ std::vector<int> getRandomVector(int size) {
 
 // void PrintVector(std::vector<int> vec) {
 //     const int size = vec.size();
-//     for(int i=0; i<size; i++) {
-// 	    std::cout<<vec[i]<<" ";
+//     for (int i = 0; i < size; i++) {
+//        std::cout << vec[i] << " ";
 //     }
-//     std::cout<<std::endl;
+//     std::cout << std::endl;
 // }
 
 float getAverageVectorParallel(std::vector<int> vec, int count_size_vector) {
