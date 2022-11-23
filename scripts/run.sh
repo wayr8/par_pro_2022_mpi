@@ -30,13 +30,13 @@ cd ..
 #         valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./$file
 # done
 
-FILES_STD="build/bin/*_std"
-for file in $FILES_STD; do
-        echo "--------------------------------"
-        echo $(basename $file)
-        echo "--------------------------------"
-        valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./$file
-done
+# FILES_STD="build/bin/*_std"
+# for file in $FILES_STD; do
+#         echo "--------------------------------"
+#         echo $(basename $file)
+#         echo "--------------------------------"
+#         valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./$file
+# done
 
 FILES_MPI="build/bin/*_mpi"
 for file in $FILES_MPI; do
