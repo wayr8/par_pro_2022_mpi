@@ -14,14 +14,14 @@ float getAverageVectorSequential(std::vector<int> vec, const int GlobalVecSize) 
     return sum/static_cast<float>(GlobalVecSize);
 }
 
-// int SumVector(std::vector<int> vec) {
-//     const int size = vec.size();
-//     int sum = 0;
-//     for (int i = 0; i < size; i++) {
-//         sum += vec[i];
-//     }
-//     return sum;
-// }
+int SumVector(std::vector<int> vec) {
+    const int size = vec.size();
+    int sum = 0;
+    for (int i = 0; i < size; i++) {
+        sum += vec[i];
+    }
+    return sum;
+}
 
 std::vector<int> getRandomVector(int size) {
     std::random_device dev;
