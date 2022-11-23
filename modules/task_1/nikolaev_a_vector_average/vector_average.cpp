@@ -7,7 +7,8 @@
 
 float getAverageVectorSequential(std::vector<int> vec, const int GlobalVecSize) {
     int sum = 0;
-    for (int i = 0; i < vec.size(); i++) {
+    const int LocalVecSize = vec.size();
+    for (int i = 0; i < LocalVecSize; i++) {
         sum += vec[i];
     }
     return sum/static_cast<float>(GlobalVecSize);
