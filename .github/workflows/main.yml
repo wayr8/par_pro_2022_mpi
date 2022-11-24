@@ -14,7 +14,7 @@ jobs:
         sudo apt-get install g++-9
         sudo apt-get install cppcheck
         sudo apt-get install mpich libmpich-dev
-        sudo apt-get install libomp-9-dev libtbb-dev
+        sudo apt-get install libomp-dev libtbb-dev
         sudo apt-get install python3-pip
         sudo python3 -m pip install --upgrade pip
         sudo python3 -m pip install setuptools cpplint
