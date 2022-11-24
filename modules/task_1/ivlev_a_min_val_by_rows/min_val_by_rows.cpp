@@ -53,8 +53,8 @@ int* getParallelMin(int* global_matrix, int row_num, int column_num) {
     int block_size = row_num/size;
     int block_overflow = row_num%size;
     int block_size_all, delta;
-    int* vec_row;
-    int* global_min;
+    int* vec_row = nullptr;
+    int* global_min = nullptr;
 
     if (rank == 0) {
         for (int proc = 1; proc < size; proc++) {

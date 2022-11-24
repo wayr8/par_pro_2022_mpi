@@ -5,10 +5,10 @@
 #include <gtest-mpi-listener.hpp>
 
 
-TEST(test_MPI, test_min_0) {
+TEST(Test_min_val_by_rows_MPI, Test_min_0) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    int* global_matrix;
+    int* global_matrix = nullptr;
 
     int m = 5;
     int n = 4;
@@ -32,10 +32,10 @@ TEST(test_MPI, test_min_0) {
     }
 }
 
-TEST(test_MPI, test_min_1) {
+TEST(Test_min_val_by_rows_MPI, Test_min_1) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    int* global_matrix;
+    int* global_matrix = nullptr;
 
     int m = 4;
     int n = 5;
@@ -59,10 +59,10 @@ TEST(test_MPI, test_min_1) {
     }
 }
 
-TEST(test_MPI, test_min_2) {
+TEST(Test_min_val_by_rows_MPI, Test_min_2) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    int* global_matrix;
+    int* global_matrix = nullptr;
 
     int m = 5;
     int n = 5;
@@ -86,10 +86,10 @@ TEST(test_MPI, test_min_2) {
     }
 }
 
-TEST(test_MPI, test_min_3) {
+TEST(Test_min_val_by_rows_MPI, Test_min_3) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    int* global_matrix;
+    int* global_matrix = nullptr;
 
     int m = 6;
     int n = 20;
@@ -113,10 +113,10 @@ TEST(test_MPI, test_min_3) {
     }
 }
 
-TEST(test_MPI, test_min_4) {
+TEST(Test_min_val_by_rows_MPI, Test_min_4) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    int* global_matrix;
+    int* global_matrix = nullptr;
 
     int m = 20;
     int n = 6;
