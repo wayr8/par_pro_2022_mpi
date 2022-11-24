@@ -1,6 +1,6 @@
-  // Copyright 2022 Ivlev A
-#ifndef MODULES_TEST_TASKS_TEST_MPI_OPS_MPI_H_
-#define MODULES_TEST_TASKS_TEST_MPI_OPS_MPI_H_
+// Copyright 2022 Ivlev A
+#ifndef MODULES_TASK_1_IVLEV_A_MIN_VAL_BY_ROWS_MIN_VAL_BY_ROWS_H_
+#define MODULES_TASK_1_IVLEV_A_MIN_VAL_BY_ROWS_MIN_VAL_BY_ROWS_H_
 
 #include <vector>
 #include <string>
@@ -11,4 +11,4 @@ int* getMatrixMinbyRow(int* global_matrix, int row_num, int column_num);
 int* getParallelMin(int* global_matrix, int row_num, int column_num);
 
 
-#endif  // MODULES_TEST_TASKS_TEST_MPI_OPS_MPI_H_
+#endif  // MODULES_TASK_1_IVLEV_A_MIN_VAL_BY_ROWS_MIN_VAL_BY_ROWS_H_
