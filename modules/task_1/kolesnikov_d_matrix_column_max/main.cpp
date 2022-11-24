@@ -12,13 +12,12 @@ TEST(MAX_BY_COLUMN_TEST, find_max_in_zero_matrix) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     int size_x = 0;
     int size_y = 0;
-    vector<int> matrix;
-    vector<int> max = max_by_column(matrix, size_x, size_y);
+    vector<int> matrix();
+    vector<int> max = MaxByColumnSeq(matrix, size_x, size_y);
     
     if (rank == 0) {
         ASSERT_EQ(vector<int>(), max);
     }
-
 }
 
 
@@ -30,7 +29,7 @@ TEST(MAX_BY_COLUMN_TEST, find_max_in_1x1_matrix) {
     int size_y = 1;
     vector<int> matrix;
     matrix.push_back(5);
-    vector<int> max = max_by_column(matrix, size_x, size_y);
+    vector<int> max = MaxByColumnSeq(matrix, size_x, size_y);
     
     if (rank == 0) {
         ASSERT_EQ(1, max[0][0]);
@@ -46,13 +45,13 @@ TEST(MAX_BY_COLUMN_TEST, find_max_in_large_matrix) {
     int size_y = 40;
     vector<int> matrix;
     if (rank == 0) {
-        matrix = generate_rnd_matrix(size_x, size_y);
+        matrix = GenRndMtrx(size_x, size_y);
     }
 
-    vector<int> max = max_by_column(matrix, size_x, size_y);
+    vector<int> max = MaxByColumnPrl(matrix, size_x, size_y);
     
     if (rank == 0) {
-        seq_max = max_by_column(matrix, size_x, size_y);
+        seq_max = MaxByColumnSeq(matrix, size_x, size_y);
         ASSERT_EQ(seq_max, max);
     }
 
@@ -67,13 +66,13 @@ TEST(MAX_BY_COLUMN_TEST, find_max_in_non_square_matrix) {
     int size_y = 40;
     vector<int> matrix;
     if (rank == 0) {
-        matrix = generate_rnd_matrix(size_x, size_y);
+        matrix = GenRndMtrx(size_x, size_y);
     }
 
-    vector<int> max = max_by_column(matrix, size_x, size_y);
+    vector<int> max = MaxByColumnPrl(matrix, size_x, size_y);
     
     if (rank == 0) {
-        seq_max = max_by_column(matrix, size_x, size_y);
+        seq_max = MaxByColumnSeq(matrix, size_x, size_y);
         ASSERT_EQ(seq_max, max);
     }
 
@@ -92,11 +91,11 @@ TEST(MAX_BY_COLUMN_TEST, find_max_in_concrete_matrix) {
         2, 3, 4
     };
 
-    vector<int> max = max_by_column(matrix, size_x, size_y);
+    vector<int> max = MaxByColumnPrl(matrix, size_x, size_y);
     
     if (rank == 0) {
         concrete_max = vector<int>{2, 3, 4};
-        seq_max = max_by_column(matrix, size_x, size_y);
+        seq_max = MaxByColumnSeq(matrix, size_x, size_y);
         ASSERT_EQ(seq_max, max);
         ASSERT_EQ(concrete_max, max);
     }

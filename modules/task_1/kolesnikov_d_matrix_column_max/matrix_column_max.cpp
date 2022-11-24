@@ -1,6 +1,10 @@
 #include "../../../modules/task_1/kolesnikov_d_matrix_column_max/matrix_column_max.h"
 
-vector<int> generate_rnd_matrix(int size_x, int size_y) {
+#include <vector>
+using namespace std;
+
+
+vector<int> GenRndMtrx(int size_x, int size_y) {
   std::random_device dev;
   std::mt19937_64 gen(dev());
   vector<int> result(size_x * size_y);
@@ -10,16 +14,12 @@ vector<int> generate_rnd_matrix(int size_x, int size_y) {
   return result;
 }
 
-int coord_lin(int x, int y, int size_x) {
+int CoorldLin(int x, int y, int size_x) {
     return y * size_x + x;
 }
 
 
-
-
-
-
-vector<int>  max_by_column_seq(
+vector<int>  MaxByColumnSeq(
     const vector<int>& matrix,
     int size_x,
     int size_y,
@@ -40,16 +40,16 @@ vector<int>  max_by_column_seq(
 }
 
 
-vector<int> max_by_column_seq(const vector<int>& matrix, int size_x, int size_y) {
-    if (size_x == || && size_y) {
+vector<int> MaxByColumnSeq(const vector<int>& matrix, int size_x, int size_y) {
+    if (size_x == 0 ||  size_y == 0) {
         return vector<int> ();
     }
-    return max_by_column(matrix, size_x, size_y, 0, size_x);
+    return MaxByColumnSeq(matrix, size_x, size_y, 0, size_x);
 }
 
 
 
-vector<int> max_by_column_prl(std::vector<int>& matrix, int size_x, int size_y) {
+vector<int> MaxByColumnPrl(std::vector<int>& matrix, int size_x, int size_y) {
     if (size_x == 0 || size_y == 0) {
         return vector<int> ();
     }
@@ -77,12 +77,12 @@ vector<int> max_by_column_prl(std::vector<int>& matrix, int size_x, int size_y) 
     }
 
 
-    int end_column = std::min(delta * (p_rank+1), x_size);
-    local_max = max_by_column_seq(local_matrix, x_size, y_size, delta*p_rank, end_column);
+    int end_column = std::min(delta * (p_rank+1), size_x);
+    vector<int> local_max = MaxByColumnSeq(local_matrix, size_x, size_y, delta*p_rank, end_column);
     local_max.resize(delta);
 
     if(p_rank == 0) {
-        vector<int> all_max(x_size);
+        vector<int> all_max(size_x);
         MPI_GATHER(local_max.data(), local_max.size(), MPI_INT, all_max.data(), delta, MPI_INT, 0, MPI_COMM_WORLD);
         all_max.resize(size_x);
         return all_max;
