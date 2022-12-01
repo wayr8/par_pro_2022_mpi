@@ -1,7 +1,9 @@
+// Copyright 2022 Kolesov Maxim
 #include "matrix_column_min.h"
 
 #include <mpi.h>
 #include <random>
+#include <limits>
 
 std::vector<int> generateMatrix(int n, int m) {
   std::random_device dev;
@@ -9,7 +11,7 @@ std::vector<int> generateMatrix(int n, int m) {
   std::vector<int> vec(n*m);
 
   for (int  i = 0; i < n*m; i++) {
-    vec[i] = (int)(gen() % 100);
+    vec[i] = static_cast<int>(gen() % 100);
   }
   return vec;
 }
@@ -40,7 +42,7 @@ int getMinInSequence(const std::vector<int> &sec) {
 }
 
 std::vector<int> getColumnMinParalel(const std::vector<int> &matrix, int n, int m) {
-  int size,rank;
+  int size, rank;
   MPI_Comm_size(MPI_COMM_WORLD, &size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
@@ -88,5 +90,4 @@ std::vector<int> getColumnMinParalel(const std::vector<int> &matrix, int n, int 
 
   MPI_Reduce(localResult.data(), globalResult.data(), m, MPI_INT, MPI_MIN, 0, MPI_COMM_WORLD);
   return globalResult;
-
 }

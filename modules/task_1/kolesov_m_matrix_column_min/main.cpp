@@ -1,3 +1,4 @@
+// Copyright 2022 Kolesov Maxim
 #include <gtest/gtest.h>
 #include <vector>
 #include "./matrix_column_min.h"
