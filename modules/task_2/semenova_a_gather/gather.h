@@ -6,10 +6,10 @@
 #include<random>
 
 template < typename Type >
-  void RandVec(Type * A, int n) {
+  void rand_rVec(Type * A, int n) {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution < int > dist(MIN_INT, MAX_INT);
+    std::uniform_int_distribution < int > dist(-32, 32);
     for (int i = 0; i < size; i++) {
       arr[i] = dist(gen);
     }

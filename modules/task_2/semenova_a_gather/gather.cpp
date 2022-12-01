@@ -13,17 +13,19 @@ int Gather(void * sbuf, int scount, MPI_Datatype stype, void * rbuf,
   if (rcount < 0 || scount < 0) return MPI_ERR_COUNT;
 
   int type_size = 0;
-  if (stype == MPI_INT) 
+  if (stype == MPI_INT) {
       type_size = sizeof(int);
-  else
-      if (stype == MPI_FLOAT) 
+  } else {
+      if (stype == MPI_FLOAT) {
           type_size = sizeof(float);
-      else 
-          if (stype == MPI_DOUBLE) t
-              ype_size = sizeof(double);
-          else 
+      } else {
+          if (stype == MPI_DOUBLE) {
+              type_size = sizeof(double);
+          } else {
               return -1;
-
+           }
+      }
+  }
   int rank, ProcNum;
   MPI_Status status;
   MPI_Comm_rank(comm, & rank);
@@ -40,8 +42,10 @@ int Gather(void * sbuf, int scount, MPI_Datatype stype, void * rbuf,
 
   int n = ProcNum, i = 1, flag = 0;
   while (n > 1) {
-    if (n % 2 == 1) flag = 1;
-    if (rank % (i * 2) == i) MPI_Send(given2, scount * i, stype, rank - i, i, comm);
+    if (n % 2 == 1) 
+        flag = 1;
+    if (rank % (i * 2) == i)
+        MPI_Send(given2, scount * i, stype, rank - i, i, comm);
     if (rank % (i * 2) == 0 && rank < (n - 1) * i)
       MPI_Recv(given2 + (i) * rcount * type_size, i * rcount, rtype, rank + i, i, comm, & status);
 
