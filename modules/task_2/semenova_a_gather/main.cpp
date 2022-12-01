@@ -74,7 +74,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_Random10_INT) {
   int * res2 = new int[n];
 
   if (rank == 0) {
-    rand_rVec(V, n);
+    randVec(V, n);
     root = dist(gen) % ProcNum;
   }
 
@@ -102,7 +102,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_Random25_INT) {
   int * res2 = new int[n];
 
   if (rank == 0) {
-    rand_rVec(V, n);
+    randVec(V, n);
     root = dist(gen) % ProcNum;
   }
 
@@ -130,7 +130,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_time10_INT) {
   int * buf = new int[n];
 
   if (rank == 0) {
-    rand_rVec(V, n);
+    randVec(V, n);
     root = dist(gen) % ProcNum;
   }
 
@@ -165,7 +165,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_time25_INT) {
   int * buf = new int[n];
 
   if (rank == 0) {
-    rand_rVec(V, n);
+    randVec(V, n);
     root = dist(gen) % ProcNum;
   }
 
@@ -252,7 +252,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_Random10_DOUBLE) 
   double * buf = new double[n];
 
   if (rank == 0) {
-    rand_rVec(V, n);
+    randVec(V, n);
     root = dist(gen) % ProcNum;
   }
 
@@ -280,7 +280,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_Random25_DOUBLE) 
   double * buf = new double[n];
 
   if (rank == 0) {
-    rand_rVec(V, n);
+    randVec(V, n);
     root = dist(gen) % ProcNum;
   }
 
@@ -308,7 +308,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_time10_DOUBLE) {
   double * buf = new double[n];
 
   if (rank == 0) {
-    rand_rVec(V, n);
+    randVec(V, n);
     root = dist(gen) % ProcNum;
   }
 
@@ -343,7 +343,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_time25_DOUBLE) {
   double * buf = new double[n];
 
   if (rank == 0) {
-    rand_rVec(V, n);
+    randVec(V, n);
     root = dist(gen) % ProcNum;
   }
 
@@ -430,7 +430,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_Random10_FLOAT) {
   float * buf = new float[n];
 
   if (rank == 0) {
-    rand_rVec(V, n);
+    randVec(V, n);
     root = dist(gen) % ProcNum;
   }
 
@@ -458,7 +458,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_Random25_FLOAT) {
   float * buf = new float[n];
 
   if (rank == 0) {
-    rand_rVec(V, n);
+    randVec(V, n);
     root = dist(gen) % ProcNum;
   }
 
@@ -486,7 +486,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_time10_FLOAT) {
   float * buf = new float[n];
 
   if (rank == 0) {
-    rand_rVec(V, n);
+    randVec(V, n);
     root = dist(gen) % ProcNum;
   }
 
@@ -521,7 +521,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_time25_FLOAT) {
   float * buf = new float[n];
 
   if (rank == 0) {
-    rand_rVec(V, n);
+    randVec(V, n);
     root = dist(gen) % ProcNum;
   }
 
