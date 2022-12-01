@@ -8,16 +8,19 @@
 #include "../../modules/task_2/semenova_a_gather/gather.h"
 
 
-int Gather(void* sbuf, int scount, MPI_Datatype stype, void* rbuf, int rcount, MPI_Datatype rtype, int root, MPI_Comm comm) {
+int Gather(void* sbuf, int scount, MPI_Datatype stype, void* rbuf, 
+    int rcount, MPI_Datatype rtype, int root, MPI_Comm comm) {
     if (stype != rtype || scount != rcount) return MPI_ERR_OTHER;
     if (sbuf == nullptr) return MPI_ERR_BUFFER;
     if (rcount < 0 || scount < 0) return MPI_ERR_COUNT;
 
     int type_size = 0;
     if (stype == MPI_INT) type_size = sizeof(int);
-    else if (stype == MPI_FLOAT) type_size = sizeof(float);
-    else if (stype == MPI_DOUBLE) type_size = sizeof(double);
-    else return -1;
+    else 
+        if (stype == MPI_FLOAT) type_size = sizeof(float);
+        else 
+            if (stype == MPI_DOUBLE) type_size = sizeof(double);
+            else return -1;
 
     int rank, ProcNum;
     MPI_Status status;
@@ -46,8 +49,10 @@ int Gather(void* sbuf, int scount, MPI_Datatype stype, void* rbuf, int rcount, M
     }
 
     if (root != 0) {
-        if (rank == 0) MPI_Send(given2, scount * ProcNum, stype, root, 1, comm);
-        if (rank == root) MPI_Recv(res, rcount * ProcNum, rtype, 0, 1, comm, &status);
+        if (rank == 0) 
+            MPI_Send(given2, scount * ProcNum, stype, root, 1, comm);
+        if (rank == root) 
+            MPI_Recv(res, rcount * ProcNum, rtype, 0, 1, comm, &status);
     }
     else {
         if (rank == root) {
