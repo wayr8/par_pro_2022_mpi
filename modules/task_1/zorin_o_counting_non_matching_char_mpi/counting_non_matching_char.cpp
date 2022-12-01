@@ -2,8 +2,7 @@
 #include <mpi.h>
 #include <string>
 #include <random>
-#include <iostream>
-#include "stdio.h"
+#include <cstring>
 #include "../../../modules/task_1/zorin_o_counting_non_matching_char_mpi/counting_non_matching_char.h"
 
 const char* getRandomString(int len)

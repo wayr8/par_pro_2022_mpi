@@ -1,7 +1,5 @@
 // Copyright 2022 Zorin Oleg
 #include <gtest/gtest.h>
-#include <random>
-#include "stdio.h"
 #include "./counting_non_matching_char.h"
 #include <gtest-mpi-listener.hpp>
 
@@ -56,7 +54,6 @@ TEST(Parallel_Operations_MPI, Test_Random_String_Diff_Size) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     const char* global_str = "1a2b3c4d5e6f7g8";// = getRandomString(15);
     const char* global_compare_str = "1234567890";
-    printf("\nrank=%d\t%s\t%s\n\n", rank, global_str, global_compare_str);
 
     int global_count = countNonMatchingCharParallel(
             global_str, 15, global_compare_str, 10);
