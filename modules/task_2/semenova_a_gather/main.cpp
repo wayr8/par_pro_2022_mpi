@@ -4,6 +4,16 @@
 #include "./gather.h"
 
 #include <gtest-mpi-listener.hpp>
+
+const int MAX_INT = 100;
+const int MIN_INT = 50;
+
+const double MAX_DOUBLE = 32.0;
+const double MIN_DOUBLE = -32.0;
+
+const float MAX_FLOAT = -33.0;
+const float MIN_FLOAT = -60.0;
+
 TEST(Parallel_Operations_MPI, correct_operation_of_Gather10_INT) {
   int rank, ProcNum, root;
   MPI_Comm_rank(MPI_COMM_WORLD, & rank);
@@ -20,7 +30,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather10_INT) {
     root = rand() % ProcNum;
   }
 
-  MPI_Bcast( & root, 1, MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Bcast(& root, 1, MPI_INT, 0, MPI_COMM_WORLD);
   MPI_Scatter(V, nP, MPI_INT, buf, nP, MPI_INT, 0, MPI_COMM_WORLD);
 
   Gather(buf, nP, MPI_INT, res, nP, MPI_INT, root, MPI_COMM_WORLD);
@@ -46,7 +56,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather25_INT) {
     root = rand() % ProcNum;
   }
 
-  MPI_Bcast( & root, 1, MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Bcast(& root, 1, MPI_INT, 0, MPI_COMM_WORLD);
   MPI_Scatter(V, nP, MPI_INT, buf, nP, MPI_INT, 0, MPI_COMM_WORLD);
 
   Gather(buf, nP, MPI_INT, res, nP, MPI_INT, root, MPI_COMM_WORLD);
@@ -73,7 +83,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_Random10_INT) {
     root = rand() % ProcNum;
   }
 
-  MPI_Bcast( & root, 1, MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Bcast(& root, 1, MPI_INT, 0, MPI_COMM_WORLD);
   MPI_Scatter(V, nP, MPI_INT, buf, nP, MPI_INT, 0, MPI_COMM_WORLD);
 
   MPI_Gather(buf, nP, MPI_INT, res2, nP, MPI_INT, root, MPI_COMM_WORLD);
@@ -101,7 +111,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_Random25_INT) {
     root = rand() % ProcNum;
   }
 
-  MPI_Bcast( & root, 1, MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Bcast(& root, 1, MPI_INT, 0, MPI_COMM_WORLD);
   MPI_Scatter(V, nP, MPI_INT, buf, nP, MPI_INT, 0, MPI_COMM_WORLD);
 
   MPI_Gather(buf, nP, MPI_INT, res2, nP, MPI_INT, root, MPI_COMM_WORLD);
@@ -129,7 +139,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_time10_INT) {
     root = rand() % ProcNum;
   }
 
-  MPI_Bcast( & root, 1, MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Bcast(& root, 1, MPI_INT, 0, MPI_COMM_WORLD);
   MPI_Scatter(V, nP, MPI_INT, buf, nP, MPI_INT, 0, MPI_COMM_WORLD);
 
   if (rank == root) time1 = MPI_Wtime();
@@ -164,7 +174,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_time25_INT) {
     root = rand() % ProcNum;
   }
 
-  MPI_Bcast( & root, 1, MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Bcast(& root, 1, MPI_INT, 0, MPI_COMM_WORLD);
   MPI_Scatter(V, nP, MPI_INT, buf, nP, MPI_INT, 0, MPI_COMM_WORLD);
 
   if (rank == root) time1 = MPI_Wtime();
@@ -198,7 +208,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather10_DOUBLE) {
     root = rand() % ProcNum;
   }
 
-  MPI_Bcast( & root, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  MPI_Bcast(& root, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   MPI_Scatter(V, nP, MPI_DOUBLE, buf, nP, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   Gather(buf, nP, MPI_DOUBLE, res, nP, MPI_DOUBLE, root, MPI_COMM_WORLD);
@@ -224,7 +234,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather25_DOUBLE) {
     root = rand() % ProcNum;
   }
 
-  MPI_Bcast( & root, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  MPI_Bcast(& root, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   MPI_Scatter(V, nP, MPI_DOUBLE, buf, nP, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   Gather(buf, nP, MPI_DOUBLE, res, nP, MPI_DOUBLE, root, MPI_COMM_WORLD);
@@ -251,7 +261,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_Random10_DOUBLE) 
     root = rand() % ProcNum;
   }
 
-  MPI_Bcast( & root, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  MPI_Bcast(& root, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   MPI_Scatter(V, nP, MPI_DOUBLE, buf, nP, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   MPI_Gather(buf, nP, MPI_DOUBLE, res2, nP, MPI_DOUBLE, root, MPI_COMM_WORLD);
@@ -279,7 +289,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_Random25_DOUBLE) 
     root = rand() % ProcNum;
   }
 
-  MPI_Bcast( & root, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  MPI_Bcast(& root, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   MPI_Scatter(V, nP, MPI_DOUBLE, buf, nP, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   MPI_Gather(buf, nP, MPI_DOUBLE, res2, nP, MPI_DOUBLE, root, MPI_COMM_WORLD);
@@ -307,7 +317,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_time10_DOUBLE) {
     root = rand() % ProcNum;
   }
 
-  MPI_Bcast( & root, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  MPI_Bcast(& root, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   MPI_Scatter(V, nP, MPI_DOUBLE, buf, nP, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   if (rank == root) time1 = MPI_Wtime();
@@ -342,7 +352,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_time25_DOUBLE) {
     root = rand() % ProcNum;
   }
 
-  MPI_Bcast( & root, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  MPI_Bcast(& root, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   MPI_Scatter(V, nP, MPI_DOUBLE, buf, nP, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   if (rank == root) time1 = MPI_Wtime();
@@ -376,7 +386,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather10_FLOAT) {
     root = rand() % ProcNum;
   }
 
-  MPI_Bcast( & root, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
+  MPI_Bcast(& root, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
   MPI_Scatter(V, nP, MPI_FLOAT, buf, nP, MPI_FLOAT, 0, MPI_COMM_WORLD);
 
   Gather(buf, nP, MPI_FLOAT, res, nP, MPI_FLOAT, root, MPI_COMM_WORLD);
@@ -402,7 +412,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather25_FLOAT) {
     root = rand() % ProcNum;
   }
 
-  MPI_Bcast( & root, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
+  MPI_Bcast(& root, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
   MPI_Scatter(V, nP, MPI_FLOAT, buf, nP, MPI_FLOAT, 0, MPI_COMM_WORLD);
 
   Gather(buf, nP, MPI_FLOAT, res, nP, MPI_FLOAT, root, MPI_COMM_WORLD);
@@ -429,7 +439,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_Random10_FLOAT) {
     root = rand() % ProcNum;
   }
 
-  MPI_Bcast( & root, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
+  MPI_Bcast(& root, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
   MPI_Scatter(V, nP, MPI_FLOAT, buf, nP, MPI_FLOAT, 0, MPI_COMM_WORLD);
 
   MPI_Gather(buf, nP, MPI_FLOAT, res2, nP, MPI_FLOAT, root, MPI_COMM_WORLD);
@@ -457,7 +467,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_Random25_FLOAT) {
     root = rand() % ProcNum;
   }
 
-  MPI_Bcast( & root, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
+  MPI_Bcast(& root, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
   MPI_Scatter(V, nP, MPI_FLOAT, buf, nP, MPI_FLOAT, 0, MPI_COMM_WORLD);
 
   MPI_Gather(buf, nP, MPI_FLOAT, res2, nP, MPI_FLOAT, root, MPI_COMM_WORLD);
@@ -485,7 +495,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_time10_FLOAT) {
     root = rand() % ProcNum;
   }
 
-  MPI_Bcast( & root, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
+  MPI_Bcast(& root, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
   MPI_Scatter(V, nP, MPI_FLOAT, buf, nP, MPI_FLOAT, 0, MPI_COMM_WORLD);
 
   if (rank == root) time1 = MPI_Wtime();
@@ -520,7 +530,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_time25_FLOAT) {
     root = rand() % ProcNum;
   }
 
-  MPI_Bcast( & root, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
+  MPI_Bcast(& root, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
   MPI_Scatter(V, nP, MPI_FLOAT, buf, nP, MPI_FLOAT, 0, MPI_COMM_WORLD);
 
   if (rank == root) time1 = MPI_Wtime();

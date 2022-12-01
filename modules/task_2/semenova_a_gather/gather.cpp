@@ -13,12 +13,16 @@ int Gather(void * sbuf, int scount, MPI_Datatype stype, void * rbuf,
   if (rcount < 0 || scount < 0) return MPI_ERR_COUNT;
 
   int type_size = 0;
-  if (stype == MPI_INT) type_size = sizeof(int);
+  if (stype == MPI_INT) 
+      type_size = sizeof(int);
   else
-  if (stype == MPI_FLOAT) type_size = sizeof(float);
-  else
-  if (stype == MPI_DOUBLE) type_size = sizeof(double);
-  else return -1;
+      if (stype == MPI_FLOAT) 
+          type_size = sizeof(float);
+      else 
+          if (stype == MPI_DOUBLE) t
+              ype_size = sizeof(double);
+          else 
+              return -1;
 
   int rank, ProcNum;
   MPI_Status status;
