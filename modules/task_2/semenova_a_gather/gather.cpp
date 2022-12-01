@@ -42,7 +42,7 @@ int Gather(void * sbuf, int scount, MPI_Datatype stype, void * rbuf,
 
   int n = ProcNum, i = 1, flag = 0;
   while (n > 1) {
-    if (n % 2 == 1) 
+    if (n % 2 == 1)
         flag = 1;
     if (rank % (i * 2) == i)
         MPI_Send(given2, scount * i, stype, rank - i, i, comm);
