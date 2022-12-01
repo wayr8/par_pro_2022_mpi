@@ -8,7 +8,7 @@
 #include<random>
 
 template < typename Type >
-  void rand_rVec(Type * A, int n) {
+  void randVec(Type * A, int n) {
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution < int > dist(-32, 32);
@@ -20,4 +20,4 @@ template < typename Type >
 int Gather(void * sbuf, int scount, MPI_Datatype stype, void * rbuf,
   int rcount, MPI_Datatype rtype, int root, MPI_Comm comm);
 
-#endif // MODULES_TASK_2_SEMENOVA_A_GATHER_GATHER_H_
+#endif  // MODULES_TASK_2_SEMENOVA_A_GATHER_GATHER_H_

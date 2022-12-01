@@ -5,6 +5,10 @@
 
 #include <gtest-mpi-listener.hpp>
 
+std::random_device rd;
+std::mt19937 gen(rd());
+std::uniform_int_distribution < int > dist(-32, 32);
+
 TEST(Parallel_Operations_MPI, correct_operation_of_Gather10_INT) {
   int rank, ProcNum, root;
   MPI_Comm_rank(MPI_COMM_WORLD, & rank);
@@ -18,7 +22,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather10_INT) {
   if (rank == 0) {
     for (int i = 0; i < n; i++)
       V[i] = i;
-    root = rand_r() % ProcNum;
+    root = dist(gen) % ProcNum;
   }
 
   MPI_Bcast(& root, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -44,7 +48,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather25_INT) {
   if (rank == 0) {
     for (int i = 0; i < n; i++)
       V[i] = i;
-    root = rand_r() % ProcNum;
+    root = dist(gen) % ProcNum;
   }
 
   MPI_Bcast(& root, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -71,7 +75,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_Random10_INT) {
 
   if (rank == 0) {
     rand_rVec(V, n);
-    root = rand_r() % ProcNum;
+    root = dist(gen) % ProcNum;
   }
 
   MPI_Bcast(& root, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -99,7 +103,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_Random25_INT) {
 
   if (rank == 0) {
     rand_rVec(V, n);
-    root = rand_r() % ProcNum;
+    root = dist(gen) % ProcNum;
   }
 
   MPI_Bcast(& root, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -127,7 +131,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_time10_INT) {
 
   if (rank == 0) {
     rand_rVec(V, n);
-    root = rand_r() % ProcNum;
+    root = dist(gen) % ProcNum;
   }
 
   MPI_Bcast(& root, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -162,7 +166,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_time25_INT) {
 
   if (rank == 0) {
     rand_rVec(V, n);
-    root = rand_r() % ProcNum;
+    root = dist(gen) % ProcNum;
   }
 
   MPI_Bcast(& root, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -196,7 +200,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather10_DOUBLE) {
   if (rank == 0) {
     for (int i = 0; i < n; i++)
       V[i] = i;
-    root = rand_r() % ProcNum;
+    root = dist(gen) % ProcNum;
   }
 
   MPI_Bcast(& root, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
@@ -222,7 +226,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather25_DOUBLE) {
   if (rank == 0) {
     for (int i = 0; i < n; i++)
       V[i] = i;
-    root = rand_r() % ProcNum;
+    root = dist(gen) % ProcNum;
   }
 
   MPI_Bcast(& root, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
@@ -249,7 +253,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_Random10_DOUBLE) 
 
   if (rank == 0) {
     rand_rVec(V, n);
-    root = rand_r() % ProcNum;
+    root = dist(gen) % ProcNum;
   }
 
   MPI_Bcast(& root, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
@@ -277,7 +281,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_Random25_DOUBLE) 
 
   if (rank == 0) {
     rand_rVec(V, n);
-    root = rand_r() % ProcNum;
+    root = dist(gen) % ProcNum;
   }
 
   MPI_Bcast(& root, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
@@ -305,7 +309,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_time10_DOUBLE) {
 
   if (rank == 0) {
     rand_rVec(V, n);
-    root = rand_r() % ProcNum;
+    root = dist(gen) % ProcNum;
   }
 
   MPI_Bcast(& root, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
@@ -340,7 +344,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_time25_DOUBLE) {
 
   if (rank == 0) {
     rand_rVec(V, n);
-    root = rand_r() % ProcNum;
+    root = dist(gen) % ProcNum;
   }
 
   MPI_Bcast(& root, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
@@ -374,7 +378,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather10_FLOAT) {
   if (rank == 0) {
     for (int i = 0; i < n; i++)
       V[i] = i;
-    root = rand_r() % ProcNum;
+    root = dist(gen) % ProcNum;
   }
 
   MPI_Bcast(& root, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
@@ -400,7 +404,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather25_FLOAT) {
   if (rank == 0) {
     for (int i = 0; i < n; i++)
       V[i] = i;
-    root = rand_r() % ProcNum;
+    root = dist(gen) % ProcNum;
   }
 
   MPI_Bcast(& root, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
@@ -427,7 +431,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_Random10_FLOAT) {
 
   if (rank == 0) {
     rand_rVec(V, n);
-    root = rand_r() % ProcNum;
+    root = dist(gen) % ProcNum;
   }
 
   MPI_Bcast(& root, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
@@ -455,7 +459,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_Random25_FLOAT) {
 
   if (rank == 0) {
     rand_rVec(V, n);
-    root = rand_r() % ProcNum;
+    root = dist(gen) % ProcNum;
   }
 
   MPI_Bcast(& root, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
@@ -483,7 +487,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_time10_FLOAT) {
 
   if (rank == 0) {
     rand_rVec(V, n);
-    root = rand_r() % ProcNum;
+    root = dist(gen) % ProcNum;
   }
 
   MPI_Bcast(& root, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
@@ -518,7 +522,7 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_time25_FLOAT) {
 
   if (rank == 0) {
     rand_rVec(V, n);
-    root = rand_r() % ProcNum;
+    root = dist(gen) % ProcNum;
   }
 
   MPI_Bcast(& root, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
