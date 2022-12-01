@@ -1,10 +1,13 @@
+// Copyright 2022 Zorin Oleg
 #include <mpi.h>
+#include <string>
 #include <random>
-#include "counting_non_matching_char.h"
+#include <algorithm>
+#include "../../../modules/task_1/zorin_o_counting_non_matching_char_mpi/counting_non_matching_char.h"
 
 std::string getRandomString(size_t size)
 {
-    static const char alphanum[] =
+    const char alphanum[] =
             "0123456789"
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
             "abcdefghijklmnopqrstuvwxyz";
@@ -21,24 +24,25 @@ std::string getRandomString(size_t size)
 
     return random_str;
 }
-
-int countNonMatchingCharSequential(const std::string &str, const std::string &compare_str)
+int countNonMatchingCharSequential(const std::string &str,
+                                   const std::string &compare_str)
 {
     int count = 0;
-    for (char i : str)
+    for (const char& i : str)
     {
         if (compare_str.find(i) == std::string::npos)
             count++;
     }
     return count;
 }
-
-int countNonMatchingCharParallel(const std::string &global_str, const std::string &global_compare_str)
+int countNonMatchingCharParallel(const std::string &global_str,
+                                 const std::string &global_compare_str)
 {
     int proc_size, proc_rank;
     MPI_Comm_size(MPI_COMM_WORLD, &proc_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &proc_rank);
-    const int delta = global_str.size() / proc_size;
+    proc_size = global_str.size() > proc_size ? proc_size : global_str.size();
+    const int delta =  global_str.size() / proc_size;
 
     if (proc_rank == 0)
     {

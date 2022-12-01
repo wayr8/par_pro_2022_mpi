@@ -1,18 +1,14 @@
 // Copyright 2022 Zorin Oleg
 #include <gtest/gtest.h>
-#include <string>
 #include <random>
-#include "counting_non_matching_char.h"
+#include "./counting_non_matching_char.h"
 #include <gtest-mpi-listener.hpp>
-#include <iostream>
 
-TEST(Counting_Non_Matching_Char_MPI, Correct_Sequential_Count)
-{
+TEST(Parallel_Operations_MPI, Test_Sequential_Count) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    if (rank == 0)
-    {
+    if (rank == 0) {
         std::string global_str = "banana";
         std::string global_compare_str = "apple";
         int count = countNonMatchingCharSequential(global_str, global_compare_str);
@@ -20,8 +16,7 @@ TEST(Counting_Non_Matching_Char_MPI, Correct_Sequential_Count)
     }
 }
 
-TEST(Counting_Non_Matching_Char_MPI, Correct_Parallel_Count)
-{
+TEST(Parallel_Operations_MPI, Test_Parallel_Count) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::string global_str;
@@ -40,8 +35,7 @@ TEST(Counting_Non_Matching_Char_MPI, Correct_Parallel_Count)
     }
 }
 
-TEST(Counting_Non_Matching_Char_MPI, Eq_Seaquential_and_Parallel_Random_Str_Same_Size)
-{
+TEST(Parallel_Operations_MPI, Test_Random_String_Same_Size) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::string global_str;
@@ -63,8 +57,7 @@ TEST(Counting_Non_Matching_Char_MPI, Eq_Seaquential_and_Parallel_Random_Str_Same
     }
 }
 
-TEST(Counting_Non_Matching_Char_MPI, Eq_Seaquential_and_Parallel_Random_Str_Different_Size)
-{
+TEST(Parallel_Operations_MPI, Test_Random_String_Diff_Size) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::string global_str;
@@ -87,8 +80,7 @@ TEST(Counting_Non_Matching_Char_MPI, Eq_Seaquential_and_Parallel_Random_Str_Diff
     }
 }
 
-TEST(Counting_Non_Matching_Char_MPI, Eq_Seaquential_and_Parallel_Random_Str_Random_Size)
-{
+TEST(Parallel_Operations_MPI, Test_Random_String_Random_Size) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::string global_str;
@@ -114,13 +106,12 @@ TEST(Counting_Non_Matching_Char_MPI, Eq_Seaquential_and_Parallel_Random_Str_Rand
     }
 }
 
-int main(int argc, char **argv)
-{
+int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     MPI_Init(&argc, &argv);
 
     ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
-    ::testing::TestEventListeners &listeners =
+    ::testing::TestEventListeners& listeners =
             ::testing::UnitTest::GetInstance()->listeners();
 
     listeners.Release(listeners.default_result_printer());

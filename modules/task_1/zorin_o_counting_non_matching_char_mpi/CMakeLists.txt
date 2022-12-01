@@ -1,4 +1,3 @@
-set(PROJECT_NAME "zorin_o_counting_non_matching_char_mpi")
 get_filename_component(ProjectId ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 enable_testing()
 
@@ -63,10 +62,10 @@ if( USE_MPI )
 
     add_custom_target("${ProjectId}_check_count_tests" ALL
             COMMAND "${Python3_EXECUTABLE}"
-            ${CMAKE_SOURCE_DIR}/scripts/check_count_tests.py
-            ${ProjectId}
-            ${ARGS_FOR_CHECK_COUNT_TESTS}
-            )
+                ${CMAKE_SOURCE_DIR}/scripts/check_count_tests.py
+                ${ProjectId}
+                ${ARGS_FOR_CHECK_COUNT_TESTS}
+    )
 else( USE_MPI )
     message( STATUS "-- ${ProjectId} - NOT BUILD!"  )
 endif( USE_MPI )
