@@ -127,10 +127,10 @@ TEST(Parallel_Operations_MPI, correct_operation_of_ParallelSum_with_Random100000
 }
 
 int main(int argc, char ** argv) {
-  ::testing::InitGoogleTest( & argc, argv);
-  MPI_Init( & argc, & argv);
+  ::testing::InitGoogleTest(& argc, argv);
+  MPI_Init(& argc, & argv);
 
-  ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);::testing::TestEventListeners & listeners = ::testing::UnitTest::GetInstance() -> listeners();
+  ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);::testing::TestEventListeners&listeners=::testing::UnitTest::GetInstance()- listeners(); 
 
   listeners.Release(listeners.default_result_printer());
   listeners.Release(listeners.default_xml_generator());
