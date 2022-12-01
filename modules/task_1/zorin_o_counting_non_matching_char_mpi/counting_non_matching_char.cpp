@@ -1,7 +1,7 @@
 // Copyright 2022 Zorin Oleg
 #include "../../../modules/task_1/zorin_o_counting_non_matching_char_mpi/counting_non_matching_char.h"
-#include <cstring>
 #include <mpi.h>
+#include <cstring>
 #include <random>
 #include <string>
 

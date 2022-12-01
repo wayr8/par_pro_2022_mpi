@@ -50,7 +50,7 @@ TEST(Parallel_Operations_MPI, Test_Random_String_Diff_Size) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    const char *global_str = "1a2b3c4d5e6f7g8";// = getRandomString(15);
+    const char *global_str = "1a2b3c4d5e6f7g8";
     const char *global_compare_str = "1234567890";
 
     int global_count = countNonMatchingCharParallel(
