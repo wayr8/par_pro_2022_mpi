@@ -38,6 +38,10 @@ int countNonMatchingCharSequential(const std::string &str,
 int countNonMatchingCharParallel(const std::string &global_str,
                                  const std::string &global_compare_str)
 {
+    if (global_str.empty())
+        return 0;
+    if (global_compare_str.empty())
+        return global_str.size();
     int proc_size, proc_rank;
     MPI_Comm_size(MPI_COMM_WORLD, &proc_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &proc_rank);

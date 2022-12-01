@@ -80,7 +80,7 @@ TEST(Parallel_Operations_MPI, Test_Random_String_Diff_Size) {
     }
 }
 
-TEST(Parallel_Operations_MPI, Test_Random_String_Random_Size) {
+TEST(Parallel_Operations_MPI, Test_Random_String_Null_Size) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::string global_str;
@@ -88,11 +88,8 @@ TEST(Parallel_Operations_MPI, Test_Random_String_Random_Size) {
 
     if (rank == 0)
     {
-        std::random_device rd;
-        std::mt19937 mt(rd());
-        std::uniform_int_distribution<size_t> dist(0, 200);
-        size_t string_size = dist(mt);
-        size_t compare_string_size = dist(mt);
+        size_t string_size = 0;
+        size_t compare_string_size = 120;
         global_str = getRandomString(string_size);
         global_compare_str = getRandomString(compare_string_size);
     }
