@@ -52,7 +52,7 @@ int countNonMatchingCharParallel(const char* global_str, int len, const char* gl
     int delta = len / size;
     int shift = rank == size-1 && len % size != 0 ? len - rank * delta : delta;
     char* local_str = new char[shift];
-    memcpy(local_str, global_str+delta*rank, sizeof(char)*shift);
+    std::memcpy(local_str, global_str+delta*rank, sizeof(char)*shift);
 
     int global_count = 0;
     int local_count = countNonMatchingCharSequential(local_str, shift, global_compare_str, compare_len);
