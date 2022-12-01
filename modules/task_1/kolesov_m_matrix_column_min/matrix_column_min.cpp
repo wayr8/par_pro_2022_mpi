@@ -1,9 +1,9 @@
 // Copyright 2022 Kolesov Maxim
-#include "matrix_column_min.h"
-
 #include <mpi.h>
 #include <random>
 #include <limits>
+
+#include "../../../modules/task_1/kolesov_m_matrix_column_min/matrix_column_min.h"
 
 std::vector<int> generateMatrix(int n, int m) {
   std::random_device dev;
