@@ -2,76 +2,62 @@
 #include <mpi.h>
 #include <string>
 #include <random>
-#include <algorithm>
+#include <iostream>
+#include "stdio.h"
 #include "../../../modules/task_1/zorin_o_counting_non_matching_char_mpi/counting_non_matching_char.h"
 
-std::string getRandomString(size_t size)
+const char* getRandomString(int len)
 {
     const char alphanum[] =
             "0123456789"
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
             "abcdefghijklmnopqrstuvwxyz";
-    std::string random_str;
-    random_str.reserve(size);
+    char* random_str = new char[len+1];
     std::random_device rd;
     std::mt19937 mt(rd());
     std::uniform_int_distribution<size_t> dist(0, sizeof(alphanum)-1);
 
-    for (size_t i = 0; i < size; i++)
+    for (int i = 0; i < len; i++)
     {
-        random_str += alphanum[dist(mt)];
+        random_str[i] = alphanum[dist(mt)];
     }
+    random_str[len] = '\0';
 
     return random_str;
 }
-int countNonMatchingCharSequential(const std::string &str,
-                                   const std::string &compare_str)
+int countNonMatchingCharSequential(const char* str, int len, 
+    const char* compare_str, int compare_len)
 {
     int count = 0;
-    for (const char& i : str)
+    for (int i = 0; i < len; i++)
     {
-        if (compare_str.find(i) == std::string::npos)
-            count++;
+        const char& chr = str[i];
+        int not_match = 1;
+        for (int j = 0; j < compare_len; j++)
+        {
+	        if (compare_str[j] == chr)
+	        {
+                not_match = 0;
+                break;
+	        }
+        }
+        count += not_match;
     }
     return count;
 }
-int countNonMatchingCharParallel(const std::string &global_str,
-                                 const std::string &global_compare_str)
+int countNonMatchingCharParallel(const char* global_str, int len, const char* global_compare_str, int compare_len)
 {
-    if (global_str.empty())
-        return 0;
-    if (global_compare_str.empty())
-        return global_str.size();
-    int proc_size, proc_rank;
-    MPI_Comm_size(MPI_COMM_WORLD, &proc_size);
-    MPI_Comm_rank(MPI_COMM_WORLD, &proc_rank);
-    proc_size = global_str.size() > proc_size ? proc_size : global_str.size();
-    const int delta =  global_str.size() / proc_size;
-
-    if (proc_rank == 0)
-    {
-        for (int proc = 1; proc < proc_size; proc++)
-        {
-            MPI_Send(global_str.data() + proc * delta, delta,
-                     MPI_CHAR, proc, 0, MPI_COMM_WORLD);
-        }
-    }
-
-    std::string local_str;
-    if (proc_rank == 0)
-    {
-        local_str = std::string(global_str.begin(),
-                                global_str.begin() + delta);
-    }
-    else
-    {
-        MPI_Status status;
-        MPI_Recv((void *) local_str.data(), delta,
-                 MPI_CHAR, 0, 0, MPI_COMM_WORLD, &status);
-    }
+	int size, rank;
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    int delta = len / size;
+    int shift = rank == size-1 && len % size != 0 ? len - rank * delta : delta;
+    char* local_str = new char[shift];
+    memcpy(local_str, global_str+delta*rank, sizeof(char)*shift);
 
     int global_count = 0;
-    int local_count = countNonMatchingCharSequential(local_str, global_compare_str);
+    int local_count = countNonMatchingCharSequential(local_str, shift, global_compare_str, compare_len);
+    delete[] local_str;
     MPI_Reduce(&local_count, &global_count, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
     return global_count;
 }

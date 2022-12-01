@@ -4,10 +4,9 @@
 
 #include <string>
 
-std::string getRandomString(size_t size);
-int countNonMatchingCharSequential(const std::string &str,
-                                   const std::string &compare_str);
-int countNonMatchingCharParallel(const std::string &global_str,
-                                 const std::string &global_compare_str);
+const char* getRandomString(int len);
+int countNonMatchingCharSequential(const char* str, int len,
+                                   const char* compare_str, int compare_len);
+int countNonMatchingCharParallel(const char* global_str, int len, const char* global_compare_str, int compare_len);
 
 #endif // MODULES_TASK_1_ZORIN_O_COUNTING_NON_MATCHING_CHAR_H_
