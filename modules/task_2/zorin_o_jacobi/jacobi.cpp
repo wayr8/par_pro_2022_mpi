@@ -1,5 +1,5 @@
 // Copyright 2022 Zorin Oleg
-#include "jacobi.h"
+#include "./jacobi.h"
 #include <mpi.h>
 #include <vector>
 #include <algorithm>
@@ -14,13 +14,13 @@ Vector operator-(const Vector &X, const Vector &Y) {
 
 double normVector(const Vector &X) {
     double norm = 0.0;
-    for (const double &x: X) {
+    for (const double &x : X) {
         norm = std::max(norm, std::abs(x));
     }
     return norm;
 }
 
-Vector JacobiSequential(Matrix A, Vector B) {
+Vector JacobiSequential(const Matrix& A, const Vector& B) {
     std::size_t dim = A.size();
     Vector X(dim);
     double norm = 0.0;
@@ -54,7 +54,7 @@ Vector expandVector(const Vector &V, std::size_t shift) {
 Matrix expandMatrix(const Matrix &M, std::size_t shift) {
     Matrix res = M;
 
-    for (Vector &row: res) {
+    for (Vector &row : res) {
         row.insert(row.end(), shift, 0.0);
     }
     res.insert(res.end(), shift, Vector(M.size() + shift));

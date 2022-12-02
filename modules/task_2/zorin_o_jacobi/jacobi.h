@@ -1,6 +1,6 @@
 // Copyright 2022 Zorin Oleg
-#ifndef MODULE_TASK_2_ZORIN_O_JACOBI_JACOBI_H_
-#define MODULE_TASK_2_ZORIN_O_JACOBI_JACOBI_H_
+#ifndef MODULES_TASK_2_ZORIN_O_JACOBI_JACOBI_H_
+#define MODULES_TASK_2_ZORIN_O_JACOBI_JACOBI_H_
 
 #include <vector>
 
@@ -17,7 +17,7 @@ Matrix expandMatrix(const Matrix &M, std::size_t shift);
 
 Vector JacobiParallel(Matrix A, Vector B);
 
-Vector JacobiSequential(Matrix A, Vector B);
+Vector JacobiSequential(const Matrix& A, const Vector& B);
 
 
-#endif  // MODULE_TASK_2_ZORIN_O_JACOBI_JACOBI_H_
+#endif  // MODULES_TASK_2_ZORIN_O_JACOBI_JACOBI_H_
