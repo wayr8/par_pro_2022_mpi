@@ -5,8 +5,6 @@
 
 #include <iostream>
 
-#include <time.h>
-
 #include "../../modules/task_3/semenova_a_method_conjugate_gradient/method_conjugate_gradient.h"
 
 Vector RandVec(int n) {
@@ -53,7 +51,6 @@ Vector mult_MxV(const Vector & M,
 
 Vector Serial_method_gradient(const Vector & A,
   const Vector & b, int n) {
-  //Conjugate gradient method: solving a system of linear equations Ax=b with a symmetric positive definite matrix tmp is equivalent to solving the problem of minimizing the function F(x)=1/2*(Ax,x)-(b,x). A function F(x) reaches its minimum value if and only if its gradient n(Ax -b) turns to 0
 
   Vector r0(n), p0(n), tmp, x(n);
   double E = 0.01, c1 = 0.0, c2 = 0.0;

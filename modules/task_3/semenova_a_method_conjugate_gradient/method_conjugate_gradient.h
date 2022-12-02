@@ -19,4 +19,4 @@ Vector Serial_method_gradient(const Vector & M,
 Vector Paralle_method_gradient(const Vector & M,
   const Vector & V, int n);
 
-#endif // MODULES_TASK_3_SEMENOVA_A_METHOD_CONJUGATE_GRADIENT_METHOD_CONJUGATE_GRADIENT_H_
+#endif  // MODULES_TASK_3_SEMENOVA_A_METHOD_CONJUGATE_GRADIENT_METHOD_CONJUGATE_GRADIENT_H_

@@ -1,10 +1,7 @@
 // Copyright 2022 Semenova Veronika
 #include <gtest/gtest.h>
-
-#include "./method_conjugate_gradient.h"
-
 #include <vector>
-
+#include "./method_conjugate_gradient.h"
 #include <gtest-mpi-listener.hpp>
 
 TEST(Parallel_Operations_MPI, Serial_method_gradient_is_correct2x2) {
@@ -154,16 +151,17 @@ TEST(Parallel_Operations_MPI, Serial_and_paralle_method_with_random15x15) {
   }
 }
 
-int main(int argc, char ** argv) {
-  ::testing::InitGoogleTest(& argc, argv);
-  MPI_Init(& argc, & argv);
+int main(int argc, char** argv) {
+    ::testing::InitGoogleTest(&argc, argv);
+    MPI_Init(&argc, &argv);
 
-  ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
-  ::testing::TestEventListeners & listeners = ::testing::UnitTest::GetInstance() -> listeners();
+    ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
+    ::testing::TestEventListeners& listeners =
+        ::testing::UnitTest::GetInstance()->listeners();
 
-  listeners.Release(listeners.default_result_printer());
-  listeners.Release(listeners.default_xml_generator());
+    listeners.Release(listeners.default_result_printer());
+    listeners.Release(listeners.default_xml_generator());
 
-  listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
-  return RUN_ALL_TESTS();
+    listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
+    return RUN_ALL_TESTS();
 }
