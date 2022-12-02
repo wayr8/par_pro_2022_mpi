@@ -239,34 +239,6 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_Random10_DOUBLE) 
       ASSERT_EQ(res1[i], res2[i]);
   }
 }
-TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_Random25_DOUBLE) {
-  int rank, ProcNum, root;
-  double time1, time2;
-  MPI_Comm_rank(MPI_COMM_WORLD, & rank);
-  MPI_Comm_size(MPI_COMM_WORLD, & ProcNum);
-  int n = 25;
-  int nP = n / ProcNum;
-  double * V = new double[n];
-  double * res1 = new double[n];
-  double * res2 = new double[n];
-  double * buf = new double[n];
-
-  if (rank == 0) {
-    randVec(V, n);
-    root = dist(gen) % ProcNum;
-  }
-
-  MPI_Bcast(& root, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-  MPI_Scatter(V, nP, MPI_DOUBLE, buf, nP, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-
-  MPI_Gather(buf, nP, MPI_DOUBLE, res2, nP, MPI_DOUBLE, root, MPI_COMM_WORLD);
-  Gather(buf, nP, MPI_DOUBLE, res1, nP, MPI_DOUBLE, root, MPI_COMM_WORLD);
-
-  if (rank == root) {
-    for (int i = 0; i < n; i++)
-      ASSERT_EQ(res1[i], res2[i]);
-  }
-}
 TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_time10_DOUBLE) {
   int rank, ProcNum, root;
   double time1, time2;
@@ -395,34 +367,6 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_Random10_FLOAT) {
   MPI_Comm_rank(MPI_COMM_WORLD, & rank);
   MPI_Comm_size(MPI_COMM_WORLD, & ProcNum);
   int n = 10;
-  int nP = n / ProcNum;
-  float * V = new float[n];
-  float * res1 = new float[n];
-  float * res2 = new float[n];
-  float * buf = new float[n];
-
-  if (rank == 0) {
-    randVec(V, n);
-    root = dist(gen) % ProcNum;
-  }
-
-  MPI_Bcast(& root, 1, MPI_FLOAT, 0, MPI_COMM_WORLD);
-  MPI_Scatter(V, nP, MPI_FLOAT, buf, nP, MPI_FLOAT, 0, MPI_COMM_WORLD);
-
-  MPI_Gather(buf, nP, MPI_FLOAT, res2, nP, MPI_FLOAT, root, MPI_COMM_WORLD);
-  Gather(buf, nP, MPI_FLOAT, res1, nP, MPI_FLOAT, root, MPI_COMM_WORLD);
-
-  if (rank == root) {
-    for (int i = 0; i < n; i++)
-      ASSERT_EQ(res1[i], res2[i]);
-  }
-}
-TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_Random25_FLOAT) {
-  int rank, ProcNum, root;
-  double time1, time2;
-  MPI_Comm_rank(MPI_COMM_WORLD, & rank);
-  MPI_Comm_size(MPI_COMM_WORLD, & ProcNum);
-  int n = 25;
   int nP = n / ProcNum;
   float * V = new float[n];
   float * res1 = new float[n];
