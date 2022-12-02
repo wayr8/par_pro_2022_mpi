@@ -51,7 +51,6 @@ Vector mult_MxV(const Vector & M,
 
 Vector Serial_method_gradient(const Vector & A,
   const Vector & b, int n) {
-
   Vector r0(n), p0(n), tmp, x(n);
   double E = 0.01, c1 = 0.0, c2 = 0.0;
   for (int i = 0; i < n; i++) {
