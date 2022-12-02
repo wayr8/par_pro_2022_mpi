@@ -89,34 +89,6 @@ TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_Random10_INT) {
       ASSERT_EQ(res1[i], res2[i]);
   }
 }
-TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_Random25_INT) {
-  int rank, ProcNum, root;
-  double time1, time2;
-  MPI_Comm_rank(MPI_COMM_WORLD, & rank);
-  MPI_Comm_size(MPI_COMM_WORLD, & ProcNum);
-  int n = 25;
-  int nP = n / ProcNum;
-  int * V = new int[n];
-  int * buf = new int[n];
-  int * res1 = new int[n];
-  int * res2 = new int[n];
-
-  if (rank == 0) {
-    randVec(V, n);
-    root = dist(gen) % ProcNum;
-  }
-
-  MPI_Bcast(& root, 1, MPI_INT, 0, MPI_COMM_WORLD);
-  MPI_Scatter(V, nP, MPI_INT, buf, nP, MPI_INT, 0, MPI_COMM_WORLD);
-
-  MPI_Gather(buf, nP, MPI_INT, res2, nP, MPI_INT, root, MPI_COMM_WORLD);
-  Gather(buf, nP, MPI_INT, res1, nP, MPI_INT, root, MPI_COMM_WORLD);
-
-  if (rank == root) {
-    for (int i = 0; i < n; i++)
-      ASSERT_EQ(res1[i], res2[i]);
-  }
-}
 TEST(Parallel_Operations_MPI, correct_operation_of_Gather_with_time10_INT) {
   int rank, ProcNum, root;
   double time1, time2;
