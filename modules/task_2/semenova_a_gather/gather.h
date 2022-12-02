@@ -11,7 +11,7 @@ template < typename Type >
   void randVec(Type * A, int n) {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution < int > dist(-32, 32);
+    std::uniform_int_distribution < int > dist(0, 10);
     for (int i = 0; i < n; i++) {
       A[i] = dist(gen);
     }

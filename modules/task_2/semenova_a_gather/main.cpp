@@ -7,7 +7,7 @@
 
 std::random_device rd;
 std::mt19937 gen(rd());
-std::uniform_int_distribution < int > dist(-32, 32);
+std::uniform_int_distribution < int > dist(0, 10);
 
 TEST(Parallel_Operations_MPI, correct_operation_of_Gather10_INT) {
   int rank, ProcNum, root;
