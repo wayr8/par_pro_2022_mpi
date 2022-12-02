@@ -1,7 +1,7 @@
 // Copyright 2018 Nesterov Alexander
 #include <gtest/gtest.h>
 #include <vector>
-#include "./ops_mpi.h"
+#include "..\..\modules\task_2\zorin_o_jacobi\jacobi.h"
 #include <gtest-mpi-listener.hpp>
 
 TEST(Parallel_Operations_MPI, Test_Sum) {
