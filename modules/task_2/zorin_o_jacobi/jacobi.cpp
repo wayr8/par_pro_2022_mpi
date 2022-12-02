@@ -1,5 +1,5 @@
 // Copyright 2022 Zorin Oleg
-#include "./jacobi.h"
+#include "..\..\modules\task_2\zorin_o_jacobi\jacobi.h"
 #include <mpi.h>
 #include <vector>
 #include <algorithm>
