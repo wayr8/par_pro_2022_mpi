@@ -12,7 +12,7 @@ Vector RandVec(int n) {
   std::random_device dev;
   std::mt19937 gen(dev());
   for (int i = 0; i < n; ++i) {
-    V[i] = gen() % 100;
+    V[i] = gen() % 10;
   }
   return V;
 }
@@ -22,8 +22,8 @@ Vector RandMat(int n) {
   std::mt19937 gen(dev());
   for (int i = 0; i < n; ++i) {
     for (int j = i; j < n; ++j) {
-      M[i * n + j] = gen() % 100;
-      M[j * n + i] = gen() % 100;
+      M[i * n + j] = gen() % 10;
+      M[j * n + i] = gen() % 10;
     }
   }
   return M;
