@@ -1,7 +1,7 @@
 // Copyright 2022 Zorin Oleg
 #include <gtest/gtest.h>
 #include <vector>
-#include ".\jacobi.h"
+#include "./jacobi.h"
 #include <gtest-mpi-listener.hpp>
 
 TEST(Jacobi_MPI, operator_minus_vectors) {
