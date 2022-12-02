@@ -134,22 +134,6 @@ TEST(Parallel_Operations_MPI, Serial_and_paralle_method_with_random10x10) {
     }
   }
 }
-TEST(Parallel_Operations_MPI, Serial_and_paralle_method_with_random15x15) {
-  int rank;
-  int n = 15;
-  Vector V;
-  Vector M;
-  MPI_Comm_rank(MPI_COMM_WORLD, & rank);
-  V = RandVec(n);
-  M = RandMat(n);
-  Vector parl_res = Paralle_method_gradient(M, V, n);
-  if (rank == 0) {
-    Vector res = Serial_method_gradient(M, V, n);
-    for (int i = 0; i < res.size(); i++) {
-      ASSERT_NEAR(res[i], parl_res[i], 0.5);
-    }
-  }
-}
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
