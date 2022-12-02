@@ -71,7 +71,7 @@ TEST(Parallel_Operations_MPI, Paralle_method_gradient_is_correct2x2) {
   Vector parl_res = Paralle_method_gradient(M, V, n);
   if (rank == 0) {
     for (int i = 0; i < parl_res.size(); i++)
-      EXPECT_LE(abs(correct_res[i] - parl_res[i]), 1);
+      ASSERT_NEAR(correct_res[i], parl_res[i], 0.5);
   }
 }
 TEST(Parallel_Operations_MPI, Paralle_method_gradient_is_correct3x3) {
@@ -99,7 +99,7 @@ TEST(Parallel_Operations_MPI, Paralle_method_gradient_is_correct3x3) {
   Vector parl_res = Paralle_method_gradient(M, V, n);
   if (rank == 0) {
     for (int i = 0; i < parl_res.size(); i++)
-        EXPECT_LE(abs(correct_res[i] - parl_res[i]), 1);
+      ASSERT_NEAR(correct_res[i], parl_res[i], 0.5);
   }
 }
 TEST(Parallel_Operations_MPI, Serial_and_paralle_method_with_random_6X6) {
@@ -114,7 +114,7 @@ TEST(Parallel_Operations_MPI, Serial_and_paralle_method_with_random_6X6) {
   if (rank == 0) {
     Vector res = Serial_method_gradient(M, V, n);
     for (int i = 0; i < res.size(); i++) {
-        EXPECT_LE(abs(res[i] - parl_res[i]), 1);
+      ASSERT_NEAR(res[i], parl_res[i], 0.5);
     }
   }
 }
@@ -130,7 +130,7 @@ TEST(Parallel_Operations_MPI, Serial_and_paralle_method_with_random10x10) {
   if (rank == 0) {
     Vector res = Serial_method_gradient(M, V, n);
     for (int i = 0; i < res.size(); i++) {
-        EXPECT_LE(abs(res[i] - parl_res[i]), 1);
+      ASSERT_NEAR(res[i], parl_res[i], 0.5);
     }
   }
 }
