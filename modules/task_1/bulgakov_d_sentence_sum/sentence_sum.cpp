@@ -73,7 +73,7 @@ int computeSenteceCount(std::string str) {
     return cnt;
 }
 
-int parallelSentenceCount(std::string str) {
+int parallelSentenceCount(const std::string& str) {
     int size, rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
