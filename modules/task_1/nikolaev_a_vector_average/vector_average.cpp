@@ -33,13 +33,13 @@ std::vector<int> getRandomVector(int size) {
     return vec;
 }
 
-// void PrintVector(std::vector<int> vec) {
-//     const int size = vec.size();
-//     for (int i = 0; i < size; i++) {
-//        std::cout << vec[i] << " ";
-//     }
-//     std::cout << std::endl;
-// }
+void PrintVector(std::vector<int> vec) {
+    const int size = vec.size();
+    for (int i = 0; i < size; i++) {
+       std::cout << vec[i] << " ";
+    }
+    std::cout << std::endl;
+}
 
 float getAverageVectorParallel(std::vector<int> vec, int count_size_vector) {
     int size, rank;
