@@ -156,7 +156,7 @@ TEST(Parallel_Operations_MPI, Serial_and_paralle_method_with_random1) {
   if (rank == 0) {
     Vector res1 = Serial_method_gradient(M, V, n);
     for (int i = 0; i < res1.size(); i++) {
-       double E = atd::max(1.0, res2[i]/0.00001);
+       double E = std::max(1.0, res2[i]/0.00001);
        EXPECT_LE(abs(res2[i] - res1[i]), E);
     }
   }
