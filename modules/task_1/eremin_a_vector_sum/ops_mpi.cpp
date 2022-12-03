@@ -1,11 +1,11 @@
 // Copyright 2022 Eremin Aleksandr
 #include <mpi.h>
+#include <math.h>
 #include <iostream>
 #include <vector>
 #include <string>
 #include <random>
 #include <algorithm>
-#include <math.h>
 #include "../../../modules/test_tasks/test_mpi/ops_mpi.h"
 
 std::vector<int> random(int size) {
@@ -47,8 +47,7 @@ int sumParallel(std::vector<int> Vector, int size) {
         for (int i = 1; i < tmp; i++) {
             MPI_Send(Vector.data() + i * delta, delta, MPI_INT, i, 0, MPI_COMM_WORLD);
         }
-    }
-    else if (ProcRank < size) {
+    }else if (ProcRank < size) {
         MPI_Status status;
         MPI_Recv(local_vec.data(), delta, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
     }
