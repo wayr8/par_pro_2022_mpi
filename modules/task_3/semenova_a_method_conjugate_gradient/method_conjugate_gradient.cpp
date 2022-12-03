@@ -7,12 +7,14 @@
 
 #include "../../modules/task_3/semenova_a_method_conjugate_gradient/method_conjugate_gradient.h"
 
+std::random_device rd;
+std::mt19937 gen(rd());
+std::uniform_int_distribution < int > dist(0, 10);
+
 Vector RandVec(int n) {
   Vector V(n);
-  std::random_device dev;
-  std::mt19937 gen(dev());
   for (int i = 0; i < n; ++i) {
-    V[i] = gen() % 10;
+    V[i] = dist(gen) % 3;
   }
   return V;
 }
@@ -22,8 +24,8 @@ Vector RandMat(int n) {
   std::mt19937 gen(dev());
   for (int i = 0; i < n; ++i) {
     for (int j = i; j < n; ++j) {
-      M[i * n + j] = gen() % 10;
-      M[j * n + i] = gen() % 10;
+      M[i * n + j] = dist(gen) % 3;
+      M[j * n + i] = dist(gen) % 3;
     }
   }
   return M;
@@ -69,7 +71,6 @@ Vector Serial_method_gradient(const Vector & A,
     c1 = t / scalar_mult(p0, tmp);
     for (int i = 0; i < n; i++) {
       x[i] = x[i] + c1 * p0[i];
-      // r1[i] = r0[i] - c1 * tmp[i];
       r0[i] = r0[i] - c1 * tmp[i];
     }
     c2 = scalar_mult(r0, r0) / t;
