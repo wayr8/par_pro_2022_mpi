@@ -6,7 +6,7 @@
 
 TEST(Parallel_Operations_MPI, Test_Sum_1) {
     int rank;
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);  //1
 
     std::vector<int> global_vec;
     const int count_size_vector = 14;
