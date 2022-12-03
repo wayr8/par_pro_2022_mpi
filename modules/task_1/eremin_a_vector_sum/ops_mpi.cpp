@@ -47,7 +47,7 @@ int sumParallel(std::vector<int> Vector, int size) {
         for (int i = 1; i < tmp; i++) {
             MPI_Send(Vector.data() + i * delta, delta, MPI_INT, i, 0, MPI_COMM_WORLD);
         }
-    }else if (ProcRank < size) {
+    } else if (ProcRank < size) {
         MPI_Status status;
         MPI_Recv(local_vec.data(), delta, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
     }
