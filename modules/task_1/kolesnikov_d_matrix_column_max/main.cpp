@@ -1,5 +1,7 @@
-#include <gtest-mpi-listener.hpp>
+// Copyright 2022 Kolesnikov Denis
 #include <gtest/gtest.h>
+
+#include <gtest-mpi-listener.hpp>
 
 #include "./matrix_column_max.h"
 
@@ -14,7 +16,6 @@ TEST(MAX_BY_COLUMN_TEST, find_max_in_zero_matrix) {
     int size_y = 0;
     vector<int> matrix();
     vector<int> max = MaxByColumnSeq(matrix, size_x, size_y);
-    
     if (rank == 0) {
         ASSERT_EQ(vector<int>(), max);
     }
@@ -30,11 +31,9 @@ TEST(MAX_BY_COLUMN_TEST, find_max_in_1x1_matrix) {
     vector<int> matrix;
     matrix.push_back(5);
     vector<int> max = MaxByColumnSeq(matrix, size_x, size_y);
-    
     if (rank == 0) {
         ASSERT_EQ(1, max[0][0]);
     }
-
 }
 
 
@@ -47,14 +46,11 @@ TEST(MAX_BY_COLUMN_TEST, find_max_in_large_matrix) {
     if (rank == 0) {
         matrix = GenRndMtrx(size_x, size_y);
     }
-
     vector<int> max = MaxByColumnPrl(matrix, size_x, size_y);
-    
     if (rank == 0) {
         seq_max = MaxByColumnSeq(matrix, size_x, size_y);
         ASSERT_EQ(seq_max, max);
     }
-
 }
 
 
@@ -68,14 +64,11 @@ TEST(MAX_BY_COLUMN_TEST, find_max_in_non_square_matrix) {
     if (rank == 0) {
         matrix = GenRndMtrx(size_x, size_y);
     }
-
     vector<int> max = MaxByColumnPrl(matrix, size_x, size_y);
-    
     if (rank == 0) {
         seq_max = MaxByColumnSeq(matrix, size_x, size_y);
         ASSERT_EQ(seq_max, max);
     }
-
 }
 
 
@@ -90,29 +83,23 @@ TEST(MAX_BY_COLUMN_TEST, find_max_in_concrete_matrix) {
         1, 2, 3,
         2, 3, 4
     };
-
     vector<int> max = MaxByColumnPrl(matrix, size_x, size_y);
-    
     if (rank == 0) {
         concrete_max = vector<int>{2, 3, 4};
         seq_max = MaxByColumnSeq(matrix, size_x, size_y);
         ASSERT_EQ(seq_max, max);
         ASSERT_EQ(concrete_max, max);
     }
-
 }
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
   MPI_Init(&argc, &argv);
-
   ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
   ::testing::TestEventListeners &listeners =
       ::testing::UnitTest::GetInstance()->listeners();
-
   listeners.Release(listeners.default_result_printer());
   listeners.Release(listeners.default_xml_generator());
-
   listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
   return RUN_ALL_TESTS();
 }
