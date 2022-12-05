@@ -11,7 +11,7 @@
 
 using std::vector;
 
-int coord_lin(int x, int y, int size_x);
+int CoordLin(int x, int y, int size_x);
 vector<int> GenRndMtrx(int size_x, int size_y);
 vector<int> MaxByColumnPrl(const vector<int>& matrix, int size_x, int size_y);
 vector<int> MaxByColumnSeq(const vector<int>& matrix, int size_x, int size_y);

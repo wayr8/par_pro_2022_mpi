@@ -1,7 +1,6 @@
 // Copyright 2022 Kolesnikov Denis
 
 #include "../../../modules/task_1/kolesnikov_d_matrix_column_max/matrix_column_max.h"
-#include <vector>
 
 
 
@@ -14,7 +13,7 @@ vector<int> GenRndMtrx(int size_x, int size_y) {
   }
   return result;
 }
-int CoorldLin(int x, int y, int size_x) {
+int CoordLin(int x, int y, int size_x) {
     return y * size_x + x;
 }
 vector<int>  MaxByColumnSeq(
@@ -26,10 +25,12 @@ vector<int>  MaxByColumnSeq(
 ) {
     vector<int> result;
     for (int x = st_x; x < end_x; x++) {
-        result.push_back(
-            std::max(
-                matrix[Coord_lin(x,size_x,0)],
-                matrix[Coord_lin(x,size_x,size_y)]));
+        int max = matrix[CoordLin(x, size_x, 0)];
+        for (int i = 1; i < size_y; i++) {
+            int tmp = matrix[CoordLin(x, size_x, i)];
+            if (tmp > max) { max = tmp; }
+        }
+        result.push_back(max);
     }
     return result;
 }
@@ -72,7 +73,7 @@ vector<int> MaxByColumnPrl(
     local_max.resize(delta);
     if (p_rank == 0) {
         vector<int> all_max(size_x);
-        MPI_GATHER(
+        MPI_Gather(
             local_max.data(),
             local_max.size(),
             MPI_INT,
@@ -84,7 +85,7 @@ vector<int> MaxByColumnPrl(
         all_max.resize(size_x);
         return all_max;
     } else {
-        MPI_GATHER(
+        MPI_Gather(
             local_max.data(),
             local_max.size(),
             MPI_INT,
