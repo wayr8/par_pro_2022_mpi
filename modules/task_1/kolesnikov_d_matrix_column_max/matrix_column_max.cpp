@@ -70,6 +70,7 @@ vector<int> MaxByColumnPrl(
         size_y,
         delta*p_rank,
         end_column);
+    print("1");
     local_max.resize(delta);
     if (p_rank == 0) {
         vector<int> all_max(size_x);
