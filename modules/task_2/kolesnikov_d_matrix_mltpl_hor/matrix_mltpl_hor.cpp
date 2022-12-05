@@ -1,4 +1,4 @@
-
+// Copyright 2022 Kolesnikov Denis
 #include "../../../modules/task_2/kolesnikov_d_matrix_mltpl_hor/matrix_mltpl_hor.h"
 
 vector<int> GenRndMtrx(int size_x, int size_y) {
@@ -16,13 +16,13 @@ int CoorldLin(int x, int y, int size_x) {
 }
 
 vector<int> MatrixMtlplSeq(
-    vector<int>& a,
+    const vector<int>& a,
     int a_size_x,
     int a_size_y,
-    vector<int>& b,
+    const vector<int>& b,
     int b_size_x,
     int b_size_y) {
-  if (a_size_x == 0 || a_size_y == 0 || b_size_x == 0 b_size_y == 0 ) {
+  if (a_size_x == 0 || a_size_y == 0 || b_size_x == 0 || b_size_y == 0) {
     return vector<int>();
   }
   int tmp;
@@ -39,10 +39,10 @@ vector<int> MatrixMtlplSeq(
 }
 
 vector<int> MatrixMtlplPrl(
-    vector<int>& a,
+    const vector<int>& a,
     int a_size_x,
     int a_size_y,
-    vector<int>& b,
+    const vector<int>& b,
     int b_size_x,
     int b_size_y) {
 
@@ -52,6 +52,8 @@ vector<int> MatrixMtlplPrl(
   int index;
   int tmp;
   int proc_num, rank;
+  // result
+  vector<int> c;
 
   MPI_Status status;
 
@@ -67,10 +69,10 @@ vector<int> MatrixMtlplPrl(
 
   vector<int> buf_a(part_a);
   vector<int> buf_b(part_b);
-  vecotor<int> buf_c(proc_part_a * b_size_y);
+  vector<int> buf_c(proc_part_a * b_size_y);
 
-  MPI_Scatter(a, part_a, MPI_INT, buf_a, part_a, MPI_INT, 0, MPI_COMM_WORLD);
-  MPI_Scatter(b, part_b, MPI_INT, buf_b, part_b, MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Scatter(a.data(), part_a, MPI_INT, buf_a.data(), part_a, MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Scatter(b.data(), part_b, MPI_INT, buf_b.data(), part_b, MPI_INT, 0, MPI_COMM_WORLD);
 
   for (int i = 0; i < proc_part_a; i++) {
     for (int j = 0; j < proc_part_b; j++) {
@@ -78,35 +80,50 @@ vector<int> MatrixMtlplPrl(
       for (int k = 0; k < a_size_x; k++) {
         tmp += buf_a[i * a_size_x + k] * buf_b[j * a_size_x + k];
         buf_c[i* b_size_x + j + proc_part_a * rank] = tmp;
-      } 
+      }
     }
   }
-
-
-  int next_proc; 
+  int next_proc;
   int prev_proc;
   next_proc = rank + 1;
   if (rank == proc_num - 1) next_proc = 0;
   prev_proc = rank - 1;
   if (rank == 0) prev_proc = proc_num - 1;
 
-  for(n_process = 1; n_process < proc_num; n_process++) 
-  {
-    MPI_Sendrecv_replace(buf_b, part_b, MPI_INT, next_proc, 0, prev_proc, 0, MPI_COMM_WORLD, &Status);   // передача-принятие единого типа сообщений (рассылка B)
+  for (n_process = 1; n_process < proc_num; n_process++) {
+    MPI_Sendrecv_replace(
+        buf_b.data(),
+        part_b,
+        MPI_INT,
+        next_proc,
+        0,
+        prev_proc,
+        0,
+        MPI_COMM_WORLD,
+        &status);
     tmp = 0;
-    for (i = 0; i < proc_part_a; i++) {
-      for(j = 0; j < proc_part_b; j++)  {
+    for (int i = 0; i < proc_part_a; i++) {
+      for (int j = 0; j < proc_part_b; j++)  {
         tmp = 0;
-        for(k = 0; k < a_size_x; k++) {
-          tmp += buf_a[i * a_size_x + k] * buf_b[j * a_size_x + k];     
-            if (rank - n_process >= 0)
+        for (int k = 0; k < a_size_x; k++) {
+          tmp += buf_a[i * a_size_x + k] * buf_b[j * a_size_x + k];
+          if (rank - n_process >= 0)
               index = rank - n_process;
-            else 
+          else
               index =(proc_num - n_process + rank);
-            buf_C[i * b_size_x + j + index * proc_part_a] = tmp;
+          buf_c[i * b_size_x + j + index * proc_part_a] = tmp;
         }
       }
     }
   }
-  MPI_Gather(buf_c, proc_part_a * b_size_x, MPI_INT, c, proc_part_a * b_size_x, MPI_INT, 0, MPI_COMM_WORLD);  
+  MPI_Gather(
+    buf_c.data(),
+    proc_part_a * b_size_x,
+    MPI_INT,
+    c.data(),
+    proc_part_a * b_size_x,
+    MPI_INT,
+    0,
+    MPI_COMM_WORLD);
+  return c;
 }

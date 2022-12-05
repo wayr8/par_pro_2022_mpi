@@ -1,7 +1,8 @@
-#include <gtest-mpi-listener.hpp>
+// Copyright 2022 Kolesnikov Denis
 #include <gtest/gtest.h>
+#include <gtest-mpi-listener.hpp>
 
-#include "./matrix_column_max.h"
+#include "./matrix_mltpl_hor.h"
 
 
 
@@ -37,7 +38,7 @@ TEST(MATRIX_MLTPL_TEST, multiplication_scalars) {
     vector<int> b{5};
     vector<int> seq_c;
 
-    result_matrix =vector<int> {
+     vector<int> result_matrix {
         1,
     };
 
@@ -46,7 +47,6 @@ TEST(MATRIX_MLTPL_TEST, multiplication_scalars) {
             a, a_size_x, a_size_y,
             b, b_size_x, b_size_y);
     }
-    
     vector<int> c = MatrixMtlplSeq(
         a, a_size_x, a_size_y,
         b, b_size_x, b_size_y);
@@ -66,26 +66,23 @@ TEST(MATRIX_MLTPL_TEST, multiplication_vectors) {
     int b_size_x = 1;
     int b_size_y = 5;
 
-    a = vector<int> {
+    vector<int> a{
         1, 2, 3
     };
-    b = vector<int> {
+    vector<int> b{
         1,
         2,
         3,
     };
     vector<int> seq_c;
-
-    result_matrix =vector<int> {
+    vector<int> result_matrix {
         14,
     };
-
     if (rank == 0) {
         seq_c = MatrixMtlplSeq(
             a, a_size_x, a_size_y,
             b, b_size_x, b_size_y);
     }
-    
     vector<int> c = MatrixMtlplSeq(
         a, a_size_x, a_size_y,
         b, b_size_x, b_size_y);
@@ -94,7 +91,6 @@ TEST(MATRIX_MLTPL_TEST, multiplication_vectors) {
         ASSERT_EQ(c, seq_c);
         ASSERT_EQ(result_matrix, c);
     }
-
 }
 TEST(MATRIX_MLTPL_TEST, multiplication_small_matrices) {
     int rank;
@@ -105,18 +101,18 @@ TEST(MATRIX_MLTPL_TEST, multiplication_small_matrices) {
     int b_size_x = 1;
     int b_size_y = 5;
 
-    a = vector<int> {
+    vector<int> a{
         1, 2, 3,
         4, 5, 6,
     };
-    b = vector<int> {
+    vector<int> b{
         1, 4,
         2, 5,
         3, 6,
     };
     vector<int> seq_c;
 
-    result_matrix =vector<int> {
+    vector<int> result_matrix {
         14, 32,
         32, 77,
     };
@@ -126,7 +122,6 @@ TEST(MATRIX_MLTPL_TEST, multiplication_small_matrices) {
             a, a_size_x, a_size_y,
             b, b_size_x, b_size_y);
     }
-    
     vector<int> c = MatrixMtlplSeq(
         a, a_size_x, a_size_y,
         b, b_size_x, b_size_y);
@@ -135,11 +130,7 @@ TEST(MATRIX_MLTPL_TEST, multiplication_small_matrices) {
         ASSERT_EQ(c, seq_c);
         ASSERT_EQ(result_matrix, c);
     }
-
 }
-
-
-
 TEST(MATRIX_MLTPL_TEST, multiplication_big_matrices) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -149,34 +140,31 @@ TEST(MATRIX_MLTPL_TEST, multiplication_big_matrices) {
     int b_size_x = 1;
     int b_size_y = 5;
 
-    a = vector<int> {
+    vector<int> a{
         1, 2, 3,
         4, 5, 6,
         7, 8, 9,
         1, 2, 3,
         4, 5, 6,
     };
-    b = vector<int> {
+    vector<int> b{
         1, 4, 7,
         2, 5, 8,
         3, 6, 8,
     };
     vector<int> seq_c;
-
-    result_matrix =vector<int> {
-        14, 32, 47
-        32, 77, 116,
-        50, 122,185,
-        14, 32, 47,
-        32, 77, 116,
+    vector<int> result_matrix {
+        14, 32,  47,
+        32, 77,  116,
+        50, 122, 185,
+        14, 32,  47,
+        32, 77,  116,
     };
-
     if (rank == 0) {
         seq_c = MatrixMtlplSeq(
             a, a_size_x, a_size_y,
             b, b_size_x, b_size_y);
     }
-    
     vector<int> c = MatrixMtlplSeq(
         a, a_size_x, a_size_y,
         b, b_size_x, b_size_y);
@@ -185,7 +173,6 @@ TEST(MATRIX_MLTPL_TEST, multiplication_big_matrices) {
         ASSERT_EQ(c, seq_c);
         ASSERT_EQ(result_matrix, c);
     }
-
 }
 
 
