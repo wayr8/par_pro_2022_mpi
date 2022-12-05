@@ -10,6 +10,7 @@
 #include <random>
 
 using std::vector;
+using std::cout;
 
 int CoordLin(int x, int y, int size_x);
 vector<int> GenRndMtrx(int size_x, int size_y);

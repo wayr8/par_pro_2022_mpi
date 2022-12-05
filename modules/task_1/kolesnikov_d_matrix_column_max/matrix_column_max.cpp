@@ -36,7 +36,7 @@ vector<int>  MaxByColumnSeq(
 }
 vector<int> MaxByColumnSeq(const vector<int>& matrix, int size_x, int size_y) {
     if (size_x == 0 ||  size_y == 0) {
-        return vector<int> ();
+        return vector<int>();
     }
     return MaxByColumnSeq(matrix, size_x, size_y, 0, size_x);
 }
@@ -46,11 +46,12 @@ vector<int> MaxByColumnPrl(
     int size_y
 ) {
     if (size_x == 0 || size_y == 0) {
-        return vector<int> ();
+        return vector<int>();
     }
     int p_num, p_rank;
-    MPI_Comm_rank(MPI_COMM_WORLD, &p_num);
+    MPI_Comm_size(MPI_COMM_WORLD, &p_num);
     MPI_Comm_rank(MPI_COMM_WORLD, &p_rank);
+
     int delta = size_x / p_num;
     if (size_x % p_num != 0) {
         delta += 1;
@@ -63,6 +64,8 @@ vector<int> MaxByColumnPrl(
     } else {
         MPI_Bcast(local_matrix.data(), matrix_size, MPI_INT, 0, MPI_COMM_WORLD);
     }
+
+
     int end_column = std::min(delta * (p_rank+1), size_x);
     vector<int> local_max = MaxByColumnSeq(
         local_matrix,
@@ -70,10 +73,9 @@ vector<int> MaxByColumnPrl(
         size_y,
         delta*p_rank,
         end_column);
-    print("1");
     local_max.resize(delta);
     if (p_rank == 0) {
-        vector<int> all_max(size_x);
+        vector<int> all_max(size_x + delta*p_num);
         MPI_Gather(
             local_max.data(),
             local_max.size(),
@@ -96,4 +98,5 @@ vector<int> MaxByColumnPrl(
             0,
             MPI_COMM_WORLD);
     }
+    return vector<int>();
 }
