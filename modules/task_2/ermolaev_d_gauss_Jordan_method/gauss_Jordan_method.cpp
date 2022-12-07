@@ -1,4 +1,4 @@
-// Copyright 2022 Ermolaev Danila
+  // Copyright 2022 Ermolaev Danila
 #include <mpi.h>
 #include <vector>
 #include <string>
@@ -104,7 +104,8 @@ double* getParallelGausJordan(double* matrix, int x) {
 
     if (rank < num_parts) {
         local_part_size = part_size + 1;
-    } else {
+    }
+    else {
         local_part_size = part_size;
     }
 
@@ -125,8 +126,9 @@ double* getParallelGausJordan(double* matrix, int x) {
             std::copy(matrix + (i * (x + 1)), matrix + (i + 1) * (x + 1), divider);
             MPI_Bcast(divider, x + 1, MPI_DOUBLE, root, MPI_COMM_WORLD);
 
-        } else
+        } else {
             MPI_Bcast(divider, x + 1, MPI_DOUBLE, root, MPI_COMM_WORLD);
+        }
 
         MPI_Scatterv(matrix, matrix_sendcounts, matrix_displs, MPI_DOUBLE, buffer,
             local_part_size * (x + 1), MPI_DOUBLE, root, MPI_COMM_WORLD);
