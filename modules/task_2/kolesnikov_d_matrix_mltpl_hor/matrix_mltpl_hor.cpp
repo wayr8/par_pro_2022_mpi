@@ -17,22 +17,24 @@ int CoorldLin(int x, int y, int size_x) {
 
 vector<int> MatrixMtlplSeq(
     const vector<int>& a,
-    int a_size_x,
-    int a_size_y,
+    int a_height,
+    int a_width,
     const vector<int>& b,
-    int b_size_x,
-    int b_size_y) {
-  if (a_size_x == 0 || a_size_y == 0 || b_size_x == 0 || b_size_y == 0) {
+    int b_height,
+    int b_width) {
+  if (a_height == 0 || a_width == 0 || b_height == 0 || b_width == 0) {
     return vector<int>();
   }
   int tmp;
-  vector<int> c(a_size_y, b_size_x);
-  for (int i = 0; i < a_size_y; i++) {
-    for (int j = 0; j < b_size_x; j++) {
+  vector<int> c(a_height*b_width);
+  for (int i = 0; i < a_height; i++) {
+    for (int j = 0; j < b_width; j++) {
+      c[i * b_width + j] = 0;
       tmp = 0;
-      for (int k = 0; k < a_size_x; k ++) {
-        c[i * b_size_x + j] = a[i * a_size_x + k] * b[k * b_size_x + j];
+      for (int k = 0; k < a_width; k ++) {
+        tmp += a[i * a_width + k] * b[k * b_width + j];
       }
+      c[i * b_width + j] = tmp;
     }
   }
   return c;
@@ -40,47 +42,37 @@ vector<int> MatrixMtlplSeq(
 
 vector<int> MatrixMtlplPrl(
     const vector<int>& a,
-    int a_size_x,
-    int a_size_y,
+    int a_height,
+    int a_width,
     const vector<int>& b,
-    int b_size_x,
-    int b_size_y) {
-
-
-
+    int b_height,
+    int b_width) {
+  int proc_num;
+  int rank;
+  MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  vector<int> c(a_height*b_width);
   int n_process;
   int index;
   int tmp;
-  int proc_num, rank;
-  // result
-  vector<int> c;
-
-  MPI_Status status;
-
-  MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-
-
-  int proc_part_a = a_size_y / proc_num;
-  int part_a = proc_part_a * a_size_x;
-  int proc_part_b = b_size_x / proc_num;
-  int part_b = proc_part_b * b_size_y;
-
-
+  MPI_Status Status;
+  int proc_part_a = a_height / proc_num;
+  int part_a = proc_part_a * a_width;
+  int proc_part_b = b_width / proc_num;
+  int part_b = proc_part_b * a_width;
   vector<int> buf_a(part_a);
   vector<int> buf_b(part_b);
-  vector<int> buf_c(proc_part_a * b_size_y);
-
+  vector<int> buf_c(proc_part_a * b_width);
   MPI_Scatter(a.data(), part_a, MPI_INT, buf_a.data(), part_a, MPI_INT, 0, MPI_COMM_WORLD);
   MPI_Scatter(b.data(), part_b, MPI_INT, buf_b.data(), part_b, MPI_INT, 0, MPI_COMM_WORLD);
-
+  tmp = 0;
   for (int i = 0; i < proc_part_a; i++) {
     for (int j = 0; j < proc_part_b; j++) {
       tmp = 0;
-      for (int k = 0; k < a_size_x; k++) {
-        tmp += buf_a[i * a_size_x + k] * buf_b[j * a_size_x + k];
-        buf_c[i* b_size_x + j + proc_part_a * rank] = tmp;
+      for (int k = 0; k < a_width; k++) {
+        tmp += buf_a[i * a_width + k] * buf_b[j * a_width + k];
       }
+      buf_c[i * b_width + j + proc_part_a * rank] = tmp;
     }
   }
   int next_proc;
@@ -89,39 +81,37 @@ vector<int> MatrixMtlplPrl(
   if (rank == proc_num - 1) next_proc = 0;
   prev_proc = rank - 1;
   if (rank == 0) prev_proc = proc_num - 1;
-
   for (n_process = 1; n_process < proc_num; n_process++) {
     MPI_Sendrecv_replace(
-        buf_b.data(),
-        part_b,
-        MPI_INT,
-        next_proc,
-        0,
-        prev_proc,
-        0,
-        MPI_COMM_WORLD,
-        &status);
+      buf_b.data(),
+      part_b,
+      MPI_INT,
+      next_proc,
+      0,
+      prev_proc,
+      0,
+      MPI_COMM_WORLD,
+      &Status);
     tmp = 0;
     for (int i = 0; i < proc_part_a; i++) {
-      for (int j = 0; j < proc_part_b; j++)  {
+      for (int j = 0; j < proc_part_b; j++) {
         tmp = 0;
-        for (int k = 0; k < a_size_x; k++) {
-          tmp += buf_a[i * a_size_x + k] * buf_b[j * a_size_x + k];
-          if (rank - n_process >= 0)
-              index = rank - n_process;
-          else
-              index =(proc_num - n_process + rank);
-          buf_c[i * b_size_x + j + index * proc_part_a] = tmp;
-        }
+        for (int k = 0; k < a_width; k++)
+          tmp += buf_a[i * a_width + k] * buf_b[j * a_width + k];
+        if (rank - n_process >= 0)
+          index = rank - n_process;
+        else
+          index =(proc_num - n_process + rank);
+        buf_c[i * b_width + j + index * proc_part_a] = tmp;
       }
     }
   }
   MPI_Gather(
     buf_c.data(),
-    proc_part_a * b_size_x,
+    proc_part_a * b_width,
     MPI_INT,
     c.data(),
-    proc_part_a * b_size_x,
+    proc_part_a * b_width,
     MPI_INT,
     0,
     MPI_COMM_WORLD);

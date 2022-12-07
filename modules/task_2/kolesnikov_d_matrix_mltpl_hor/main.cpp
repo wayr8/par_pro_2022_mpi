@@ -25,153 +25,81 @@ TEST(MATRIX_MLTPL_TEST, multiplication_zero_matrices) {
 
 
 
-TEST(MATRIX_MLTPL_TEST, multiplication_scalars) {
+
+TEST(MATRIX_MLTPL_TEST, multiplication_8_8_matrices) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    int a_size_x = 1;
-    int a_size_y = 1;
-    int b_size_x = 1;
-    int b_size_y = 1;
-
-    vector<int> a{5};
-    vector<int> b{5};
+    int size;
+    
+    vector<int> a = GenRndMtrx(a_height, a_width);
+    vector<int> b = GenRndMtrx(b_height, b_width);
     vector<int> seq_c;
-
-     vector<int> result_matrix {
-        1,
-    };
 
     if (rank == 0) {
         seq_c = MatrixMtlplSeq(
-            a, a_size_x, a_size_y,
-            b, b_size_x, b_size_y);
+            a, a_height, a_width,
+            b, b_height, b_width);
     }
-    vector<int> c = MatrixMtlplSeq(
-        a, a_size_x, a_size_y,
-        b, b_size_x, b_size_y);
+    vector<int> c = MatrixMtlplPrl(
+        a, a_height, a_width,
+        b, b_height, b_width);
 
     if (rank == 0) {
         ASSERT_EQ(c, seq_c);
-        ASSERT_EQ(result_matrix, c);
     }
 }
-
-TEST(MATRIX_MLTPL_TEST, multiplication_vectors) {
+TEST(MATRIX_MLTPL_TEST, multiplication_64_64_matrices) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    int a_size_x = 5;
-    int a_size_y = 1;
-    int b_size_x = 1;
-    int b_size_y = 5;
+    int a_height = 64;
+    int a_width = 64;
+    int b_height = 64;
+    int b_width = 64;
 
-    vector<int> a{
-        1, 2, 3
-    };
-    vector<int> b{
-        1,
-        2,
-        3,
-    };
+    vector<int> a = GenRndMtrx(a_height, a_width);
+    vector<int> b = GenRndMtrx(b_height, b_width);
     vector<int> seq_c;
-    vector<int> result_matrix {
-        14,
-    };
+
+
     if (rank == 0) {
         seq_c = MatrixMtlplSeq(
-            a, a_size_x, a_size_y,
-            b, b_size_x, b_size_y);
+            a, a_height, a_width,
+            b, b_height, b_width);
     }
-    vector<int> c = MatrixMtlplSeq(
-        a, a_size_x, a_size_y,
-        b, b_size_x, b_size_y);
+    vector<int> c = MatrixMtlplPrl(
+        a, a_height, a_width,
+        b, b_height, b_width);
 
     if (rank == 0) {
         ASSERT_EQ(c, seq_c);
-        ASSERT_EQ(result_matrix, c);
     }
 }
-TEST(MATRIX_MLTPL_TEST, multiplication_small_matrices) {
+TEST(MATRIX_MLTPL_TEST, multiplication_128_128_matrices) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    int a_size_x = 5;
-    int a_size_y = 1;
-    int b_size_x = 1;
-    int b_size_y = 5;
+    int a_height = 128;
+    int a_width = 128;
+    int b_height = 128;
+    int b_width = 128;
 
-    vector<int> a{
-        1, 2, 3,
-        4, 5, 6,
-    };
-    vector<int> b{
-        1, 4,
-        2, 5,
-        3, 6,
-    };
+    vector<int> a = GenRndMtrx(a_height, a_width);
+    vector<int> b = GenRndMtrx(b_height, b_width);
     vector<int> seq_c;
-
-    vector<int> result_matrix {
-        14, 32,
-        32, 77,
-    };
 
     if (rank == 0) {
         seq_c = MatrixMtlplSeq(
-            a, a_size_x, a_size_y,
-            b, b_size_x, b_size_y);
+            a, a_height, a_width,
+            b, b_height, b_width);
     }
-    vector<int> c = MatrixMtlplSeq(
-        a, a_size_x, a_size_y,
-        b, b_size_x, b_size_y);
+    vector<int> c = MatrixMtlplPrl(
+        a, a_height, a_width,
+        b, b_height, b_width);
 
     if (rank == 0) {
         ASSERT_EQ(c, seq_c);
-        ASSERT_EQ(result_matrix, c);
-    }
-}
-TEST(MATRIX_MLTPL_TEST, multiplication_big_matrices) {
-    int rank;
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-
-    int a_size_x = 5;
-    int a_size_y = 1;
-    int b_size_x = 1;
-    int b_size_y = 5;
-
-    vector<int> a{
-        1, 2, 3,
-        4, 5, 6,
-        7, 8, 9,
-        1, 2, 3,
-        4, 5, 6,
-    };
-    vector<int> b{
-        1, 4, 7,
-        2, 5, 8,
-        3, 6, 8,
-    };
-    vector<int> seq_c;
-    vector<int> result_matrix {
-        14, 32,  47,
-        32, 77,  116,
-        50, 122, 185,
-        14, 32,  47,
-        32, 77,  116,
-    };
-    if (rank == 0) {
-        seq_c = MatrixMtlplSeq(
-            a, a_size_x, a_size_y,
-            b, b_size_x, b_size_y);
-    }
-    vector<int> c = MatrixMtlplSeq(
-        a, a_size_x, a_size_y,
-        b, b_size_x, b_size_y);
-
-    if (rank == 0) {
-        ASSERT_EQ(c, seq_c);
-        ASSERT_EQ(result_matrix, c);
     }
 }
 
