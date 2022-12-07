@@ -16,8 +16,6 @@ double* getRandomMatrixWithBvector(int* vec_x, double* matrix, int x);
 void getDivisionInString(double* strings, double* divider, int num, int x,
     int part);
 
-double* getRandomMatrixB(int* num_vec, int sz);
-
 double* getParallelGausJordan(double* str, int sz);
 
 void* swapString(double* matrixB, int k, int l, int sz);

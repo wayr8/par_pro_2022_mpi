@@ -49,23 +49,6 @@ double* getRandomMatrixWithBvector(int* vec_x, double* matrix, int x) {
     return MatrixB;
 }
 
-double* getRandomMatrixB(int* num_vec, int x) {
-    std::random_device dev;
-    std::mt19937 gen(dev());
-
-    double* out_matrix = new double[x * (x + 1)];
-    for (int i = 0; i < x; i++) {
-        double sum = 0;
-        for (int j = 0; j < x; j++) {
-            out_matrix[i * (x + 1) + j] = gen() % 10 + 1;
-            sum += out_matrix[i * (x + 1) + j] * num_vec[j];
-        }
-        out_matrix[(i + 1) * (x + 1) - 1] = sum;
-    }
-
-    return out_matrix;
-}
-
 void getDivisionInString(double* line, double* divider, int num, int x,
     int local_part_size) {
     for (int i = 0; i < local_part_size; i++) {
