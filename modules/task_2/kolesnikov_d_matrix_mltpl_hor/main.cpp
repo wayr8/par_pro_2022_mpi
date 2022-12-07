@@ -23,9 +23,6 @@ TEST(MATRIX_MLTPL_TEST, multiplication_zero_matrices) {
     }
 }
 
-
-
-
 TEST(MATRIX_MLTPL_TEST, multiplication_8_8_matrices) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
