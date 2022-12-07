@@ -1,4 +1,4 @@
-  // Copyright 2022 Ermolaev Danila
+// Copyright 2022 Ermolaev Danila
 #include <mpi.h>
 #include <vector>
 #include <string>
@@ -6,7 +6,7 @@
 #include <random>
 #include <algorithm>
 #include <iostream>
-#include "../../../modules/task_2/ermolaev_d_gauss_Jordan_method/val_rows_matrix_sum.h"
+#include "../../../modules/task_2/ermolaev_d_gauss_Jordan_method/gauss_Jordan_method.h"
 
 double* getRandomMatrix(int x) {
     std::random_device dev;
@@ -104,8 +104,7 @@ double* getParallelGausJordan(double* matrix, int x) {
 
     if (rank < num_parts) {
         local_part_size = part_size + 1;
-    }
-    else {
+    } else {
         local_part_size = part_size;
     }
 
@@ -115,21 +114,18 @@ double* getParallelGausJordan(double* matrix, int x) {
 
     for (int i = 0; i < x; i++) {
         if (rank == root) {
-            if (i < x) {
-                int k = i;
-                for (int j = 0; j < x; j++) {
-                    if ((std::abs(matrix[k + (x + 1) * k]) <
-                        std::abs(matrix[k + (x + 1) * j])) &&
-                        (j > k))
-                        swapString(matrix, k, j, x);
-                }
+            int k = i;
+            for (int j = 0; j < x; j++) {
+                if ((std::abs(matrix[k + (x + 1) * k]) <
+                    std::abs(matrix[k + (x + 1) * j])) &&
+                    (j > k))
+                    swapString(matrix, k, j, x);
             }
 
             std::copy(matrix + (i * (x + 1)), matrix + (i + 1) * (x + 1), divider);
             MPI_Bcast(divider, x + 1, MPI_DOUBLE, root, MPI_COMM_WORLD);
 
-        }
-        else
+        } else
             MPI_Bcast(divider, x + 1, MPI_DOUBLE, root, MPI_COMM_WORLD);
 
         MPI_Scatterv(matrix, matrix_sendcounts, matrix_displs, MPI_DOUBLE, buffer,

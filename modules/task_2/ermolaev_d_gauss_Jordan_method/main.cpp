@@ -3,7 +3,7 @@
 #include <vector>
 #include <random>
 #include <iostream>
-#include "./val_rows_matrix_sum.h"
+#include "./gauss_Jordan_method.h"
 #include <gtest-mpi-listener.hpp>
 
 TEST(Parallel_Gauss_MPI, Random_Matrix_test_5x5) {
