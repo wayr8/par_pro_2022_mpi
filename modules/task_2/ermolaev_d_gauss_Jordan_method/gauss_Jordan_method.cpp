@@ -8,16 +8,16 @@
 #include <iostream>
 #include "../../../modules/task_2/ermolaev_d_gauss_Jordan_method/gauss_Jordan_method.h"
 
-double* getRandomMatrix(int x) {
+double* getRandomMatrix(double x) {
     std::random_device dev;
     std::mt19937 gen(dev());
-    double* matrix = new double[x * x];
+    double* matrix = new double[x];
 
-    for (int i = 0; i < x * x; i++) {
+    for (int i = 0; i < x; i++) {
         matrix[i] = 0;
     }
 
-    for (int i = 0; i < x * x; i++) {
+    for (int i = 0; i < x; i++) {
         matrix[i] = gen() % 10 + 1;
     }
 
