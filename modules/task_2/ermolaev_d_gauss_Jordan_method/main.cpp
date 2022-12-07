@@ -45,6 +45,7 @@ TEST(Parallel_Gauss_MPI, Random_Matrix_test_5x5) {
 
     delete[] vec;
     delete[] matrix;
+    delete[] matrixB;
     delete[] result;
 }
 TEST(Parallel_Gauss_MPI, Random_Matrix_test_20x20) {
@@ -86,6 +87,7 @@ TEST(Parallel_Gauss_MPI, Random_Matrix_test_20x20) {
 
     delete[] vec;
     delete[] matrix;
+    delete[] matrixB;
     delete[] result;
 }
 TEST(Parallel_Gauss_MPI, Random_Matrix_test_100x100) {
@@ -125,6 +127,7 @@ TEST(Parallel_Gauss_MPI, Random_Matrix_test_100x100) {
 
     delete[] vec;
     delete[] matrix;
+    delete[] matrixB;
     delete[] result;
 }
 TEST(Parallel_Gauss_MPI, Random_Matrix_test_1000x1000) {
@@ -166,6 +169,7 @@ TEST(Parallel_Gauss_MPI, Random_Matrix_test_1000x1000) {
 
     delete[] vec;
     delete[] matrix;
+    delete[] matrixB;
     delete[] result;
 }
 
