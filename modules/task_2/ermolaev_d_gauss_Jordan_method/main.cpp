@@ -10,7 +10,7 @@ TEST(Parallel_Gauss_MPI, Random_Matrix_test_5x5) {
     std::random_device dev;
     std::mt19937 gen(dev());
 
-    const int sz = 5;
+    const int size = 5;
     int rank;
     int col_proc;
     int* vec = nullptr;
@@ -23,22 +23,22 @@ TEST(Parallel_Gauss_MPI, Random_Matrix_test_5x5) {
     double* matrixB = nullptr;
 
     if (rank == 0) {
-        vec = new int[sz];
-        matrix = new double[sz * (sz)];
-        matrixB = new double[sz * (sz + 1)];
-        matrix = getRandomMatrix(sz);
+        vec = new int[size];
+        matrix = new double[size * (size)];
+        matrixB = new double[size * (size + 1)];
+        matrix = getRandomMatrix(size);
 
-        for (int i = 0; i < sz; i++) {
+        for (int i = 0; i < size; i++) {
             vec[i] = gen() % 6 + 1;
         }
 
-        matrixB = getRandomMatrixWithBvector(vec, matrix, sz);
+        matrixB = getRandomMatrixWithBvector(vec, matrix, size);
     }
 
-    result = getParallelGausJordan(matrixB, sz);
+    result = getParallelGausJordan(matrixB, size);
 
     if (rank == 0) {
-        for (int i = 0; i < sz; i++) {
+        for (int i = 0; i < size; i++) {
             ASSERT_NEAR(vec[i], result[i], 0.001);
         }
     }
@@ -52,7 +52,7 @@ TEST(Parallel_Gauss_MPI, Random_Matrix_test_20x20) {
     std::random_device dev;
     std::mt19937 gen(dev());
 
-    const int sz = 20;
+    const int size = 20;
     int rank;
     int col_proc;
     int* vec = nullptr;
@@ -65,22 +65,64 @@ TEST(Parallel_Gauss_MPI, Random_Matrix_test_20x20) {
     double* matrixB = nullptr;
 
     if (rank == 0) {
-        vec = new int[sz];
-        matrix = new double[sz * (sz)];
-        matrixB = new double[sz * (sz + 1)];
-        matrix = getRandomMatrix(sz);
+        vec = new int[size];
+        matrix = new double[size * (size)];
+        matrixB = new double[size * (size + 1)];
+        matrix = getRandomMatrix(size);
 
-        for (int i = 0; i < sz; i++) {
+        for (int i = 0; i < size; i++) {
             vec[i] = gen() % 6 + 1;
         }
 
-        matrixB = getRandomMatrixWithBvector(vec, matrix, sz);
+        matrixB = getRandomMatrixWithBvector(vec, matrix, size);
     }
 
-    result = getParallelGausJordan(matrixB, sz);
+    result = getParallelGausJordan(matrixB, size);
 
     if (rank == 0) {
-        for (int i = 0; i < sz; i++) {
+        for (int i = 0; i < size; i++) {
+            ASSERT_NEAR(vec[i], result[i], 0.001);
+        }
+    }
+
+    delete[] vec;
+    delete[] matrix;
+    delete[] matrixB;
+    delete[] result;
+}
+TEST(Parallel_Gauss_MPI, Random_Matrix_test_50x50) {
+    std::random_device dev;
+    std::mt19937 gen(dev());
+
+    const int size = 50;
+    int rank;
+    int col_proc;
+    int* vec = nullptr;
+
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &col_proc);
+
+    double* matrix = nullptr;
+    double* result = nullptr;
+    double* matrixB = nullptr;
+
+    if (rank == 0) {
+        vec = new int[size];
+        matrix = new double[size * (size)];
+        matrixB = new double[size * (size + 1)];
+        matrix = getRandomMatrix(size);
+
+        for (int i = 0; i < size; i++) {
+            vec[i] = gen() % 6 + 1;
+        }
+
+        matrixB = getRandomMatrixWithBvector(vec, matrix, size);
+    }
+
+    result = getParallelGausJordan(matrixB, size);
+
+    if (rank == 0) {
+        for (int i = 0; i < size; i++) {
             ASSERT_NEAR(vec[i], result[i], 0.001);
         }
     }
@@ -94,7 +136,7 @@ TEST(Parallel_Gauss_MPI, Random_Matrix_test_100x100) {
     std::random_device dev;
     std::mt19937 gen(dev());
 
-    const int sz = 100;
+    const int size = 100;
     int rank;
     int col_proc;
     int* vec = nullptr;
@@ -107,20 +149,20 @@ TEST(Parallel_Gauss_MPI, Random_Matrix_test_100x100) {
     double* matrixB = nullptr;
 
     if (rank == 0) {
-        vec = new int[sz];
-        matrix = new double[sz * (sz)];
-        matrixB = new double[sz * (sz + 1)];
-        matrix = getRandomMatrix(sz);
+        vec = new int[size];
+        matrix = new double[size * (size)];
+        matrixB = new double[size * (size + 1)];
+        matrix = getRandomMatrix(size);
 
-        for (int i = 0; i < sz; i++) {
+        for (int i = 0; i < size; i++) {
             vec[i] = gen() % 6 + 1;
         }
-        matrixB = getRandomMatrixWithBvector(vec, matrix, sz);
+        matrixB = getRandomMatrixWithBvector(vec, matrix, size);
     }
-    result = getParallelGausJordan(matrixB, sz);
+    result = getParallelGausJordan(matrixB, size);
 
     if (rank == 0) {
-        for (int i = 0; i < sz; i++) {
+        for (int i = 0; i < size; i++) {
             ASSERT_NEAR(vec[i], result[i], 0.001);
         }
     }
@@ -134,7 +176,7 @@ TEST(Parallel_Gauss_MPI, Random_Matrix_test_1000x1000) {
     std::random_device dev;
     std::mt19937 gen(dev());
 
-    const int sz = 1000;
+    const int size = 1000;
     int rank;
     int col_proc;
     int* vec = nullptr;
@@ -147,22 +189,22 @@ TEST(Parallel_Gauss_MPI, Random_Matrix_test_1000x1000) {
     double* matrixB = nullptr;
 
     if (rank == 0) {
-        vec = new int[sz];
-        matrix = new double[sz * (sz)];
-        matrixB = new double[sz * (sz + 1)];
-        matrix = getRandomMatrix(sz);
+        vec = new int[size];
+        matrix = new double[size * (size)];
+        matrixB = new double[size * (size + 1)];
+        matrix = getRandomMatrix(size);
 
-        for (int i = 0; i < sz; i++) {
+        for (int i = 0; i < size; i++) {
             vec[i] = gen() % 6 + 1;
         }
 
-        matrixB = getRandomMatrixWithBvector(vec, matrix, sz);
+        matrixB = getRandomMatrixWithBvector(vec, matrix, size);
     }
 
-    result = getParallelGausJordan(matrixB, sz);
+    result = getParallelGausJordan(matrixB, size);
 
     if (rank == 0) {
-        for (int i = 0; i < sz; i++) {
+        for (int i = 0; i < size; i++) {
             ASSERT_NEAR(vec[i], result[i], 0.001);
         }
     }
