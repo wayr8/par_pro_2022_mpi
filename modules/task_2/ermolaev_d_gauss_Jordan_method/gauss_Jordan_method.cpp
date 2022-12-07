@@ -102,7 +102,7 @@ double* getParallelGausJordan(double* matrix, int x) {
 
     if (rank < num_parts) {
         local_part_size = part_size + 1;
-    } else { 
+    } else {
         local_part_size = part_size;
     }
 
