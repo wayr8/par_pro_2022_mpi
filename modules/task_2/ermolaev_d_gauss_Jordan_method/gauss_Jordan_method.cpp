@@ -1,4 +1,4 @@
-  // Copyright 2022 Ermolaev Danila
+// Copyright 2022 Ermolaev Danila
 #include <mpi.h>
 #include <vector>
 #include <string>
@@ -8,10 +8,9 @@
 #include <iostream>
 #include "../../../modules/task_2/ermolaev_d_gauss_Jordan_method/gauss_Jordan_method.h"
 
-double* getRandomMatrix(double * matrix,double x) {
+double* getRandomMatrix(double* matrix, double x) {
     std::random_device dev;
     std::mt19937 gen(dev());
-    
     for (int i = 0; i < x; i++) {
         matrix[i] = 0;
     }
@@ -103,8 +102,7 @@ double* getParallelGausJordan(double* matrix, int x) {
 
     if (rank < num_parts) {
         local_part_size = part_size + 1;
-    }
-    else {
+    } else { 
         local_part_size = part_size;
     }
 

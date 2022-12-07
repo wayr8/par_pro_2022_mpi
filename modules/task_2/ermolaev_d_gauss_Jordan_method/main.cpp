@@ -26,7 +26,7 @@ TEST(Parallel_Gauss_MPI, Random_Matrix_test_5x5) {
         vec = new int[size];
         matrix = new double[size * (size)];
         matrixB = new double[size * (size + 1)];
-        getRandomMatrix(matrix,static_cast<double>(size*size));
+        getRandomMatrix(matrix, static_cast<double>(size*size));
 
         for (int i = 0; i < size; i++) {
             vec[i] = gen() % 6 + 1;
