@@ -9,7 +9,7 @@
 #include <algorithm>
 #include <iostream>
 
-double* getRandomMatrix(double x);
+double* getRandomMatrix(double *matrix,double x);
 
 double* getRandomMatrixWithBvector(int* vec_x, double* matrix, int x);
 
