@@ -100,7 +100,7 @@ int MPI_Own_Gather(void *sendbuf, int sendcount, MPI_Datatype sendtype, void *re
         int iter = 0x1;
         MPI_Status status;
         int mpi_type;
-        MPI_Type_size(sendtype, &mpi_type);\
+        MPI_Type_size(sendtype, &mpi_type);
         for (iter; iter < comm_size; iter = iter << 1) {
                 MPI_Recv(local_buff + offset, ((mpi_type * recvcount) * (iter)), MPI_BYTE,
                     convert_back(iter, root, comm_size), MPI_GATHER_TAG, comm, &status);
