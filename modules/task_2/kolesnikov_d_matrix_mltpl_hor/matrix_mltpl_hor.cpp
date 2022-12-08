@@ -4,9 +4,10 @@
 vector<int> GenRndMtrx(int size_x, int size_y) {
   std::random_device dev;
   std::mt19937_64 gen(dev());
+  std::uniform_int_distribution<int> dist(0, 1000);
   vector<int> result(size_x * size_y);
   for (int i = 0; i < size_x * size_y; ++i) {
-    result[i] = gen() % 100;
+    result[i] = dist(gen);
   }
   return result;
 }
