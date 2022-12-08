@@ -8,12 +8,6 @@
 #include <cmath>
 #include "../../../modules/task_2/bulgakov_d_gather/gather_mpi.h"
 
-#define final
-// #define oddsend
-// #define evensend
-// #define checkranks
-// #define mem
-
 int convert_back(int rank, int root, int size) {
     return (rank + root) % size;
 }
