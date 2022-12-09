@@ -10,11 +10,9 @@ TEST(Sleepeing_barber, two_places_in_the_queue) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     if (rank == 0) {
         ASSERT_NO_THROW(Barber(queue_length, size - 2));
-    }
-    else if (rank == 1) {
+    } else if (rank == 1) {
         ASSERT_NO_THROW(queue(queue_length, size - 2));
-    }
-    else {
+    } else {
         ASSERT_NO_THROW(client(rank));
     }
 }
@@ -25,11 +23,9 @@ TEST(Sleepeing_barber, five_places_in_the_queue) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     if (rank == 0) {
         ASSERT_NO_THROW(Barber(queue_length, size - 2));
-    }
-    else if (rank == 1) {
+    } else if (rank == 1) {
         ASSERT_NO_THROW(queue(queue_length, size - 2));
-    }
-    else {
+    } else {
         ASSERT_NO_THROW(client(rank));
     }
 }
@@ -40,11 +36,9 @@ TEST(Sleepeing_barber, ten_places_in_the_queue) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     if (rank == 0) {
         ASSERT_NO_THROW(Barber(queue_length, size - 2));
-    }
-    else if (rank == 1) {
+    } else if (rank == 1) {
         ASSERT_NO_THROW(queue(queue_length, size - 2));
-    }
-    else {
+    } else {
         ASSERT_NO_THROW(client(rank));
     }
 }
@@ -55,11 +49,9 @@ TEST(Sleepeing_barber, seventeen_places_in_the_queue) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     if (rank == 0) {
         ASSERT_NO_THROW(Barber(queue_length, size - 2));
-    }
-    else if (rank == 1) {
+    } else if (rank == 1) {
         ASSERT_NO_THROW(queue(queue_length, size - 2));
-    }
-    else {
+    } else {
         ASSERT_NO_THROW(client(rank));
     }
 }
@@ -70,11 +62,9 @@ TEST(Sleepeing_barber, thirtyseven_places_in_the_queue) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     if (rank == 0) {
         ASSERT_NO_THROW(Barber(queue_length, size - 2));
-    }
-    else if (rank == 1) {
+    } else if (rank == 1) {
         ASSERT_NO_THROW(queue(queue_length, size - 2));
-    }
-    else {
+    } else {
         ASSERT_NO_THROW(client(rank));
     }
 }

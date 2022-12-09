@@ -1,11 +1,11 @@
 // Copyright 2022 Eremin Aleksandr
 #include <math.h>
 #include <mpi.h>
-#include <thread>
 #include <iostream>
 #include <random>
 #include <algorithm>
 #include <queue>
+#include <thread>
 #include "../../../modules/test_tasks/test_mpi/ops_mpi.h"
 
 #define Get_in_line 1
@@ -32,8 +32,7 @@ void client(int rank) {
 
     if (queue_index != 0) {
         MPI_Send(&rank, 1, MPI_INT, 0, Go_Barber, MPI_COMM_WORLD);
-    }
-    else {
+    } else {
         int nun = -1;
         MPI_Send(&nun, 1, MPI_INT, 0, Go_Barber, MPI_COMM_WORLD);
     }
@@ -56,8 +55,7 @@ void queue(int numberOFseats, int numberOFclients) {
                 index++;
                 MPI_Send(&queue_index, 1, MPI_INT, client_rank, Get_un_line,
                     MPI_COMM_WORLD);
-            }
-            else {
+            } else {
                 queue_index = 0;
                 MPI_Send(&queue_index, 1, MPI_INT, client_rank, Get_un_line,
                     MPI_COMM_WORLD);
