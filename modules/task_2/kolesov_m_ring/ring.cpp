@@ -69,7 +69,7 @@ int ChooseDirection(int from, int dest, MPI_Comm comm, std::vector<int> *ranks) 
   GetNextPrev(&next, &prev, comm, from);
 
   if (from == dest) {
-    throw std::runtime_error("from == dest");
+    return 0;
   }
 
   while (next != dest) {
