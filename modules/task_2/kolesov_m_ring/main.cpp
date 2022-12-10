@@ -4,19 +4,19 @@
 #include "./ring.h"
 #include <gtest-mpi-listener.hpp>
 
-TEST(ring, testDir) {
+TEST(ring_mpi, testDir) {
   int rank, size;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
+  std::vector<int> ranks;
 
   if (rank == 0) {
-    std::vector<int> ranks;
     ASSERT_EQ(ChooseDirection(0, 1, MPI_COMM_WORLD, &ranks), 1);
     ASSERT_EQ(ChooseDirection(0, size - 1, MPI_COMM_WORLD, &ranks), -1);
   }
 }
 
-TEST(ring, test1) {
+TEST(ring_mpi, test1) {
   int rank, size;
   int test_data;
 
@@ -34,7 +34,7 @@ TEST(ring, test1) {
   }
 }
 
-TEST(ring, test2) {
+TEST(ring_mpi, test2) {
   int rank, size;
   int test_data;
 
@@ -52,7 +52,7 @@ TEST(ring, test2) {
   }
 }
 
-TEST(ring, test3) {
+TEST(ring_mpi, test3) {
   int rank, size;
   int test_data;
 
@@ -70,7 +70,7 @@ TEST(ring, test3) {
   }
 }
 
-TEST(ring, test4) {
+TEST(ring_mpi, test4) {
   int rank, size;
   int test_data;
 
