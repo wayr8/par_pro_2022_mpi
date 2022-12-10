@@ -5,18 +5,18 @@
 
 #include "../../../modules/task_2/kolesov_m_ring/ring.h"
 
-void GetNextPrev(int &next, int &prev, MPI_Comm comm, int from) {
+void GetNextPrev(int *next, int *prev, MPI_Comm comm, int from) {
   int size;
 
   MPI_Comm_size(comm, &size);
 
-  next = from + 1;
-  prev = from - 1;
+  *next = from + 1;
+  *prev = from - 1;
 
   if (from == size - 1) {
-    next = 0;
+    *next = 0;
   } else if (from == 0) {
-    prev = size - 1;
+    *prev = size - 1;
   }
 }
 
@@ -35,7 +35,7 @@ void RingSend(void *data, int length, MPI_Datatype datatype, int from, int dest,
     return;
   }
 
-  GetNextPrev(next, previous, comm, rank);
+  GetNextPrev(&next, &previous, comm, rank);
 
   if (dir < 0) {
     std::swap(next, previous);
@@ -54,7 +54,7 @@ void RingSend(void *data, int length, MPI_Datatype datatype, int from, int dest,
   }
 }
 
-int ChooseDirection(int from, int dest, MPI_Comm comm, std::vector<int> &ranks) {
+int ChooseDirection(int from, int dest, MPI_Comm comm, std::vector<int> *ranks) {
   int count = 1;
   int next, prev;
   int size;
@@ -66,7 +66,7 @@ int ChooseDirection(int from, int dest, MPI_Comm comm, std::vector<int> &ranks) 
   prevVector.push_back(from);
 
   MPI_Comm_size(comm, &size);
-  GetNextPrev(next, prev, comm, from);
+  GetNextPrev(&next, &prev, comm, from);
 
 
   while (next != dest) {
@@ -85,7 +85,7 @@ int ChooseDirection(int from, int dest, MPI_Comm comm, std::vector<int> &ranks) 
   int buf = count;
   count = 1;
 
-  GetNextPrev(next, prev, comm, from);
+  GetNextPrev(&next, &prev, comm, from);
 
 
   while (prev != dest) {
@@ -102,12 +102,12 @@ int ChooseDirection(int from, int dest, MPI_Comm comm, std::vector<int> &ranks) 
   prevVector.push_back(prev);
 
   if (buf < count) {
-    ranks.clear();
-    ranks.insert(ranks.end(), nextVector.begin(), nextVector.end());
+    ranks->clear();
+    ranks->insert(ranks->end(), nextVector.begin(), nextVector.end());
     return 1;
   }
 
-  ranks.clear();
-  ranks.insert(ranks.end(), prevVector.begin(), prevVector.end());
+  ranks->clear();
+  ranks->insert(ranks->end(), prevVector.begin(), prevVector.end());
   return -1;
 }
