@@ -13,7 +13,6 @@ char *getRandomString(const int size) {
     char *res = new char[size];
     std::random_device dev;
     std::mt19937 gen(dev());
-
     for (int i = 0; i < size; i++) {
         res[i] = (gen() % 78) + 49;
     }
