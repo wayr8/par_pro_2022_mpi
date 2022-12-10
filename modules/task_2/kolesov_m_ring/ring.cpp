@@ -28,7 +28,7 @@ void RingSend(void *data, int length, MPI_Datatype datatype, int from, int dest,
 
   std::vector<int> ranks;
 
-  int dir = ChooseDirection(from, dest, comm, ranks);
+  int dir = ChooseDirection(from, dest, comm, &ranks);
   int next, previous;
 
   if (std::find(ranks.begin(), ranks.end(), rank) == ranks.end()) {

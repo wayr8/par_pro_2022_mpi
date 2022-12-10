@@ -11,8 +11,8 @@ TEST(ring, testDir) {
 
   if (rank == 0) {
     std::vector<int> ranks;
-    ASSERT_EQ(ChooseDirection(0, 1, MPI_COMM_WORLD, ranks), 1);
-    ASSERT_EQ(ChooseDirection(0, size - 1, MPI_COMM_WORLD, ranks), -1);
+    ASSERT_EQ(ChooseDirection(0, 1, MPI_COMM_WORLD, &ranks), 1);
+    ASSERT_EQ(ChooseDirection(0, size - 1, MPI_COMM_WORLD, &ranks), -1);
   }
 }
 
