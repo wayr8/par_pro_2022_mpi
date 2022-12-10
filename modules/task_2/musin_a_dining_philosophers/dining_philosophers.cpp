@@ -50,7 +50,6 @@ int manager(int size) {
     if (size == 1) {
         return 0;
     }
-
     int philosoph_num = size - 1;
     bool *forks = new bool[philosoph_num];
     for (int j = 0; j < philosoph_num; j++) forks[j] = false;
