@@ -18,7 +18,6 @@ TEST(Parallel_Operations_MPI, Test_Plus_0) {
         philosoph(rank, incriment_parameter);
     }
 }
-
 TEST(Parallel_Operations_MPI, Test_Minus_1) {
     int incriment_parameter = -1;
     int rank;

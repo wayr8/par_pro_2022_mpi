@@ -1,61 +1,57 @@
+// Copyright 2021 Musin Alexandr
+
+#include "../../../modules/task_1/musin_a_chars_on_str/chars_on_str.h"
+
 #include <mpi.h>
-#include <vector>
-#include <string>
-#include <random>
+
 #include <algorithm>
-#include "../../../modules/test_tasks/test_mpi/ops_mpi.h"
+#include <random>
+#include <string>
+#include <vector>
 
+char *getRandomString(const int size) {
+    char *res = new char[size];
+    std::random_device dev;
+    std::mt19937 gen(dev());
 
-char* getRandomString(const int size) {
-    char* res = new char[size];
-    for(int i = 0;i<size;i++)
-    {
-        res[i] = (char)(random()%78)+49;
+    for (int i = 0; i < size; i++) {
+        res[i] = (gen() % 78) + 49;
     }
     return res;
 }
 
-int sym_on_str(const char* str,const int size,const char sym)
-{
-    int res=0;
-    for(int i = 0;i<size;i++)
-    {
-        if(str[i] == sym)
-        {
+int sym_on_str(const char *str, const int size, const char sym) {
+    int res = 0;
+    for (int i = 0; i < size; i++) {
+        if (str[i] == sym) {
             res++;
         }
     }
     return res;
 }
 
-
-
-
-int par_sym_on_str(const char* global_str, const int global_str_len, const char sym) {
-    
+int par_sym_on_str(const char *global_str, const int global_str_len,
+                   const char sym) {
     int size, rank;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-
-
     const int delta = global_str_len / size;
     const int ost = global_str_len % size;
-    const int local_size = delta+ost;
-
+    const int local_size = delta + ost;
 
     if (rank == 0) {
         for (int proc = 1; proc < size; proc++) {
-            MPI_Send(ost + global_str + proc * delta, delta, MPI_CHAR, proc, 0, MPI_COMM_WORLD);
+            MPI_Send(ost + global_str + proc * delta, delta, MPI_CHAR, proc, 0,
+                     MPI_COMM_WORLD);
         }
     }
 
-    char* local_str = new char[local_size];
+    char *local_str = new char[local_size];
 
     if (rank == 0) {
-        for(int i =0;i<local_size;i++)
-        {
-            local_str[i]=global_str[i];
+        for (int i = 0; i < local_size; i++) {
+            local_str[i] = global_str[i];
         }
     } else {
         MPI_Status status;
@@ -64,11 +60,9 @@ int par_sym_on_str(const char* global_str, const int global_str_len, const char 
 
     int global_sum = 0;
     int local_sum;
-    if(rank == 0)
-    {
-         local_sum = sym_on_str(local_str, local_size, sym);
-    }
-    else{
+    if (rank == 0) {
+        local_sum = sym_on_str(local_str, local_size, sym);
+    } else {
         local_sum = sym_on_str(local_str, delta, sym);
     }
 
