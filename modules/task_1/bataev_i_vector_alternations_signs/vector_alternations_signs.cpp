@@ -10,7 +10,6 @@ std::vector<int> getRandomVector(int size, int left, int right) {
 	std::random_device rd;
 	std::mt19937 mersenne(rd());
 	std::uniform_int_distribution<> distr(left, right);
-
 	std::vector<int> v(size);
 	for (auto &elem : v) { elem = distr(mersenne); }
 	return v;
