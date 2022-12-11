@@ -68,7 +68,7 @@ double MPIintegration(int N, int a, int b, int h, double (*func)(double)) {
     if (y <= func(x)) cntl++;
   }
 
-  // std::cout << "Local cnt " << ProcRank << " is " << cntl << std::endl;
+  /*std::cout << "Local cnt " << ProcRank << " is " << cntl << std::endl;*/
   MPI_Reduce(&cntl, &cntg, 1, MPI_FLOAT, MPI_SUM, 0, MPI_COMM_WORLD);
 
   if (ProcRank == 0) {
