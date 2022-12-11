@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <string>
+
 std::vector<int> getRandomVector(int size, int left, int right);
 void printVector(const std::vector<int>& v, const std::string& prefix = "");
 int getNumAlterSignsSequential(std::vector<int> v);
