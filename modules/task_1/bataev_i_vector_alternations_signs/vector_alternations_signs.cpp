@@ -61,15 +61,16 @@ int getNumAlterSignsParallel(std::vector<int> gv) {
     std::vector<int> lv;
     if (rank == (commSize - 1)) {
         lv = std::vector<int>(_lvSize - 1);
-    } else
+    } else {
         lv = std::vector<int>(_lvSize);
+    }
 
     if (commSize == 1) {
         lv = std::vector<int>(gv.begin(), gv.end());
     } else {
-        if (rank == 0)
+        if (rank == 0) {
             lv = std::vector<int>(gv.begin(), gv.begin() + _lvSize);
-        else if (rank == (commSize - 1)) {
+        } else if (rank == (commSize - 1)) {
             MPI_Status status;
             MPI_Recv(lv.data(), _lvSize - 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
         } else {
