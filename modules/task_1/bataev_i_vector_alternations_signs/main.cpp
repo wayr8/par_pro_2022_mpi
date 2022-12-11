@@ -1,9 +1,8 @@
 // Copyright 2022 Bataev Ivan
+#include "./vector_alternations_signs.h"
 #include <gtest/gtest.h>
 #include <vector>
-#include "./vector_alternations_signs.h"
 #include <gtest-mpi-listener.hpp>
-
 
 TEST(Vector_Alternations_Signs_MPI, Test_Par_Count1) {
     int rank;
