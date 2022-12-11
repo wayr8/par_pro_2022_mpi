@@ -35,11 +35,11 @@ int getNumAlterSignsParallel(std::vector<int> gv) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     const int gvSize = static_cast<int>(gv.size());
-    const int lvSize = gvSize / commSize + 1;  // base size of a local vector 
+    const int lvSize = gvSize / commSize + 1;  // base size of a local vector
                                                  // also take one more element to count at segment borders
     const int restSize = gvSize % commSize;  // number of elements not included in any local vector of base size
     bool fix = (commSize - rank <= restSize);  // distribute starting from the last rank
-    const int _lvSize = lvSize + fix;  // fixed size of a local vector 
+    const int _lvSize = lvSize + fix;  // fixed size of a local vector
 
     // splitting the original vector to segments
     if (rank == 0) {
@@ -59,14 +59,14 @@ int getNumAlterSignsParallel(std::vector<int> gv) {
 
     // local vector initialization
     std::vector<int> lv;
-    if (rank == (commSize - 1))
+    if (rank == (commSize - 1)) {
         lv = std::vector<int>(_lvSize - 1);
-    else
+    } else
         lv = std::vector<int>(_lvSize);
 
-    if (commSize == 1)
+    if (commSize == 1) {
         lv = std::vector<int>(gv.begin(), gv.end());
-    else {
+    } else {
         if (rank == 0)
             lv = std::vector<int>(gv.begin(), gv.begin() + _lvSize);
         else if (rank == (commSize - 1)) {
