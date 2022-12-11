@@ -39,8 +39,8 @@ int getNumAlterSignsParallel(std::vector<int> gv) {
 	const int lvSize = gvSize / commSize + 1;	// base size of a local vector (also take one more element to count at segment borders)
 	const int restSize = gvSize % commSize;	// number of elements not included in any local vector of base size
 
-	bool fix = (commSize - rank <= restSize);		// distribute starting from the last rank
-	const int _lvSize = lvSize + fix;		// fixed size of a local vector 
+	bool fix = (commSize - rank <= restSize);	// distribute starting from the last rank
+	const int _lvSize = lvSize + fix;	// fixed size of a local vector 
 
 	// splitting the original vector to segments
 	if (rank == 0) {
