@@ -2,7 +2,7 @@
 #include <gtest/gtest.h>
 #include <vector>
 #include <gtest-mpi-listener.hpp>
-#include "../../../modules/task_1/vector_alternations_signs.h"
+#include "./vector_alternations_signs.h"
 
 TEST(Vector_Alternations_Signs_MPI, Test_Par_Count1) {
     int rank;
