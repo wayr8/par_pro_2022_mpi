@@ -17,9 +17,9 @@ std::vector<int> getRandomVector(int size, int left, int right) {
 }
 
 void printVector(const std::vector<int>& v, const std::string& prefix) {
-    std::cout << prefix << "[ ";
-    for (const auto& elem : v) { std::cout << elem << " "; }
-    std::cout << "]\n";
+    std::cout << prefix << "[";
+    for (int i = 0; i < v.size() - 1; i++) { std::cout << v[i] << ", "; }
+    std::cout << v[v.size() - 1] << "]\n";
 }
 
 int getNumAlterSignsSequential(std::vector<int> v) {
@@ -59,7 +59,6 @@ int getNumAlterSignsParallel(std::vector<int> gv) {
     // local vector initialization
     std::vector<int> lv;
     lv = std::vector<int>(lvSize);
-
     if (rank == 0) {
         lv = std::vector<int>(gv.begin(), gv.begin() + lvSize);
     } else {
