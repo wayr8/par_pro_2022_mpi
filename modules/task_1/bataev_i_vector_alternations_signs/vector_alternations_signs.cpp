@@ -50,7 +50,7 @@ int getNumAlterSignsParallel(std::vector<int> gv) {
             MPI_Send(gv.data() + shift, _lvSize, MPI_INT, _rank, 0, MPI_COMM_WORLD);
             shift += _lvSize - 1;
         }
-		if (commSize != 1) {
+        if (commSize != 1) {
             int _lvSize = (restSize != 0) ? lvSize : lvSize - 1;  // '-1' because one more element was taken (40 line)
             MPI_Send(gv.data() + shift, _lvSize, MPI_INT, (commSize - 1), 0, MPI_COMM_WORLD);
         }
