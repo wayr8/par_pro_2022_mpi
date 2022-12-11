@@ -35,13 +35,13 @@ int getNumAlterSignsParallel(std::vector<int> gv) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     const int gvSize = static_cast<int>(gv.size());
-    const int lvSize = gvSize / commSize + 1;  // base size of a local vector (also take one more element to count at segment borders)
+    const int lvSize = gvSize / commSize + 1;  // base size of a local vector 
+                                                 // also take one more element to count at segment borders
     const int restSize = gvSize % commSize;  // number of elements not included in any local vector of base size
-
     bool fix = (commSize - rank <= restSize);  // distribute starting from the last rank
     const int _lvSize = lvSize + fix;  // fixed size of a local vector 
 
-      // splitting the original vector to segments
+    // splitting the original vector to segments
     if (rank == 0) {
         int shift = lvSize - 1;  // '-1' because one more element was taken (39 line)
         for (int _rank = 1; _rank < commSize - 1; _rank++) {
@@ -57,7 +57,7 @@ int getNumAlterSignsParallel(std::vector<int> gv) {
         }
     }
 
-      // local vector initialization
+    // local vector initialization
     std::vector<int> lv;
     if (rank == (commSize - 1))
         lv = std::vector<int>(_lvSize - 1);
@@ -72,17 +72,16 @@ int getNumAlterSignsParallel(std::vector<int> gv) {
         else if (rank == (commSize - 1)) {
             MPI_Status status;
             MPI_Recv(lv.data(), _lvSize - 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
-        }
-        else {
+        } else {
             MPI_Status status;
             MPI_Recv(lv.data(), _lvSize, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
         }
     }
 
-      // counting
+    // counting
     int gv_count = 0;
     int lv_count = getNumAlterSignsSequential(lv);
-      //printVector(lv, std::to_string(rank) + ": ");
+    // printVector(lv, std::to_string(rank) + ": ");
     MPI_Reduce(&lv_count, &gv_count, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
     return gv_count;
 }
