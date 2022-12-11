@@ -4,7 +4,7 @@
 #include <random>
 #include <iostream>
 #include <string>
-#include "vector_alternations_signs.h"
+#include "../../../modules/task_1/vector_alternations_signs.h"
 
 std::vector<int> getRandomVector(int size, int left, int right) {
 	std::random_device rd;
