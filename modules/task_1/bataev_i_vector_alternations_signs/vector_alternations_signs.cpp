@@ -10,6 +10,7 @@ std::vector<int> getRandomVector(int size, int left, int right) {
     std::random_device rd;
     std::mt19937 mersenne(rd());
     std::uniform_int_distribution<> distr(left, right);
+
     std::vector<int> v(size);
     for (auto &elem : v) { elem = distr(mersenne); }
     return v;
@@ -59,11 +60,10 @@ int getNumAlterSignsParallel(std::vector<int> gv) {
 
     // local vector initialization
     std::vector<int> lv;
-    if (rank == (commSize - 1)) {
+    if (rank == (commSize - 1))
         lv = std::vector<int>(_lvSize - 1);
-    } else {
+    else
         lv = std::vector<int>(_lvSize);
-    }
 
     if (commSize == 1) {
         lv = std::vector<int>(gv.begin(), gv.end());
