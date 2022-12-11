@@ -36,53 +36,41 @@ int getNumAlterSignsParallel(std::vector<int> gv) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     const int gvSize = static_cast<int>(gv.size());
-    const int lvSize = gvSize / commSize + 1;  // base size of a local vector
-                                                 // also take one more element to count at segment borders
+    int lvSize = (rank == (commSize - 1)) ? gvSize / commSize : gvSize / commSize + 1;  // base size of a local vector
+                                                              // take one more element to count at segment borders
     const int restSize = gvSize % commSize;  // number of elements not included in any local vector of base size
-    bool fix = (commSize - rank <= restSize);  // distribute starting from the last rank
-    const int _lvSize = lvSize + fix;  // fixed size of a local vector
+    if (commSize - rank <= restSize)  // distribute starting from the last rank
+        lvSize++;  // fixed size of a local vector
 
     // splitting the original vector to segments
     if (rank == 0) {
-        int shift = lvSize - 1;  // '-1' because one more element was taken (39 line)
+        int shift = lvSize - 1;  // '-1' because one more element was taken (40 line)
         for (int _rank = 1; _rank < commSize - 1; _rank++) {
-            bool fix = (commSize - _rank <= restSize);
-            int _lvSize = lvSize + fix;
+            int _lvSize = (commSize - _rank <= restSize) ? lvSize + 1 : lvSize;
             MPI_Send(gv.data() + shift, _lvSize, MPI_INT, _rank, 0, MPI_COMM_WORLD);
             shift += _lvSize - 1;
         }
-        if (commSize != 1) {
-            bool fix = (restSize != 0);
-            int _lvSize = lvSize + fix - 1;  // '-1' because (39 line) and this rank is the last
+		if (commSize != 1) {
+            int _lvSize = (restSize != 0) ? lvSize : lvSize - 1;  // '-1' because one more element was taken (40 line)
             MPI_Send(gv.data() + shift, _lvSize, MPI_INT, (commSize - 1), 0, MPI_COMM_WORLD);
         }
     }
 
     // local vector initialization
     std::vector<int> lv;
-    if (rank == (commSize - 1))
-        lv = std::vector<int>(_lvSize - 1);
-    else
-        lv = std::vector<int>(_lvSize);
+    lv = std::vector<int>(lvSize);
 
-    if (commSize == 1) {
-        lv = std::vector<int>(gv.begin(), gv.end());
+    if (rank == 0) {
+        lv = std::vector<int>(gv.begin(), gv.begin() + lvSize);
     } else {
-        if (rank == 0) {
-            lv = std::vector<int>(gv.begin(), gv.begin() + _lvSize);
-        } else if (rank == (commSize - 1)) {
-            MPI_Status status;
-            MPI_Recv(lv.data(), _lvSize - 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
-        } else {
-            MPI_Status status;
-            MPI_Recv(lv.data(), _lvSize, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
-        }
+        MPI_Status status;
+        MPI_Recv(lv.data(), lvSize, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
     }
 
     // counting
-    int gv_count = 0;
-    int lv_count = getNumAlterSignsSequential(lv);
+    int gvCount = 0;
+    int lvCount = getNumAlterSignsSequential(lv);
     // printVector(lv, std::to_string(rank) + ": ");
-    MPI_Reduce(&lv_count, &gv_count, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
-    return gv_count;
+    MPI_Reduce(&lvCount, &gvCount, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+    return gvCount;
 }

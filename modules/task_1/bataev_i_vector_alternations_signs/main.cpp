@@ -17,7 +17,6 @@ TEST(Vector_Alternations_Signs_MPI, Test_Par_Count1) {
     }
 
     int parCount = getNumAlterSignsParallel(v);
-
     if (rank == 0) {
         int seqCount = getNumAlterSignsSequential(v);
         std::cout << "Alternations: " << parCount << "\n";
@@ -38,7 +37,6 @@ TEST(Vector_Alternations_Signs_MPI, Test_Par_Count2) {
     }
 
     int parCount = getNumAlterSignsParallel(v);
-
     if (rank == 0) {
         int seqCount = getNumAlterSignsSequential(v);
         std::cout << "Alternations: " << parCount << "\n";
@@ -59,7 +57,6 @@ TEST(Vector_Alternations_Signs_MPI, Test_Par_Count3) {
     }
 
     int parCount = getNumAlterSignsParallel(v);
-
     if (rank == 0) {
         int seqCount = getNumAlterSignsSequential(v);
         std::cout << "Alternations: " << parCount << "\n";
@@ -79,7 +76,6 @@ TEST(Vector_Alternations_Signs_MPI, Test_Par_Count4) {
     }
 
     int parCount = getNumAlterSignsParallel(v);
-
     if (rank == 0) {
         int seqCount = getNumAlterSignsSequential(v);
         std::cout << "Alternations: " << parCount << "\n";
@@ -99,7 +95,6 @@ TEST(Vector_Alternations_Signs_MPI, Test_Par_Count5) {
     }
 
     int parCount = getNumAlterSignsParallel(v);
-
     if (rank == 0) {
         int seqCount = getNumAlterSignsSequential(v);
         std::cout << "Alternations: " << parCount << "\n";
@@ -119,7 +114,6 @@ TEST(Vector_Alternations_Signs_MPI, Test_Par_Count6) {
     }
 
     int parCount = getNumAlterSignsParallel(v);
-
     if (rank == 0) {
         int seqCount = getNumAlterSignsSequential(v);
         std::cout << "Alternations: " << parCount << "\n";
