@@ -4,6 +4,7 @@
 #include "./vector_alternations_signs.h"
 #include <gtest-mpi-listener.hpp>
 
+
 TEST(Vector_Alternations_Signs_MPI, Test_Par_Count1) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
