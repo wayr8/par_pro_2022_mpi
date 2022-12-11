@@ -15,7 +15,7 @@ std::vector<int> getRandomVector(int size, int left, int right) {
     return v;
 }
 
-void printVector(const std::vector<int>& v, std::string prefix) {
+void printVector(const std::vector<int>& v, const std::string& prefix) {
     std::cout << prefix << "[ ";
     for (const auto& elem : v) { std::cout << elem << " "; }
     std::cout << "]\n";
@@ -34,7 +34,7 @@ int getNumAlterSignsParallel(std::vector<int> gv) {
     MPI_Comm_size(MPI_COMM_WORLD, &commSize);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    const int gvSize = int(gv.size());
+    const int gvSize = static_cast<int>(gv.size());
     const int lvSize = gvSize / commSize + 1;  // base size of a local vector (also take one more element to count at segment borders)
     const int restSize = gvSize % commSize;  // number of elements not included in any local vector of base size
 
@@ -52,7 +52,7 @@ int getNumAlterSignsParallel(std::vector<int> gv) {
         }
         if (commSize != 1) {
             bool fix = (restSize != 0);
-            int _lvSize = lvSize + fix - 1;  // '-1' because one more element was taken (39 line) and this rank is the last
+            int _lvSize = lvSize + fix - 1;  // '-1' because (39 line) and this rank is the last
             MPI_Send(gv.data() + shift, _lvSize, MPI_INT, (commSize - 1), 0, MPI_COMM_WORLD);
         }
     }
