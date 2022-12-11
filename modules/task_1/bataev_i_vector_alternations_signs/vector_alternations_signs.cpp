@@ -24,7 +24,7 @@ void printVector(const std::vector<int>& v, std::string prefix) {
 int getNumAlterSignsSequential(std::vector<int> v) {
 	int count = 0;
 	for (int i = 0; i < v.size() - 1; i++)
-		if (v[i] > 0 && v[i + 1] < 0 || v[i] < 0 && v[i + 1] > 0)	// 0 doesn't count as a sign change
+		if (v[i] > 0 && v[i + 1] < 0 || v[i] < 0 && v[i + 1] > 0) // 0 doesn't count as a sign change
 			count++;
 	return count;
 }
@@ -35,15 +35,15 @@ int getNumAlterSignsParallel(std::vector<int> gv) {
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
 	const int gvSize = int(gv.size());
-	const int lvSize = gvSize / commSize + 1;	// base size of a local vector (also take one more element to count at segment borders)
-	const int restSize = gvSize % commSize;	// number of elements not included in any local vector of base size
+	const int lvSize = gvSize / commSize + 1; // base size of a local vector (also take one more element to count at segment borders)
+	const int restSize = gvSize % commSize; // number of elements not included in any local vector of base size
 
-	bool fix = (commSize - rank <= restSize);	// distribute starting from the last rank
-	const int _lvSize = lvSize + fix;	// fixed size of a local vector 
+	bool fix = (commSize - rank <= restSize); // distribute starting from the last rank
+	const int _lvSize = lvSize + fix; // fixed size of a local vector 
 
 	// splitting the original vector to segments
 	if (rank == 0) {
-		int shift = lvSize - 1;	// '-1' because one more element was taken (39 line)
+		int shift = lvSize - 1; // '-1' because one more element was taken (39 line)
 		for (int _rank = 1; _rank < commSize - 1; _rank++) {
 			bool fix = (commSize - _rank <= restSize);
 			int _lvSize = lvSize + fix;
@@ -52,7 +52,7 @@ int getNumAlterSignsParallel(std::vector<int> gv) {
 		}
 		if (commSize != 1) {
 			bool fix = (restSize != 0);
-			int _lvSize = lvSize + fix - 1;	// '-1' because one more element was taken (39 line) and this rank is the last
+			int _lvSize = lvSize + fix - 1; // '-1' because one more element was taken (39 line) and this rank is the last
 			MPI_Send(gv.data() + shift, _lvSize, MPI_INT, (commSize - 1), 0, MPI_COMM_WORLD);
 		}
 	}
