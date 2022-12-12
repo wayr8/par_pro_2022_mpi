@@ -1,3 +1,4 @@
+// Copyright 2022 Kudryashov Nikita
 #pragma once
 #include <vector>
 

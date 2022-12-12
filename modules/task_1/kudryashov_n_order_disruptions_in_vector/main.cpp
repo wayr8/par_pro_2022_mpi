@@ -1,10 +1,11 @@
-﻿#include <gtest-mpi-listener.hpp>
+﻿// Copyright 2022 Kudryashov Nikita
 #include <gtest/gtest.h>
 #include <mpi.h>
 #include <stdio.h>
 #include <vector>
 #include <algorithm>
-#include "../kudryashov_n_order_disruptions_in_vector/kudryashov_n_order_disruptions_in_vector.h"
+#include "kudryashov_n_order_disruptions_in_vector"
+#include <gtest-mpi-listener.hpp>
 
 TEST(count_order_disruptions_in_vector, test_ordered_vector) {
     int rank;
