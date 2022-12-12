@@ -5,7 +5,6 @@
 #include <vector>
 #include <algorithm>
 #include "./kudryashov_n_order_disruptions_in_vector.h"
-#include "./"
 #include <gtest-mpi-listener.hpp>
 
 TEST(count_order_disruptions_in_vector, test_ordered_vector) {

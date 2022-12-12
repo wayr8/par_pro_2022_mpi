@@ -3,8 +3,7 @@
 #include <random>
 #include <ctime>
 
-#include "kudryashov_n_order_disruptions_in_vector.h"
-#include "../kudryashov_n_order_disruptions_in_vector/kudryashov_n_order_disruptions_in_vector.h"
+#include "../../../modules/task_1/kudryashov_n_order_disruptions_in_vector/kudryashov_n_order_disruptions_in_vector.h"
 
 std::vector<int> generateRandomVector(int size) {
     std::mt19937 rnd;
