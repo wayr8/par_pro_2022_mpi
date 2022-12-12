@@ -1,10 +1,10 @@
-﻿// Copyright 2022 Kudryashov Nikita
+﻿// Copyright 2022 Kudryashov Nikita  
 #include <gtest/gtest.h>
 #include <mpi.h>
 #include <stdio.h>
 #include <vector>
 #include <algorithm>
-#include "kudryashov_n_order_disruptions_in_vector"
+#include "./kudryashov_n_order_disruptions_in_vector.h"
 #include <gtest-mpi-listener.hpp>
 
 TEST(count_order_disruptions_in_vector, test_ordered_vector) {
@@ -127,7 +127,7 @@ TEST(count_order_disruptions_in_vector, test_big_vector) {
     if (rank == 0) {
         vec = generateRandomVector(vec.size());;
     }
-    
+
     int  global_count = countOfDisruptionInVectorParallel(vec, vec_size);
 
     if (rank == 0) {

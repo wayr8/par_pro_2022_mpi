@@ -1,30 +1,30 @@
-// Copyright 2022 Kudryashov Nikita
+// Copyright 2022 Kudryashov Nikita  
 #include <mpi.h>
 #include <random>
 #include <ctime>
+
 #include "kudryashov_n_order_disruptions_in_vector.h"
 
 std::vector<int> generateRandomVector(int size) {
     std::mt19937 rnd;
     rnd.seed(std::time(nullptr));
     std::vector<int> vec(size);
-    
     for (int i = 0; i < size; i++) {
         vec[i] = rnd() % 100;
     }
+
     return vec;
 }
 
 int countOfDisruptionInVector(std::vector<int> vec) {
     int size = vec.size();
     int count = 0;
-    
     for (int i = 0; i < size - 1; i++) {
         if (vec[i] > vec[i + 1]) {
             count++;
         }
     }
-    
+
     return count;
 }
 
@@ -40,7 +40,7 @@ int countOfDisruptionInVectorParallel(std::vector<int> vec, int vec_size) {
         MPI_Send(vec.data() + (proc - 1) * shift, shift + 1, MPI_INT, proc, 0, MPI_COMM_WORLD);
         }
     }
-    
+
     std::vector<int> local_vec(shift);
 
     if (rank == 0) {
@@ -50,7 +50,7 @@ int countOfDisruptionInVectorParallel(std::vector<int> vec, int vec_size) {
         MPI_Status status;
         MPI_Recv(local_vec.data(), shift + 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
     }
-    
+
     int local_count = countOfDisruptionInVector(local_vec);
     int global_count = 0;
     MPI_Reduce(&local_count, &global_count, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
