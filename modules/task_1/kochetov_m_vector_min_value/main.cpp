@@ -33,15 +33,25 @@ void runVectorMinValueTest(int vecSize) {
     }
 }
 
-TEST(Min_Value_Of_Vector, Test1) { runVectorMinValueTest(6); }
+TEST(Min_Value_Of_Vector, Test1) {
+    runVectorMinValueTest(6);
+}
 
-TEST(Min_Value_Of_Vector, Test2) { runVectorMinValueTest(20); }
+TEST(Min_Value_Of_Vector, Test2) {
+    runVectorMinValueTest(20);
+}
 
-TEST(Min_Value_Of_Vector, Test3) { runVectorMinValueTest(1000); }
+TEST(Min_Value_Of_Vector, Test3) {
+    runVectorMinValueTest(1000);
+}
 
-TEST(Min_Value_Of_Vector, Test4) { runVectorMinValueTest(1000000); }
+TEST(Min_Value_Of_Vector, Test4) {
+    runVectorMinValueTest(1000000);
+}
 
-TEST(Min_Value_Of_Vector, Test5) { runVectorMinValueTest(1000000); }
+TEST(Min_Value_Of_Vector, Test5) {
+    runVectorMinValueTest(1000000);
+}
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
