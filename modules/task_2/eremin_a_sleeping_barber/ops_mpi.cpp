@@ -5,7 +5,6 @@
 #include <random>
 #include <algorithm>
 #include <queue>
-#include <thread>
 #include "../../../modules/test_tasks/test_mpi/ops_mpi.h"
 
 #define Get_in_line 1
@@ -13,16 +12,20 @@
 #define Get_un_line 3
 #define Exit_Queue 4
 
-void wait() {
+double getRandomTime() {
     std::random_device rd;
     std::mt19937 gen(rd());
+    return (10.0 + static_cast<double>(gen() % 20u)) / 100.0;
+}
 
-    int index = (200 + gen() % 200);
-    std::this_thread::sleep_for(std::chrono::milliseconds(index));
+void wait(double time) {
+    double start = MPI_Wtime();
+    while (MPI_Wtime() - start < time) {
+    }
 }
 
 void client(int rank) {
-    wait();
+    wait(getRandomTime());
     MPI_Status status;
     int queue_index = 0;
 
@@ -80,7 +83,7 @@ void Barber(int numberOFseats, int numberOFclients) {
             MPI_COMM_WORLD, &status);
         if (client_rank != -1) {
             MPI_Send(&client_rank, 1, MPI_INT, 1, Exit_Queue, MPI_COMM_WORLD);
-            wait();
+            wait(getRandomTime());
         }
     }
 }
