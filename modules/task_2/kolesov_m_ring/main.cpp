@@ -10,9 +10,11 @@ TEST(ring_mpi, testDir) {
   MPI_Comm_size(MPI_COMM_WORLD, &size);
   std::vector<int> ranks;
 
-  if (rank == 0) {
-    ASSERT_EQ(ChooseDirection(0, 1, MPI_COMM_WORLD, &ranks), 1);
-    ASSERT_EQ(ChooseDirection(1, 0, MPI_COMM_WORLD, &ranks), -1);
+  if (size != 1) {
+    if (rank == 0) {
+      ASSERT_EQ(ChooseDirection(0, 1, MPI_COMM_WORLD, &ranks), 1);
+      ASSERT_EQ(ChooseDirection(1, 0, MPI_COMM_WORLD, &ranks), -1);
+    }
   }
 }
 
