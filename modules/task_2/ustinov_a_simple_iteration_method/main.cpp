@@ -1,4 +1,4 @@
-// Copyright 2018 Nesterov Alexander
+// Copyright 2022 Ustinov A.
 #include <gtest/gtest.h>
 #include <iostream>
 #include <vector>
