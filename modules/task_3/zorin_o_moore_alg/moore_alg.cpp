@@ -63,7 +63,7 @@ int moore_algorithm(const std::vector<std::vector<int>> &adjacency_matrix, int s
         }
         std::vector<int> upd = update(&dist, block + size % pcount,
                                       adjacency_matrix[current], dist[current]);
-        for (auto v: upd) {
+        for (auto v : upd) {
             v = v + start;
             if (was[v] == 0) {
                 q.push_back(v);
@@ -83,7 +83,7 @@ int moore_algorithm(const std::vector<std::vector<int>> &adjacency_matrix, int s
                          &status);
             MPI_Recv(dist.data() + start, block, MPI_INT, i, 0, MPI_COMM_WORLD,
                      &status);
-            for (auto v: update) {
+            for (auto v : update) {
                 v = v + start;
                 if (was[v] == 0) {
                     q.push_back(v);

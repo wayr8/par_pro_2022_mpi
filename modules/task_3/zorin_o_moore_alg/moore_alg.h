@@ -10,4 +10,4 @@
 
 int moore_algorithm(const std::vector<std::vector<int>> &adjacency_matrix, int start, int end, int size);
 
-#endif //MODULES_TASK_3_ZORIN_O_MOORE_ALG_MOORE_ALG_H_
+#endif  // MODULES_TASK_3_ZORIN_O_MOORE_ALG_MOORE_ALG_H_
