@@ -13,7 +13,6 @@ TEST(ring_mpi, testDir) {
   if (size != 1) {
     if (rank == 0) {
       ASSERT_EQ(ChooseDirection(0, 1, MPI_COMM_WORLD, &ranks), 1);
-
     }
   }
 
