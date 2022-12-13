@@ -3,8 +3,7 @@
 #include <mpi.h>
 #include <deque>
 
-std::vector<int> update(std::vector<int>* dist, const int size,
-                        const std::vector<int>& range, const int d) {
+std::vector<int> update(std::vector<int> *dist, const int size, const std::vector<int> &range, const int d) {
     std::vector<int> update;
     for (int i = 0; i < size; i++) {
         if (d + range[i] < dist->at(i) && range[i] != INF) {
@@ -36,7 +35,7 @@ void side_process_work(int prank) {
     }
 }
 
-int moore_algorithm(const std::vector<std::vector<int>>& adjacency_matrix, int start, int end, int size) {
+int moore_algorithm(const std::vector<std::vector<int>> &adjacency_matrix, int start, int end, int size) {
     int prank, pcount;
     MPI_Comm_rank(MPI_COMM_WORLD, &prank);
     MPI_Comm_size(MPI_COMM_WORLD, &pcount);
@@ -64,7 +63,7 @@ int moore_algorithm(const std::vector<std::vector<int>>& adjacency_matrix, int s
         }
         std::vector<int> upd = update(&dist, block + size % pcount,
                                       adjacency_matrix[current], dist[current]);
-        for (auto v : upd) {
+        for (auto v: upd) {
             v = v + start;
             if (was[v] == 0) {
                 q.push_back(v);
@@ -84,7 +83,7 @@ int moore_algorithm(const std::vector<std::vector<int>>& adjacency_matrix, int s
                          &status);
             MPI_Recv(dist.data() + start, block, MPI_INT, i, 0, MPI_COMM_WORLD,
                      &status);
-            for (auto v : update) {
+            for (auto v: update) {
                 v = v + start;
                 if (was[v] == 0) {
                     q.push_back(v);

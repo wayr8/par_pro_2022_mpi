@@ -29,6 +29,7 @@ TEST(moore_algo, simple_neg_weight) {
         ASSERT_EQ(ans, -1 * size + 1);
     }
 }
+
 TEST(moore_algo, small_grahp) {
     int size = 3;
     int prank;
@@ -40,6 +41,7 @@ TEST(moore_algo, small_grahp) {
         ASSERT_EQ(ans, 1);
     }
 }
+
 TEST(moore_algo, big_test) {
     int size = 1345;
     int prank;
@@ -51,6 +53,7 @@ TEST(moore_algo, big_test) {
         ASSERT_EQ(ans, size - 1);
     }
 }
+
 TEST(moore_algo, big_test_neg_weigh) {
     int size = 1000;
     int prank;
@@ -63,12 +66,12 @@ TEST(moore_algo, big_test_neg_weigh) {
     }
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     MPI_Init(&argc, &argv);
 
     ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
-    ::testing::TestEventListeners& listeners =
+    ::testing::TestEventListeners &listeners =
             ::testing::UnitTest::GetInstance()->listeners();
 
     listeners.Release(listeners.default_result_printer());
