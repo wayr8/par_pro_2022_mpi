@@ -104,7 +104,7 @@ int ChooseDirection(int from, int dest, MPI_Comm comm, std::vector<int> *ranks) 
 
   prevVector.push_back(prev);
 
-  if (buf < count) {
+  if (buf <= count) {
     ranks->clear();
     ranks->insert(ranks->end(), nextVector.begin(), nextVector.end());
     return 1;
