@@ -25,14 +25,16 @@ TEST(ring_mpi, test1) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-  if (rank == 0) {
-    test_data = 42;
-  }
+  if (size != 1) {
+    if (rank == 0) {
+      test_data = 42;
+    }
 
-  RingSend(&test_data, 1, MPI_INT, 0, 1, 0, MPI_COMM_WORLD);
+    RingSend(&test_data, 1, MPI_INT, 0, 1, 0, MPI_COMM_WORLD);
 
-  if (rank == 1) {
-    ASSERT_EQ(test_data, 42);
+    if (rank == 1) {
+      ASSERT_EQ(test_data, 42);
+    }
   }
 }
 
@@ -43,14 +45,16 @@ TEST(ring_mpi, test2) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-  if (rank == 0) {
-    test_data = 42;
-  }
+  if (size != 1) {
+    if (rank == 0) {
+      test_data = 42;
+    }
 
-  RingSend(&test_data, 1, MPI_INT, 0, size - 1, 0, MPI_COMM_WORLD);
+    RingSend(&test_data, 1, MPI_INT, 0, size - 1, 0, MPI_COMM_WORLD);
 
-  if (rank == size - 1) {
-    ASSERT_EQ(test_data, 42);
+    if (rank == size - 1) {
+      ASSERT_EQ(test_data, 42);
+    }
   }
 }
 
@@ -61,14 +65,16 @@ TEST(ring_mpi, test3) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-  if (rank == size - 1) {
-    test_data = 42;
-  }
+  if (size != 1) {
+    if (rank == size - 1) {
+      test_data = 42;
+    }
 
-  RingSend(&test_data, 1, MPI_INT, size - 1, 0, 0, MPI_COMM_WORLD);
+    RingSend(&test_data, 1, MPI_INT, size - 1, 0, 0, MPI_COMM_WORLD);
 
-  if (rank == 0) {
-    ASSERT_EQ(test_data, 42);
+    if (rank == 0) {
+      ASSERT_EQ(test_data, 42);
+    }
   }
 }
 
@@ -79,14 +85,16 @@ TEST(ring_mpi, test4) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-  if (rank == size - 1) {
-    test_data = 42;
-  }
+  if (size != 1) {
+    if (rank == size - 1) {
+      test_data = 42;
+    }
 
-  RingSend(&test_data, 1, MPI_INT, size - 1, size - 2, 0, MPI_COMM_WORLD);
+    RingSend(&test_data, 1, MPI_INT, size - 1, size - 2, 0, MPI_COMM_WORLD);
 
-  if (rank == size - 2) {
-    ASSERT_EQ(test_data, 42);
+    if (rank == size - 2) {
+      ASSERT_EQ(test_data, 42);
+    }
   }
 }
 
