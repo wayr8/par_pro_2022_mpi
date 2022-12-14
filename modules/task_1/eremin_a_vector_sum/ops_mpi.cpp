@@ -2,8 +2,6 @@
 #include <mpi.h>
 #include <math.h>
 #include <iostream>
-#include <vector>
-#include <string>
 #include <random>
 #include <algorithm>
 #include "../../../modules/test_tasks/test_mpi/ops_mpi.h"

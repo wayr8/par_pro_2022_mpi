@@ -1,6 +1,5 @@
 // Copyright 2022 Eremin Aleksandr
 #include <gtest/gtest.h>
-#include <vector>
 #include "./ops_mpi.h"
 #include <gtest-mpi-listener.hpp>
 
