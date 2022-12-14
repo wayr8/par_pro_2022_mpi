@@ -88,7 +88,7 @@ TEST(Parallel_Operations_MPI, Test_Sum_6) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
-    const int count_size_vector = 1234;
+    const int count_size_vector = 1500;
 
     if (rank == 0) {
         global_vec = random(count_size_vector);
