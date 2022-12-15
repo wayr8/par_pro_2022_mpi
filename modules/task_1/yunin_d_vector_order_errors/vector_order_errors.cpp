@@ -1,16 +1,21 @@
+// Copyright 2022 Yunin D.
+#include "../../../modules/task_1/yunin_d_vector_order_errors/vector_order_errors.h"
 #include <mpi.h>
 #include <vector>
-#include "../../../modules/task_1/yunin_d_vector_order_errors/vector_order_errors.h"
 #include <iostream>
+#include <random>
 
 using std::vector;
+using std::mt19937;
+using std::random_device;
 
 // функция принимает 2 значения - размер массива, верхнюю границу чисел и смещение для указание диапазона;
 vector<int> CreateRandomVector(int v_size, int right_border, int offset) {
     vector<int> my_vector(v_size);
-    UpdateRandNumbers();
+    mt19937 gen;
+    UpdateRandNumbers(gen);
     for (int i = 0; i < my_vector.size(); i++) {
-        my_vector[i] = rand() % right_border + offset;
+        my_vector[i] = gen() % right_border + offset;
     }
     return my_vector;
 }
@@ -33,7 +38,7 @@ int CountErrorsOrderNeigboringElementsVectorParallel(const vector<int> &my_vecto
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &current_rank);
     part = my_vector.size() / size;
-    vector<int> local_vec(part*2); // такого числа точно хватит, больше быть не может
+    vector<int> local_vec(part*2);  // такого числа точно хватит, больше быть не может
     // дробим количество элементом на число процессов
     if (current_rank == 0) {
         // занимаемся рассылкой данных процессам
@@ -47,7 +52,6 @@ int CountErrorsOrderNeigboringElementsVectorParallel(const vector<int> &my_vecto
         local_vec.resize(part + 1);
         MPI_Recv(local_vec.data(), part + 1, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
     }
-
     // для каждого локального вектора считаем число ошибок    
     for (int i = 1; i < local_vec.size(); i++) {
         if (local_vec[i-1] > local_vec[i]) {
@@ -59,6 +63,7 @@ int CountErrorsOrderNeigboringElementsVectorParallel(const vector<int> &my_vecto
     return num_errors;
 }
 
-void UpdateRandNumbers() {
-    srand(time(NULL));
+void UpdateRandNumbers(mt19937 &gen) {
+    random_device rd;
+    gen.seed(rd());
 }

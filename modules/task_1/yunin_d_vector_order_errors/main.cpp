@@ -1,3 +1,4 @@
+// Copyright 2022 Yunin D.
 #include <mpi.h>
 #include <gtest/gtest.h>
 #include <gtest-mpi-listener.hpp>
@@ -46,7 +47,7 @@ TEST(count_number_errors_order_neighboring_elements_vector, test_unordered_vecto
     std::vector<int> vec(55);
     if (rank == 0) {
         vec = CreateRandomVector(55, 13, 2);
-        std::sort(vec.begin(), vec.end(),std::greater<int>());
+        std::sort(vec.begin(), vec.end(), std::greater<int>());
         // for (int i = 0; i < vec.size(); i++) {
         //     std::cout << vec[i] << ' ';
         // }
@@ -63,7 +64,6 @@ TEST(count_number_errors_order_neighboring_elements_vector, test_vector_with_1_e
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> vec(1);
-    
     if (rank == 0) {
         vec = CreateRandomVector(1, 10, 1);
         // for (int i = 0; i < vec.size(); i++) {
@@ -82,7 +82,6 @@ TEST(count_number_errors_order_neighboring_elements_vector, test_vector_with_2_e
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> vec(2);
-    
     if (rank == 0) {
         vec = CreateRandomVector(2, 10, 1);
         // for (int i = 0; i < vec.size(); i++) {
@@ -101,7 +100,6 @@ TEST(count_number_errors_order_neighboring_elements_vector, test_large_vector) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> vec(1000000);
-    
     if (rank == 0) {
         vec = CreateRandomVector(1000000, 1000, 3);
         // for (int i = 0; i < vec.size(); i++) {
@@ -120,7 +118,6 @@ TEST(count_number_errors_order_neighboring_elements_vector, test_random_vector_2
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> vec(15);
-    
     if (rank == 0) {
         vec = CreateRandomVector(15, 10, 1);
         // for (int i = 0; i < vec.size(); i++) {
