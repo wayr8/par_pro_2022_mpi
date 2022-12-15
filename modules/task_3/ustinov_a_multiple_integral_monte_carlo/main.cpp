@@ -66,7 +66,7 @@ TEST(Monte_Carlo_Multiple_Integral_MPI, Test_2) {
 }
 
 TEST(Monte_Carlo_Multiple_Integral_MPI, Test_3) {
-	// 2 dimension, function - '1 - x^2 - y^2', region - 'x^2 + y^2 <= 1'
+    // 2 dimension, function - '1 - x^2 - y^2', region - 'x^2 + y^2 <= 1'
     // The answer is 'pi/4'
     auto f = [](const array<double, 2> &x) -> double {
         return 1.0 - x[0]*x[0] - x[1]*x[1];
@@ -76,7 +76,7 @@ TEST(Monte_Carlo_Multiple_Integral_MPI, Test_3) {
     };
     array<double[2], 2> rect;
     rect[0][0] = -1.0, rect[0][1] = 1.0;
-	rect[1][0] = -1.0, rect[1][1] = 1.0;
+    rect[1][0] = -1.0, rect[1][1] = 1.0;
 
     for (int i = 0; i < 3; ++i) {
         test_monte_carlo<2>(f, region, rect, 100000000, M_PI_2, 3e-4);
@@ -84,7 +84,7 @@ TEST(Monte_Carlo_Multiple_Integral_MPI, Test_3) {
 }
 
 TEST(Monte_Carlo_Multiple_Integral_MPI, Test_4) {
-	// 2 dimension, function - 'e^(-(x^2 + y^2))',
+    // 2 dimension, function - 'e^(-(x^2 + y^2))',
     // region - '0 <= x <= 1, 0 <= y <= 1'
     // The answer is approximately '0.557746'
     auto f = [](const array<double, 2> &x) -> double {
@@ -95,7 +95,7 @@ TEST(Monte_Carlo_Multiple_Integral_MPI, Test_4) {
     };
     array<double[2], 2> rect;
     rect[0][0] = 0.0, rect[0][1] = 1.0;
-	rect[1][0] = 0.0, rect[1][1] = 1.0;
+    rect[1][0] = 0.0, rect[1][1] = 1.0;
 
     for (int i = 0; i < 3; ++i) {
         test_monte_carlo<2>(f, region, rect, 100000000, 0.557746, 2e-4);
