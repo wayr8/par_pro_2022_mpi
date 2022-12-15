@@ -45,7 +45,7 @@ double multiple_integral_monte_carlo_parallel(
             corrected_sum = local_sum + corrected_value;
             error_sum = (corrected_sum - local_sum) - corrected_value;
             local_sum = corrected_sum;
-			//local_sum += multiplier * f(random_point);
+            // local_sum += multiplier * f(random_point);
         }
     }
 
