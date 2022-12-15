@@ -43,9 +43,7 @@ TEST(Monte_Carlo_Multiple_Integral_MPI, Test_1) {
     array<double[2], 1> rect;
     rect[0][0] = 0.0, rect[0][1] = 1.0;
 
-    for (int i = 0; i < 3; ++i) {
-        test_monte_carlo<1>(f, region, rect, 100000000, 0.5, 1e-4);
-    }
+    test_monte_carlo<1>(f, region, rect, 30000000, 0.5, 2e-4);
 }
 
 TEST(Monte_Carlo_Multiple_Integral_MPI, Test_2) {
@@ -60,9 +58,7 @@ TEST(Monte_Carlo_Multiple_Integral_MPI, Test_2) {
     array<double[2], 1> rect;
     rect[0][0] = 0.0, rect[0][1] = 1.0;
 
-    for (int i = 0; i < 3; ++i) {
-        test_monte_carlo<1>(f, region, rect, 100000000, M_PI_4, 5e-5);
-    }
+    test_monte_carlo<1>(f, region, rect, 30000000, M_PI_4, 3e-4);
 }
 
 TEST(Monte_Carlo_Multiple_Integral_MPI, Test_3) {
@@ -78,9 +74,7 @@ TEST(Monte_Carlo_Multiple_Integral_MPI, Test_3) {
     rect[0][0] = -1.0, rect[0][1] = 1.0;
     rect[1][0] = -1.0, rect[1][1] = 1.0;
 
-    for (int i = 0; i < 3; ++i) {
-        test_monte_carlo<2>(f, region, rect, 100000000, M_PI_2, 3e-4);
-    }
+    test_monte_carlo<2>(f, region, rect, 3000000, M_PI_2, 2e-3);
 }
 
 TEST(Monte_Carlo_Multiple_Integral_MPI, Test_4) {
@@ -97,9 +91,7 @@ TEST(Monte_Carlo_Multiple_Integral_MPI, Test_4) {
     rect[0][0] = 0.0, rect[0][1] = 1.0;
     rect[1][0] = 0.0, rect[1][1] = 1.0;
 
-    for (int i = 0; i < 3; ++i) {
-        test_monte_carlo<2>(f, region, rect, 100000000, 0.557746, 2e-4);
-    }
+    test_monte_carlo<2>(f, region, rect, 30000000, 0.557746, 2e-4);
 }
 
 TEST(Monte_Carlo_Multiple_Integral_MPI, Test_5) {
@@ -118,10 +110,7 @@ TEST(Monte_Carlo_Multiple_Integral_MPI, Test_5) {
     rect[1][0] = 0.0, rect[1][1] = 1.0;
     rect[2][0] = 0.0, rect[2][1] = 1.0;
 
-    for (int i = 0; i < 3; ++i) {
-        test_monte_carlo<3>(f, region, rect, 100000000,
-                            0.00000275573192239, 2e-4);
-    }
+    test_monte_carlo<3>(f, region, rect, 30000000, 1.0/5040.0, 2e-5);
 }
 
 
