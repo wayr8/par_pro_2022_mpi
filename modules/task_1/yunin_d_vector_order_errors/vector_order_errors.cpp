@@ -13,7 +13,7 @@ using std::random_device;
 vector<int> CreateRandomVector(int v_size, int right_border, int offset) {
     vector<int> my_vector(v_size);
     mt19937 gen;
-    UpdateRandNumbers(gen);
+    UpdateRandNumbers(&gen);
     for (int i = 0; i < my_vector.size(); i++) {
         my_vector[i] = gen() % right_border + offset;
     }
@@ -52,18 +52,18 @@ int CountErrorsOrderNeigboringElementsVectorParallel(const vector<int> &my_vecto
         local_vec.resize(part + 1);
         MPI_Recv(local_vec.data(), part + 1, MPI_INT, 0, 7, MPI_COMM_WORLD, &status);
     }
-    // для каждого локального вектора считаем число ошибок    
+    // для каждого локального вектора считаем число ошибок
     for (int i = 1; i < local_vec.size(); i++) {
         if (local_vec[i-1] > local_vec[i]) {
             local_num_errors++;
-        }    
+        }
     }
     // собираем все данные
-    MPI_Reduce(&local_num_errors, &num_errors, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);    
+    MPI_Reduce(&local_num_errors, &num_errors, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
     return num_errors;
 }
 
-void UpdateRandNumbers(mt19937 &gen) {
+void UpdateRandNumbers(mt19937 *gen) {
     random_device rd;
-    gen.seed(rd());
+    (*gen).seed(rd());
 }
