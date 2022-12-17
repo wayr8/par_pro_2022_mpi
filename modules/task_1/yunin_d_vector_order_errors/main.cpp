@@ -60,7 +60,7 @@ TEST(count_number_errors_order_neighboring_elements_vector, test_unordered_vecto
     }
 }
 
-TEST(count_number_errors_order_neighboring_elements_vector, test_vector_with_1_elems) {
+TEST(count_number_errors_order_neighboring_elements_vector, test_vector_with_1_elem) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> vec(1);
