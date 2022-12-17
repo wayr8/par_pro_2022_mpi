@@ -1,4 +1,4 @@
-// Copyright 2022 Kudryashov Nikita
+  // Copyright 2022 Kudryashov Nikita
 #include <mpi.h>
 #include <random>
 #include <ctime>
@@ -72,7 +72,9 @@ int reduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype, MPI_O
                         static_cast<int*>(recvbuf)[j] *= buf[j];
                     }
                 }
-            } else return -1;
+            } else {
+                return -1;
+            }
             delete[] buf;
         } else if (datatype == MPI_DOUBLE) {
             for (int j = 0; j < count; j++) {
@@ -115,7 +117,9 @@ int reduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype, MPI_O
                         static_cast<double*>(recvbuf)[j] *= buf[j];
                     }
                 }
-            } else return -2;
+            } else {
+                return -2;
+            }
             delete[] buf;
         } else if (datatype == MPI_FLOAT) {
             for (int j = 0; j < count; j++) {
@@ -158,9 +162,13 @@ int reduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype, MPI_O
                         static_cast<float*>(recvbuf)[j] *= buf[j];
                     }
                 }
-            } else return -2;
+            } else {
+                return -2;
+            }
             delete[] buf;
-        } else return -4
+        } else {
+            return -4;
+        }
     } else {
         MPI_Send(sendbuf, count, datatype, root, 0, comm);
     }

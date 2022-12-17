@@ -1,8 +1,8 @@
-﻿// Copyright 2022 Kudryashov Nikita
+﻿  // Copyright 2022 Kudryashov Nikita
 #include <gtest/gtest.h>
+#include <mpi.h>
 #include <random>
 #include <ctime>
-#include <mpi.h>
 #include "./kudryashov_n_reduce.h"
 #include <gtest-mpi-listener.hpp>
 
@@ -412,7 +412,6 @@ TEST(Reduce, test_single_double_max) {
         printf("My Reduce: %lf\n", time2);
         ASSERT_EQ(reducedData, myReducedData);
     }
-    
 }
 
 TEST(Reduce, test_single_double_min) {
@@ -447,8 +446,8 @@ TEST(Reduce, test_single_double_min) {
         time2 = MPI_Wtime() - time2;
         printf("MPI Reduce: %lf\n", time1);
         printf("My Reduce: %lf\n", time2);
+        ASSERT_EQ(reducedData, myReducedData);
     }
-    ASSERT_EQ(reducedData, myReducedData);
 }
 
 TEST(Reduce, test_vector_double_sum) {
@@ -525,8 +524,8 @@ TEST(Reduce, test_vector_double_prod) {
         time2 = MPI_Wtime() - time2;
         printf("MPI Reduce: %lf\n", time1);
         printf("My Reduce: %lf\n", time2);
+        ASSERT_EQ(reducedData, myReducedData);
     }
-    ASSERT_EQ(reducedData, myReducedData);
 }
 
 TEST(Reduce, test_vector_double_max) {
@@ -564,8 +563,8 @@ TEST(Reduce, test_vector_double_max) {
         time2 = MPI_Wtime() - time2;
         printf("MPI Reduce: %lf\n", time1);
         printf("My Reduce: %lf\n", time2);
+        ASSERT_EQ(reducedData, myReducedData);
     }
-    ASSERT_EQ(reducedData, myReducedData);
 }
 
 TEST(Reduce, test_vector_double_min) {
@@ -603,8 +602,8 @@ TEST(Reduce, test_vector_double_min) {
         time2 = MPI_Wtime() - time2;
         printf("MPI Reduce: %lf\n", time1);
         printf("My Reduce: %lf\n", time2);
+        ASSERT_EQ(reducedData, myReducedData);
     }
-    ASSERT_EQ(reducedData, myReducedData);
 }
 
 TEST(Reduce, test_single_float_sum) {
@@ -713,7 +712,6 @@ TEST(Reduce, test_single_float_max) {
         printf("My Reduce: %lf\n", time2);
         ASSERT_EQ(reducedData, myReducedData);
     }
-
 }
 
 TEST(Reduce, test_single_float_min) {
@@ -748,8 +746,8 @@ TEST(Reduce, test_single_float_min) {
         time2 = MPI_Wtime() - time2;
         printf("MPI Reduce: %lf\n", time1);
         printf("My Reduce: %lf\n", time2);
+        ASSERT_EQ(reducedData, myReducedData);
     }
-    ASSERT_EQ(reducedData, myReducedData);
 }
 
 TEST(Reduce, test_vector_float_sum) {
@@ -826,8 +824,8 @@ TEST(Reduce, test_vector_float_prod) {
         time2 = MPI_Wtime() - time2;
         printf("MPI Reduce: %lf\n", time1);
         printf("My Reduce: %lf\n", time2);
+        ASSERT_EQ(reducedData, myReducedData);
     }
-    ASSERT_EQ(reducedData, myReducedData);
 }
 
 TEST(Reduce, test_vector_float_max) {
@@ -865,8 +863,8 @@ TEST(Reduce, test_vector_float_max) {
         time2 = MPI_Wtime() - time2;
         printf("MPI Reduce: %lf\n", time1);
         printf("My Reduce: %lf\n", time2);
+        ASSERT_EQ(reducedData, myReducedData);
     }
-    ASSERT_EQ(reducedData, myReducedData);
 }
 
 TEST(Reduce, test_vector_float_min) {
@@ -904,8 +902,8 @@ TEST(Reduce, test_vector_float_min) {
         time2 = MPI_Wtime() - time2;
         printf("MPI Reduce: %lf\n", time1);
         printf("My Reduce: %lf\n", time2);
+        ASSERT_EQ(reducedData, myReducedData);
     }
-    ASSERT_EQ(reducedData, myReducedData);
 }
 
 int main(int argc, char** argv) {
@@ -922,4 +920,3 @@ int main(int argc, char** argv) {
     listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
     return RUN_ALL_TESTS();
 }
-    
