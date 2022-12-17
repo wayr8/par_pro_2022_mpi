@@ -43,7 +43,7 @@ TEST(Monte_Carlo_Multiple_Integral_MPI, Test_1) {
     array<double[2], 1> rect;
     rect[0][0] = 0.0, rect[0][1] = 1.0;
 
-    test_monte_carlo<1>(f, region, rect, 30000000, 0.5, 2e-4);
+    test_monte_carlo<1>(f, region, rect, 30000000, 0.5, 3e-4);
 }
 
 TEST(Monte_Carlo_Multiple_Integral_MPI, Test_2) {
@@ -74,7 +74,7 @@ TEST(Monte_Carlo_Multiple_Integral_MPI, Test_3) {
     rect[0][0] = -1.0, rect[0][1] = 1.0;
     rect[1][0] = -1.0, rect[1][1] = 1.0;
 
-    test_monte_carlo<2>(f, region, rect, 3000000, M_PI_2, 2e-3);
+    test_monte_carlo<2>(f, region, rect, 3000000, M_PI_2, 3e-3);
 }
 
 TEST(Monte_Carlo_Multiple_Integral_MPI, Test_4) {
