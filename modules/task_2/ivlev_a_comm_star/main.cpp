@@ -13,8 +13,8 @@ TEST(Test_comm_star_MPI, Test_0) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     MPI_Comm star_comm;
-    int index[5] = {2, 3, 4, 5, 6};
-    MPI_group_star_create(MPI_COMM_WORLD, 5,
+    int index[4] = {0, 1, 2, 3};
+    MPI_group_star_create(MPI_COMM_WORLD, 4,
         index, &star_comm);
 
     int star_rank, star_size;
@@ -23,8 +23,8 @@ TEST(Test_comm_star_MPI, Test_0) {
         MPI_Comm_size(star_comm, &star_size);
 
         EXPECT_LT(star_rank, star_size);
-        EXPECT_LT(rank, 7);
-        EXPECT_GT(rank, 1);
+        EXPECT_LT(rank, 4);
+        EXPECT_GE(rank, 0);
     } else {
         star_rank = -1;
         star_size = -1;
@@ -42,8 +42,8 @@ TEST(Test_comm_star_MPI, Test_1) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     MPI_Comm star_comm;
-    int index[5] = {2, 3, 4, 5, 6};
-    MPI_group_star_create(MPI_COMM_WORLD, 5,
+    int index[4] = {0, 1, 2, 3};
+    MPI_group_star_create(MPI_COMM_WORLD, 4,
         index, &star_comm);
 
     int star_rank, star_size;
@@ -59,7 +59,7 @@ TEST(Test_comm_star_MPI, Test_1) {
             }
         }
 
-        Star_Send(a, 3, MPI_INT, 3, 1, 1, star_comm);  //  3->1 (5->3)
+        Star_Send(a, 3, MPI_INT, 3, 1, 1, star_comm);
 
         if (star_rank == 1) {
             int b[3];
@@ -86,8 +86,8 @@ TEST(Test_comm_star_MPI, Test_2) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     MPI_Comm star_comm;
-    int index[6] = {0, 1, 2, 5, 6, 7};
-    MPI_group_star_create(MPI_COMM_WORLD, 6,
+    int index[4] = {0, 1, 2, 3};
+    MPI_group_star_create(MPI_COMM_WORLD, 4,
         index, &star_comm);
 
     int star_rank, star_size;
@@ -97,13 +97,13 @@ TEST(Test_comm_star_MPI, Test_2) {
 
         int a[3];
 
-        if (star_rank == 5) {
+        if (star_rank == 2) {
             for (int i = 0; i < 3; i++) {
                 a[i] = i;
             }
         }
 
-        Star_Send(a, 3, MPI_INT, 5, 0, 1, star_comm);
+        Star_Send(a, 3, MPI_INT, 2, 0, 1, star_comm);
 
         if (star_rank == 0) {
             int b[3];
@@ -130,8 +130,8 @@ TEST(Test_comm_star_MPI, Test_3) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     MPI_Comm star_comm;
-    int index[6] = {0, 1, 2, 5, 6, 7};
-    MPI_group_star_create(MPI_COMM_WORLD, 6,
+    int index[4] = {0, 1, 2, 3};
+    MPI_group_star_create(MPI_COMM_WORLD, 4,
         index, &star_comm);
 
     int star_rank, star_size;
@@ -141,13 +141,13 @@ TEST(Test_comm_star_MPI, Test_3) {
 
         int a[10];
 
-        if (star_rank == 5) {
+        if (star_rank == 2) {
             for (int i = 0; i < 10; i++) {
                 a[i] = i;
             }
         }
 
-        Star_Send(a, 4, MPI_INT, 5, 1, 1, star_comm);
+        Star_Send(a, 4, MPI_INT, 2, 1, 1, star_comm);
 
         if (star_rank == 1) {
             int b[4];
@@ -174,8 +174,8 @@ TEST(Test_comm_star_MPI, Test_4) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     MPI_Comm star_comm;
-    int index[6] = {0, 1, 2, 5, 6, 7};
-    MPI_group_star_create(MPI_COMM_WORLD, 6,
+    int index[4] = {0, 1, 2, 3};
+    MPI_group_star_create(MPI_COMM_WORLD, 4,
         index, &star_comm);
 
     int star_rank, star_size;
@@ -186,13 +186,13 @@ TEST(Test_comm_star_MPI, Test_4) {
         int a[10];
         int b[10];
 
-        if (star_rank == 5) {
+        if (star_rank == 2) {
             for (int i = 0; i < 10; i++) {
                 a[i] = i;
             }
         }
 
-        Star_Send(a, 10, MPI_INT, 5, 1, 1, star_comm);
+        Star_Send(a, 10, MPI_INT, 2, 1, 1, star_comm);
 
         if (star_rank == 1) {
             MPI_Status status;
