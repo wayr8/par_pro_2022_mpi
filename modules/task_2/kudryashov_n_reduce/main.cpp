@@ -135,8 +135,8 @@ TEST(Reduce, test_single_int_min) {
     MPI_Reduce(&data, &reducedData, 1, MPI_INT, MPI_MIN, root, MPI_COMM_WORLD);
     MPI_Barrier(MPI_COMM_WORLD);
     if (rank == 0) {
-        time1 = MPI_Wtime() - time1
-            time2 = MPI_Wtime();
+        time1 = MPI_Wtime() - time1;
+        time2 = MPI_Wtime();
     }
 
     reduce(&data, &myReducedData, 1, MPI_INT, MPI_MIN, root, MPI_COMM_WORLD);
