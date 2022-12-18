@@ -1,3 +1,4 @@
+// Copyright 2022 Uvarkin Ilya
 #pragma once
 #include <cstdio>
 #include <string>

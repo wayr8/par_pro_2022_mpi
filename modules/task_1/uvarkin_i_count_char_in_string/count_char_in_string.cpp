@@ -1,3 +1,4 @@
+// Copyright 2022 Uvarkin Ilya
 #include "count_char_in_string.h"
 #include "mpi.h"
 

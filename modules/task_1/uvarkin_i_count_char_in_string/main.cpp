@@ -1,25 +1,7 @@
+// Copyright 2022 Uvarkin Ilya
 #include <gtest/gtest.h>
 #include <gtest-mpi-listener.hpp>
 #include "./count_char_in_string.h"
-
-//cmake --build . --target uvarkin_i_count_char_in_string_mpi --config RELEASE
-//mpirun -n 6 uvarkin_i_count_char_in_string_mpi
-//int main(int argc, char **argv){
-//    MPI_Init(&argc, &argv);
-//
-//    std::string str = "This_is_an_example.";
-//    int count = getCountCharInStringParallel(str, 'i');
-//
-//    int procRank;
-//    MPI_Comm_rank(MPI_COMM_WORLD, &procRank);
-//    if (procRank == 0){
-//        printf("main: %d\n", count);
-//    }
-//
-//    MPI_Finalize();
-//    return 0;
-//
-//}
 
 TEST(count_char_in_string, test1) {
     int rank;
