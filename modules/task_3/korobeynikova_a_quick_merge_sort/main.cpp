@@ -12,11 +12,11 @@ std::vector<int> seqSolution(const std::vector<int>& m) {
   return seq_sort_res;
 }
 
-void setRandomValues(std::vector<int>& vec) {
+void setRandomValues(std::vector<int> *vec) {
   std::random_device dev;
   std::mt19937 gen(dev());
-  for (int i = 0; i < vec.size(); ++i) {
-    vec[i] = gen() % 100;
+  for (int i = 0; i < vec->size(); ++i) {
+    vec->at(i) = gen() % 100;
   }
 }
 
@@ -26,7 +26,7 @@ TEST(Parallel_Operations_MPI, Test_Sort) {
 
   const int size = 27;
   std::vector<int> global_vec(size);
-  setRandomValues(global_vec);
+  setRandomValues(&global_vec);
 
   std::vector<int> ps = parallelSort(global_vec);
 
@@ -42,7 +42,7 @@ TEST(Parallel_Operations_MPI, Test_Sort_2) {
 
   const int size = 30;
   std::vector<int> global_vec(size);
-  setRandomValues(global_vec);
+  setRandomValues(&global_vec);
 
   std::vector<int> ps = parallelSort(global_vec);
 
@@ -58,7 +58,7 @@ TEST(Parallel_Operations_MPI, Test_Sort_3) {
 
   const int size = 15;
   std::vector<int> global_vec(size);
-  setRandomValues(global_vec);
+  setRandomValues(&global_vec);
 
   std::vector<int> ps = parallelSort(global_vec);
 
@@ -74,7 +74,7 @@ TEST(Parallel_Operations_MPI, Test_Sort_4) {
 
   const int size = 7;
   std::vector<int> global_vec(size);
-  setRandomValues(global_vec);
+  setRandomValues(&global_vec);
 
   std::vector<int> ps = parallelSort(global_vec);
 
@@ -90,7 +90,7 @@ TEST(Parallel_Operations_MPI, Test_Sort_5) {
 
   const int size = 50;
   std::vector<int> global_vec(size);
-  setRandomValues(global_vec);
+  setRandomValues(&global_vec);
 
   std::vector<int> ps = parallelSort(global_vec);
 
