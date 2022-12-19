@@ -43,7 +43,7 @@ std::vector<int> getParallelOperations(std::vector<int> matrix, int count_row, i
     for (int i = 0; i < delta; i++) {
         if (rank == 0) {
             for (int proc = 1; proc < size; proc++) {
-                MPI_Send(matrix.data() + proc*count_row + i*size*count_row, 
+                MPI_Send(matrix.data() + proc*count_row + i*size*count_row,
                 count_row, MPI_INT, proc, 0, MPI_COMM_WORLD);
             }
         }
@@ -72,14 +72,14 @@ std::vector<int> getParallelOperations(std::vector<int> matrix, int count_row, i
     if ((count_col % size != 0) && (rank < count_col % size)) {
         if (rank == 0) {
             for (int proc = 1; proc < count_col % size; proc++) {
-                MPI_Send(matrix.data() + delta*size*count_row + proc*count_row, 
+                MPI_Send(matrix.data() + delta*size*count_row + proc*count_row,
                 count_row, MPI_INT, proc, 0, MPI_COMM_WORLD);
             }
         }
 
         std::vector<int> vector(count_row);
         if (rank == 0) {
-            vector = std::vector<int>(matrix.begin() + delta*size*count_row, 
+            vector = std::vector<int>(matrix.begin() + delta*size*count_row,
             matrix.begin() + delta*size*count_row + count_row);
         } else {
             MPI_Status status;
