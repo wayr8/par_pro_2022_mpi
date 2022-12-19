@@ -2,8 +2,8 @@
 
 #include <gtest/gtest.h>
 
-#include <gtest-mpi-listener.hpp>
 #include <vector>
+#include <gtest-mpi-listener.hpp>
 
 #include "./max_by_rows.h"
 

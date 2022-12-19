@@ -29,7 +29,7 @@ class Matrix {
   const T* operator[](int pos) const { return data.data() + pos * m; }
 };
 std::vector<int> taskDistrib(const int proc_num, const int task_num);
-int findMax(const std::vector<int> &vec);
+int findMax(const std::vector<int>& vec);
 std::vector<int> getParallelOperation(const Matrix<int>& global_matr);
 
 #endif  // MODULES_TEST_TASKS_TEST_MPI_OPS_MPI_H_
