@@ -1,11 +1,10 @@
-
+// Copyright 2022 Bochkarev Vladimir
 #include <mpi.h>
 #include <vector>
 #include <string>
 #include <random>
 #include <algorithm>
 #include "../../../modules/task_1/bochkarev_v_max_matrix_columns/matrix_max_columns.h"
-#include <iostream>
 
 std::vector<int> getRandomMatrix(int row, int col) {
     std::random_device dev;
@@ -13,14 +12,23 @@ std::vector<int> getRandomMatrix(int row, int col) {
     std::vector<int> matrix(row*col);
     for (int i = 0; i < row*col; i++)
         matrix[i] = gen() % 100;
-    return matrix;
+
+    std::vector<int> vec(row*col);
+    int k = 0;
+    for (int j = 0; j < col; j++) {
+        for (int i = 0; i < row; i++) {
+            vec[k] = matrix[i*col + j];
+            k++;
+        }
+    }
+    return vec;
 }
 
-int getSequentialOperations(std::vector<int> vector) {  
+int getSequentialOperations(std::vector<int> vector) {
     const int size = vector.size();
     int max = vector[0];
 
-    for(int i = 0; i < size; i++)
+    for (int i = 0; i < size; i++)
         max = std::max(max, vector[i]);
     return max;
 }
@@ -31,11 +39,12 @@ std::vector<int> getParallelOperations(std::vector<int> matrix, int count_row, i
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     int delta = count_col/size;
     std::vector<int> res(count_col);
- 
+
     for (int i = 0; i < delta; i++) {
         if (rank == 0) {
             for (int proc = 1; proc < size; proc++) {
-                MPI_Send(matrix.data() + proc*count_row + i*size*count_row, count_row, MPI_INT, proc, 0, MPI_COMM_WORLD);
+                MPI_Send(matrix.data() + proc*count_row + i*size*count_row, 
+                count_row, MPI_INT, proc, 0, MPI_COMM_WORLD);
             }
         }
 
@@ -48,7 +57,7 @@ std::vector<int> getParallelOperations(std::vector<int> matrix, int count_row, i
         }
 
         int l_res = getSequentialOperations(vector);
- 
+
         if (rank == 0) {
             res[i*size] = l_res;
             for (int proc = 1; proc < size; proc++) {
@@ -60,16 +69,18 @@ std::vector<int> getParallelOperations(std::vector<int> matrix, int count_row, i
         }
     }
 
-    if ((count_col % size != 0) && (rank < count_col % size)) {  
+    if ((count_col % size != 0) && (rank < count_col % size)) {
         if (rank == 0) {
             for (int proc = 1; proc < count_col % size; proc++) {
-                MPI_Send(matrix.data() + delta*size*count_row + proc*count_row, count_row, MPI_INT, proc, 0, MPI_COMM_WORLD);
+                MPI_Send(matrix.data() + delta*size*count_row + proc*count_row, 
+                count_row, MPI_INT, proc, 0, MPI_COMM_WORLD);
             }
         }
 
         std::vector<int> vector(count_row);
         if (rank == 0) {
-            vector = std::vector<int>(matrix.begin() + delta*size*count_row, matrix.begin() + delta*size*count_row + count_row);
+            vector = std::vector<int>(matrix.begin() + delta*size*count_row, 
+            matrix.begin() + delta*size*count_row + count_row);
         } else {
             MPI_Status status;
             MPI_Recv(vector.data(), count_row, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);

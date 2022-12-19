@@ -1,4 +1,4 @@
-
+// Copyright 2022 Bochkarev Vladimir
 #include <gtest/gtest.h>
 #include <vector>
 #include "./matrix_max_columns.h"
@@ -18,7 +18,8 @@ TEST(Parallel_Operations_MPI, Test_Max_1) {
     std::vector<int> s_res(count_col);
     if (rank == 0) {
         for (int i = 0; i < count_col; i++)
-            s_res[i] = getSequentialOperations(std::vector<int>(matrix.begin()+i*count_row, matrix.begin()+count_row+i*count_row));
+            s_res[i] = getSequentialOperations(std::vector<int>(
+                matrix.begin()+i*count_row, matrix.begin()+count_row+i*count_row));
         ASSERT_EQ(p_res, s_res);
     }
 }
@@ -37,7 +38,8 @@ TEST(Parallel_Operations_MPI, Test_Max_2) {
     std::vector<int> s_res(count_col);
     if (rank == 0) {
         for (int i = 0; i < count_col; i++)
-            s_res[i] = getSequentialOperations(std::vector<int>(matrix.begin()+i*count_row, matrix.begin()+count_row+i*count_row));
+            s_res[i] = getSequentialOperations(std::vector<int>(
+                matrix.begin()+i*count_row, matrix.begin()+count_row+i*count_row));
         ASSERT_EQ(p_res, s_res);
     }
 }
@@ -56,7 +58,8 @@ TEST(Parallel_Operations_MPI, Test_Max_3) {
     std::vector<int> s_res(count_col);
     if (rank == 0) {
         for (int i = 0; i < count_col; i++)
-            s_res[i] = getSequentialOperations(std::vector<int>(matrix.begin()+i*count_row, matrix.begin()+count_row+i*count_row));
+            s_res[i] = getSequentialOperations(std::vector<int>(
+                matrix.begin()+i*count_row, matrix.begin()+count_row+i*count_row));
         ASSERT_EQ(p_res, s_res);
     }
 }
@@ -75,7 +78,8 @@ TEST(Parallel_Operations_MPI, Test_Max_4) {
     std::vector<int> s_res(count_col);
     if (rank == 0) {
         for (int i = 0; i < count_col; i++)
-            s_res[i] = getSequentialOperations(std::vector<int>(matrix.begin()+i*count_row, matrix.begin()+count_row+i*count_row));
+            s_res[i] = getSequentialOperations(std::vector<int>(
+                matrix.begin()+i*count_row, matrix.begin()+count_row+i*count_row));
         ASSERT_EQ(p_res, s_res);
     }
 }
@@ -94,7 +98,8 @@ TEST(Parallel_Operations_MPI, Test_Max_5) {
     std::vector<int> s_res(count_col);
     if (rank == 0) {
         for (int i = 0; i < count_col; i++)
-            s_res[i] = getSequentialOperations(std::vector<int>(matrix.begin()+i*count_row, matrix.begin()+count_row+i*count_row));
+            s_res[i] = getSequentialOperations(std::vector<int>(
+                matrix.begin()+i*count_row, matrix.begin()+count_row+i*count_row));
         ASSERT_EQ(p_res, s_res);
     }
 }
