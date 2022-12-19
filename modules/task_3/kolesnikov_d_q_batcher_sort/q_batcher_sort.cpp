@@ -47,7 +47,7 @@ vector<int> Merge(vector<vector<int>> vectors) {
     }
   }
   return vectors[0];
-} 
+}
 
 void SeqQuickSort(vector<int>* data, int l, int r) {
   if (l < r) {
@@ -70,7 +70,7 @@ vector<int> PrlQuickSort(vector<int> arr, int size) {
     MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     int chunk_size = size / proc_num;
-    vector<int> chunk(chunk_size); 
+    vector<int> chunk(chunk_size);
     vector<int> result;
 
     MPI_Scatter(arr.data(), chunk_size, MPI_INT,
