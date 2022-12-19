@@ -5,6 +5,7 @@
 
 #include <algorithm>
 #include <queue>
+#include <memory>
 #include <vector>
 
 using IntVector = std::vector<int>;
