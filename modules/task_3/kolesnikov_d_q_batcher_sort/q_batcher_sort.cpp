@@ -84,7 +84,7 @@ vector<int> PrlQuickSort(vector<int> arr, int size) {
 
         for (int i = 1; i < proc_num; ++i) {
             MPI_Recv(chunk.data(), chunk_size,
-                MPI_INT, i, 0, MPI_COMM_WORLD, 0);
+                MPI_INT, i, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
             all.push_back(chunk);
         }
         result = Merge(all);
