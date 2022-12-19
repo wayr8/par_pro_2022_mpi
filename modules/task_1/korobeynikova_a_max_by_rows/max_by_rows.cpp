@@ -4,10 +4,7 @@
 #include <mpi.h>
 
 #include <algorithm>
-#include <fstream>
-#include <iostream>
 #include <iterator>
-#include <sstream>
 #include <vector>
 
 std::vector<int> taskDistrib(const int proc_num, const int task_num) {
@@ -20,7 +17,7 @@ std::vector<int> taskDistrib(const int proc_num, const int task_num) {
   return task_per_proc;
 }
 
-int findMax(std::vector<int> vec) {
+int findMax(const std::vector<int> &vec) {
   const int sz = vec.size();
   int max = 0;
 
@@ -31,36 +28,26 @@ int findMax(std::vector<int> vec) {
   return max;
 }
 
-std::string vtos(std::vector<int> v) {
-  std::ostringstream oss;
-  if (!v.empty()) {
-    std::copy(v.begin(), v.end() - 1, std::ostream_iterator<int>(oss, ", "));
-    oss << v.back();
-  }
-  return oss.str();
-}
-
-std::vector<int> getParallelOperation(Matrix<int> global_matr) {
-  std::ofstream outf("C:/Users/User/Desktop/process_input.txt",
-                     std::ios_base::app);
-
+std::vector<int> getParallelOperation(const Matrix<int> &global_matr) {
   int size, rank;
   MPI_Comm_size(MPI_COMM_WORLD, &size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
   const int rows_num = global_matr.GetN();
   const int cols_number = global_matr.GetM();
+  MPI_Bcast(const_cast<int *>(&rows_num), 1, MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Bcast(const_cast<int *>(&cols_number), 1, MPI_INT, 0, MPI_COMM_WORLD);
+
   std::vector<int> rows_per_process = taskDistrib(size, rows_num);
-  std::vector<int> max_values(rows_per_process.at(rank));
+  std::vector<int> max_values(rows_per_process[rank]);
 
   if (rank == 0) {
-    outf << "tasks distribution: " << vtos(rows_per_process) << std::endl;
     int rows_to_skip = rows_per_process[0];
-    for (int proc = 1; proc < size; ++proc) {      
+    for (int proc = 1; proc < size; ++proc) {
       MPI_Send(global_matr[rows_to_skip],
                rows_per_process.at(proc) * cols_number, MPI_INT, proc, 0,
                MPI_COMM_WORLD);
       rows_to_skip += rows_per_process.at(proc);
-      outf << "Send" << std::endl;
     }
   }
 
@@ -74,29 +61,21 @@ std::vector<int> getParallelOperation(Matrix<int> global_matr) {
              0, 0, MPI_COMM_WORLD, &status);
   }
 
-  outf << "Process " << rank << ": what I got: ";
-  outf << vtos(local_vec) << std::endl;
   for (int i = 0; i < rows_per_process.at(rank); ++i) {
     std::vector<int> vector_to_find(local_vec.begin() + i * cols_number,
                                     local_vec.begin() + (i + 1) * cols_number);
     max_values.at(i) = findMax(vector_to_find);
-    outf << "Process " << rank << ": I found max at row " << i << ": "
-         << max_values.at(i) << std::endl;
   }
 
   if (rank == 0) {
     MPI_Status status;
     for (int proc = 1; proc < size; ++proc) {
       std::vector<int> rec_data(rows_per_process.at(proc));
-      MPI_Recv(rec_data.data(), rec_data.size(),
-               MPI_INT, proc, 0,
+      MPI_Recv(rec_data.data(), rec_data.size(), MPI_INT, proc, 0,
                MPI_COMM_WORLD, &status);
-      outf << "rec_data from p" << proc << ": " << vtos(rec_data) << std::endl;
       max_values.insert(max_values.end(), rec_data.begin(), rec_data.end());
-      outf << "max_values: " << vtos(max_values) << std::endl;
     }
   } else {
-    outf << rank << " send\n";
     MPI_Send(max_values.data(), max_values.size(), MPI_INT, 0, 0,
              MPI_COMM_WORLD);
   }
