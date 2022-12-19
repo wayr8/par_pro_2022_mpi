@@ -24,7 +24,7 @@ TEST(Parallel_Operations_MPI, Test_Sort) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-  const int size = 11;
+  const int size = 27;
   std::vector<int> global_vec(size);
   setRandomValues(global_vec);
 
@@ -36,11 +36,11 @@ TEST(Parallel_Operations_MPI, Test_Sort) {
   }
 }
 
-/*TEST(Parallel_Operations_MPI, Test_Sort_2) {
+TEST(Parallel_Operations_MPI, Test_Sort_2) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-  const int size = 0;
+  const int size = 30;
   std::vector<int> global_vec(size);
   setRandomValues(global_vec);
 
@@ -50,13 +50,13 @@ TEST(Parallel_Operations_MPI, Test_Sort) {
     std::vector<int> ss = seqSolution(global_vec);
     ASSERT_EQ(ps, ss);
   }
-}*/
+}
 
 TEST(Parallel_Operations_MPI, Test_Sort_3) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-  const int size = 20;
+  const int size = 15;
   std::vector<int> global_vec(size);
   setRandomValues(global_vec);
 
@@ -72,7 +72,7 @@ TEST(Parallel_Operations_MPI, Test_Sort_4) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-  const int size = 13;
+  const int size = 7;
   std::vector<int> global_vec(size);
   setRandomValues(global_vec);
 
@@ -84,11 +84,11 @@ TEST(Parallel_Operations_MPI, Test_Sort_4) {
   }
 }
 
-/*TEST(Parallel_Operations_MPI, Test_Sort_5) {
+TEST(Parallel_Operations_MPI, Test_Sort_5) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-  const int size = 1;
+  const int size = 50;
   std::vector<int> global_vec(size);
   setRandomValues(global_vec);
 
@@ -98,7 +98,7 @@ TEST(Parallel_Operations_MPI, Test_Sort_4) {
     std::vector<int> ss = seqSolution(global_vec);
     ASSERT_EQ(ps, ss);
   }
-}*/
+}
 
 int main(int argc, char** argv) {
   ::testing::InitGoogleTest(&argc, argv);

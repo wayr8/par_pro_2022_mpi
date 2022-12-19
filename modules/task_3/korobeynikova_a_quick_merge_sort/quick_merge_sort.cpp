@@ -8,9 +8,10 @@
 #include <iterator>
 #include <sstream>
 #include <vector>
+#include <queue>
 
 using IntVector = std::vector<int>;
-using IntVectorPtr = std::unique_ptr<IntVector>;
+using IntVectorPtr = std::shared_ptr<IntVector>;
 
 static std::string vtos(IntVector v) {
   std::ostringstream oss;
@@ -44,6 +45,11 @@ IntVector parallelSort(const IntVector &global_vec) {
   }
 
   IntVector elems_per_process = taskDistrib(size, elems_num);
+  if (elems_per_process.at(rank) == 0)
+  {
+    return IntVector{};
+  }
+
   IntVector sorted_vec(elems_per_process[rank]);
 
   std::ofstream outf("C:/Users/User/Desktop/process_input.txt",
@@ -53,13 +59,16 @@ IntVector parallelSort(const IntVector &global_vec) {
     outf << "tasks distribution: " << vtos(elems_per_process) << std::endl;
     int elems_to_skip = elems_per_process.at(0);
     for (int proc = 1; proc < size; ++proc) {
-      outf << "Process 0: I send to Process " << proc << " this: "
-           << vtos(IntVector(global_vec.begin() + elems_to_skip,
-                                    global_vec.begin() + elems_to_skip +
-                                        elems_per_process.at(proc)))
-           << std::endl;
-      MPI_Send(const_cast<int *>(&global_vec.at(elems_to_skip)),
-               elems_per_process.at(proc), MPI_INT, proc, 0, MPI_COMM_WORLD);
+      if (elems_per_process.at(proc) != 0) {
+        outf << "Process 0: I send to Process " << proc << " this: "
+             << vtos(IntVector(global_vec.begin() + elems_to_skip,
+                               global_vec.begin() + elems_to_skip +
+                                   elems_per_process.at(proc)))
+             << std::endl;
+
+        MPI_Send(const_cast<int *>(&global_vec.at(elems_to_skip)),
+                 elems_per_process.at(proc), MPI_INT, proc, 0, MPI_COMM_WORLD);
+      }
       elems_to_skip += elems_per_process.at(proc);
     }
   }
@@ -70,8 +79,9 @@ IntVector parallelSort(const IntVector &global_vec) {
         global_vec.begin(), global_vec.begin() + elems_per_process.at(rank));
   } else {
     MPI_Status status;
+    outf << rank << " wait for receive\n";
     MPI_Recv(local_vec.data(), elems_per_process.at(rank), MPI_INT, 0, 0,
-             MPI_COMM_WORLD, &status);
+            MPI_COMM_WORLD, &status);
   }
   outf << "Process " << rank << ": I sort this: " << vtos(local_vec)
        << std::endl;
@@ -84,60 +94,37 @@ IntVector parallelSort(const IntVector &global_vec) {
 
   if (rank == 0) {
     MPI_Status status;
-    std::vector<IntVectorPtr> ptr_vec(elems_per_process.size());
-    ptr_vec.at(0) = std::make_unique<IntVector>(local_vec);
-    outf << "ptr_vec[0] consist this: " << vtos(*ptr_vec.at(0)) << std::endl;
+    std::queue<IntVectorPtr> ptr_queue;
+    ptr_queue.push(std::make_shared<IntVector>(local_vec));
+    outf << "ptr_queue[0] consist this: " << vtos(*ptr_queue.back()) << std::endl;
     
     for (int proc = 1; proc < size; ++proc) {
-      ptr_vec.at(proc) =
-          std::make_unique<IntVector>(elems_per_process.at(proc));
-      MPI_Recv(ptr_vec.at(proc)->data(), ptr_vec.at(proc)->size(), MPI_INT, proc,
-               0,
-               MPI_COMM_WORLD, &status);
-      outf << "Process " << rank << ": I got from Process " << proc
-           << " this : " << vtos(*ptr_vec.at(proc)) << std::endl;
+      if (elems_per_process.at(proc) != 0) {
+        ptr_queue.push(std::make_shared<IntVector>(elems_per_process.at(proc)));
+        MPI_Recv(ptr_queue.back()->data(), ptr_queue.back()->size(), MPI_INT,
+                 proc, 0, MPI_COMM_WORLD, &status);
+        outf << "Process " << rank << ": I got from Process " << proc
+             << " this : " << vtos(*ptr_queue.back()) << std::endl;
+      }
     }
 
-    for (int i = 0; i < ptr_vec.size(); ++i)
-    {
-      outf << "ptr_vec[" << i << "] = " << vtos(*ptr_vec[i]) << std::endl;
-    }
+    while (ptr_queue.size() != 1) {
+      IntVectorPtr f_v_ptr = ptr_queue.front();
+      ptr_queue.pop();
+      IntVectorPtr s_v_ptr = ptr_queue.front();
+      ptr_queue.pop();
 
-    while (ptr_vec.size() != 1) {
-      int index = 0;
-      int resize = ptr_vec.size() / 2;
-      for (int i = 1; i < ptr_vec.size() - ptr_vec.size() % 2;
-           i += 2, ++index) {
-        IntVector &f_v = *ptr_vec.at(i - 1);
-        IntVector &s_v = *ptr_vec.at(i);
-
-        outf << "Process 0: I'm going to merge ptr_vec[" << i - 1
-             << "]: " << vtos(f_v) << " and ptr_vec[" << i << "]: " << vtos(s_v)
-             << "\nAnd put it instead of this: " << vtos(*ptr_vec.at(index))
-             << std::endl;
-
-        IntVector temp(f_v.size() + s_v.size());
-        std::merge(f_v.begin(), f_v.end(), s_v.begin(), s_v.end(),
-                   temp.begin());
-        *ptr_vec.at(index) = temp;
-        outf << "ptr_vec[" << index
-             << "] consist this: " << vtos(*ptr_vec.at(0)) << std::endl;
-      }
-      if (ptr_vec.size() % 2 != 0) {
-        //++resize;
-        IntVector &f_v = *ptr_vec.at(index - 1);
-        IntVector &s_v = *ptr_vec.at(size - 1);
-        IntVector temp(f_v.size() + s_v.size());
-        std::merge(f_v.begin(), f_v.end(), s_v.begin(), s_v.end(),
-                   temp.begin());
-        *ptr_vec.at(index - 1) = temp;
-      }
-      ptr_vec.resize(resize);
-      outf << "new ptr_vec size = " << ptr_vec.size() << std::endl;
-      outf << "ptr_vec[" << 0 << "] consist this: " << vtos(*ptr_vec.at(0))
+      outf << "Process 0: I'm going to merge: " << vtos(*f_v_ptr) << " and : " << vtos(*s_v_ptr)
            << std::endl;
+
+      auto temp = std::make_shared<IntVector>(f_v_ptr->size() + s_v_ptr->size());
+      std::merge(f_v_ptr->begin(), f_v_ptr->end(), s_v_ptr->begin(), s_v_ptr->end(), temp->begin());
+      ptr_queue.push(temp);
+      outf << "ptr_queue.back() = " << vtos(*ptr_queue.back()) << std::endl;
+      
+      outf << "new ptr_queue size = " << ptr_queue.size() << std::endl;
     }
-    return *ptr_vec.at(0);
+    return *ptr_queue.back();
   } else {
     MPI_Send(local_vec.data(), local_vec.size(), MPI_INT, 0, 0, MPI_COMM_WORLD);
   }
