@@ -4,7 +4,6 @@
 #define MODULES_TEST_TASKS_TEST_MPI_OPS_MPI_H_
 
 #include <random>
-#include <string>
 #include <vector>
 
 std::vector<int> taskDistrib(const int proc_num, const int task_num);
