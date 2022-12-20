@@ -1,5 +1,5 @@
 // Copyright 2022 Ustinov A.
-#include "../../../modules/task_1/ustinov_a_count_adjacent_invertions/count_adj_invertions.h"
+#include "../../../modules/task_1/ustinov_a_count_adj_invert/count_adj_invert.h"
 #include <mpi.h>
 #include <random>
 

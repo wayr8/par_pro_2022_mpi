@@ -3,7 +3,7 @@
 #include <gtest/gtest.h>
 #include <vector>
 #include <random>
-#include "./count_adj_invertions.h"
+#include "./count_adj_invert.h"
 #include <gtest-mpi-listener.hpp>
 
 using std::vector;
