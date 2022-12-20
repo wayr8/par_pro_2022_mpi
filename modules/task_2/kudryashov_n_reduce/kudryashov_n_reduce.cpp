@@ -50,7 +50,7 @@ int reduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype, MPI_O
                     MPI_Recv(buf, count, datatype, MPI_ANY_SOURCE, MPI_ANY_TAG, comm, &status);
                     for (int j = 0; j < count; j++) {
                         if (static_cast<int*>(recvbuf)[j] < buf[j]) {
-                            static_cast<int*>(recvbuf)[j] = static_cast<int*>(buf)[j];
+                            static_cast<int*>(recvbuf)[j] = buf[j];
                         }
                     }
                 }
@@ -60,7 +60,7 @@ int reduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype, MPI_O
                     MPI_Recv(buf, count, datatype, MPI_ANY_SOURCE, MPI_ANY_TAG, comm, &status);
                     for (int j = 0; j < count; j++) {
                         if (static_cast<int*>(recvbuf)[j] > buf[j]) {
-                            static_cast<int*>(recvbuf)[j] = static_cast<int*>(buf)[j];
+                            static_cast<int*>(recvbuf)[j] = buf[j];
                         }
                     }
                 }
@@ -95,7 +95,7 @@ int reduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype, MPI_O
                     MPI_Recv(buf, count, datatype, MPI_ANY_SOURCE, MPI_ANY_TAG, comm, &status);
                     for (int j = 0; j < count; j++) {
                         if (static_cast<double*>(recvbuf)[j] < buf[j]) {
-                            static_cast<double*>(recvbuf)[j] = static_cast<double*>(buf)[j];
+                            static_cast<double*>(recvbuf)[j] = buf[j];
                         }
                     }
                 }
@@ -105,7 +105,7 @@ int reduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype, MPI_O
                     MPI_Recv(buf, count, datatype, MPI_ANY_SOURCE, MPI_ANY_TAG, comm, &status);
                     for (int j = 0; j < count; j++) {
                         if (static_cast<double*>(recvbuf)[j] > buf[j]) {
-                            static_cast<double*>(recvbuf)[j] = static_cast<double*>(buf)[j];
+                            static_cast<double*>(recvbuf)[j] = buf[j];
                         }
                     }
                 }
@@ -140,7 +140,7 @@ int reduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype, MPI_O
                     MPI_Recv(buf, count, datatype, MPI_ANY_SOURCE, MPI_ANY_TAG, comm, &status);
                     for (int j = 0; j < count; j++) {
                         if (static_cast<float*>(recvbuf)[j] < buf[j]) {
-                            static_cast<float*>(recvbuf)[j] = static_cast<float*>(buf)[j];
+                            static_cast<float*>(recvbuf)[j] = buf[j];
                         }
                     }
                 }
@@ -150,7 +150,7 @@ int reduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype, MPI_O
                     MPI_Recv(buf, count, datatype, MPI_ANY_SOURCE, MPI_ANY_TAG, comm, &status);
                     for (int j = 0; j < count; j++) {
                         if (static_cast<float*>(recvbuf)[j] > buf[j]) {
-                            static_cast<float*>(recvbuf)[j] = static_cast<float*>(buf)[j];
+                            static_cast<float*>(recvbuf)[j] = buf[j];
                         }
                     }
                 }
