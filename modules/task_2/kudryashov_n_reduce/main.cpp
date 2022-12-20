@@ -27,19 +27,17 @@ TEST(Reduce, test_single_int_sum) {
         time1 = MPI_Wtime();
     }
     MPI_Reduce(&data, &reducedData, 1, MPI_INT, MPI_SUM, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
     if (rank == root) {
         time1 = MPI_Wtime() - time1;
         time2 = MPI_Wtime();
     }
 
     reduce(&data, &myReducedData, 1, MPI_INT, MPI_SUM, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
 
     if (rank == root) {
         time2 = MPI_Wtime() - time2;
         ASSERT_EQ(reducedData, myReducedData);
-        ASSERT_LT(time2, time1 * 10);
+        ASSERT_LT(abs(time1-time2), 1);
     }
 }
 
@@ -64,19 +62,17 @@ TEST(Reduce, test_single_int_prod) {
         time1 = MPI_Wtime();
     }
     MPI_Reduce(&data, &reducedData, 1, MPI_INT, MPI_PROD, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
     if (rank == root) {
         time1 = MPI_Wtime() - time1;
         time2 = MPI_Wtime();
     }
 
     reduce(&data, &myReducedData, 1, MPI_INT, MPI_PROD, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
 
     if (rank == root) {
         time2 = MPI_Wtime() - time2;
         ASSERT_EQ(reducedData, myReducedData);
-        ASSERT_LT(time2, time1 * 10);
+        ASSERT_LT(abs(time1-time2), 1);
     }
 }
 
@@ -101,19 +97,17 @@ TEST(Reduce, test_single_int_max) {
         time1 = MPI_Wtime();
     }
     MPI_Reduce(&data, &reducedData, 1, MPI_INT, MPI_MAX, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
     if (rank == root) {
         time1 = MPI_Wtime() - time1;
         time2 = MPI_Wtime();
     }
 
     reduce(&data, &myReducedData, 1, MPI_INT, MPI_MAX, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
 
     if (rank == root) {
         time2 = MPI_Wtime() - time2;
         ASSERT_EQ(reducedData, myReducedData);
-        ASSERT_LT(time2, time1 * 10);
+        ASSERT_LT(abs(time1-time2), 1);
     }
 }
 
@@ -138,19 +132,17 @@ TEST(Reduce, test_single_int_min) {
         time1 = MPI_Wtime();
     }
     MPI_Reduce(&data, &reducedData, 1, MPI_INT, MPI_MIN, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
     if (rank == root) {
         time1 = MPI_Wtime() - time1;
         time2 = MPI_Wtime();
     }
 
     reduce(&data, &myReducedData, 1, MPI_INT, MPI_MIN, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
 
     if (rank == root) {
         time2 = MPI_Wtime() - time2;
         ASSERT_EQ(reducedData, myReducedData);
-        ASSERT_LT(time2, time1 * 10);
+        ASSERT_LT(abs(time1-time2), 1);
     }
 }
 
@@ -178,21 +170,19 @@ TEST(Reduce, test_vector_int_sum) {
         time1 = MPI_Wtime();
     }
     MPI_Reduce(vec.data(), reducedData.data(), count, MPI_INT, MPI_SUM, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
     if (rank == root) {
         time1 = MPI_Wtime() - time1;
         time2 = MPI_Wtime();
     }
 
     reduce(vec.data(), myReducedData.data(), count, MPI_INT, MPI_SUM, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
 
     if (rank == root) {
         time2 = MPI_Wtime() - time2;
         for (int i = 0; i < count; i++) {
             ASSERT_EQ(reducedData[i], myReducedData[i]);
         }
-        ASSERT_LT(time2, time1 * 10);
+        ASSERT_LT(abs(time1-time2), 1);
     }
 }
 
@@ -220,21 +210,19 @@ TEST(Reduce, test_vector_int_prod) {
         time1 = MPI_Wtime();
     }
     MPI_Reduce(vec.data(), reducedData.data(), count, MPI_INT, MPI_PROD, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
     if (rank == root) {
         time1 = MPI_Wtime() - time1;
         time2 = MPI_Wtime();
     }
 
     reduce(vec.data(), myReducedData.data(), count, MPI_INT, MPI_PROD, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
 
     if (rank == root) {
         time2 = MPI_Wtime() - time2;
         for (int i = 0; i < count; i++) {
             ASSERT_EQ(reducedData[i], myReducedData[i]);
         }
-        ASSERT_LT(time2, time1 * 10);
+        ASSERT_LT(abs(time1-time2), 1);
     }
 }
 
@@ -262,21 +250,19 @@ TEST(Reduce, test_vector_int_max) {
         time1 = MPI_Wtime();
     }
     MPI_Reduce(vec.data(), reducedData.data(), count, MPI_INT, MPI_MAX, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
     if (rank == root) {
         time1 = MPI_Wtime() - time1;
         time2 = MPI_Wtime();
     }
 
     reduce(vec.data(), myReducedData.data(), count, MPI_INT, MPI_MAX, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
 
     if (rank == root) {
         time2 = MPI_Wtime() - time2;
         for (int i = 0; i < count; i++) {
             ASSERT_EQ(reducedData[i], myReducedData[i]);
         }
-        ASSERT_LT(time2, time1 * 10);
+        ASSERT_LT(abs(time1-time2), 1);
     }
 }
 
@@ -304,21 +290,19 @@ TEST(Reduce, test_vector_int_min) {
         time1 = MPI_Wtime();
     }
     MPI_Reduce(vec.data(), reducedData.data(), count, MPI_INT, MPI_MIN, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
     if (rank == root) {
         time1 = MPI_Wtime() - time1;
         time2 = MPI_Wtime();
     }
 
     reduce(vec.data(), myReducedData.data(), count, MPI_INT, MPI_MIN, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
 
     if (rank == root) {
         time2 = MPI_Wtime() - time2;
         for (int i = 0; i < count; i++) {
             ASSERT_EQ(reducedData[i], myReducedData[i]);
         }
-        ASSERT_LT(time2, time1 * 10);
+        ASSERT_LT(abs(time1-time2), 1);
     }
 }
 
@@ -343,21 +327,19 @@ TEST(Reduce, test_single_double_sum) {
         time1 = MPI_Wtime();
     }
     MPI_Reduce(&data, &reducedData, 1, MPI_DOUBLE, MPI_SUM, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
     if (rank == root) {
         time1 = MPI_Wtime() - time1;
         time2 = MPI_Wtime();
     }
 
     reduce(&data, &myReducedData, 1, MPI_DOUBLE, MPI_SUM, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
 
     if (rank == root) {
         time2 = MPI_Wtime() - time2;
         if (abs(myReducedData - reducedData) > 1e-10) {
             ASSERT_EQ(reducedData, myReducedData);
         }
-        ASSERT_LT(time2, time1 * 10);
+        ASSERT_LT(abs(time1-time2), 1);
     }
 }
 
@@ -381,21 +363,19 @@ TEST(Reduce, test_single_double_prod) {
         time1 = MPI_Wtime();
     }
     MPI_Reduce(&data, &reducedData, 1, MPI_DOUBLE, MPI_PROD, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
     if (rank == root) {
         time1 = MPI_Wtime() - time1;
         time2 = MPI_Wtime();
     }
 
     reduce(&data, &myReducedData, 1, MPI_DOUBLE, MPI_PROD, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
 
     if (rank == root) {
         time2 = MPI_Wtime() - time2;
         if (abs(myReducedData - reducedData) > 1e-10) {
             ASSERT_EQ(reducedData, myReducedData);
         }
-        ASSERT_LT(time2, time1 * 10);
+        ASSERT_LT(abs(time1-time2), 1);
     }
 }
 
@@ -420,21 +400,19 @@ TEST(Reduce, test_single_double_max) {
         time1 = MPI_Wtime();
     }
     MPI_Reduce(&data, &reducedData, 1, MPI_DOUBLE, MPI_MAX, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
     if (rank == root) {
         time1 = MPI_Wtime() - time1;
         time2 = MPI_Wtime();
     }
 
     reduce(&data, &myReducedData, 1, MPI_DOUBLE, MPI_MAX, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
 
     if (rank == root) {
         time2 = MPI_Wtime() - time2;
         if (abs(myReducedData - reducedData) > 1e-10) {
             ASSERT_EQ(reducedData, myReducedData);
         }
-        ASSERT_LT(time2, time1 * 10);
+        ASSERT_LT(abs(time1-time2), 1);
     }
 }
 
@@ -459,21 +437,19 @@ TEST(Reduce, test_single_double_min) {
         time1 = MPI_Wtime();
     }
     MPI_Reduce(&data, &reducedData, 1, MPI_DOUBLE, MPI_MIN, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
     if (rank == root) {
         time1 = MPI_Wtime() - time1;
         time2 = MPI_Wtime();
     }
 
     reduce(&data, &myReducedData, 1, MPI_DOUBLE, MPI_MIN, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
 
     if (rank == root) {
         time2 = MPI_Wtime() - time2;
         if (abs(myReducedData - reducedData) > 1e-10) {
             ASSERT_EQ(reducedData, myReducedData);
         }
-        ASSERT_LT(time2, time1 * 10);
+        ASSERT_LT(abs(time1-time2), 1);
     }
 }
 
@@ -501,14 +477,12 @@ TEST(Reduce, test_vector_double_sum) {
         time1 = MPI_Wtime();
     }
     MPI_Reduce(vec.data(), reducedData.data(), count, MPI_DOUBLE, MPI_SUM, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
     if (rank == root) {
         time1 = MPI_Wtime() - time1;
         time2 = MPI_Wtime();
     }
 
     reduce(vec.data(), myReducedData.data(), count, MPI_DOUBLE, MPI_SUM, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
 
     if (rank == root) {
         time2 = MPI_Wtime() - time2;
@@ -517,7 +491,7 @@ TEST(Reduce, test_vector_double_sum) {
                 ASSERT_EQ(reducedData[i], myReducedData[i]);
             }
         }
-        ASSERT_LT(time2, time1 * 10);
+        ASSERT_LT(abs(time1-time2), 1);
     }
 }
 
@@ -545,14 +519,12 @@ TEST(Reduce, test_vector_double_prod) {
         time1 = MPI_Wtime();
     }
     MPI_Reduce(vec.data(), reducedData.data(), count, MPI_DOUBLE, MPI_PROD, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
     if (rank == root) {
         time1 = MPI_Wtime() - time1;
         time2 = MPI_Wtime();
     }
 
     reduce(vec.data(), myReducedData.data(), count, MPI_DOUBLE, MPI_PROD, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
 
     if (rank == root) {
         time2 = MPI_Wtime() - time2;
@@ -561,7 +533,7 @@ TEST(Reduce, test_vector_double_prod) {
                 ASSERT_EQ(reducedData[i], myReducedData[i]);
             }
         }
-        ASSERT_LT(time2, time1 * 10);
+        ASSERT_LT(abs(time1-time2), 1);
     }
 }
 
@@ -589,14 +561,12 @@ TEST(Reduce, test_vector_double_max) {
         time1 = MPI_Wtime();
     }
     MPI_Reduce(vec.data(), reducedData.data(), count, MPI_DOUBLE, MPI_MAX, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
     if (rank == root) {
         time1 = MPI_Wtime() - time1;
         time2 = MPI_Wtime();
     }
 
     reduce(vec.data(), myReducedData.data(), count, MPI_DOUBLE, MPI_MAX, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
 
     if (rank == root) {
         time2 = MPI_Wtime() - time2;
@@ -605,7 +575,7 @@ TEST(Reduce, test_vector_double_max) {
                 ASSERT_EQ(reducedData[i], myReducedData[i]);
             }
         }
-        ASSERT_LT(time2, time1 * 10);
+        ASSERT_LT(abs(time1-time2), 1);
     }
 }
 
@@ -633,14 +603,12 @@ TEST(Reduce, test_vector_double_min) {
         time1 = MPI_Wtime();
     }
     MPI_Reduce(vec.data(), reducedData.data(), count, MPI_DOUBLE, MPI_MIN, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
     if (rank == root) {
         time1 = MPI_Wtime() - time1;
         time2 = MPI_Wtime();
     }
 
     reduce(vec.data(), myReducedData.data(), count, MPI_DOUBLE, MPI_MIN, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
 
     if (rank == root) {
         time2 = MPI_Wtime() - time2;
@@ -649,7 +617,7 @@ TEST(Reduce, test_vector_double_min) {
                 ASSERT_EQ(reducedData[i], myReducedData[i]);
             }
         }
-        ASSERT_LT(time2, time1 * 10);
+        ASSERT_LT(abs(time1-time2), 1);
     }
 }
 
@@ -674,21 +642,19 @@ TEST(Reduce, test_single_float_sum) {
         time1 = MPI_Wtime();
     }
     MPI_Reduce(&data, &reducedData, 1, MPI_FLOAT, MPI_SUM, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
     if (rank == root) {
         time1 = MPI_Wtime() - time1;
         time2 = MPI_Wtime();
     }
 
     reduce(&data, &myReducedData, 1, MPI_FLOAT, MPI_SUM, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
 
     if (rank == root) {
         time2 = MPI_Wtime() - time2;
         if (abs(myReducedData - reducedData) > 1e-10) {
             ASSERT_EQ(reducedData, myReducedData);
         }
-        ASSERT_LT(time2, time1 * 10);
+        ASSERT_LT(abs(time1-time2), 1);
     }
 }
 
@@ -713,21 +679,19 @@ TEST(Reduce, test_single_float_prod) {
         time1 = MPI_Wtime();
     }
     MPI_Reduce(&data, &reducedData, 1, MPI_FLOAT, MPI_PROD, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
     if (rank == root) {
         time1 = MPI_Wtime() - time1;
         time2 = MPI_Wtime();
     }
 
     reduce(&data, &myReducedData, 1, MPI_FLOAT, MPI_PROD, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
 
     if (rank == root) {
         time2 = MPI_Wtime() - time2;
         if (abs(myReducedData - reducedData) > 1e-10) {
             ASSERT_EQ(reducedData, myReducedData);
         }
-        ASSERT_LT(time2, time1 * 10);
+        ASSERT_LT(abs(time1-time2), 1);
     }
 }
 
@@ -752,21 +716,19 @@ TEST(Reduce, test_single_float_max) {
         time1 = MPI_Wtime();
     }
     MPI_Reduce(&data, &reducedData, 1, MPI_FLOAT, MPI_MAX, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
     if (rank == root) {
         time1 = MPI_Wtime() - time1;
         time2 = MPI_Wtime();
     }
 
     reduce(&data, &myReducedData, 1, MPI_FLOAT, MPI_MAX, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
 
     if (rank == root) {
         time2 = MPI_Wtime() - time2;
         if (abs(myReducedData - reducedData) > 1e-10) {
             ASSERT_EQ(reducedData, myReducedData);
         }
-        ASSERT_LT(time2, time1 * 10);
+        ASSERT_LT(abs(time1-time2), 1);
     }
 }
 
@@ -791,21 +753,19 @@ TEST(Reduce, test_single_float_min) {
         time1 = MPI_Wtime();
     }
     MPI_Reduce(&data, &reducedData, 1, MPI_FLOAT, MPI_MIN, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
     if (rank == root) {
         time1 = MPI_Wtime() - time1;
         time2 = MPI_Wtime();
     }
 
     reduce(&data, &myReducedData, 1, MPI_FLOAT, MPI_MIN, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
 
     if (rank == root) {
         time2 = MPI_Wtime() - time2;
         if (abs(myReducedData - reducedData) > 1e-10) {
             ASSERT_EQ(reducedData, myReducedData);
         }
-        ASSERT_LT(time2, time1 * 10);
+        ASSERT_LT(abs(time1-time2), 1);
     }
 }
 
@@ -833,14 +793,12 @@ TEST(Reduce, test_vector_float_sum) {
         time1 = MPI_Wtime();
     }
     MPI_Reduce(vec.data(), reducedData.data(), count, MPI_FLOAT, MPI_SUM, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
     if (rank == root) {
         time1 = MPI_Wtime() - time1;
         time2 = MPI_Wtime();
     }
 
     reduce(vec.data(), myReducedData.data(), count, MPI_FLOAT, MPI_SUM, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
 
     if (rank == root) {
         time2 = MPI_Wtime() - time2;
@@ -849,7 +807,7 @@ TEST(Reduce, test_vector_float_sum) {
                 ASSERT_EQ(reducedData[i], myReducedData[i]);
             }
         }
-        ASSERT_LT(time2, time1 * 10);
+        ASSERT_LT(abs(time1-time2), 1);
     }
 }
 
@@ -877,14 +835,12 @@ TEST(Reduce, test_vector_float_prod) {
         time1 = MPI_Wtime();
     }
     MPI_Reduce(vec.data(), reducedData.data(), count, MPI_FLOAT, MPI_PROD, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
     if (rank == root) {
         time1 = MPI_Wtime() - time1;
         time2 = MPI_Wtime();
     }
 
     reduce(vec.data(), myReducedData.data(), count, MPI_FLOAT, MPI_PROD, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
 
     if (rank == root) {
         time2 = MPI_Wtime() - time2;
@@ -893,7 +849,7 @@ TEST(Reduce, test_vector_float_prod) {
                 ASSERT_EQ(reducedData[i], myReducedData[i]);
             }
         }
-        ASSERT_LT(time2, time1 * 10);
+        ASSERT_LT(abs(time1-time2), 1);
     }
 }
 
@@ -921,14 +877,12 @@ TEST(Reduce, test_vector_float_max) {
         time1 = MPI_Wtime();
     }
     MPI_Reduce(vec.data(), reducedData.data(), count, MPI_FLOAT, MPI_MAX, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
     if (rank == root) {
         time1 = MPI_Wtime() - time1;
         time2 = MPI_Wtime();
     }
 
     reduce(vec.data(), myReducedData.data(), count, MPI_FLOAT, MPI_MAX, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
 
     if (rank == root) {
         time2 = MPI_Wtime() - time2;
@@ -937,7 +891,7 @@ TEST(Reduce, test_vector_float_max) {
                 ASSERT_EQ(reducedData[i], myReducedData[i]);
             }
         }
-        ASSERT_LT(time2, time1 * 10);
+        ASSERT_LT(abs(time1-time2), 1);
     }
 }
 
@@ -965,14 +919,12 @@ TEST(Reduce, test_vector_float_min) {
         time1 = MPI_Wtime();
     }
     MPI_Reduce(vec.data(), reducedData.data(), count, MPI_FLOAT, MPI_MIN, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
     if (rank == root) {
         time1 = MPI_Wtime() - time1;
         time2 = MPI_Wtime();
     }
 
     reduce(vec.data(), myReducedData.data(), count, MPI_FLOAT, MPI_MIN, root, MPI_COMM_WORLD);
-    MPI_Barrier(MPI_COMM_WORLD);
 
     if (rank == root) {
         time2 = MPI_Wtime() - time2;
@@ -981,7 +933,7 @@ TEST(Reduce, test_vector_float_min) {
                 ASSERT_EQ(reducedData[i], myReducedData[i]);
             }
         }
-        ASSERT_LT(time2, time1 * 10);
+        ASSERT_LT(abs(time1-time2), 1);
     }
 }
 
