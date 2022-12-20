@@ -93,7 +93,6 @@ int countRequiredCharInStr(char *str, char requiredChar) {
     char* procStr = new char[oneProcWorkAmountForScatterv[procId]];
 
     if (procId == 0) {
-        std::cout << procId << std::endl;
         MPI_Scatterv(&str[0], &oneProcWorkAmountForScatterv[0],
             &scattervDispls[0], MPI_CHAR, &procStr[0],
             oneProcWorkAmountForScatterv[procId], MPI_CHAR, procId,
@@ -103,6 +102,7 @@ int countRequiredCharInStr(char *str, char requiredChar) {
 
     if (procId != 0) {
         MPI_Status status;
+        std::cout << procId << std::endl;
         MPI_Recv(&procStr[0], oneProcWorkAmountForScatterv[procId],
             MPI_CHAR, 0, 1, commForProcInUse, &status);
     }
