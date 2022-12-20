@@ -36,9 +36,8 @@ TEST(Reduce, test_single_int_sum) {
 
     if (rank == 0) {
         time2 = MPI_Wtime() - time2;
-        printf("MPI Reduce: %lf\n", time1);
-        printf("My Reduce: %lf\n", time2);
         ASSERT_EQ(reducedData, myReducedData);
+        ASSERT_LT(time2, time1 * 10);
     }
 }
 
@@ -72,9 +71,8 @@ TEST(Reduce, test_single_int_prod) {
 
     if (rank == 0) {
         time2 = MPI_Wtime() - time2;
-        printf("MPI Reduce: %lf\n", time1);
-        printf("My Reduce: %lf\n", time2);
         ASSERT_EQ(reducedData, myReducedData);
+        ASSERT_LT(time2, time1 * 10);
     }
 }
 
@@ -108,9 +106,8 @@ TEST(Reduce, test_single_int_max) {
 
     if (rank == 0) {
         time2 = MPI_Wtime() - time2;
-        printf("MPI Reduce: %lf\n", time1);
-        printf("My Reduce: %lf\n", time2);
         ASSERT_EQ(reducedData, myReducedData);
+        ASSERT_LT(time2, time1 * 10);
     }
 }
 
@@ -144,9 +141,8 @@ TEST(Reduce, test_single_int_min) {
 
     if (rank == 0) {
         time2 = MPI_Wtime() - time2;
-        printf("MPI Reduce: %lf\n", time1);
-        printf("My Reduce: %lf\n", time2);
         ASSERT_EQ(reducedData, myReducedData);
+        ASSERT_LT(time2, time1 * 10);
     }
 }
 
@@ -157,8 +153,8 @@ TEST(Reduce, test_vector_int_sum) {
     MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    std::vector<int> randVec = generateRandomVector<int>(15);
-    int count = 15 / proc_num;
+    std::vector<int> randVec = generateRandomVector<int>(50);
+    int count = 50 / proc_num;
     std::vector<int> reducedData(count), myReducedData(count), vec(count);
 
     if (rank == 0) {
@@ -183,9 +179,10 @@ TEST(Reduce, test_vector_int_sum) {
 
     if (rank == 0) {
         time2 = MPI_Wtime() - time2;
-        printf("MPI Reduce: %lf\n", time1);
-        printf("My Reduce: %lf\n", time2);
-        ASSERT_EQ(reducedData, myReducedData);
+        for (int i = 0; i < count; i++) {
+            ASSERT_EQ(reducedData[i], myReducedData[i]);
+        }
+        ASSERT_LT(time2, time1 * 10);
     }
 }
 
@@ -196,8 +193,8 @@ TEST(Reduce, test_vector_int_prod) {
     MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    std::vector<int> randVec = generateRandomVector<int>(15);
-    int count = 15 / proc_num;
+    std::vector<int> randVec = generateRandomVector<int>(50);
+    int count = 50 / proc_num;
     std::vector<int> reducedData(count), myReducedData(count), vec(count);
 
     if (rank == 0) {
@@ -222,9 +219,10 @@ TEST(Reduce, test_vector_int_prod) {
 
     if (rank == 0) {
         time2 = MPI_Wtime() - time2;
-        printf("MPI Reduce: %lf\n", time1);
-        printf("My Reduce: %lf\n", time2);
-        ASSERT_EQ(reducedData, myReducedData);
+        for (int i = 0; i < count; i++) {
+            ASSERT_EQ(reducedData[i], myReducedData[i]);
+        }
+        ASSERT_LT(time2, time1 * 10);
     }
 }
 
@@ -235,8 +233,8 @@ TEST(Reduce, test_vector_int_max) {
     MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    std::vector<int> randVec = generateRandomVector<int>(15);
-    int count = 15 / proc_num;
+    std::vector<int> randVec = generateRandomVector<int>(50);
+    int count = 50 / proc_num;
     std::vector<int> reducedData(count), myReducedData(count), vec(count);
 
     if (rank == 0) {
@@ -261,9 +259,10 @@ TEST(Reduce, test_vector_int_max) {
 
     if (rank == 0) {
         time2 = MPI_Wtime() - time2;
-        printf("MPI Reduce: %lf\n", time1);
-        printf("My Reduce: %lf\n", time2);
-        ASSERT_EQ(reducedData, myReducedData);
+        for (int i = 0; i < count; i++) {
+            ASSERT_EQ(reducedData[i], myReducedData[i]);
+        }
+        ASSERT_LT(time2, time1 * 10);
     }
 }
 
@@ -274,8 +273,8 @@ TEST(Reduce, test_vector_int_min) {
     MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    std::vector<int> randVec = generateRandomVector<int>(15);
-    int count = 15 / proc_num;
+    std::vector<int> randVec = generateRandomVector<int>(50);
+    int count = 50 / proc_num;
     std::vector<int> reducedData(count), myReducedData(count), vec(count);
 
     if (rank == 0) {
@@ -300,9 +299,10 @@ TEST(Reduce, test_vector_int_min) {
 
     if (rank == 0) {
         time2 = MPI_Wtime() - time2;
-        printf("MPI Reduce: %lf\n", time1);
-        printf("My Reduce: %lf\n", time2);
-        ASSERT_EQ(reducedData, myReducedData);
+        for (int i = 0; i < count; i++) {
+            ASSERT_EQ(reducedData[i], myReducedData[i]);
+        }
+        ASSERT_LT(time2, time1 * 10);
     }
 }
 
@@ -336,9 +336,8 @@ TEST(Reduce, test_single_double_sum) {
 
     if (rank == 0) {
         time2 = MPI_Wtime() - time2;
-        printf("MPI Reduce: %lf\n", time1);
-        printf("My Reduce: %lf\n", time2);
         ASSERT_EQ(reducedData, myReducedData);
+        ASSERT_LT(time2, time1 * 10);
     }
 }
 
@@ -372,9 +371,8 @@ TEST(Reduce, test_single_double_prod) {
 
     if (rank == 0) {
         time2 = MPI_Wtime() - time2;
-        printf("MPI Reduce: %lf\n", time1);
-        printf("My Reduce: %lf\n", time2);
         ASSERT_EQ(reducedData, myReducedData);
+        ASSERT_LT(time2, time1 * 10);
     }
 }
 
@@ -408,9 +406,8 @@ TEST(Reduce, test_single_double_max) {
 
     if (rank == 0) {
         time2 = MPI_Wtime() - time2;
-        printf("MPI Reduce: %lf\n", time1);
-        printf("My Reduce: %lf\n", time2);
         ASSERT_EQ(reducedData, myReducedData);
+        ASSERT_LT(time2, time1 * 10);
     }
 }
 
@@ -444,9 +441,8 @@ TEST(Reduce, test_single_double_min) {
 
     if (rank == 0) {
         time2 = MPI_Wtime() - time2;
-        printf("MPI Reduce: %lf\n", time1);
-        printf("My Reduce: %lf\n", time2);
         ASSERT_EQ(reducedData, myReducedData);
+        ASSERT_LT(time2, time1 * 10);
     }
 }
 
@@ -457,8 +453,8 @@ TEST(Reduce, test_vector_double_sum) {
     MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    std::vector<double> randVec = generateRandomVector<double>(15);
-    int count = 15 / proc_num;
+    std::vector<double> randVec = generateRandomVector<double>(50);
+    int count = 50 / proc_num;
     std::vector<double> reducedData(count), myReducedData(count), vec(count);
 
     if (rank == 0) {
@@ -483,9 +479,10 @@ TEST(Reduce, test_vector_double_sum) {
 
     if (rank == 0) {
         time2 = MPI_Wtime() - time2;
-        printf("MPI Reduce: %lf\n", time1);
-        printf("My Reduce: %lf\n", time2);
-        ASSERT_EQ(reducedData, myReducedData);
+        for (int i = 0; i < count; i++) {
+            ASSERT_EQ(reducedData[i], myReducedData[i]);
+        }
+        ASSERT_LT(time2, time1 * 10);
     }
 }
 
@@ -496,8 +493,8 @@ TEST(Reduce, test_vector_double_prod) {
     MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    std::vector<double> randVec = generateRandomVector<double>(15);
-    int count = 15 / proc_num;
+    std::vector<double> randVec = generateRandomVector<double>(50);
+    int count = 50 / proc_num;
     std::vector<double> reducedData(count), myReducedData(count), vec(count);
 
     if (rank == 0) {
@@ -522,9 +519,10 @@ TEST(Reduce, test_vector_double_prod) {
 
     if (rank == 0) {
         time2 = MPI_Wtime() - time2;
-        printf("MPI Reduce: %lf\n", time1);
-        printf("My Reduce: %lf\n", time2);
-        ASSERT_EQ(reducedData, myReducedData);
+        for (int i = 0; i < count; i++) {
+            ASSERT_EQ(reducedData[i], myReducedData[i]);
+        }
+        ASSERT_LT(time2, time1 * 10);
     }
 }
 
@@ -535,8 +533,8 @@ TEST(Reduce, test_vector_double_max) {
     MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    std::vector<double> randVec = generateRandomVector<double>(15);
-    int count = 15 / proc_num;
+    std::vector<double> randVec = generateRandomVector<double>(50);
+    int count = 50 / proc_num;
     std::vector<double> reducedData(count), myReducedData(count), vec(count);
 
     if (rank == 0) {
@@ -561,9 +559,10 @@ TEST(Reduce, test_vector_double_max) {
 
     if (rank == 0) {
         time2 = MPI_Wtime() - time2;
-        printf("MPI Reduce: %lf\n", time1);
-        printf("My Reduce: %lf\n", time2);
-        ASSERT_EQ(reducedData, myReducedData);
+        for (int i = 0; i < count; i++) {
+            ASSERT_EQ(reducedData[i], myReducedData[i]);
+        }
+        ASSERT_LT(time2, time1 * 10);
     }
 }
 
@@ -574,8 +573,8 @@ TEST(Reduce, test_vector_double_min) {
     MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    std::vector<double> randVec = generateRandomVector<double>(15);
-    int count = 15 / proc_num;
+    std::vector<double> randVec = generateRandomVector<double>(50);
+    int count = 50 / proc_num;
     std::vector<double> reducedData(count), myReducedData(count), vec(count);
 
     if (rank == 0) {
@@ -600,9 +599,10 @@ TEST(Reduce, test_vector_double_min) {
 
     if (rank == 0) {
         time2 = MPI_Wtime() - time2;
-        printf("MPI Reduce: %lf\n", time1);
-        printf("My Reduce: %lf\n", time2);
-        ASSERT_EQ(reducedData, myReducedData);
+        for (int i = 0; i < count; i++) {
+            ASSERT_EQ(reducedData[i], myReducedData[i]);
+        }
+        ASSERT_LT(time2, time1 * 10);
     }
 }
 
@@ -636,9 +636,8 @@ TEST(Reduce, test_single_float_sum) {
 
     if (rank == 0) {
         time2 = MPI_Wtime() - time2;
-        printf("MPI Reduce: %lf\n", time1);
-        printf("My Reduce: %lf\n", time2);
         ASSERT_EQ(reducedData, myReducedData);
+        ASSERT_LT(time2, time1 * 10);
     }
 }
 
@@ -672,9 +671,8 @@ TEST(Reduce, test_single_float_prod) {
 
     if (rank == 0) {
         time2 = MPI_Wtime() - time2;
-        printf("MPI Reduce: %lf\n", time1);
-        printf("My Reduce: %lf\n", time2);
         ASSERT_EQ(reducedData, myReducedData);
+        ASSERT_LT(time2, time1 * 10);
     }
 }
 
@@ -708,9 +706,8 @@ TEST(Reduce, test_single_float_max) {
 
     if (rank == 0) {
         time2 = MPI_Wtime() - time2;
-        printf("MPI Reduce: %lf\n", time1);
-        printf("My Reduce: %lf\n", time2);
         ASSERT_EQ(reducedData, myReducedData);
+        ASSERT_LT(time2, time1 * 10);
     }
 }
 
@@ -744,9 +741,8 @@ TEST(Reduce, test_single_float_min) {
 
     if (rank == 0) {
         time2 = MPI_Wtime() - time2;
-        printf("MPI Reduce: %lf\n", time1);
-        printf("My Reduce: %lf\n", time2);
         ASSERT_EQ(reducedData, myReducedData);
+        ASSERT_LT(time2, time1 * 10);
     }
 }
 
@@ -757,8 +753,8 @@ TEST(Reduce, test_vector_float_sum) {
     MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    std::vector<float> randVec = generateRandomVector<float>(15);
-    int count = 15 / proc_num;
+    std::vector<float> randVec = generateRandomVector<float>(50);
+    int count = 50 / proc_num;
     std::vector<float> reducedData(count), myReducedData(count), vec(count);
 
     if (rank == 0) {
@@ -783,9 +779,10 @@ TEST(Reduce, test_vector_float_sum) {
 
     if (rank == 0) {
         time2 = MPI_Wtime() - time2;
-        printf("MPI Reduce: %lf\n", time1);
-        printf("My Reduce: %lf\n", time2);
-        ASSERT_EQ(reducedData, myReducedData);
+        for (int i = 0; i < count; i++) {
+            ASSERT_EQ(reducedData[i], myReducedData[i]);
+        }
+        ASSERT_LT(time2, time1 * 10);
     }
 }
 
@@ -796,8 +793,8 @@ TEST(Reduce, test_vector_float_prod) {
     MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    std::vector<float> randVec = generateRandomVector<float>(15);
-    int count = 15 / proc_num;
+    std::vector<float> randVec = generateRandomVector<float>(50);
+    int count = 50 / proc_num;
     std::vector<float> reducedData(count), myReducedData(count), vec(count);
 
     if (rank == 0) {
@@ -822,9 +819,10 @@ TEST(Reduce, test_vector_float_prod) {
 
     if (rank == 0) {
         time2 = MPI_Wtime() - time2;
-        printf("MPI Reduce: %lf\n", time1);
-        printf("My Reduce: %lf\n", time2);
-        ASSERT_EQ(reducedData, myReducedData);
+        for (int i = 0; i < count; i++) {
+            ASSERT_EQ(reducedData[i], myReducedData[i]);
+        }
+        ASSERT_LT(time2, time1 * 10);
     }
 }
 
@@ -835,8 +833,8 @@ TEST(Reduce, test_vector_float_max) {
     MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    std::vector<float> randVec = generateRandomVector<float>(15);
-    int count = 15 / proc_num;
+    std::vector<float> randVec = generateRandomVector<float>(50);
+    int count = 50 / proc_num;
     std::vector<float> reducedData(count), myReducedData(count), vec(count);
 
     if (rank == 0) {
@@ -861,9 +859,10 @@ TEST(Reduce, test_vector_float_max) {
 
     if (rank == 0) {
         time2 = MPI_Wtime() - time2;
-        printf("MPI Reduce: %lf\n", time1);
-        printf("My Reduce: %lf\n", time2);
-        ASSERT_EQ(reducedData, myReducedData);
+        for (int i = 0; i < count; i++) {
+            ASSERT_EQ(reducedData[i], myReducedData[i]);
+        }
+        ASSERT_LT(time2, time1 * 10);
     }
 }
 
@@ -874,8 +873,8 @@ TEST(Reduce, test_vector_float_min) {
     MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    std::vector<float> randVec = generateRandomVector<float>(15);
-    int count = 15 / proc_num;
+    std::vector<float> randVec = generateRandomVector<float>(50);
+    int count = 50 / proc_num;
     std::vector<float> reducedData(count), myReducedData(count), vec(count);
 
     if (rank == 0) {
@@ -900,9 +899,10 @@ TEST(Reduce, test_vector_float_min) {
 
     if (rank == 0) {
         time2 = MPI_Wtime() - time2;
-        printf("MPI Reduce: %lf\n", time1);
-        printf("My Reduce: %lf\n", time2);
-        ASSERT_EQ(reducedData, myReducedData);
+        for (int i = 0; i < count; i++) {
+            ASSERT_EQ(reducedData[i], myReducedData[i]);
+        }
+        ASSERT_LT(time2, time1 * 10);
     }
 }
 
