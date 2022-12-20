@@ -29,9 +29,6 @@ int countRequiredCharInProcStr(char *str, char requiredChar) {
 }
 
 int countRequiredCharInStr(char *str, char requiredChar) {
-    char str[] = "abababa";
-    char requiredChar = 'a';
-
     int procCount, procId;
 
     MPI_Comm_size(MPI_COMM_WORLD, &procCount);
