@@ -55,11 +55,6 @@ TEST(Count_Adjacent_Invertions_MPI, Test_5) {
         test_random_vector(100000);
 }
 
-TEST(Count_Adjacent_Invertions_MPI, Test_6) {
-    for (int i = 0; i < 10; ++i)
-        test_random_vector(1000000);
-}
-
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     MPI_Init(&argc, &argv);
