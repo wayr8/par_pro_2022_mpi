@@ -1,5 +1,6 @@
-// Copyright 2018 Nesterov Alexander
+// Copyright 2022 Eremin Aleksandr
 #include <gtest/gtest.h>
+#include <vector>
 #include "./ops_mpi.h"
 #include <gtest-mpi-listener.hpp>
 
@@ -23,17 +24,17 @@ TEST(Parallel_Operations_MPI, Graham_Method) {
 }
 
 TEST(Parallel_Operations_MPI, GrahamParallel_Method_1) {
-    int rank;
+    int rank, Commsize;
+    MPI_Comm_size(MPI_COMM_WORLD, &Commsize);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<Point> global_vec;
-    const vector<int>::size_type size = 10;
+    const vector<int>::size_type size = 12;
 
     if (rank == 0) {
         global_vec = random(size);
     }
 
-    vector<Point> parallel = parallelGrahamMethod(global_vec);
-
+    vector<Point> parallel = parallelGrahamMethod(global_vec, size);
     if (rank == 0) {
         vector<Point> not_parallel = GrahamMethod(global_vec);
         ASSERT_EQ(parallel.size(), not_parallel.size());
@@ -53,9 +54,7 @@ TEST(Parallel_Operations_MPI, GrahamParallel_Method_2) {
     if (rank == 0) {
         global_vec = random(size);
     }
-
-    vector<Point> parallel = parallelGrahamMethod(global_vec);
-
+    vector<Point> parallel = parallelGrahamMethod(global_vec, size);
     if (rank == 0) {
         vector<Point> not_parallel = GrahamMethod(global_vec);
         ASSERT_EQ(parallel.size(), not_parallel.size());
@@ -76,7 +75,7 @@ TEST(Parallel_Operations_MPI, GrahamParallel_Method_3) {
         global_vec = random(size);
     }
 
-    vector<Point> parallel = parallelGrahamMethod(global_vec);
+    vector<Point> parallel = parallelGrahamMethod(global_vec, size);
 
     if (rank == 0) {
         vector<Point> not_parallel = GrahamMethod(global_vec);
@@ -98,7 +97,7 @@ TEST(Parallel_Operations_MPI, GrahamParallel_Method_4) {
         global_vec = random(size);
     }
 
-    vector<Point> parallel = parallelGrahamMethod(global_vec);
+    vector<Point> parallel = parallelGrahamMethod(global_vec, size);
 
     if (rank == 0) {
         vector<Point> not_parallel = GrahamMethod(global_vec);

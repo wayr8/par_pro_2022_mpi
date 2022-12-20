@@ -39,7 +39,7 @@ void StructPoint(MPI_Datatype* structPoint) {
     MPI_Type_commit(structPoint);
 }
 
-vector<Point> GrahamMethod(vector<Point>& VertexVector) {
+vector<Point> GrahamMethod(vector<Point> VertexVector) {
     if (VertexVector.size() == 1) return VertexVector;
     sort(VertexVector.begin(), VertexVector.end(), &cmp);
     Point p1 = VertexVector[0], p2 = VertexVector.back();
@@ -69,26 +69,42 @@ vector<Point> GrahamMethod(vector<Point>& VertexVector) {
     return Vertex;
 }
 
-vector<Point> parallelGrahamMethod(const vector<Point>& VertexVector) {
-    int ProcRank, ProcNum;
-    MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
-    MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
+vector<Point> parallelGrahamMethod(vector<Point> VertexVector,
+    vector<int>::size_type vectorSize) {
+    int size, rank;
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
     MPI_Datatype structPoint;
     StructPoint(&structPoint);
-    int delta = VertexVector.size() / ProcNum;
 
-    vector<Point> localVertexVector(delta);
+    if (rank == 0) {
+        Point x = VertexVector[vectorSize - 1];
+        if (vectorSize < size) {
+            for (int i = vectorSize; i < size; i++) {
+                VertexVector.push_back(x);
+                vectorSize++;
+            }
+        }
+    }
+
+    int delta = vectorSize / size;
+    if (delta == 0) delta = 1;
+
+    vector<Point> localVectorOfVertex(delta);
     vector<Point> localGrahamMethod, globalGrahamMethod;
 
-    MPI_Scatter(VertexVector.data(), delta, structPoint, localVertexVector.data(),
-        delta, structPoint, 0, MPI_COMM_WORLD);
-    localGrahamMethod = GrahamMethod(localVertexVector);
-    if (ProcRank != 0) {
+    MPI_Scatter(VertexVector.data(), delta, structPoint,
+        localVectorOfVertex.data(), delta, structPoint, 0,
+        MPI_COMM_WORLD);
+    localGrahamMethod = GrahamMethod(localVectorOfVertex);
+
+    if (rank != 0) {
         MPI_Send(localGrahamMethod.data(), localGrahamMethod.size(), structPoint, 0,
             0, MPI_COMM_WORLD);
     }
     else {
-        for (int i = 1; i < ProcNum; i++) {
+        for (int i = 1; i < size; i++) {
             MPI_Status status;
             int sendElements = 0;
             MPI_Probe(i, 0, MPI_COMM_WORLD, &status);
@@ -99,13 +115,12 @@ vector<Point> parallelGrahamMethod(const vector<Point>& VertexVector) {
             MPI_Recv(localGrahamMethod.data() + oldSize, sendElements, structPoint, i,
                 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         }
-        if (ProcNum != 1) {
-            int tail = VertexVector.size() - ProcNum * delta;
+        if (size != 1) {
+            int tail = vectorSize - size * delta;
             if (tail) {
-                localVertexVector =
-                    vector<Point>(VertexVector.begin() + (VertexVector.size() - tail),
-                        VertexVector.end());
-                globalGrahamMethod = GrahamMethod(localGrahamMethod);
+                localVectorOfVertex = vector<Point>(
+                    VertexVector.begin() + (vectorSize - tail), VertexVector.end());
+                globalGrahamMethod = GrahamMethod(localVectorOfVertex);
 
                 vector<int>::size_type oldSize = localGrahamMethod.size();
                 localGrahamMethod.resize(oldSize + globalGrahamMethod.size());
@@ -117,5 +132,6 @@ vector<Point> parallelGrahamMethod(const vector<Point>& VertexVector) {
         }
         globalGrahamMethod = GrahamMethod(localGrahamMethod);
     }
+
     return globalGrahamMethod;
 }
