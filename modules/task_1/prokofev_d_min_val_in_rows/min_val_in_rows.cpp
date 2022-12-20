@@ -2,8 +2,8 @@
 #include "../../../modules/task_1/prokofev_d_min_val_in_rows/min_val_in_rows.h"
 
 std::vector<int> genMatr(int rows, int cols) {
-    rows = abs(rows);
-    cols = abs(cols);
+    if( rows<1|| cols<1 ) throw - 1;
+    else{
     std::mt19937 gen;
     gen.seed((unsigned)(time(0)));
     std::vector<int> mat(rows * cols);
@@ -11,6 +11,7 @@ std::vector<int> genMatr(int rows, int cols) {
         mat[i] = gen() % 10;
     }
     return mat;
+    }
 }
 
 std::vector<int> minValRows(const std::vector<int>& mat,

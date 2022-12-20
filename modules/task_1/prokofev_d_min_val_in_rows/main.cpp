@@ -62,7 +62,7 @@ TEST(minValRows, test5_Pos_Nonqwad) {
                     5, 2, 7, 4,
                     9, 4, 2, 7 };
     std::vector<int> mymin = { 1, 2, 2 };
-    std::vector<int> res = minValRows(matr, 3, 3);
+    std::vector<int> res = minValRows(matr, 3, 4);
     if (rank == 0) EXPECT_EQ(res, mymin);
 }
 
