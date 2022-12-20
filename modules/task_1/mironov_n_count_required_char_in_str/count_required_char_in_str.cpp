@@ -75,7 +75,7 @@ int countRequiredCharInStr(char *str, char requiredChar) {
             MPI_Finalize();
         }
     } else {
-        commForProcInUse = MPI_COMM_WORLD;
+        MPI_Comm commForProcInUse = MPI_COMM_WORLD;
         oneProcWorkAmountForScatterv = new int[procCount];
         scattervDispls = new int[procCount];
         for (int i = 0; i < procCount; i++) {
