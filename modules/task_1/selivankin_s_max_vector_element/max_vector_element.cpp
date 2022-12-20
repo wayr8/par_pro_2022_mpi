@@ -28,16 +28,18 @@ int getMaxVectorElemParallel(std::vector<int> global_vec, int count_size_vector)
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     const int delta = count_size_vector / size;
+    const int additional_delta = count_size_vector % size;
 
     if (rank == 0) {
         for (int proc = 1; proc < size; proc++) {
-            MPI_Send(global_vec.data() + proc * delta, delta, MPI_INT, proc, 0, MPI_COMM_WORLD);
+            MPI_Send(global_vec.data() + proc * delta + additional_delta,
+                delta, MPI_INT, proc, 0, MPI_COMM_WORLD);
         }
     }
 
     std::vector<int> local_vec(delta);
     if (rank == 0) {
-        local_vec = std::vector<int>(global_vec.begin(), global_vec.begin() + delta);
+        local_vec = std::vector<int>(global_vec.begin(), global_vec.begin() + delta + additional_delta);
     } else {
         MPI_Status status;
         MPI_Recv(local_vec.data(), delta, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);

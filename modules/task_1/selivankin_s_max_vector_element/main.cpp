@@ -5,10 +5,11 @@
 #include <gtest-mpi-listener.hpp>
 
 TEST(Parallel_Operations_MPI, Test_1) {
-    int rank;
+    int size, rank;
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
-    const int count_size_vector = 120;
+    const int count_size_vector = size + 10;
 
     if (rank == 0) {
         global_vec = getRandomVector(count_size_vector);
@@ -61,10 +62,11 @@ TEST(Parallel_Operations_MPI, Test_3) {
 }
 
 TEST(Parallel_Operations_MPI, Test_4) {
-    int rank;
+    int size, rank;
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
-    const int count_size_vector = 101;
+    const int count_size_vector = size + 109;
 
     if (rank == 0) {
         global_vec = getRandomVector(count_size_vector);
@@ -79,10 +81,11 @@ TEST(Parallel_Operations_MPI, Test_4) {
 }
 
 TEST(Parallel_Operations_MPI, Test_5) {
-    int rank;
+    int size, rank;
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
-    const int count_size_vector = 21;
+    const int count_size_vector = size + 13;
 
     if (rank == 0) {
         global_vec = getRandomVector(count_size_vector);
