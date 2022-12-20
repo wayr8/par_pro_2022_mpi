@@ -51,7 +51,7 @@ int countRequiredCharInStr(char *str, char requiredChar) {
     int procCharCount = 0;
     int resultCount = 0;
 
-    MPI_Comm commForProcInUse = NULL;
+    MPI_Comm commForProcInUse;
     MPI_Comm commForNonUsedProc;
 
     if (oneProcWorkAmount == 0) {
