@@ -8,7 +8,7 @@ TEST(minValRows, test1_Gen_Matr) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     if (rank == 0) {
-        ASSERT_ANY_THROW(genMatr(5, 5));
+        ASSERT_ANY_THROW(genMatr(-5, 5));
     }
 }
 
