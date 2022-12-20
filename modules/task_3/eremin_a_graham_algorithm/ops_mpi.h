@@ -7,7 +7,6 @@
 #include <iostream>
 
 using std::vector;
-using namespace std;
 
 struct Point {
     int x, y;
