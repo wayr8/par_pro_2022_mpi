@@ -72,7 +72,7 @@ int countRequiredCharInStr(char *str, char requiredChar) {
             MPI_Comm_split(MPI_COMM_WORLD, color, procId, &commForNonUsedProc);
             MPI_Comm_size(commForNonUsedProc, &procCount);
             MPI_Comm_rank(commForNonUsedProc, &procId);
-            MPI_Finalize();
+            return 0;
         }
     } else {
         MPI_Comm commForProcInUse = MPI_COMM_WORLD;
