@@ -21,9 +21,9 @@ TEST(Parallel_Operations_MPI, Test_Gather_INT) {
         std::random_device dev;
         std::mt19937 gen(dev());
         root = gen() % tasks;
-        for (int i = 0; i < 20; i++) {
+        /*  for (int i = 0; i < 20; i++) {
             std::cout << input_vec[i] << " ";
-        }
+        }  */
         std::cout << std::endl;
     }
     MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -69,9 +69,9 @@ TEST(Parallel_Operations_MPI, Test_Gather_FLOAT) {
         std::random_device dev;
         std::mt19937 gen(dev());
         root = gen() % tasks;
-        for (int i = 0; i < 20; i++) {
+        /*  for (int i = 0; i < 20; i++) {
             std::cout << input_vec[i] << " ";
-        }
+        }  */
         std::cout << std::endl;
     }
     MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -117,9 +117,9 @@ TEST(Parallel_Operations_MPI, Test_Gather_DOUBLE) {
         std::random_device dev;
         std::mt19937 gen(dev());
         root = gen() % tasks;
-        for (int i = 0; i < 20; i++) {
+        /*  for (int i = 0; i < 20; i++) {
             std::cout << input_vec[i] << " ";
-        }
+        }  */
         std::cout << std::endl;
     }
     MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -166,9 +166,9 @@ TEST(Parallel_Operations_MPI, Test_Gather_CHAR) {
         std::random_device dev;
         std::mt19937 gen(dev());
         root = gen() % tasks;
-        for (int i = 0; i < 20; i++) {
+        /*  for (int i = 0; i < 20; i++) {
             std::cout << input_vec[i] << " ";
-        }
+        }  */
         std::cout << std::endl;
     }
     MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -214,9 +214,9 @@ TEST(Parallel_Operations_MPI, Big_Data_Test) {
         std::random_device dev;
         std::mt19937 gen(dev());
         root = gen() % tasks;
-        for (int i = 0; i < datasize * tasks; i++) {
+        /*  for (int i = 0; i < datasize * tasks; i++) {
             std::cout << vec[i] << " ";
-        }
+        }  */
         std::cout << std::endl;
     }
     MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
