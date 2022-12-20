@@ -1,5 +1,5 @@
   // Copyright 2022 Mironov Nikita
-#include "../../../modules/task_1/count_required_char_in_str.h"
+#include "../../../modules/task_1/mironov_n_count_required_char_in_str/count_required_char_in_str.h"
 
 void getRandomStr(char *str, int strSize) {
     const char arr[] = "abcdefghijklmnopqrstuvwxyz";
