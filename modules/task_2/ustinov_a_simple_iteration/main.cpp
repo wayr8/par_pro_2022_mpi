@@ -55,7 +55,7 @@ TEST(Simple_Iteration_Method_MPI, Test_3) {
 
 TEST(Simple_Iteration_Method_MPI, Test_4) {
     for (int i = 0; i < 10; ++i)
-        test_random_linear_system(100, 1e-8);
+        test_random_linear_system(100, 2e-8);
 }
 
 TEST(Simple_Iteration_Method_MPI, Test_5) {
