@@ -33,137 +33,83 @@ int reduce(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype, MPI_O
     if (rank == root) {
         if (datatype == MPI_INT) {
             for (int j = 0; j < count; j++) {
-                static_cast<int*>(recvbuf)[j] = static_cast<int*>(sendbuf)[j];
+                (static_cast<int*>(recvbuf))[j] = (static_cast<int*>(sendbuf))[j];
             }
             int* buf = new int[count];
-            if (op == MPI_SUM) {
-                for (int i = 1; i < proc_num; i++) {
-                    MPI_Status status;
-                    MPI_Recv(buf, count, datatype, MPI_ANY_SOURCE, MPI_ANY_TAG, comm, &status);
-                    for (int j = 0; j < count; j++) {
-                        static_cast<int*>(recvbuf)[j] += buf[j];
-                    }
-                }
-            } else if (op == MPI_MAX) {
-                for (int i = 1; i < proc_num; i++) {
-                    MPI_Status status;
-                    MPI_Recv(buf, count, datatype, MPI_ANY_SOURCE, MPI_ANY_TAG, comm, &status);
-                    for (int j = 0; j < count; j++) {
-                        if (static_cast<int*>(recvbuf)[j] < buf[j]) {
-                            static_cast<int*>(recvbuf)[j] = buf[j];
+            for (int i = 1; i < proc_num; i++) {
+                MPI_Status status;
+                MPI_Recv(buf, count, datatype, MPI_ANY_SOURCE, MPI_ANY_TAG, comm, &status);
+                for (int j = 0; j < count; j++) {
+                    if (op == MPI_SUM) {
+                        (static_cast<int*>(recvbuf))[j] += buf[j];
+                    } else if (op == MPI_MAX) {
+                        if ((static_cast<int*>(recvbuf))[j] < buf[j]) {
+                            (static_cast<int*>(recvbuf))[j] = buf[j];
                         }
-                    }
-                }
-            } else if (op == MPI_MIN) {
-                for (int i = 1; i < proc_num; i++) {
-                    MPI_Status status;
-                    MPI_Recv(buf, count, datatype, MPI_ANY_SOURCE, MPI_ANY_TAG, comm, &status);
-                    for (int j = 0; j < count; j++) {
-                        if (static_cast<int*>(recvbuf)[j] > buf[j]) {
-                            static_cast<int*>(recvbuf)[j] = buf[j];
+                    } else if (op == MPI_MIN) {
+                        if ((static_cast<int*>(recvbuf))[j] > buf[j]) {
+                            (static_cast<int*>(recvbuf))[j] = buf[j];
                         }
+                    } else if (op == MPI_PROD) {
+                        (static_cast<int*>(recvbuf))[j] *= buf[j];
+                    } else {
+                        return -1;
                     }
                 }
-            } else if (op == MPI_PROD) {
-                for (int i = 1; i < proc_num; i++) {
-                    MPI_Status status;
-                    MPI_Recv(buf, count, datatype, MPI_ANY_SOURCE, MPI_ANY_TAG, comm, &status);
-                    for (int j = 0; j < count; j++) {
-                        static_cast<int*>(recvbuf)[j] *= buf[j];
-                    }
-                }
-            } else {
-                return -1;
             }
             delete[] buf;
         } else if (datatype == MPI_DOUBLE) {
             for (int j = 0; j < count; j++) {
-                static_cast<double*>(recvbuf)[j] = static_cast<double*>(sendbuf)[j];
+                (static_cast<double*>(recvbuf))[j] = (static_cast<double*>(sendbuf))[j];
             }
             double* buf = new double[count];
-            if (op == MPI_SUM) {
-                for (int i = 1; i < proc_num; i++) {
-                    MPI_Status status;
-                    MPI_Recv(buf, count, datatype, MPI_ANY_SOURCE, MPI_ANY_TAG, comm, &status);
-                    for (int j = 0; j < count; j++) {
-                        static_cast<double*>(recvbuf)[j] += buf[j];
-                    }
-                }
-            } else if (op == MPI_MAX) {
-                for (int i = 1; i < proc_num; i++) {
-                    MPI_Status status;
-                    MPI_Recv(buf, count, datatype, MPI_ANY_SOURCE, MPI_ANY_TAG, comm, &status);
-                    for (int j = 0; j < count; j++) {
-                        if (static_cast<double*>(recvbuf)[j] < buf[j]) {
-                            static_cast<double*>(recvbuf)[j] = buf[j];
+            for (int i = 1; i < proc_num; i++) {
+                MPI_Status status;
+                MPI_Recv(buf, count, datatype, MPI_ANY_SOURCE, MPI_ANY_TAG, comm, &status);
+                for (int j = 0; j < count; j++) {
+                    if (op == MPI_SUM) {
+                        (static_cast<double*>(recvbuf))[j] += buf[j];
+                    } else if (op == MPI_MAX) {
+                        if ((static_cast<double*>(recvbuf))[j] < buf[j]) {
+                            (static_cast<double*>(recvbuf))[j] = buf[j];
                         }
-                    }
-                }
-            } else if (op == MPI_MIN) {
-                for (int i = 1; i < proc_num; i++) {
-                    MPI_Status status;
-                    MPI_Recv(buf, count, datatype, MPI_ANY_SOURCE, MPI_ANY_TAG, comm, &status);
-                    for (int j = 0; j < count; j++) {
-                        if (static_cast<double*>(recvbuf)[j] > buf[j]) {
-                            static_cast<double*>(recvbuf)[j] = buf[j];
+                    } else if (op == MPI_MIN) {
+                        if ((static_cast<double*>(recvbuf))[j] > buf[j]) {
+                            (static_cast<double*>(recvbuf))[j] = buf[j];
                         }
+                    } else if (op == MPI_PROD) {
+                        (static_cast<double*>(recvbuf))[j] *= buf[j];
+                    } else {
+                        return -2;
                     }
                 }
-            } else if (op == MPI_PROD) {
-                for (int i = 1; i < proc_num; i++) {
-                    MPI_Status status;
-                    MPI_Recv(buf, count, datatype, MPI_ANY_SOURCE, MPI_ANY_TAG, comm, &status);
-                    for (int j = 0; j < count; j++) {
-                        static_cast<double*>(recvbuf)[j] *= buf[j];
-                    }
-                }
-            } else {
-                return -2;
             }
             delete[] buf;
         } else if (datatype == MPI_FLOAT) {
             for (int j = 0; j < count; j++) {
-                static_cast<float*>(recvbuf)[j] = static_cast<float*>(sendbuf)[j];
+                (static_cast<float*>(recvbuf))[j] = (static_cast<float*>(sendbuf))[j];
             }
             float* buf = new float[count];
-            if (op == MPI_SUM) {
-                for (int i = 1; i < proc_num; i++) {
-                    MPI_Status status;
-                    MPI_Recv(buf, count, datatype, MPI_ANY_SOURCE, MPI_ANY_TAG, comm, &status);
-                    for (int j = 0; j < count; j++) {
-                        static_cast<float*>(recvbuf)[j] += buf[j];
-                    }
-                }
-            } else if (op == MPI_MAX) {
-                for (int i = 1; i < proc_num; i++) {
-                    MPI_Status status;
-                    MPI_Recv(buf, count, datatype, MPI_ANY_SOURCE, MPI_ANY_TAG, comm, &status);
-                    for (int j = 0; j < count; j++) {
-                        if (static_cast<float*>(recvbuf)[j] < buf[j]) {
-                            static_cast<float*>(recvbuf)[j] = buf[j];
+            for (int i = 1; i < proc_num; i++) {
+                MPI_Status status;
+                MPI_Recv(buf, count, datatype, MPI_ANY_SOURCE, MPI_ANY_TAG, comm, &status);
+                for (int j = 0; j < count; j++) {
+                    if (op == MPI_SUM) {
+                        (static_cast<float*>(recvbuf))[j] += buf[j];
+                    } else if (op == MPI_MAX) {
+                        if ((static_cast<float*>(recvbuf))[j] < buf[j]) {
+                            (static_cast<float*>(recvbuf))[j] = buf[j];
                         }
-                    }
-                }
-            } else if (op == MPI_MIN) {
-                for (int i = 1; i < proc_num; i++) {
-                    MPI_Status status;
-                    MPI_Recv(buf, count, datatype, MPI_ANY_SOURCE, MPI_ANY_TAG, comm, &status);
-                    for (int j = 0; j < count; j++) {
-                        if (static_cast<float*>(recvbuf)[j] > buf[j]) {
-                            static_cast<float*>(recvbuf)[j] = buf[j];
+                    } else if (op == MPI_MIN) {
+                        if ((static_cast<float*>(recvbuf))[j] > buf[j]) {
+                            (static_cast<float*>(recvbuf))[j] = buf[j];
                         }
+                    } else if (op == MPI_PROD) {
+                        (static_cast<float*>(recvbuf))[j] *= buf[j];
+                    } else {
+                        return -3;
                     }
                 }
-            } else if (op == MPI_PROD) {
-                for (int i = 1; i < proc_num; i++) {
-                    MPI_Status status;
-                    MPI_Recv(buf, count, datatype, MPI_ANY_SOURCE, MPI_ANY_TAG, comm, &status);
-                    for (int j = 0; j < count; j++) {
-                        static_cast<float*>(recvbuf)[j] *= buf[j];
-                    }
-                }
-            } else {
-                return -2;
             }
             delete[] buf;
         } else {
