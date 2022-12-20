@@ -68,11 +68,6 @@ TEST(Simple_Iteration_Method_MPI, Test_6) {
         test_random_linear_system(1000, 1e-7);
 }
 
-TEST(Simple_Iteration_Method_MPI, Test_7) {
-    for (int i = 0; i < 2; ++i)
-        test_random_linear_system(5000, 1e-6);
-}
-
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
