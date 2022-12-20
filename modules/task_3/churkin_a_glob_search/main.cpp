@@ -8,6 +8,8 @@
 
 #include <gtest-mpi-listener.hpp>
 
+#define MATH_PI 3.141592653589793
+
 void runTest(double (*f)(double), double a, double b, double correctResult) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -26,8 +28,8 @@ TEST(GlobalSearchOneDim, Test_1_X2) {
 
 TEST(GlobalSearchOneDim, Test_2_cosXhalf) {
     auto f = [](double x) { return cos(x / 2); };
-    double a = -4 * M_PI;
-    double b = -M_PI;
+    double a = -4 * MATH_PI;
+    double b = -MATH_PI;
     double correctResult = -1;
     runTest(f, a, b, correctResult);
 }
@@ -43,7 +45,7 @@ TEST(GlobalSearchOneDim, Test_3_cbrtX) {
 TEST(GlobalSearchOneDim, Test_4_XsinX) {
     auto f = [](double x) { return x * sin(x); };
     double a = 0;
-    double b = 5 * M_PI;
+    double b = 5 * MATH_PI;
     double correctResult = -11.041;
     runTest(f, a, b, correctResult);
 }
