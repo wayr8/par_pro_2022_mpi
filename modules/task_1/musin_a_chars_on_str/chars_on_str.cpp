@@ -3,7 +3,6 @@
 #include "../../../modules/task_1/musin_a_chars_on_str/chars_on_str.h"
 
 #include <mpi.h>
-
 #include <algorithm>
 #include <random>
 #include <string>
