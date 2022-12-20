@@ -24,7 +24,7 @@ std::vector<int> minValRows(const std::vector<int>& mat,
     MPI_Comm comm2;
     if (tsize > rows || rows % tsize != 0) {
         int color;
-        if (id < rows && tsize>rows || id <= rows / tsize) {
+        if (id < rows && tsize>rows || id < rows / tsize) {
             color = 1;
             MPI_Comm_split(MPI_COMM_WORLD, color, id, &myComm);
             MPI_Comm_size(myComm, &size);
