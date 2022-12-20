@@ -92,7 +92,7 @@ TEST(Count_required_char_in_str,
     }
 }
 
-int main(int argc, char const **argv) {
+int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     MPI_Init(&argc, &argv);
 
