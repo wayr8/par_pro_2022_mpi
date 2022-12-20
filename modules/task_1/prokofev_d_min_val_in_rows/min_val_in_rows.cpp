@@ -19,7 +19,7 @@ std::vector<int> minValRows(const std::vector<int>& mat,
     int size, id, tsize;
     MPI_Comm_size(MPI_COMM_WORLD, &tsize);
     MPI_Comm_rank(MPI_COMM_WORLD, &id);
-    MPI_Comm myComm = NULL;
+    MPI_Comm myComm;
     MPI_Comm comm2;
     if (tsize > rows || rows % tsize != 0) {
         int color;
@@ -33,12 +33,13 @@ std::vector<int> minValRows(const std::vector<int>& mat,
             MPI_Comm_split(MPI_COMM_WORLD, color, id, &comm2);
             MPI_Comm_size(comm2, &size);
             MPI_Comm_rank(comm2, &id);
+            return std::vector<int>{};
         }
     } else {
         size = tsize;
         myComm = MPI_COMM_WORLD;
     }
-    if (myComm == NULL) return std::vector<int>{};
+
     int chapter = rows / size;
     std::vector<int>mmap(chapter * cols);
     std::vector<int>mres(chapter);
