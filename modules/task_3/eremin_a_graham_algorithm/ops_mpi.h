@@ -1,6 +1,6 @@
 // Copyright 2022 Eremin Aleksandr
-#ifndef MODULES_TASK_1_EREMIN_A_GRAHAM_ALGORITHM_OPS_MPI_H_
-#define MODULES_TASK_1_EREMIN_A_GRAHAM_ALGORITHM_OPS_MPI_H_
+#ifndef MODULES_TASK_3_EREMIN_A_GRAHAM_ALGORITHM_OPS_MPI_H_
+#define MODULES_TASK_3_EREMIN_A_GRAHAM_ALGORITHM_OPS_MPI_H_
 
 #include <vector>
 #include <string>
@@ -20,4 +20,4 @@ vector<Point> parallelGrahamMethod(vector<Point> vectorOfVertex,
     vector<int>::size_type vectorSize);
 vector<Point> random(const vector<int>::size_type Size);
 
-#endif  // MODULES_TASK_1_EREMIN_A_GRAHAM_ALGORITHM_OPS_MPI_H_
+#endif  // MODULES_TASK_3_EREMIN_A_GRAHAM_ALGORITHM_OPS_MPI_H_

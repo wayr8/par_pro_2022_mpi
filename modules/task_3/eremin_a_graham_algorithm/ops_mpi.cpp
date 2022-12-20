@@ -1,11 +1,11 @@
 // Copyright 2022 Eremin Aleksandr
+#include "../../../modules/task_3/eremin_a_graham_algorithm/ops_mpi.h"
 #include <mpi.h>
 #include <vector>
 #include <string>
 #include <random>
 #include <algorithm>
 #include <numeric>
-#include "../../../modules/task_3/eremin_a_graham_algorithm/ops_mpi.h"
 
 bool cmp(Point a, Point b) { return a.x < b.x || a.x == b.x && a.y < b.y; }
 
@@ -102,8 +102,7 @@ vector<Point> parallelGrahamMethod(vector<Point> VertexVector,
     if (rank != 0) {
         MPI_Send(localGrahamMethod.data(), localGrahamMethod.size(), structPoint, 0,
             0, MPI_COMM_WORLD);
-    }
-    else {
+    } else {
         for (int i = 1; i < size; i++) {
             MPI_Status status;
             int sendElements = 0;
