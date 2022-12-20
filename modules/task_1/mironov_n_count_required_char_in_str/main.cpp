@@ -1,7 +1,7 @@
   // Copyright 2022 Mironov Nikita
 #include <gtest/gtest.h>
 #include <cstring>
-#include "./count_required_char_in_str.h"
+#include "../../../modules/task_1/mironov_n_count_required_char_in_str/count_required_char_in_str.h"
 #include <gtest-mpi-listener.hpp>
 
 TEST(Count_required_char_in_str, count_an_existing_character_in_string) {
@@ -84,10 +84,10 @@ TEST(Count_required_char_in_str,
     getRandomStr(str, size);
     getRandomRequiredChar(requiredChar);
 
-    int count = getCountFreqCharInStr(str, requiredChar);
+    int count = countRequiredCharInStr(str, *requiredChar);
 
     if (procId == 0) {
-        int seqCount = countFreqSeq(str, requiredChar);
+        int seqCount = countRequiredCharInProcStr(str, *requiredChar);
         ASSERT_EQ(seqCount, count);
     }
 }
