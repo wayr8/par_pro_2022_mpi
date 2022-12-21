@@ -30,7 +30,7 @@ TEST(minValRows, test3_mat_3x3) {
                     4, 5, 6,
                     7, 8, 9 };
     std::vector<int> vect = { 2, 3, 4 };
-    std::vector<int> myres = { 26, 44, 38 };
+    std::vector<int> myres = { 20, 47, 74 };
     std::vector<int> res = lentVertScheme(matr, vect, 3, 3);
     if (rank == 0) EXPECT_EQ(res, myres);
 }
@@ -59,7 +59,7 @@ TEST(minValRows, test5_mat_3x4) {
                     5, 6, 7, 8,
                     9, 10, 11, 12};
     std::vector<int> vect = { 2, 3, 4, 5 };
-    std::vector<int> myres = { 20, 96, 152};
+    std::vector<int> myres = { 40, 96, 152};
     std::vector<int> res = lentVertScheme(matr, vect, 3, 4);
     if (rank == 0) EXPECT_EQ(res, myres);
 }

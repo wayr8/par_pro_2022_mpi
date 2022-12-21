@@ -85,7 +85,7 @@ std::vector<int> lentVertScheme(const std::vector<int>& mat,
         MPI_INT, 0, myComm);
 
 
-    std::vector<int> res(cols);
+    std::vector<int> res(rows);
 
     if (id == 0) {
         for (int i = 0; i < cols; i++) {
