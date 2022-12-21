@@ -80,9 +80,7 @@ int countRequiredCharInStr(char *str, char requiredChar) {
         scattervDispls = new int[procCount];
         for (int i = 0; i < procCount; i++) {
             scattervDispls[i] = i+1;
-            if (nonDistWork == 0) {
-                oneProcWorkAmountForScatterv[i] = oneProcWorkAmount;
-            }
+            oneProcWorkAmountForScatterv[i] = oneProcWorkAmount;
             if (i+1 == procCount && nonDistWork != 0) {
                 oneProcWorkAmountForScatterv[i] =
                     oneProcWorkAmount + nonDistWork;
@@ -93,16 +91,22 @@ int countRequiredCharInStr(char *str, char requiredChar) {
     char* procStr = new char[oneProcWorkAmountForScatterv[procId]];
 
     if (procId == 0) {
-        MPI_Scatterv(&str[0], &oneProcWorkAmountForScatterv[0],
-            &scattervDispls[0], MPI_CHAR, &procStr[0],
-            oneProcWorkAmountForScatterv[procId], MPI_CHAR, procId,
+        int messMove = 0;
+        for (int proc = 1; proc < procCount; proc++) {
+            messMove += oneProcWorkAmount;
+            MPI_Send(&str[0] + messMove,
+            oneProcWorkAmountForScatterv[proc], MPI_CHAR, proc, 1,
             commForProcInUse);
+        }
+
+        for (int i = 0; i < oneProcWorkAmountForScatterv[0]; i++) {
+            procStr[i] = str[i];
+        }
     }
 
 
     if (procId != 0) {
         MPI_Status status;
-        std::cout << procId << std::endl;
         MPI_Recv(&procStr[0], oneProcWorkAmountForScatterv[procId],
             MPI_CHAR, 0, 1, commForProcInUse, &status);
     }
