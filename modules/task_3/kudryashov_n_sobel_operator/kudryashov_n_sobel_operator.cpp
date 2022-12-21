@@ -44,8 +44,8 @@ std::vector<int> matrixToVector(std::vector<std::vector<int>> mat, int height, i
 }
 
 int calcNewPixelColor(std::vector<std::vector<int>> image, int height, int width, int y, int x) {
-    int kernelX[3][3] = { {-1, 0, 1},{-2, 0, 2},{-1, 0, 1} };
-    int kernelY[3][3] = { {-1, -2, -1},{0, 0, 0},{1, 2, 1} };
+    int kernelX[3][3] = { {-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1} };
+    int kernelY[3][3] = { {-1, -2, -1}, {0, 0, 0}, {1, 2, 1} };
 
     int intensityX = 0;
     int intensityY = 0;
@@ -65,8 +65,8 @@ int calcNewPixelColor(std::vector<std::vector<int>> image, int height, int width
 
 std::vector<std::vector<int>> calcSobel(std::vector<std::vector<int>> image, int height, int width) {
     std::vector<std::vector<int>> resultImage(height, std::vector<int>(width));
-    int kernelX[3][3] = { {-1, 0, 1},{-2, 0, 2},{-1, 0, 1} };
-    int kernelY[3][3] = { {-1, -2, -1},{0, 0, 0},{1, 2, 1} };
+    int kernelX[3][3] = { {-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1} };
+    int kernelY[3][3] = { {-1, -2, -1}, {0, 0, 0}, {1, 2, 1} };
     for (int y = 0; y < height; y++) {
          for (int x = 0; x < width; x++) {
             resultImage[y][x] = calcNewPixelColor(image, height, width, y, x);
@@ -76,8 +76,8 @@ std::vector<std::vector<int>> calcSobel(std::vector<std::vector<int>> image, int
 }
 
 std::vector<std::vector<int>> calcSobelParallel(std::vector<std::vector<int>> image, int height, int width) {
-    int kernelX[3][3] = { {-1, 0, 1},{-2, 0, 2},{-1, 0, 1}};
-    int kernelY[3][3] = { {-1, -2, -1},{0, 0, 0},{1, 2, 1}};
+    int kernelX[3][3] = { {-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1}};
+    int kernelY[3][3] = { {-1, -2, -1}, {0, 0, 0}, {1, 2, 1}};
     int proc_num, rank;
 
     MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
