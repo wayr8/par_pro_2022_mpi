@@ -22,14 +22,13 @@ std::vector<int> getRandomVector(int vecSize) {
     std::random_device dev;
     std::mt19937 gen(dev());
     std::vector<int> vec(vecSize);
-    
     for (int i = 0; i < vecSize; i++) {
         vec[i] = static_cast<int>(gen() % 100);
     }
     return vec;
 }
 
-std::vector<int> getMultVectorSequential(std::vector<int>& pMatrix, std::vector<int>& pVector, int n, int m) {
+std::vector<int> getMultVectorSequential(const std::vector<int>& pMatrix, const std::vector<int>& pVector, int n, int m) {
     std::vector<int> pResult(n);
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
@@ -42,14 +41,14 @@ std::vector<int> getMultVectorSequential(std::vector<int>& pMatrix, std::vector<
 void printMatrix(std::vector<int> vec) {
     const int size = vec.size();
     for (int i = 0; i < size; i++) {
-    std::cout << vec[i] << " ";    
+        std::cout << vec[i] << " ";
     }
     std::cout << std::endl;
 }
 
-std::vector<int> getMultVectorParallel(std::vector<int>& matrix, std::vector<int>& vec, int n, int m) {
+std::vector<int> getMultVectorParallel(const std::vector<int>& matrix, const std::vector<int>& vec, int n, int m) {
     std::vector<int> global_vec(n);
-    int size, rank; 
+    int size, rank;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
@@ -63,8 +62,7 @@ std::vector<int> getMultVectorParallel(std::vector<int>& matrix, std::vector<int
             recvcounts[i] = 1;
             displs[i] = 1 * i;
         }
-    }
-    else {
+    } else {
         int tmp = 0;
         for (int i = 0; i < size; i++) {
             if (i != size - 1) {
@@ -72,15 +70,13 @@ std::vector<int> getMultVectorParallel(std::vector<int>& matrix, std::vector<int
                 tmp += constant[i];
                 recvcounts[i] = constant[i] / m;
                 displs[i] = i * recvcounts[i];
-            }
-            else {
+            } else {
                 constant[i] = n * m - tmp;
                 recvcounts[i] = constant[i] / m;
                 displs[i] = i * recvcounts[i - 1];
-            }    
+            }
         }
     }
-    
     if (rank == 0) {
         for (int proc = 1; proc < size; proc++) {
             MPI_Send(matrix.data() + proc * constant[proc - 1], constant[proc], MPI_INT, proc, 0, MPI_COMM_WORLD);
