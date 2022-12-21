@@ -17,6 +17,7 @@ TEST(sobel_operator, test_little_square_image) {
         img = generateRandomImage(2, 2);
     }
     printf("tut1");
+    MPI_Barrier(MPI_COMM_WORLD);
     std::vector<std::vector<int>>  global_res = calcSobelParallel(img, 2, 2);
     printf("tut2");
     if (rank == 0) {
@@ -36,7 +37,7 @@ TEST(sobel_operator, test_little_not_square_image1) {
     if (rank == 0) {
         img = generateRandomImage(height, width);
     }
-
+    MPI_Barrier(MPI_COMM_WORLD);
     std::vector<std::vector<int>>  global_res = calcSobelParallel(img, img.size(), img[0].size());
 
     if (rank == 0) {
@@ -56,7 +57,7 @@ TEST(sobel_operator, test_little_not_square_image2) {
     if (rank == 0) {
         img = generateRandomImage(height, width);
     }
-
+    MPI_Barrier(MPI_COMM_WORLD);
     std::vector<std::vector<int>>  global_res = calcSobelParallel(img, img.size(), img[0].size());
 
     if (rank == 0) {
@@ -76,7 +77,7 @@ TEST(sobel_operator, test_large_square_image) {
     if (rank == 0) {
         img = generateRandomImage(height, width);
     }
-
+    MPI_Barrier(MPI_COMM_WORLD);
     std::vector<std::vector<int>>  global_res = calcSobelParallel(img, img.size(), img[0].size());
 
     if (rank == 0) {
@@ -96,7 +97,7 @@ TEST(sobel_operator, test_large_not_square_image1) {
     if (rank == 0) {
         img = generateRandomImage(height, width);
     }
-
+    MPI_Barrier(MPI_COMM_WORLD);
     std::vector<std::vector<int>>  global_res = calcSobelParallel(img, img.size(), img[0].size());
 
     if (rank == 0) {
@@ -116,7 +117,7 @@ TEST(sobel_operator, test_large_not_square_image2) {
     if (rank == 0) {
         img = generateRandomImage(height, width);
     }
-
+    MPI_Barrier(MPI_COMM_WORLD);
     std::vector<std::vector<int>>  global_res = calcSobelParallel(img, img.size(), img[0].size());
 
     if (rank == 0) {
