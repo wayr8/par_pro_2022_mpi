@@ -38,7 +38,7 @@ int getDifferentSymbolsCountParallel(
     int localTo = std::min(step * (rank + 1), minStringSize);
 
     int localDiff = getDifferentSymbolsCountSequentially(first, second, localFrom, localTo);
-    
+
     int sum = 0;
     MPI_Reduce(&localDiff, &sum, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
 
