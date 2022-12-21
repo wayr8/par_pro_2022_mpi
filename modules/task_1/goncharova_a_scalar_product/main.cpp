@@ -1,4 +1,5 @@
   // Copyright Anna Goncharova
+
 #include <gtest/gtest.h>
 #include "./scalar_product.h"
 #include <gtest-mpi-listener.hpp>
