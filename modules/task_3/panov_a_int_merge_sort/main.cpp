@@ -64,7 +64,7 @@ TEST(Parallel_Operations_MPI, Array_20_With_Negative_Nums) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    Vector arr = { 
+    Vector arr = {
         1001, 150, 45, 30, 20, 700, 1, -42, 12345, 123456,
         -1001, -150, -45, -30, -20, -700, -1, 42, -12345, -123456,
     };
