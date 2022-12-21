@@ -70,7 +70,8 @@ Vector calculateJacobiParallel(
             tempX[i] /= A[i][i];
         }
 
-        MPI_Allgather(tempX.data() + localFrom, step, MPI_DOUBLE, tempX.data(), step, MPI_DOUBLE, MPI_COMM_WORLD);
+        Vector nextX(nWithShift);
+        MPI_Allgather(tempX.data() + localFrom, step, MPI_DOUBLE, nextX.data(), step, MPI_DOUBLE, MPI_COMM_WORLD);
 
         if (rank == 0) {
             norm = getDiffVectorNorm(x, tempX);
@@ -78,8 +79,8 @@ Vector calculateJacobiParallel(
 
         MPI_Bcast(&norm, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
-        tempX.resize(n);
-        x = tempX;
+        nextX.resize(n);
+        x = nextX;
     } while (norm > EPSILON);
 
     return x;
