@@ -3,6 +3,7 @@
 #include <gtest/gtest.h>
 #include <gtest-mpi-listener.hpp>
 #include "./quicksort_simple_merge.h"
+#include <utility>
 
 TEST(quicksort_simple_merge, test_1) {
   int rank;

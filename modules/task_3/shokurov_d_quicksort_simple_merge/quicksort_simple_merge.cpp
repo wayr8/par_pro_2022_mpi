@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <vector>
 #include <iostream>
+#include <utility>
 
 std::pair<int, int> split(int* arr, int n) {
   int val = arr[n / 2];
@@ -26,7 +27,7 @@ void single_quick_sort(int* arr, int n) {
   std::pair<int, int> pos = split(arr, n);
   if (pos.second > 0) single_quick_sort(arr, pos.second + 1);
   if (pos.first < n) single_quick_sort(&arr[pos.first], n - pos.first);
-};
+}
 
 void merge(int* arr1, int size1, int size2) {
   int* arr2 = &arr1[size1];
