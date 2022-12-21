@@ -28,7 +28,8 @@ std::vector<int> getRandomVector(int vecSize) {
     return vec;
 }
 
-std::vector<int> getMultVectorSequential(const std::vector<int>& pMatrix, const std::vector<int>& pVector, int n, int m) {
+std::vector<int> getMultVectorSequential(const std::vector<int>& pMatrix,
+                                            const std::vector<int>& pVector, int n, int m) {
     std::vector<int> pResult(n);
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
@@ -100,6 +101,7 @@ std::vector<int> getMultVectorParallel(const std::vector<int>& matrix, const std
         MPI_Recv(local_vec.data(), m, MPI_INT, 0, 1, MPI_COMM_WORLD, &status);
     }
     std::vector<int> local_value = getMultVectorSequential(local_row, local_vec, local_row.size() / m, m);
-    MPI_Gatherv(local_value.data(), local_value.size(), MPI_INT, global_vec.data(), recvcounts, displs, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Gatherv(local_value.data(), local_value.size(), MPI_INT, global_vec.data(),
+                recvcounts, displs, MPI_INT, 0, MPI_COMM_WORLD);
     return global_vec;
 }
