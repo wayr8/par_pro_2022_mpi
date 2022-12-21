@@ -50,16 +50,19 @@ TEST(minValRows, test4_mat_4x4) {
     if (rank == 0) EXPECT_EQ(res, myres);
 }
 
-TEST(minValRows, test5_mat_3x4) {
+TEST(minValRows, test5_mat_6x6) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
     const int count_size_vector = 120;
-    std::vector<int> matr = { 1, 2, 3, 4,
-                    5, 6, 7, 8,
-                    9, 10, 11, 12};
-    std::vector<int> vect = { 2, 3, 4, 5 };
-    std::vector<int> myres = { 40, 96, 152};
+    std::vector<int> matr = { 1, 2, 3, 4, 5, 6,
+                                7, 8, 9, 10, 11, 12,
+                                13, 14, 15, 16, 17, 18,
+                                19, 20, 21, 22, 23, 24,
+                                25, 26, 27, 28, 29, 30,
+                                31, 32, 33, 34, 35, 36};
+    std::vector<int> vect = { 2, 3, 4, 5, 6, 7 };
+    std::vector<int> myres = { 112, 274, 436, 598, 760, 922};
     std::vector<int> res = lentVertScheme(matr, vect, 3, 4);
     if (rank == 0) EXPECT_EQ(res, myres);
 }
