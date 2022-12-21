@@ -82,7 +82,7 @@ std::vector<int> Shell(const std::vector<int> &vec, int vectorSize) {
 
   ShellSequence(&local);
 
-  if(rank == 0) {
+  if (rank == 0) {
     std::vector<int> end(vec.end() - remain, vec.end());
     if (remain != 0) {
       ShellSequence(&end);
