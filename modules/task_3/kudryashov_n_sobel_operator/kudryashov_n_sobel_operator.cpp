@@ -2,7 +2,6 @@
 #include <mpi.h>
 #include <random>
 #include <ctime>
-#include <iostream>
 #include "../../../modules/task_3/kudryashov_n_sobel_operator/kudryashov_n_sobel_operator.h"
 
 std::vector<std::vector<int>> generateRandomImage(int height, int width) {
