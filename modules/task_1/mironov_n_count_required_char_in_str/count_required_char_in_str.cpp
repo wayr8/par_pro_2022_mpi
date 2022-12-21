@@ -65,7 +65,7 @@ int countRequiredCharInStr(char *str, char requiredChar) {
             scattervDispls = new int[strlen(str)];
             for (int i = 0; i < strlen(str); i++) {
                 oneProcWorkAmountForScatterv[i] = 1;
-                scattervDispls[i] = i + 1;
+                scattervDispls[i] = i;
             }
         } else {
             color = 2;
@@ -75,7 +75,7 @@ int countRequiredCharInStr(char *str, char requiredChar) {
             return 0;
         }
     } else {
-        MPI_Comm commForProcInUse = MPI_COMM_WORLD;
+        commForProcInUse = MPI_COMM_WORLD;
         oneProcWorkAmountForScatterv = new int[procCount];
         scattervDispls = new int[procCount];
         for (int i = 0; i < procCount; i++) {
