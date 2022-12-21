@@ -1,4 +1,4 @@
-// Copyright 2022 MUKHIN VADIM 
+// Copyright 2022 MUKHIN VADIM
 #include <gtest/gtest.h>
 #include <vector>
 #include "./ops_mpi.h"
