@@ -40,7 +40,7 @@ void send(void* mes, int count, MPI_Datatype type, int source, int dest, int tag
     MPI_Comm_size(comm, &size);
     MPI_Comm_rank(comm, &rank);
 
-    if (((rank <= dest) && (source <= rank) && route)||((rank >= dest) && (source >= rank) && !route)) {
+    if (((rank <= dest) && (source <= rank) && route) || ((rank >= dest) && (source >= rank) && !route)) {
         if (((rank != 0) && route) || ((rank != size - 1) && !route)) {
             getPrev(&prev, comm, rank, route);
         }
