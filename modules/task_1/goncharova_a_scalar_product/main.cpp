@@ -12,7 +12,6 @@ TEST(scalar_product, can_product_vectors_with_100_range) {
         vec1 = creatRandomVector(100);
         vec2 = creatRandomVector(100);
     }
-
     int res1 = getParallelScalarProduct(vec1, vec2);
     if (rank == 0) {
         int res2 = getSequentialScalarProduct(vec1, vec2);
