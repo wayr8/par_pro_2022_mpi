@@ -42,7 +42,7 @@ std::vector<int> Merge(const std::vector<std::vector<int>> &vectors) {
     int k = 0;
 
     while (k < static_cast<int>(result.size())) {
-      if (result[k] > *it && it != vec.end()) {
+      if (it != vec.end() && result[k] > *it) {
         result.insert(result.begin() + k, *it);
         it += 1;
       }
