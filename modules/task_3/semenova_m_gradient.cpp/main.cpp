@@ -1,7 +1,7 @@
 // Copyright 2022 Semenova Veronika
 #include <gtest/gtest.h>
 #include <vector>
-#include ".m_gradient.cpp"
+#include ".m_gradient.h"
 #include <gtest-mpi-listener.hpp>
 
 TEST(Parallel_Operations_MPI, Serial_method_gradient_is_correct2x2_1) {
