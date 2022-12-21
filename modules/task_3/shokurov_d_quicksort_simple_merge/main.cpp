@@ -3,7 +3,6 @@
 #include <gtest/gtest.h>
 #include <gtest-mpi-listener.hpp>
 #include "./quicksort_simple_merge.h"
-#include <utility>
 
 TEST(quicksort_simple_merge, test_1) {
   int rank;
@@ -28,10 +27,11 @@ TEST(quicksort_simple_merge, test_1) {
 TEST(quicksort_simple_merge, test_2) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-
+  std::random_device dev;
+  std::mt19937 gen(dev());
   int si = 100;
   int* a = new int[si];
-  for (int i = 0; i < si; ++i) a[i] = rand();
+  for (int i = 0; i < si; ++i) a[i] = gen();
 
   parallel_quick_sort(a, si);
 
@@ -43,10 +43,11 @@ TEST(quicksort_simple_merge, test_2) {
 TEST(quicksort_simple_merge, test_3) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-
+  std::random_device dev;
+  std::mt19937 gen(dev());
   int si = 1000;
   int* a = new int[si];
-  for (int i = 0; i < si; ++i) a[i] = rand();
+  for (int i = 0; i < si; ++i) a[i] = gen();
 
   parallel_quick_sort(a, si);
 
@@ -59,10 +60,11 @@ TEST(quicksort_simple_merge, test_3) {
 TEST(quicksort_simple_merge, test_4) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-
+  std::random_device dev;
+  std::mt19937 gen(dev());
   int si = 1500;
   int* a = new int[si];
-  for (int i = 0; i < si; ++i) a[i] = rand();
+  for (int i = 0; i < si; ++i) a[i] = gen();
 
   parallel_quick_sort(a, si);
 
@@ -75,10 +77,11 @@ TEST(quicksort_simple_merge, test_4) {
 TEST(quicksort_simple_merge, test_5) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-
+  std::random_device dev;
+  std::mt19937 gen(dev());
   int si = 3000;
   int* a = new int[si];
-  for (int i = 0; i < si; ++i) a[i] = rand();
+  for (int i = 0; i < si; ++i) a[i] = gen();
 
   parallel_quick_sort(a, si);
 
