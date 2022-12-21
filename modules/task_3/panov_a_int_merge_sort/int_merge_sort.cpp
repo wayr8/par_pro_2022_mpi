@@ -52,8 +52,7 @@ Vector mergeSort(const Vector& first, const Vector& second, int sbegin, int send
         first.end(),
         second.begin() + sbegin,
         second.begin() + send,
-        std::back_inserter(result)
-    );
+        std::back_inserter(result));
     return result;
 }
 
