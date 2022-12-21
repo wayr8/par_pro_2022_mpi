@@ -63,7 +63,7 @@ TEST(minValRows, test5_mat_6x6) {
                                 31, 32, 33, 34, 35, 36};
     std::vector<int> vect = { 2, 3, 4, 5, 6, 7 };
     std::vector<int> myres = { 112, 274, 436, 598, 760, 922};
-    std::vector<int> res = lentVertScheme(matr, vect, 3, 4);
+    std::vector<int> res = lentVertScheme(matr, vect, 6, 6);
     if (rank == 0) EXPECT_EQ(res, myres);
 }
 
