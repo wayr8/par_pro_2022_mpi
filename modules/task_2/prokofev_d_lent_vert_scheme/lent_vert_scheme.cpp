@@ -40,7 +40,6 @@ std::vector<int> lentVertScheme(const std::vector<int>& mat,
         int color;
         if (id < rows && tsize>rows || id < rows / tsize) {
             color = 1;
-            std::cout << id << " " << std::endl;
             MPI_Comm_split(MPI_COMM_WORLD, color, id, &myComm);
             MPI_Comm_size(myComm, &size);
             MPI_Comm_rank(myComm, &id);
@@ -85,6 +84,9 @@ std::vector<int> lentVertScheme(const std::vector<int>& mat,
     std::vector<int> res(rows);
 
     if (id == 0) {
+         for (int i = 0; i < nvec.size(); i++) {
+        std::cout << i << " = " << tres[i]  << std::endl;
+    }
         for (int i = 0; i < rows; i++) {
             res[i] = 0;
             for (int j = 0; j < cols; j++) {
