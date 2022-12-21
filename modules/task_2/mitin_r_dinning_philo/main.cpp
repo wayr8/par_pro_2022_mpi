@@ -12,6 +12,7 @@ TEST(dinning_philo, test_1) {
 
     if ( rank == 0 ) {
         int64_t* data_ptr = new int64_t;
+        *data_ptr = 0;
         dinning(data_ptr);
 
         EXPECT_EQ(0, *data_ptr);
