@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-#include "../../modules/task_3/semenova_m_gradient.cpp/m_gradient.h"
+#include "../../modules/task_3/semenova_m_gradient/m_gradient.h"
 
 std::random_device rd;
 std::mt19937 gen(rd());
