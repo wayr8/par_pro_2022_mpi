@@ -72,9 +72,12 @@ std::vector<int> lentVertScheme(const std::vector<int>& mat,
     MPI_Scatter(&vect[0], vchapter, MPI_INT, &mvec[0],
         vchapter, MPI_INT, 0, myComm);
     for (std::size_t i = 0; i < vchapter; i++) {
-        for (std::size_t j = 0; j < rows; j++) {
+        for (std::size_t j = 0; j < chapter; j++) {
             vres[i * rows + j] = mmap[i * rows + j] * mvec[i];
         }
+    }
+     for (int i = 0; i < nvec.size(); i++) {
+        std::cout << i << " = " << vres[i]  << std::endl;
     }
 
     MPI_Gather(&vres[0], chapter * cols, MPI_INT, &tres[0], chapter * cols,
