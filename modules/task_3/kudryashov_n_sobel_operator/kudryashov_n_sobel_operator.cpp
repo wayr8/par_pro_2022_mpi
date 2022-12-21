@@ -130,7 +130,7 @@ std::vector<std::vector<int>> calcSobelParallel(std::vector<std::vector<int>> im
     }
     std::vector<int> global_res(width * height);
 
-    MPI_Gatherv(localRes.data(), localRes.size(), MPI_INT, global_res.data(), 
+    MPI_Gatherv(localRes.data(), localRes.size(), MPI_INT, global_res.data(),
         recvcounts.data(), displs.data(), MPI_INT, 0, MPI_COMM_WORLD);
 
     return vectorToMatrix(global_res, height, width);
