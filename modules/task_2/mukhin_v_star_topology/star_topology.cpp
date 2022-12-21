@@ -1,4 +1,4 @@
-// Copyright 2022 MUKHIN VADIM 
+// Copyright 2022 MUKHIN VADIM
 #include "../../../modules/task_2/mukhin_v_star_topology/star_topology.h"
 
 MPI_Comm Star(const MPI_Comm comm) {
