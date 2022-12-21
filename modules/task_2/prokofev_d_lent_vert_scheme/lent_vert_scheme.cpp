@@ -87,7 +87,6 @@ std::vector<int> lentVertScheme(const std::vector<int>& mat,
     std::vector<int> res(rows);
 
     if (id == 0) {
-        
         for (int i = 0; i < rows; i++) {
             res[i] = 0;
             for (int j = 0; j < cols; j++) {
