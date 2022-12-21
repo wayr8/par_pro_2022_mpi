@@ -5,7 +5,6 @@
 #include <vector>
 #include <string>
 
-std::string get_random_string(size_t n);
 std::string scatter_string(std::string str1);
 int check_order_single_process(size_t n, std::string a, std::string b);
 std::string addNull(std::string str, int count);

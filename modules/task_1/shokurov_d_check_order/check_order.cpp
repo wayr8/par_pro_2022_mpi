@@ -7,15 +7,6 @@
 #include <algorithm>
 #include "../../../modules/task_1/shokurov_d_check_order/check_order.h"
 
-std::string get_random_string(size_t n) {
-  std::string str;
-  str.resize(n);
-  for (int i = 0; i < n; ++i) {
-    str[i] = static_cast<char>(rand());
-  }
-  return str;
-}
-
 std::string scatter_string(std::string str1) {
   int rank;
   int numProc = 0;
