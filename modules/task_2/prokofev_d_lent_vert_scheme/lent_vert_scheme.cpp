@@ -55,9 +55,9 @@ std::vector<int> lentVertScheme(const std::vector<int>& mat,
     }
     if (myComm == NULL) return std::vector<int>{0};
     int chapter = rows / size;
-
+    int vchapter = cols / size;
     std::vector<int>mmap(chapter * cols);
-    std::vector<int>mvec(chapter);
+    std::vector<int>mvec(vchapter);
     std::vector<int>vres(chapter * cols);
     std::vector<int>tres(rows * cols);
     std::vector<int>nvec(rows * cols);
@@ -69,9 +69,9 @@ std::vector<int> lentVertScheme(const std::vector<int>& mat,
     }
     MPI_Scatter(&nvec[0], chapter * cols, MPI_INT, &mmap[0],
         chapter * cols, MPI_INT, 0, myComm);
-    MPI_Scatter(&vect[0], chapter, MPI_INT, &mvec[0],
-        chapter, MPI_INT, 0, myComm);
-    for (std::size_t i = 0; i < cols; i++) {
+    MPI_Scatter(&vect[0], vchapter, MPI_INT, &mvec[0],
+        vchapter, MPI_INT, 0, myComm);
+    for (std::size_t i = 0; i < vchapter; i++) {
         for (std::size_t j = 0; j < chapter; j++) {
             vres[i * rows + j] = mmap[i * rows + j] * mvec[i];
         }
