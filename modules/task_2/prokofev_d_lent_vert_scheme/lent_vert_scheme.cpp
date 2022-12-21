@@ -40,6 +40,7 @@ std::vector<int> lentVertScheme(const std::vector<int>& mat,
         int color;
         if (id < rows && tsize>rows || id < rows / tsize) {
             color = 1;
+            std::cout << id << " " << std::endl;
             MPI_Comm_split(MPI_COMM_WORLD, color, id, &myComm);
             MPI_Comm_size(myComm, &size);
             MPI_Comm_rank(myComm, &id);
@@ -71,8 +72,8 @@ std::vector<int> lentVertScheme(const std::vector<int>& mat,
         chapter * cols, MPI_INT, 0, myComm);
     MPI_Scatter(&vect[0], chapter, MPI_INT, &mvec[0],
         chapter, MPI_INT, 0, myComm);
-    for (std::size_t i = 0; i < chapter; i++) {
-        for (std::size_t j = 0; j < cols; j++) {
+    for (std::size_t i = 0; i < cols; i++) {
+        for (std::size_t j = 0; j < chapter; j++) {
             vres[i * rows + j] = mmap[i * rows + j] * mvec[i];
         }
     }
@@ -84,10 +85,10 @@ std::vector<int> lentVertScheme(const std::vector<int>& mat,
     std::vector<int> res(rows);
 
     if (id == 0) {
-        for (int i = 0; i < cols; i++) {
+        for (int i = 0; i < rows; i++) {
             res[i] = 0;
-            for (int j = 0; j < rows; j++) {
-                res[i] += tres[j * cols + i];
+            for (int j = 0; j < cols; j++) {
+                res[i] += tres[j * rows + i];
             }
         }
         return res;
