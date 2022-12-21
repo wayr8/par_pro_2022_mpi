@@ -1,5 +1,5 @@
 ﻿  // Copyright 2022 Prokofev Denis
-#include "../../../modules/task_1/prokofev_d_lent_vert_scheme/lent_vert_scheme.h"
+#include "../../../modules/task_2/prokofev_d_lent_vert_scheme/lent_vert_scheme.h"
 
 std::vector<int> genMatr(int rows, int cols) {
     if (rows < 1 || cols < 1) {

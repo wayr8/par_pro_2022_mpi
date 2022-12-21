@@ -1,6 +1,6 @@
 ﻿  // Copyright 2022 Prokofev Denis
 #include <gtest/gtest.h>
-#include "../../../modules/task_1/prokofev_d_lent_vert_scheme/lent_vert_scheme.h"
+#include "../../../modules/task_2/prokofev_d_lent_vert_scheme/lent_vert_scheme.h"
 #include <gtest-mpi-listener.hpp>
 
 
