@@ -26,7 +26,7 @@ TEST(Horiz_Scheme_MPI, Test_Mult2) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_matrix, global_vec;
-    const int n = 2, m = 4;
+    const int n = 4, m = 4;
 
     if (rank == 0) {
         global_matrix = getRandomMatrix(n, m);
@@ -44,7 +44,7 @@ TEST(Horiz_Scheme_MPI, Test_Mult3) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_matrix, global_vec;
-    const int n = 5, m = 5;
+    const int n = 8, m = 8;
 
     if (rank == 0) {
         global_matrix = getRandomMatrix(n, m);
