@@ -1,5 +1,5 @@
 // Copyright 2022 Mitin Roman
-#include "../../../modules/task_1/mitin_r_integrate_monte_carlo/integrate_monte_carlo.h"
+#include "../../modules/task_1/mitin_r_integr_mon_carl/integr_mon_carl.h"
 #include <random>
 
 std::pair<double, double> get_rand_point(double a, double b, double h_min, double h_max) {

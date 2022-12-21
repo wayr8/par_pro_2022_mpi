@@ -2,7 +2,7 @@
 #include <gtest/gtest.h>
 
 #include <cmath>
-#include "./integrate_monte_carlo.h"
+#include "./integr_mon_carl.h"
 #include <gtest-mpi-listener.hpp>
 
 constexpr double max_err = 1e-2;
