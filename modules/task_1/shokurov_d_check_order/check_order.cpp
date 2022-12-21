@@ -16,7 +16,7 @@ std::string get_random_string(size_t n) {
   return str;
 }
 
-void scatter_string(std::string str1) {
+std::string scatter_string(std::string str1) {
   int rank;
   int numProc = 0;
   MPI_Comm_size(MPI_COMM_WORLD, &numProc);
@@ -44,19 +44,12 @@ void scatter_string(std::string str1) {
     buffer = new char[count];
     MPI_Recv(buffer, count, MPI_CHAR, 0, 123, MPI_COMM_WORLD, &status);
     str1 = std::string(buffer, count);
+    delete[] buffer;
   }
+  return str1;
 }
 
-void get_string(std::string str, int root) {
-  MPI_Status status;
-  int count;
-  MPI_Get_count(&status, MPI_INT, &count);
-  str.resize(count);
-  char* ptr = const_cast<char*>(str.c_str());
-  MPI_Scatter(nullptr, 0, MPI_CHAR, ptr, count, MPI_CHAR, root, MPI_COMM_WORLD);
-}
-
-int check_order_single_process(size_t n, std::string a, std::string& b) {
+int check_order_single_process(size_t n, std::string a, std::string b) {
   for (int i = 0; i < n; ++i) {
     if (a[i] != b[i]) {
       if (a[i] < b[i]) return -1;
@@ -72,6 +65,7 @@ std::string addNull(std::string str, int count) {
   for (int i = si; i < str.size(); i++) {
     str[i] = 0;
   }
+  return str;
 }
 
 int getOrder(std::string str1, std::string str2) {
@@ -80,15 +74,16 @@ int getOrder(std::string str1, std::string str2) {
   MPI_Status status;
   MPI_Comm_size(MPI_COMM_WORLD, &numProc);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-
-  if (str1.size() < str2.size()) {
-    str1 = addNull(str1, str2.size() - str1.size());
-  } else {
-    str1 = addNull(str2, str1.size() - str2.size());
+  if (rank == 0) {
+    if (str1.size() < str2.size()) {
+      str1 = addNull(str1, str2.size() - str1.size());
+    } else {
+      str2 = addNull(str2, str1.size() - str2.size());
+    }
   }
 
-  scatter_string(str1);
-  scatter_string(str2);
+  str1 = scatter_string(str1);
+  str2 = scatter_string(str2);
 
   int ans = check_order_single_process(str1.size(), str1, str2);
 

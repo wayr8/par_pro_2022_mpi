@@ -3,17 +3,15 @@
 #include <vector>
 #include "./check_order.h"
 #include <gtest-mpi-listener.hpp>
-using namespace std;
 
 TEST(check_order_MPI, test_equal_size_1) {
   int rank;
   int ProcNum = 0;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-  string str1;
-  string str2;
+  std::string str1 = "";
+  std::string str2 = "";
   int ans;
   if (rank == 0) {
     str1 = "12111";
@@ -31,19 +29,17 @@ TEST(check_order_MPI, test_big_string) {
   int ProcNum = 0;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-  string str1;
-  string str2;
+  std::string str1;
+  std::string str2;
   int ans1, ans2;
   if (rank == 0) {
-    get_random_string(str1, 200);
-    get_random_string(str2, 200);
+    str1 = get_random_string(200);
+    str2 = get_random_string(200);
   }
-
   ans1 = getOrder(str1, str2);
-  ans2 = check_order_single_process(200, str1, str2);
   if (rank == 0) {
+    ans2 = check_order_single_process(200, str1, str2);
     EXPECT_EQ(ans1, ans2);
   }
 }
@@ -53,10 +49,9 @@ TEST(check_order_MPI, test_different_size_1) {
   int ProcNum = 0;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-  string str1;
-  string str2;
+  std::string str1;
+  std::string str2;
   int ans;
   if (rank == 0) {
     str1 = "11";
@@ -72,10 +67,9 @@ TEST(check_order_MPI, test_different_size_2) {
   int ProcNum = 0;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-  string str1;
-  string str2;
+  std::string str1;
+  std::string str2;
   int ans;
   if (rank == 0) {
     str1 = "dsg9893dlk24d111111";
@@ -91,10 +85,9 @@ TEST(check_order_MPI, test_equal_string) {
   int ProcNum = 0;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-  string str1;
-  string str2;
+  std::string str1;
+  std::string str2;
   int ans;
   if (rank == 0) {
     str1 = "dsg98934dlk24d";
