@@ -76,9 +76,6 @@ std::vector<int> lentVertScheme(const std::vector<int>& mat,
             vres[i * rows + j] = mmap[i * rows + j] * mvec[i];
         }
     }
-     for (int i = 0; i < nvec.size(); i++) {
-        std::cout << i << " = " << vres[i]  << std::endl;
-    }
 
     MPI_Gather(&vres[0], chapter * cols, MPI_INT, &tres[0], chapter * cols,
         MPI_INT, 0, myComm);
