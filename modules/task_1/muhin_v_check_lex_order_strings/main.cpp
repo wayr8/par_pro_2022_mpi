@@ -1,7 +1,7 @@
 // Copyright 2022 Muhin Vadim
 #include <gtest/gtest.h>
 #include <vector>
-#include "./check_lexicographic_ordering_two_strings.h"
+#include "./check_lex_order_strings.h"
 #include <gtest-mpi-listener.hpp>
 
 TEST(Generation_String, can_generate_string) {
