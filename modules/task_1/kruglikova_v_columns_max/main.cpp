@@ -1,5 +1,4 @@
 // Copyright 2022 Kruglikova Valeriia
-
 #include <gtest-mpi-listener.hpp>
 #include <gtest/gtest.h>
 #include<vector>
