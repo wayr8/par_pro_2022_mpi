@@ -1,86 +1,85 @@
 // Copyright 2022 Yashina Anastasia
-#include <gtest/gtest.h>
 #include <gtest-mpi-listener.hpp>
-#include <mpi.h>
+#include <gtest/gtest.h>
 #include <vector>
-#include <iostream>
-#include "../../../modules/task_1/yashina_a_sum_elem_mat/sum_elem_mat.h"
+#include "./mult_mat_vect_hor.h"
 
-void testing_lab(int size) {
-    int ans, res = 0;
-    int rank;
-    std::vector<int> matrix(size, 0);
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    if (rank == 0) {
-        matrix = getMatrix(size);
-    }
-    ans = Work(size, matrix);
-    if (rank == 0) {
-      res = SumOfMatrixElementsPartly(matrix);
-    }
-    ASSERT_EQ(res, ans);
-}
-
-TEST(Sum_of_matrix_elements_MPI, Test_On_Size_1) {
-    int size = 1;
-    testing_lab(size);
-}
-
-TEST(Sum_of_matrix_elements_MPI, Test_On_Size_2) {
-    int size = 2;
-    testing_lab(size);
-}
-
-TEST(Sum_of_matrix_elements_MPI, Test_On_Size_3) {
-    int size = 3;
-    testing_lab(size);
-}
-
-TEST(Sum_of_matrix_elements_MPI, Test_On_Size_9) {
-    int size = 9;
-    testing_lab(size);
-}
-
-TEST(Sum_of_matrix_elements_MPI, Test_On_Size_91) {
-    int size = 91;
-    testing_lab(size);
-}
-
-TEST(Sum_of_matrix_elements_MPI, Test_On_Size_100) {
-    int size = 100;
-    testing_lab(size);
-}
-
-TEST(Sum_of_matrix_elements_MPI, Test_On_Size_5000) {
-    int size = 5000;
-    testing_lab(size);
-}
-
-TEST(Sum_of_matrix_elements_MPI, Test_On_Size_1000000) {
-    int size = 1000000;
-    testing_lab(size);
-}
-
-TEST(Sum_of_matrix_elements_MPI, Negative_matrix_size) {
-    int size = -10;
+TEST(Matrix_On_Vector_Multip_MPI, test1_mat_3x3_EQ) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    std::vector <int> Mat(9);
+    std::vector <int> Vec(3);
+    std::vector <int> res = { 3, 3, 3 };
+    std::vector <int> Res(3, 0);
+
+    Mat = { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+    Vec = { 1, 1, 1 };
+
+    Res = Multip(Mat, 3, 3, Vec);
     if (rank == 0) {
-        ASSERT_ANY_THROW(std::vector<int> matrix(size, 0));
+        EXPECT_EQ(Res, res);
     }
 }
 
-TEST(Sum_of_matrix_elements_MPI, Empty_matrix) {
-    int size = 0;
+TEST(Matrix_On_Vector_Multip_MPI, test2_ident_mat_3x3_EQ) {
     int rank;
-    std::vector<int> matrix(size, 0);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    std::vector <int> Mat(9);
+    std::vector <int> Vec(3);
+    std::vector <int> res = { 1, 2, 3 };
+    std::vector <int> Res(3, 0);
+
+    Mat = { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
+    Vec = { 1, 2, 3 };
+
+    Res = Multip(Mat, 3, 3, Vec);
     if (rank == 0) {
-        ASSERT_ANY_THROW(Work(size, matrix));
+        EXPECT_EQ(Res, res);
     }
 }
 
-int main(int argc, char **argv) {
+TEST(Matrix_On_Vector_Multip_MPI, test3_mat_4x3_EQ) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    std::vector <int> Mat(9);
+    std::vector <int> Vec(3);
+    std::vector <int> res = { 6, 15, 24, 33 };
+    std::vector <int> Res(4, 0);
+
+    Mat = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+    Vec = { 1, 1, 1 };
+
+    Res = Multip(Mat, 4, 3, Vec);
+    if (rank == 0) {
+        EXPECT_EQ(Res, res);
+    }
+}
+TEST(Matrix_On_Vector_Multip_MPI, test4_negative_in_rows) {
+    std::vector <int> Mat(9);
+    std::vector <int> Vec(3);
+    Mat = { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+    Vec = { 1, 1, 1 };
+    EXPECT_ANY_THROW(Multip(Mat, -3, 3, Vec););
+}
+
+TEST(Matrix_On_Vector_Multip_MPI, test5_negative_in_cols) {
+    std::vector <int> Mat(9);
+    std::vector <int> Vec(3);
+    Mat = { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+    Vec = { 1, 1, 1 };
+    EXPECT_ANY_THROW(Multip(Mat, 3, -3, Vec););
+}
+
+TEST(Matrix_On_Vector_Multip_MPI, test6_wrong_size_for_multip) {
+    std::vector <int> Mat(9);
+    std::vector <int> Vec(2);
+    Mat = { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+    Vec = { 1, 1 };
+    EXPECT_ANY_THROW(Multip(Mat, 3, 3, Vec););
+}
+
+
+int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     MPI_Init(&argc, &argv);
 
@@ -92,5 +91,6 @@ int main(int argc, char **argv) {
     listeners.Release(listeners.default_xml_generator());
 
     listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
+
     return RUN_ALL_TESTS();
 }
