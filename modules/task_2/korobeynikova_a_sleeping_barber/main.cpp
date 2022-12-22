@@ -32,7 +32,7 @@ TEST(Parallel_Operations_MPI, Test_Max) {
       }
     } else if (rank == waitingRoomProc) {
       waitingRoom(waitingRoomSize);
-      out_room << "end." << std::endl;
+      out_room << "End" << std::endl;
     } else {
       customer();
       out_client << "end." << std::endl;
