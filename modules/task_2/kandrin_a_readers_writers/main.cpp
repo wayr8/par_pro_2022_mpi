@@ -45,7 +45,7 @@ static ReturnValue testFunction(int readersCount, int writersCount,
   const int index = 0;
 
   if (isMasterProcess) {
-    auto memory = std::make_unique<Memory>();
+    std::unique_ptr<Memory> memory(new Memory());
     if (memory == nullptr) {
       return ReturnValue::NOT_ENOUGH_MEMORY;
     }
