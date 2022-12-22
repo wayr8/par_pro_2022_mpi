@@ -14,7 +14,7 @@ TEST(Test_mult_ccs_MPI, Test_0) {
 
     int m = 6;
     int n = 5;
-    int val_n_a = 5;
+    int val_n_a = 4;
     matrix_ccs a(m, n, val_n_a);
     int val_n_b = 5;
     matrix_ccs b(n, m, val_n_b);
@@ -64,8 +64,8 @@ TEST(Test_mult_ccs_MPI, Test_2) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    int m = 4;
-    int n = 4;
+    int m = 5;
+    int n = 5;
     int val_n_a = 3;
     matrix_ccs a(m, n, val_n_a);
     int val_n_b = 4;
@@ -92,9 +92,9 @@ TEST(Test_mult_ccs_MPI, Test_3) {
 
     int m = 10;
     int n = 10;
-    int val_n_a = 10;
+    int val_n_a = 9;
     matrix_ccs a(m, n, val_n_a);
-    int val_n_b = 10;
+    int val_n_b = 9;
     matrix_ccs b(n, m, val_n_b);
 
     if (rank == 0) {
@@ -118,7 +118,7 @@ TEST(Test_mult_ccs_MPI, Test_4) {
 
     int m = 20;
     int n = 5;
-    int val_n_a = 5;
+    int val_n_a = 4;
     matrix_ccs a(m, n, val_n_a);
     int val_n_b = 17;
     matrix_ccs b(n, m, val_n_b);
