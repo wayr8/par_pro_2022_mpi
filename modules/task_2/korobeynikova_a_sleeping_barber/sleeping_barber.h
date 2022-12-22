@@ -25,7 +25,6 @@ class CustomerQueue : public std::queue<int> {
     std::queue<int>::push(value);
   }
 };
-void sendClientToBarber(int clientNum);
 void waitingRoom(int waitingRoomSize);
 void customer();
 int barber();

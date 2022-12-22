@@ -2,18 +2,12 @@
 
 #include <gtest/gtest.h>
 
-#include <vector>
+#include <chrono>
 #include <gtest-mpi-listener.hpp>
+#include <thread>
+#include <vector>
 
 #include "./sleeping_barber.h"
-#include <fstream>
-#include <thread>
-#include <chrono>
-
-
-extern std::ofstream out_room;
-extern std::ofstream out_client;
-extern std::ofstream out_barber;
 
 TEST(Parallel_Operations_MPI, Test_Barber_Shop_Work) {
   int size, rank;
@@ -24,7 +18,6 @@ TEST(Parallel_Operations_MPI, Test_Barber_Shop_Work) {
   if (size >= 3) {
     if (rank == barberProc) {
       int served_cust = barber();
-      out_barber << "end." << std::endl;
       if (size - 2 <= waitingRoomSize) {
         ASSERT_TRUE(served_cust == size - 2);
       } else {
@@ -32,12 +25,10 @@ TEST(Parallel_Operations_MPI, Test_Barber_Shop_Work) {
       }
     } else if (rank == waitingRoomProc) {
       waitingRoom(waitingRoomSize);
-      out_room << "End" << std::endl;
     } else {
       std::this_thread::sleep_for(
           std::chrono::duration<double, std::milli>(10));
       customer();
-      out_client << "end." << std::endl;
     }
   }
   MPI_Barrier(MPI_COMM_WORLD);
@@ -52,7 +43,6 @@ TEST(Parallel_Operations_MPI, Test_Barber_Shop_Work_2) {
   if (size >= 3) {
     if (rank == barberProc) {
       int served_cust = barber();
-      out_barber << "end." << std::endl;
       if (size - 2 <= waitingRoomSize) {
         ASSERT_TRUE(served_cust == size - 2);
       } else {
@@ -60,12 +50,10 @@ TEST(Parallel_Operations_MPI, Test_Barber_Shop_Work_2) {
       }
     } else if (rank == waitingRoomProc) {
       waitingRoom(waitingRoomSize);
-      out_room << "End" << std::endl;
     } else {
       std::this_thread::sleep_for(
           std::chrono::duration<double, std::milli>(10));
       customer();
-      out_client << "end." << std::endl;
     }
   }
   MPI_Barrier(MPI_COMM_WORLD);
@@ -80,7 +68,6 @@ TEST(Parallel_Operations_MPI, Test_Barber_Shop_Work_3) {
   if (size >= 3) {
     if (rank == barberProc) {
       int served_cust = barber();
-      out_barber << "end." << std::endl;
       if (size - 2 <= waitingRoomSize) {
         ASSERT_TRUE(served_cust == size - 2);
       } else {
@@ -88,12 +75,10 @@ TEST(Parallel_Operations_MPI, Test_Barber_Shop_Work_3) {
       }
     } else if (rank == waitingRoomProc) {
       waitingRoom(waitingRoomSize);
-      out_room << "End" << std::endl;
     } else {
       std::this_thread::sleep_for(
           std::chrono::duration<double, std::milli>(10));
       customer();
-      out_client << "end." << std::endl;
     }
   }
   MPI_Barrier(MPI_COMM_WORLD);
@@ -108,7 +93,6 @@ TEST(Parallel_Operations_MPI, Test_Barber_Shop_Work_4) {
   if (size >= 3) {
     if (rank == barberProc) {
       int served_cust = barber();
-      out_barber << "end." << std::endl;
       if (size - 2 <= waitingRoomSize) {
         ASSERT_TRUE(served_cust == size - 2);
       } else {
@@ -116,12 +100,10 @@ TEST(Parallel_Operations_MPI, Test_Barber_Shop_Work_4) {
       }
     } else if (rank == waitingRoomProc) {
       waitingRoom(waitingRoomSize);
-      out_room << "End" << std::endl;
     } else {
       std::this_thread::sleep_for(
           std::chrono::duration<double, std::milli>(10));
       customer();
-      out_client << "end." << std::endl;
     }
   }
   MPI_Barrier(MPI_COMM_WORLD);
@@ -136,7 +118,6 @@ TEST(Parallel_Operations_MPI, Test_Barber_Shop_Work_5) {
   if (size >= 3) {
     if (rank == barberProc) {
       int served_cust = barber();
-      out_barber << "end." << std::endl;
       if (size - 2 <= waitingRoomSize) {
         ASSERT_TRUE(served_cust == size - 2);
       } else {
@@ -144,11 +125,10 @@ TEST(Parallel_Operations_MPI, Test_Barber_Shop_Work_5) {
       }
     } else if (rank == waitingRoomProc) {
       waitingRoom(waitingRoomSize);
-      out_room << "End" << std::endl;
     } else {
-      std::this_thread::sleep_for(std::chrono::duration<double, std::milli>(10));
+      std::this_thread::sleep_for(
+          std::chrono::duration<double, std::milli>(10));
       customer();
-      out_client << "end." << std::endl;
     }
   }
   MPI_Barrier(MPI_COMM_WORLD);
