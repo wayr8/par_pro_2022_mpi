@@ -3,9 +3,9 @@
 #define MODULES_TASK_2_KANDRIN_A_READERS_WRITERS_READERS_WRITERS_H_
 
 #include <array>
-#include <vector>
 #include <cassert>
 #include <cstring>
+#include <vector>
 
 #define DEBUG_OUTPUT
 
@@ -25,23 +25,22 @@ class ByteSpan {
 
   template <class T>
   operator T() const {
-    T t;
-    memcpy(&t, m_begin, sizeof(T));
-    return t;
+    const T* t = reinterpret_cast<const T*>(m_begin);
+    return *t;
   }
 
   const char* GetData() const;
 
   size_t GetSize() const;
 
-  #ifdef DEBUG_OUTPUT
+#ifdef DEBUG_OUTPUT
   friend std::ostream& operator<<(std::ostream& out, const ByteSpan& byteSpan) {
     for (int i = 0; i < byteSpan.m_size; ++i) {
       out << (int)byteSpan.m_begin[i] << ' ';
     }
     return out;
   }
-  #endif
+#endif
 };
 
 class Memory {
@@ -50,9 +49,7 @@ class Memory {
  public:
   Memory();
 
-  constexpr size_t GetSize() const {
-      return m_buffer.size();
-  }
+  constexpr size_t GetSize() const { return m_buffer.size(); }
 
   // Write buffer "data" with size "size" to memory at index "index".
   void Write(ByteSpan span, size_t index);
@@ -94,9 +91,12 @@ class Operation {
 
   Operation() : Operation(nullptr, -1, OperationType{}, T{}) {}
 
+
   void SetMemory(Memory* memory) { m_memory = memory; }
 
   OperationType GetOperationType() const { return m_operationType; }
+
+  const T& GetArgument() const { return m_argument; }
 
   T Perform() {
     assert(m_index < m_memory->GetSize() / sizeof(T));
@@ -121,7 +121,7 @@ class Operation {
     return variable;
   }
 
-  #ifdef DEBUG_OUTPUT
+#ifdef DEBUG_OUTPUT
   friend std::ostream& operator<<(std::ostream& out,
                                   const Operation& operation) {
     out << "Operation: " << operation.m_memory << ' ' << operation.m_index
@@ -129,15 +129,15 @@ class Operation {
         << operation.m_argument;
     return out;
   }
-  #endif
+#endif
 };
 
 using OperationInt = Operation<int>;
 
-void masterProcessFunction(Memory * memory);
+void masterProcessFunction(Memory* memory, int requestsCount);
 
 std::vector<int> readerProcessFunction(int readingCount);
 
-void writerProcessFunction(std::vector<OperationInt> & operations);
+void writerProcessFunction(std::vector<OperationInt>& operations);
 
 #endif  // MODULES_TASK_2_KANDRIN_A_READERS_WRITERS_READERS_WRITERS_H_
