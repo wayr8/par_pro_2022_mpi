@@ -94,7 +94,7 @@ std::vector<int> getMedianFilterParallel(std::vector<int> global_mat, int m, int
             std::vector<int> proc_result((delta + (proc == size - 1 && size != 1 ? additional_delta : 0)) * n);
 
             MPI_Status status;
-            MPI_Recv(proc_result.data(), (delta + (proc == size - 1 && size != 1 ? additional_delta : 0)) * n, 
+            MPI_Recv(proc_result.data(), (delta + (proc == size - 1 && size != 1 ? additional_delta : 0)) * n,
                 MPI_INT, proc, 0, MPI_COMM_WORLD, &status);
 
             appendSubMatrixToMatrix(proc_result, &global_result, &begin_i);
