@@ -16,7 +16,7 @@ TEST(sobel_operator, test_little_square_image) {
     std::vector<std::vector<int>>  global_res = calcSobelParallel(img, height, width);
 
     if (rank == 0) {
-        std::vector<std::vector<int>> sequential_res = calcSobel(img, img.size(), img[0].size());
+        std::vector<std::vector<int>> sequential_res = calcSobel(img, height, width);
         ASSERT_EQ(global_res, sequential_res);
     }
 }
@@ -29,10 +29,10 @@ TEST(sobel_operator, test_little_not_square_image1) {
     int width = 1;
     std::vector<std::vector<int>> img = generateRandomImage(height, width);
 
-    std::vector<std::vector<int>>  global_res = calcSobelParallel(img, img.size(), img[0].size());
+    std::vector<std::vector<int>>  global_res = calcSobelParallel(img, height, width);
 
     if (rank == 0) {
-        std::vector<std::vector<int>> sequential_res = calcSobel(img, img.size(), img[0].size());
+        std::vector<std::vector<int>> sequential_res = calcSobel(img, height, width);
         ASSERT_EQ(global_res, sequential_res);
     }
 }
@@ -45,10 +45,10 @@ TEST(sobel_operator, test_little_not_square_image2) {
     int width = 3;
     std::vector<std::vector<int>> img = generateRandomImage(height, width);
 
-    std::vector<std::vector<int>>  global_res = calcSobelParallel(img, img.size(), img[0].size());
+    std::vector<std::vector<int>>  global_res = calcSobelParallel(img, height, width);
 
     if (rank == 0) {
-        std::vector<std::vector<int>> sequential_res = calcSobel(img, img.size(), img[0].size());
+        std::vector<std::vector<int>> sequential_res = calcSobel(img, height, width);
         ASSERT_EQ(global_res, sequential_res);
     }
 }
@@ -61,10 +61,10 @@ TEST(sobel_operator, test_large_square_image) {
     int width = 30;
     std::vector<std::vector<int>> img = generateRandomImage(height, width);
 
-    std::vector<std::vector<int>>  global_res = calcSobelParallel(img, img.size(), img[0].size());
+    std::vector<std::vector<int>>  global_res = calcSobelParallel(img, height, width);
 
     if (rank == 0) {
-        std::vector<std::vector<int>> sequential_res = calcSobel(img, img.size(), img[0].size());
+        std::vector<std::vector<int>> sequential_res = calcSobel(img, height, width);
         ASSERT_EQ(global_res, sequential_res);
     }
 }
@@ -77,10 +77,10 @@ TEST(sobel_operator, test_large_not_square_image1) {
     int width = 40;
     std::vector<std::vector<int>> img = generateRandomImage(height, width);
 
-    std::vector<std::vector<int>>  global_res = calcSobelParallel(img, img.size(), img[0].size());
+    std::vector<std::vector<int>>  global_res = calcSobelParallel(img, height, width);
 
     if (rank == 0) {
-        std::vector<std::vector<int>> sequential_res = calcSobel(img, img.size(), img[0].size());
+        std::vector<std::vector<int>> sequential_res = calcSobel(img, height, width);
         ASSERT_EQ(global_res, sequential_res);
     }
 }
@@ -93,10 +93,10 @@ TEST(sobel_operator, test_large_not_square_image2) {
     int width = 20;
     std::vector<std::vector<int>> img = generateRandomImage(height, width);
 
-    std::vector<std::vector<int>>  global_res = calcSobelParallel(img, img.size(), img[0].size());
+    std::vector<std::vector<int>>  global_res = calcSobelParallel(img, height, width);
 
     if (rank == 0) {
-        std::vector<std::vector<int>> sequential_res = calcSobel(img, img.size(), img[0].size());
+        std::vector<std::vector<int>> sequential_res = calcSobel(img, height, width);
         ASSERT_EQ(global_res, sequential_res);
     }
 }
