@@ -1,6 +1,6 @@
 // Copyright Anna Goncharova
 
-#include "GitHub/par_pro_2022_mpi/modules/task_2/goncharova_a_star/star.h"
+#include "../../../modules/task_2/goncharova_a_star/star.h"
 
 // Create new ///STAR/// topology
 MPI_Comm createStarComm(const MPI_Comm oldComm) {
