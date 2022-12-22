@@ -1,5 +1,6 @@
 // Copyright 2022 Yashina Anastasia
 
+
 #include <gtest/gtest.h>
 #include <../../../modules/task_2/yashina_a_mult_mat_vect_hor/mult_mat_vect_hor.h>
 #include <gtest-mpi-listener.hpp>
