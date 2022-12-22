@@ -21,13 +21,25 @@ TEST(Test_mult_ccs_MPI, Test_0) {
 
     if (rank == 0) {
         a.create_rand();
+        a.print();
+        a.all_print();
+        std::cout<< '\n';
         b.create_rand();
+        b.print();
+        b.all_print();
+        std::cout<< '\n';
     }
 
     matrix_ccs d = a.mpi_mult(b);
 
     if (rank == 0) {
         matrix_ccs c = a.mult(b);
+        c.print();
+        c.all_print();
+        std::cout<< '\n';
+        d.print();
+        d.all_print();
+        std::cout<< '\n';
         EXPECT_EQ(c, d);
     }
 }
