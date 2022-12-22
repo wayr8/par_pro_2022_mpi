@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <vector>
+#include <iostream>
 
 // основная работа
 int Sum(int size, std::vector<int> matrix);

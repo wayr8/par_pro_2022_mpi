@@ -1,11 +1,12 @@
 // Copyright 2022 Yashina Anastasia
 
 #include <gtest/gtest.h>
-#include <gtest-mpi-listener.hpp>
 #include <mpi.h>
-#include <vector>
-#include <iostream>
 #include "../../../modules/task_1/yashina_a_sum_elem_mat/sum_elem_mat.h"
+#include <gtest-mpi-listener.hpp>
+
+
+
 
 void testing_lab(int size) {
     int ans, res = 0;
