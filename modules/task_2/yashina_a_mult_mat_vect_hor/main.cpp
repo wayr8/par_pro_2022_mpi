@@ -4,6 +4,7 @@
 #include <gtest-mpi-listener.hpp>
 #include <../../../modules/task_2/yashina_a_mult_mat_vect_hor/mult_mat_vect_hor.h>
 
+
 TEST(Matrix_On_Vector_Multip_MPI, test1_mat_3x3_EQ) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
