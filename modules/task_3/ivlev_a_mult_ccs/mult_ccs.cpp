@@ -168,6 +168,7 @@ matrix_ccs matrix_ccs::mpi_mult(matrix_ccs b) {
 
     int val_n_b, block_size, last_block_size;
     int max_size = size;
+    std::cout << rank << ' ' << size << ' ' << m << '\n';
     if (m >= size) {
         block_size = m/(size-1);
         last_block_size = m%(size-1);
@@ -181,8 +182,9 @@ matrix_ccs matrix_ccs::mpi_mult(matrix_ccs b) {
         max_size = m;
     }
 
+    std::cout << rank << ' ' <<  block_size << ' ' << last_block_size << ' ' << max_size << '\n';
+
     if (rank == 0) {
-        std::cout << block_size << ' ' << last_block_size << ' ' << max_size << '\n';
         for (int i = 1; i < max_size; i++) {
             MPI_Send(values, val_n, MPI_DOUBLE, i, 0, MPI_COMM_WORLD);
             MPI_Send(rows, val_n, MPI_INT, i, 1, MPI_COMM_WORLD);
@@ -243,7 +245,7 @@ matrix_ccs matrix_ccs::mpi_mult(matrix_ccs b) {
             MPI_Send(c.rows, c.val_n, MPI_INT, 0, 9, MPI_COMM_WORLD);
             MPI_Send(c.index, c.n, MPI_INT, 0, 10, MPI_COMM_WORLD);
         }
-        return matrix_ccs(1, 1, 0);
+        return matrix_ccs(1, 1, 1);
     }
 }
 
