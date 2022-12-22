@@ -1,8 +1,7 @@
 // Copyright 2022 Kruglikova Valeriia
-#include <gtest-mpi-listener.hpp>
 #include <gtest/gtest.h>
-#include<vector>
 #include "./max_columns.h"
+#include <gtest-mpi-listener.hpp>
 
 TEST(Max_Columns, negativeSize_test) {
     int rank;
