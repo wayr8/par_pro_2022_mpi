@@ -1,6 +1,7 @@
 // Copyright 2022 Kandrin Alexey
 #include <gtest/gtest.h>
 
+#include <climits>
 #include <vector>
 
 #include <gtest-mpi-listener.hpp>
