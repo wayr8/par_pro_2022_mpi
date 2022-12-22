@@ -47,7 +47,6 @@ void masterProcessFunction(Memory* memory, int requestsCount) {
     MPI_Recv(reinterpret_cast<char*>(&operationBuffer), sizeof(OperationInt),
              MPI_CHAR, MPI_ANY_SOURCE, 0, MPI_COMM_WORLD, &status);
     // handle operation
-    outs[0] << operationBuffer << std::endl;
     operationBuffer.SetMemory(memory);
     auto result = operationBuffer.Perform();
     if (operationBuffer.GetOperationType() ==
@@ -63,12 +62,8 @@ std::vector<int> readerProcessFunction(int readingCount) {
   std::vector<OperationInt> operations(
       readingCount, OperationInt(0, OperationInt::OperationType::read, 0));
 
-  int rank;
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-
   for (int i = 0; i < readingCount; ++i) {
     auto& currentOperation = operations.at(i);
-    outs[rank] << currentOperation << std::endl;
 
     MPI_Send(reinterpret_cast<char*>(&currentOperation), sizeof(OperationInt),
              MPI_CHAR, 0, 0, MPI_COMM_WORLD);
@@ -84,13 +79,9 @@ std::vector<int> readerProcessFunction(int readingCount) {
   return results;
 }
 
-void writerProcessFunction(std::vector<OperationInt>& operations) {
-  int rank;
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-
-  for (int i = 0; i < operations.size(); ++i) {
-    auto& currentOperation = operations.at(i);
-    outs[rank] << currentOperation << std::endl;
+void writerProcessFunction(std::vector<OperationInt>* operations) {
+  for (int i = 0; i < operations->size(); ++i) {
+    auto& currentOperation = operations->at(i);
     MPI_Send(reinterpret_cast<char*>(&currentOperation), sizeof(OperationInt),
              MPI_CHAR, 0, 0, MPI_COMM_WORLD);
   }

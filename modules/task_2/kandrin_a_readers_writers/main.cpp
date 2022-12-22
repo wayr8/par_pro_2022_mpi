@@ -1,8 +1,9 @@
 // Copyright 2022 Kandrin Alexey
 #include <gtest/gtest.h>
 
-#include <gtest-mpi-listener.hpp>
 #include <vector>
+
+#include <gtest-mpi-listener.hpp>
 
 #include "./readers_writers.h"
 
@@ -12,14 +13,15 @@ std::vector<std::ofstream> outs;
 #endif
 
 enum class ReturnValue {
-    NOT_ENOUGH_PROCESSES,
-    NOT_ENOUGH_MEMORY,
-    SUCCESS,
-    FAIL
+  NOT_ENOUGH_PROCESSES,
+  NOT_ENOUGH_MEMORY,
+  SUCCESS,
+  FAIL
 };
 
 static ReturnValue testFunction(int readersCount, int writersCount,
-                         std::vector<OperationInt>& writeOperations, int expectedResult) {
+                                std::vector<OperationInt> writeOperations,
+                                int expectedResult) {
   int processCount;
   MPI_Comm_size(MPI_COMM_WORLD, &processCount);
 
@@ -32,12 +34,10 @@ static ReturnValue testFunction(int readersCount, int writersCount,
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-  outs[rank] << "in test function\n";
-
   const bool isMasterProcess = rank == 0;
   const bool isReaderProcess = rank >= 1 && rank <= readersCount;
   const bool isWriterProcess = !(isMasterProcess || isReaderProcess);
-  
+
   const int readingsCount = writersCount;
 
   const int startValue = 0;
@@ -49,28 +49,24 @@ static ReturnValue testFunction(int readersCount, int writersCount,
       return ReturnValue::NOT_ENOUGH_MEMORY;
     }
     const int requestCount =
-        readingsCount * readersCount + writeOperations.size() * writersCount;
-    outs[rank] << "Request count:" << requestCount
-               << "\nReadings count:" << readingsCount
-               << "\nReaders count:" << readersCount
-               << "\nWriters count:" << writersCount << std::endl;
+        readingsCount * readersCount +
+        static_cast<int>(writeOperations.size()) * writersCount;
     masterProcessFunction(memory.get(), requestCount);
-    if (int(memory->Read(sizeof(int), 0)) == expectedResult) {
-      outs[rank] << "End function\n";
+    if (static_cast<int>(memory->Read(sizeof(int), 0)) == expectedResult) {
       return ReturnValue::SUCCESS;
     } else {
       std::cout << "Expected: " << expectedResult << "\n";
-      std::cout << "Actual: " << int(memory->Read(sizeof(int), 0)) << "\n";
+      std::cout << "Actual: " << static_cast<int>(memory->Read(sizeof(int), 0))
+                << "\n";
     }
   } else if (isWriterProcess) {
-    writerProcessFunction(writeOperations);
+    writerProcessFunction(&writeOperations);
   } else if (isReaderProcess) {
-    outs[rank] << "i read " << readingsCount << "times\n";
     auto readResult = readerProcessFunction(readingsCount);
 
     int minValue = INT_MAX;
     int maxValue = INT_MIN;
-    for (const auto & operation : writeOperations) {
+    for (const auto& operation : writeOperations) {
       int currentValue = 0;
       auto opType = operation.GetOperationType();
       if (opType == OperationInt::OperationType::operator_add) {
@@ -100,7 +96,7 @@ static ReturnValue testFunction(int readersCount, int writersCount,
   return ReturnValue::SUCCESS;
 }
 
-TEST(Parallel_Operations_MPI, Test_one_reader_and_other_writers) {
+TEST(Parallel_Operations_MPI, Test_one_reader_and_other_writers_1) {
   int processCount;
   MPI_Comm_size(MPI_COMM_WORLD, &processCount);
 
@@ -114,8 +110,70 @@ TEST(Parallel_Operations_MPI, Test_one_reader_and_other_writers) {
       OperationInt(0, OperationInt::OperationType::operator_add, 1),
       OperationInt(0, OperationInt::OperationType::operator_dif, 1)};
 
-  auto res =
-      testFunction(readersCount, writersCount, writeOperations, (1 - 1) * writersCount);
+  auto res = testFunction(readersCount, writersCount, writeOperations,
+                          (1 - 1) * writersCount);
+  ASSERT_EQ(res, ReturnValue::SUCCESS);
+  MPI_Barrier(MPI_COMM_WORLD);
+}
+
+TEST(Parallel_Operations_MPI, Test_one_reader_and_other_writers_2) {
+  int processCount;
+  MPI_Comm_size(MPI_COMM_WORLD, &processCount);
+
+  const int readersCount = 1;
+  const int writersCount = processCount - readersCount - 1;
+  if (writersCount < 1) {
+    return;
+  }
+
+  std::vector<OperationInt> writeOperations = {
+      OperationInt(0, OperationInt::OperationType::operator_add, 1),
+      OperationInt(0, OperationInt::OperationType::operator_dif, 1),
+      OperationInt(0, OperationInt::OperationType::operator_add, 2),
+  };
+
+  auto res = testFunction(readersCount, writersCount, writeOperations,
+                          (1 - 1 + 2) * writersCount);
+  ASSERT_EQ(res, ReturnValue::SUCCESS);
+  MPI_Barrier(MPI_COMM_WORLD);
+}
+
+TEST(Parallel_Operations_MPI, Test_one_reader_and_other_writers_3) {
+  int processCount;
+  MPI_Comm_size(MPI_COMM_WORLD, &processCount);
+
+  const int readersCount = 1;
+  const int writersCount = processCount - readersCount - 1;
+  if (writersCount < 1) {
+    return;
+  }
+
+  std::vector<OperationInt> writeOperations = {
+      OperationInt(0, OperationInt::OperationType::operator_add, 3),
+      OperationInt(0, OperationInt::OperationType::operator_dif, 4)};
+
+  auto res = testFunction(readersCount, writersCount, writeOperations,
+                          (3 - 4) * writersCount);
+  ASSERT_EQ(res, ReturnValue::SUCCESS);
+  MPI_Barrier(MPI_COMM_WORLD);
+}
+
+TEST(Parallel_Operations_MPI, Test_one_reader_and_other_writers_4) {
+  int processCount;
+  MPI_Comm_size(MPI_COMM_WORLD, &processCount);
+
+  const int readersCount = 1;
+  const int writersCount = processCount - readersCount - 1;
+  if (writersCount < 1) {
+    return;
+  }
+
+  std::vector<OperationInt> writeOperations = {
+      OperationInt(0, OperationInt::OperationType::operator_add, 7),
+      OperationInt(0, OperationInt::OperationType::operator_dif, 3)};
+
+  auto res = testFunction(readersCount, writersCount, writeOperations,
+                          (7 - 3) * writersCount);
   ASSERT_EQ(res, ReturnValue::SUCCESS);
   MPI_Barrier(MPI_COMM_WORLD);
 }
@@ -134,7 +192,8 @@ TEST(Parallel_Operations_MPI, Test_two_readers_and_other_writers) {
       OperationInt(0, OperationInt::OperationType::operator_add, 1),
       OperationInt(0, OperationInt::OperationType::operator_dif, 2)};
 
-  auto res = testFunction(readersCount, writersCount, writeOperations, (1 - 2) * writersCount);
+  auto res = testFunction(readersCount, writersCount, writeOperations,
+                          (1 - 2) * writersCount);
   ASSERT_EQ(res, ReturnValue::SUCCESS);
   MPI_Barrier(MPI_COMM_WORLD);
 }

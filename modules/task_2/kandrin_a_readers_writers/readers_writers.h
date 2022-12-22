@@ -7,8 +7,6 @@
 #include <cstring>
 #include <vector>
 
-#define DEBUG_OUTPUT
-
 #ifdef DEBUG_OUTPUT
 #include <ostream>
 #endif
@@ -21,7 +19,7 @@ class ByteSpan {
   ByteSpan(char* begin, size_t size);
 
   template <class T>
-  ByteSpan(const T& value) : m_begin(&value), m_size(sizeof(T)) {}
+  explicit ByteSpan(const T& value) : m_begin(&value), m_size(sizeof(T)) {}
 
   template <class T>
   operator T() const {
@@ -36,7 +34,7 @@ class ByteSpan {
 #ifdef DEBUG_OUTPUT
   friend std::ostream& operator<<(std::ostream& out, const ByteSpan& byteSpan) {
     for (int i = 0; i < byteSpan.m_size; ++i) {
-      out << (int)byteSpan.m_begin[i] << ' ';
+      out << static_cast<int>(byteSpan.m_begin[i]) << ' ';
     }
     return out;
   }
@@ -91,7 +89,6 @@ class Operation {
 
   Operation() : Operation(nullptr, -1, OperationType{}, T{}) {}
 
-
   void SetMemory(Memory* memory) { m_memory = memory; }
 
   OperationType GetOperationType() const { return m_operationType; }
@@ -134,10 +131,13 @@ class Operation {
 
 using OperationInt = Operation<int>;
 
+// function for master process
 void masterProcessFunction(Memory* memory, int requestsCount);
 
+// function for "reader" process
 std::vector<int> readerProcessFunction(int readingCount);
 
-void writerProcessFunction(std::vector<OperationInt>& operations);
+// function for "writer" process
+void writerProcessFunction(std::vector<OperationInt>* operations);
 
 #endif  // MODULES_TASK_2_KANDRIN_A_READERS_WRITERS_READERS_WRITERS_H_
