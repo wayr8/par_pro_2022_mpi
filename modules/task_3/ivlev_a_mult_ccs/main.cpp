@@ -33,7 +33,7 @@ TEST(Test_mult_ccs_MPI, Test_0) {
     matrix_ccs d = a.mpi_mult(b);
     d.print();
     d.all_print();
-    std::cout<< '\n'
+    std::cout<< '\n';
 
     if (rank == 0) {
         matrix_ccs c = a.mult(b);
