@@ -7,6 +7,12 @@
 #include <cassert>
 #include <cstring>
 
+#define DEBUG_OUTPUT
+
+#ifdef DEBUG_OUTPUT
+#include <ostream>
+#endif
+
 class ByteSpan {
   char* m_begin;  ///< non-owning pointer
   size_t m_size;  ///< span size
@@ -27,6 +33,15 @@ class ByteSpan {
   const char* GetData() const;
 
   size_t GetSize() const;
+
+  #ifdef DEBUG_OUTPUT
+  friend std::ostream& operator<<(std::ostream& out, const ByteSpan& byteSpan) {
+    for (int i = 0; i < byteSpan.m_size; ++i) {
+      out << (int)byteSpan.m_begin[i] << ' ';
+    }
+    return out;
+  }
+  #endif
 };
 
 class Memory {
@@ -77,7 +92,7 @@ class Operation {
   Operation(size_t index, OperationType operationType, const T& argument)
       : Operation(nullptr, index, operationType, argument) {}
 
-   Operation() : Operation(nullptr, -1, OperationType{}, T{}) {}
+  Operation() : Operation(nullptr, -1, OperationType{}, T{}) {}
 
   void SetMemory(Memory* memory) { m_memory = memory; }
 
@@ -105,6 +120,16 @@ class Operation {
     }
     return variable;
   }
+
+  #ifdef DEBUG_OUTPUT
+  friend std::ostream& operator<<(std::ostream& out,
+                                  const Operation& operation) {
+    out << "Operation: " << operation.m_memory << ' ' << operation.m_index
+        << ' ' << static_cast<int>(operation.m_operationType) << ' '
+        << operation.m_argument;
+    return out;
+  }
+  #endif
 };
 
 using OperationInt = Operation<int>;

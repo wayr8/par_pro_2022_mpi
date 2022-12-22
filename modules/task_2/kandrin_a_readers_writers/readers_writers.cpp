@@ -7,6 +7,11 @@
 #include <vector>
 #include <memory>
 
+#ifdef DEBUG_OUTPUT
+#include <fstream>
+extern std::vector<std::ofstream> outs;
+#endif
+
 ByteSpan::ByteSpan(char* begin, size_t size) : m_begin(begin), m_size(size) {}
 
 const char* ByteSpan::GetData() const { return m_begin; }
@@ -47,18 +52,29 @@ void masterProcessFunction(Memory * memory) {
     }
   }
 
+  outs[0] << "wait for recv" << std::endl;
+
   while (true) {
 
     for (int i = 0; i < workerCount; ++i) {
       auto& currentRequest = requests.at(i);
       auto& currentOperation = buffers.at(i);
-      int isSuccess = MPI_UNDEFINED;
+      int isSuccess = 0;
       MPI_Status status;
-      MPI_Test(&currentRequest, &isSuccess, &status);
+      //MPI_Test(&currentRequest, &isSuccess, &status);
+
+      MPI_Wait(&currentRequest, &status);
       if (isSuccess != 0) {
+        outs[0] << "Test is success (from " << i + 1 << ")" << std::endl;
+        outs[0] << "isSuccess = " << isSuccess << std::endl;
         // handle operation
+        outs[0] << currentOperation << std::endl;
+        outs[0] << ByteSpan(reinterpret_cast<char*>(&currentOperation),
+                            sizeof(OperationInt))
+                << std::endl;
         currentOperation.SetMemory(memory);
         auto result = currentOperation.Perform();
+        outs[0] << "Perform is completed" << std::endl;
         if (currentOperation.GetOperationType() ==
             OperationInt::OperationType::read) {
           // send response
@@ -80,9 +96,14 @@ std::vector<int> readerProcessFunction(int readingCount) {
       readingCount, OperationInt(0, OperationInt::OperationType::read, 0));
   std::vector<MPI_Request> requests(readingCount);
 
+  int rank;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
   for (int i = 0; i < readingCount; ++i) {
     auto& currentOperation = operations.at(i);
     auto& currentRequest = requests.at(i);
+    outs[rank] << currentOperation << std::endl;
+
     MPI_Isend(reinterpret_cast<char*>(&currentOperation), sizeof(OperationInt),
               MPI_CHAR, 0, 0, MPI_COMM_WORLD, &currentRequest);
   }
@@ -99,10 +120,18 @@ std::vector<int> readerProcessFunction(int readingCount) {
 
 void writerProcessFunction(std::vector<OperationInt> & operations) {
   std::vector<MPI_Request> requests(operations.size());
+
+  int rank;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
   for (int i = 0; i < operations.size(); ++i) {
     auto& currentRequest = requests.at(i);
     auto& currentOperation = operations.at(i);
-    MPI_Isend(reinterpret_cast<char*>(&currentOperation), 1, MPI_CHAR, 0, 0,
+    outs[rank] << currentOperation << std::endl;
+    outs[rank] << ByteSpan(reinterpret_cast<char*>(&currentOperation),
+                           sizeof(OperationInt)) << std::endl;
+    MPI_Isend(reinterpret_cast<char*>(&currentOperation), sizeof(OperationInt), MPI_CHAR, 0,
+              0,
               MPI_COMM_WORLD, &currentRequest);
   }
   std::vector<MPI_Status> statuses(operations.size());
