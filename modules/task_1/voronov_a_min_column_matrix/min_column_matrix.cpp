@@ -1,4 +1,4 @@
-// Copyright 2022 Voronov Alexander 
+// Copyright 2022 Voronov Alexander
 #include <mpi.h>
 #include <random>
 #include <algorithm>
