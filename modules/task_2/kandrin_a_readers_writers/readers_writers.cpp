@@ -1,132 +1,110 @@
 // Copyright 2022 Kandrin Alexey
-#include <mpi.h>
-#include <algorithm>
 #include "../../../modules/task_2/kandrin_a_readers_writers/readers_writers.h"
 
-//=============================================================================
-// Function : WorkSplitter::WorkSplitter
-// Purpose  : Constructor.
-//=============================================================================
-WorkSplitter::WorkSplitter(size_t work, size_t workerCount)
-    : m_workDistribution(workerCount, 0) {
-  if (work <= workerCount) {
-    for (size_t currentWorker = 0; currentWorker < work; ++currentWorker) {
-      m_workDistribution[currentWorker] = 1;
-    }
-  } else {
-    for (size_t currentWorker = 0; work != 0; ++currentWorker) {
-      size_t workForCurrentWorker = work / workerCount;
-      m_workDistribution[currentWorker] = work / workerCount;
-      work -= workForCurrentWorker;
-      workerCount -= 1;
-    }
-  }
+#include <mpi.h>
+
+#include <algorithm>
+#include <vector>
+#include <memory>
+
+ByteSpan::ByteSpan(char* begin, size_t size) : m_begin(begin), m_size(size) {}
+
+const char* ByteSpan::GetData() const { return m_begin; }
+
+size_t ByteSpan::GetSize() const { return m_size; }
+
+Memory::Memory() { memset(m_buffer.data(), 0, m_buffer.size()); }
+
+void Memory::Write(ByteSpan span, size_t index) {
+  assert(index + span.GetSize() <= m_buffer.size());
+
+  // we use "memmove" (instead of "memcpy") because span and buffer memory can
+  // overlap
+  memmove(m_buffer.data() + index, span.GetData(), span.GetSize());
 }
 
-//=============================================================================
-// Function : GetPartWork
-// Purpose  : Determining how much work a worker should do.
-//=============================================================================
-size_t WorkSplitter::GetPartWork(size_t workerNumber) const {
-  return m_workDistribution[workerNumber];
+ByteSpan Memory::Read(size_t size, size_t index) {
+  assert(index + size <= m_buffer.size());
+  return ByteSpan(m_buffer.data() + index, size);
 }
 
-//=============================================================================
-// Function : GetMinValuesByRowsParallel
-// Purpose  : Same as GetMinValuesByRowsSequential, but the function is
-//            executed parallel by several processes using MPI.
-//            Also, the function accepts not a template, but an integer matrix.
-//=============================================================================
-std::vector<int> GetMinValuesByRowsParallel(const Matrix<int>& matrix) {
-  int mpiReturnValue = 0;
-  MPI_Comm_size(MPI_COMM_WORLD, &mpiReturnValue);
-  size_t proccessCount = static_cast<size_t>(mpiReturnValue);
+void masterProcessFunction(Memory * memory) {
+  int procCount;
+  MPI_Comm_size(MPI_COMM_WORLD, &procCount);
 
-  MPI_Comm_rank(MPI_COMM_WORLD, &mpiReturnValue);
-  size_t rank = static_cast<size_t>(mpiReturnValue);
+  const int workerCount = procCount - 1;
 
-  size_t rowCount = 0, colCount = 0;
+  std::vector<MPI_Request> requests(workerCount, MPI_REQUEST_NULL);
+  std::vector<OperationInt> buffers(workerCount);
 
-  if (rank == 0) {
-    rowCount = matrix.GetRowCount();
-    colCount = matrix.GetColCount();
+  // Receive procCount - 1 requests
+  for (int i = 1; i < workerCount; ++i) {
+    auto& currentRequest = requests.at(i - 1);
+    auto& currentBuffer = buffers.at(i - 1);
+    if (currentRequest == MPI_REQUEST_NULL) {
+      MPI_Irecv(reinterpret_cast<char*>(&currentBuffer), sizeof(OperationInt),
+                MPI_CHAR, i, 0, MPI_COMM_WORLD, &currentRequest);
+    }
   }
 
-  MPI_Bcast(&rowCount, 1, MPI_UNSIGNED_LONG, 0, MPI_COMM_WORLD);
-  MPI_Bcast(&colCount, 1, MPI_UNSIGNED_LONG, 0, MPI_COMM_WORLD);
+  while (true) {
 
-  // now variables rowCount, colCount store actual values in all processes
+    for (int i = 0; i < workerCount; ++i) {
+      auto& currentRequest = requests.at(i);
+      auto& currentOperation = buffers.at(i);
+      int isSuccess = MPI_UNDEFINED;
+      MPI_Status status;
+      MPI_Test(&currentRequest, &isSuccess, &status);
+      if (isSuccess != 0) {
+        // handle operation
+        currentOperation.SetMemory(memory);
+        auto result = currentOperation.Perform();
+        if (currentOperation.GetOperationType() ==
+            OperationInt::OperationType::read) {
+          // send response
+          MPI_Send(&result, 1, MPI_INT, i + 1, 0, MPI_COMM_WORLD);
+        }
 
-  // WorkSplitter lets each process know how many rows it is processing.
-  // This allows you not to send data about the number of processed rows to
-  // processes, but to send only the rows themselves.
-  WorkSplitter workSplitter(rowCount, proccessCount);
-
-  // how many rows should the current process process
-  size_t rowsForCurrentProccess = workSplitter.GetPartWork(rank);
-
-  if (rowsForCurrentProccess == 0) {
-    // no work for current proccess
-    return {};
-  }
-
-  if (rank == 0) {
-    const int* sendPtr = matrix[rowsForCurrentProccess];
-    for (size_t proccess = 1; proccess < proccessCount; ++proccess) {
-      size_t rowsForProccess = workSplitter.GetPartWork(proccess);
-      if (rowsForProccess > 0) {
-        MPI_Send(sendPtr, rowsForProccess * colCount, MPI_INT, proccess, 0,
-                 MPI_COMM_WORLD);
-        sendPtr += rowsForProccess * colCount;
+        // process the request - then accept the next request
+        MPI_Irecv(reinterpret_cast<char*>(&currentOperation),
+                  sizeof(OperationInt),
+                  MPI_CHAR, i + 1, 0, MPI_COMM_WORLD, &currentRequest);
       }
     }
   }
+}
 
-  // The matrix is used to store the rows that the process needs to process
-  // sequentially.
-  Matrix<int> localMatrix(rowsForCurrentProccess, colCount);
+std::vector<int> readerProcessFunction(int readingCount) {
+  std::vector<int> results(readingCount, 0);
+  std::vector<OperationInt> operations(
+      readingCount, OperationInt(0, OperationInt::OperationType::read, 0));
+  std::vector<MPI_Request> requests(readingCount);
 
-  if (rank == 0) {
-    std::copy(matrix.begin(),
-              matrix.begin() + rowsForCurrentProccess * colCount,
-              localMatrix.begin());
+  for (int i = 0; i < readingCount; ++i) {
+    auto& currentOperation = operations.at(i);
+    auto& currentRequest = requests.at(i);
+    MPI_Isend(reinterpret_cast<char*>(&currentOperation), sizeof(OperationInt),
+              MPI_CHAR, 0, 0, MPI_COMM_WORLD, &currentRequest);
+  }
 
-  } else {
+  for (int i = 0; i < readingCount; ++i) {
+    auto& currentResult = results[i];
+
     MPI_Status status;
-
-    MPI_Recv(localMatrix.data(), rowsForCurrentProccess * colCount, MPI_INT, 0,
-             0, MPI_COMM_WORLD, &status);
+    MPI_Recv(&currentResult, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
   }
 
-  // vector is used to store the final result computed by the null process.
-  std::vector<int> globalMinValuesByRows;
+  return results;
+}
 
-  // vector is used to store the partial result that each process computed.
-  std::vector<int> localMinValuesByRows =
-      GetMinValuesByRowsSequential(localMatrix);
-
-  if (rank == 0) {
-    globalMinValuesByRows = std::vector<int>(rowCount);
-    std::copy(localMinValuesByRows.begin(), localMinValuesByRows.end(),
-              globalMinValuesByRows.begin());
-
-    int* recvPtr = globalMinValuesByRows.data() + rowsForCurrentProccess;
-
-    for (size_t proccess = 1; proccess < proccessCount; ++proccess) {
-      size_t rowsByProccess = workSplitter.GetPartWork(proccess);
-      if (rowsByProccess > 0) {
-        MPI_Status status;
-
-        MPI_Recv(recvPtr, rowsByProccess, MPI_INT, proccess, 0, MPI_COMM_WORLD,
-                 &status);
-
-        recvPtr += rowsByProccess;
-      }
-    }
-  } else {
-    MPI_Send(localMinValuesByRows.data(), localMinValuesByRows.size(), MPI_INT,
-             0, 0, MPI_COMM_WORLD);
+void writerProcessFunction(std::vector<OperationInt> & operations) {
+  std::vector<MPI_Request> requests(operations.size());
+  for (int i = 0; i < operations.size(); ++i) {
+    auto& currentRequest = requests.at(i);
+    auto& currentOperation = operations.at(i);
+    MPI_Isend(reinterpret_cast<char*>(&currentOperation), 1, MPI_CHAR, 0, 0,
+              MPI_COMM_WORLD, &currentRequest);
   }
-
-  return globalMinValuesByRows;
+  std::vector<MPI_Status> statuses(operations.size());
+  MPI_Waitall(requests.size(), requests.data(), statuses.data());
 }

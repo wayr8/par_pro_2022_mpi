@@ -2,135 +2,117 @@
 #ifndef MODULES_TASK_2_KANDRIN_A_READERS_WRITERS_READERS_WRITERS_H_
 #define MODULES_TASK_2_KANDRIN_A_READERS_WRITERS_READERS_WRITERS_H_
 
-#include <random>
+#include <array>
 #include <vector>
+#include <cassert>
+#include <cstring>
 
-//=============================================================================
-// Class   : Matrix
-// Purpose : Storing a two-dimensional matrix as a one-dimensional array.
-//=============================================================================
-template <class T>
-class Matrix {
-  size_t m_rowCount{0};
-  size_t m_colCount{0};
-  std::vector<T> m_matrixData{};
+class ByteSpan {
+  char* m_begin;  ///< non-owning pointer
+  size_t m_size;  ///< span size
 
  public:
-  Matrix() = default;
-  Matrix(const Matrix& matrix) = default;
-  Matrix(Matrix&& matrix) = default;
-  Matrix& operator=(const Matrix&) = default;
-  Matrix& operator=(Matrix&&) = default;
+  ByteSpan(char* begin, size_t size);
 
-  Matrix(size_t rowCount, size_t colCount)
-      : m_rowCount(rowCount),
-        m_colCount(colCount),
-        m_matrixData(rowCount * colCount, 0) {}
+  template <class T>
+  ByteSpan(const T& value) : m_begin(&value), m_size(sizeof(T)) {}
 
-  typename std::vector<T>::iterator begin() { return m_matrixData.begin(); }
-
-  typename std::vector<T>::const_iterator begin() const {
-    return m_matrixData.begin();
+  template <class T>
+  operator T() const {
+    T t;
+    memcpy(&t, m_begin, sizeof(T));
+    return t;
   }
 
-  typename std::vector<T>::iterator end() { return m_matrixData.end(); }
+  const char* GetData() const;
 
-  typename std::vector<T>::const_iterator end() const {
-    return m_matrixData.end();
-  }
-
-  T* data() { return m_matrixData.data(); }
-
-  T* operator[](size_t index) {
-    T* rowPtr = m_matrixData.data() + index * m_colCount;
-    return rowPtr;
-  }
-
-  const T* operator[](size_t index) const {
-    const T* rowPtr = m_matrixData.data() + index * m_colCount;
-    return rowPtr;
-  }
-
-  size_t GetRowCount() const { return m_rowCount; }
-
-  size_t GetColCount() const { return m_colCount; }
+  size_t GetSize() const;
 };
 
-//=============================================================================
-// Class   : WorkSplitter
-// Purpose : Calculating how much work the worker needs to do.
-//=============================================================================
-class WorkSplitter {
-  std::vector<size_t> m_workDistribution;
+class Memory {
+  std::array<char, 1024> m_buffer = {0};
 
  public:
-  // Constructor.
-  // \param work Total amount of work.
-  // \param workerCount Total number of workers who can do the work.
-  WorkSplitter(size_t work, size_t workerCount);
+  Memory();
 
-  // Determining how much work a worker should do.
-  // \param workerNumber The worker for whom we calculate how much work he has to do.
-  // \return What part of the work should worker do.
-  // (If there are fewer work than workerCount, then some workers will do
-  // nothing. If work is proportional to the workerCount, then all workers will
-  // do the same amount of work)
-  size_t GetPartWork(size_t workerNumber) const;
+  constexpr size_t GetSize() const {
+      return m_buffer.size();
+  }
+
+  // Write buffer "data" with size "size" to memory at index "index".
+  void Write(ByteSpan span, size_t index);
+
+  ByteSpan Read(size_t size, size_t index);
+
+  char* data() { return m_buffer.data(); }
 };
 
-//=============================================================================
-// Function : GetRandomMatrix
-// Purpose  : Generating a matrix of given sizes and filling it with random
-//            values.
-//=============================================================================
-template <class T, class RandomFunctor>
-Matrix<T> GetRandomMatrix(size_t rowCount, size_t colCount,
-                          RandomFunctor&& random) {
-  Matrix<T> matrix(rowCount, colCount);
-  for (size_t i = 0; i < rowCount; ++i) {
-    for (size_t j = 0; j < colCount; ++j) {
-      matrix[i][j] = random();
-    }
-  }
-  return matrix;
-}
-
-//=============================================================================
-// Function : GetMinValuesByRowsSequential
-// Purpose  : The function looks for the minimum value in each row of the
-//            matrix and returns a vector of these values.
-//            The function is executed sequentially by one process.
-//=============================================================================
 template <class T>
-std::vector<T> GetMinValuesByRowsSequential(const Matrix<T>& matrix) {
-  size_t rowCount = matrix.GetRowCount();
-  size_t colCount = matrix.GetColCount();
+class Operation {
+ public:
+  enum class OperationType : int {
+    operator_add,  // reinterpret_cast<T*>(memory.data())[index] += argument
+    operator_dif,  // reinterpret_cast<T*>(memory.data())[index] -= argument
+    read,
+  };
 
-  if (rowCount == 0 || colCount == 0) {
-    return {};
-  }
+ private:
+  Memory* m_memory;
+  size_t m_index;
+  OperationType m_operationType;
+  T m_argument;
 
-  std::vector<T> result(rowCount);
-  for (size_t i = 0; i < rowCount; ++i) {
-    T currentMin = matrix[i][0];
-    for (size_t j = 1; j < colCount; ++j) {
-      T currentValue = matrix[i][j];
-      if (currentValue < currentMin) {
-        currentMin = currentValue;
+ public:
+  // memory - What memory is being operated on?
+  // index - what index is being operated on?
+  // operationType - type of operation (e.g. plus/minus)
+  // argument - argument for operation
+  Operation(Memory* memory, size_t index, OperationType operationType,
+            const T& argument)
+      : m_memory(memory),
+        m_index(index),
+        m_operationType(operationType),
+        m_argument(argument) {}
+
+  Operation(size_t index, OperationType operationType, const T& argument)
+      : Operation(nullptr, index, operationType, argument) {}
+
+   Operation() : Operation(nullptr, -1, OperationType{}, T{}) {}
+
+  void SetMemory(Memory* memory) { m_memory = memory; }
+
+  OperationType GetOperationType() const { return m_operationType; }
+
+  T Perform() {
+    assert(m_index < m_memory->GetSize() / sizeof(T));
+    T& variable = reinterpret_cast<T*>(m_memory->data())[m_index];
+    switch (m_operationType) {
+      case OperationType::operator_add: {
+        variable += m_argument;
+        break;
+      }
+      case OperationType::operator_dif: {
+        variable -= m_argument;
+        break;
+      }
+      case OperationType::read: {
+        break;
+      }
+      default: {
+        assert(false && "unknown enumeration value");
+        break;
       }
     }
-    result[i] = currentMin;
+    return variable;
   }
+};
 
-  return result;
-}
+using OperationInt = Operation<int>;
 
-//=============================================================================
-// Function : GetMinValuesByRowsParallel
-// Purpose  : Same as GetMinValuesByRowsSequential, but the function is
-//            executed parallel by several processes using MPI.
-//            Also, the function accepts not a template, but an integer matrix.
-//=============================================================================
-std::vector<int> GetMinValuesByRowsParallel(const Matrix<int>& matrix);
+void masterProcessFunction(Memory * memory);
+
+std::vector<int> readerProcessFunction(int readingCount);
+
+void writerProcessFunction(std::vector<OperationInt> & operations);
 
 #endif  // MODULES_TASK_2_KANDRIN_A_READERS_WRITERS_READERS_WRITERS_H_

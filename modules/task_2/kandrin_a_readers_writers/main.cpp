@@ -1,114 +1,49 @@
 // Copyright 2022 Kandrin Alexey
 #include <gtest/gtest.h>
-#include <vector>
-#include "./readers_writers.h"
+
 #include <gtest-mpi-listener.hpp>
+#include <vector>
 
-namespace {
-struct Random {
-  std::random_device dev;
-  std::mt19937 gen{dev()};
+#include "./readers_writers.h"
 
-  int operator()() { return gen() % 100; }
-} random_0_to_99;
-}  // namespace
+TEST(Parallel_Operations_MPI, Test_one_reader_and_other_writers) {
+  int processCount;
+  MPI_Comm_size(MPI_COMM_WORLD, &processCount);
+  if (processCount < 3) {
+    // this test requires a minimum of 3 processes: master process, 1 reader and
+    // 1 writer
+    ASSERT_TRUE(true);
+    return;
+  }
 
-TEST(Parallel_Operations_MPI, Test_Sum_1) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  Matrix<int> matrix;
-  const size_t rowCount = 1;
-  const size_t colCount = 1;
 
-  if (rank == 0) {
-    matrix = GetRandomMatrix<int>(rowCount, colCount, random_0_to_99);
+  const bool isMasterProcess = rank == 0;
+  const bool isReaderProcess = rank == 1;
+  const bool isWriterProcess = rank > 1;
+  const int writersCount = processCount - 2;
+
+  const int startValue = 0;
+  const int index = 0;
+  if (isMasterProcess) {
+    auto memory = std::make_unique<Memory>();
+    ASSERT_NE(memory, nullptr);
+    masterProcessFunction(memory.get());
+    ASSERT_EQ(*reinterpret_cast<const int*>(memory->Read(sizeof(int), 0).GetData()),
+              0);
+  } else if (isWriterProcess) {
+    std::vector<OperationInt> operations = {
+        OperationInt(index, OperationInt::OperationType::operator_add, 1),
+        OperationInt(index, OperationInt::OperationType::operator_dif, 1)};
+    writerProcessFunction(operations);
   }
-
-  auto minValuesByRows = GetMinValuesByRowsParallel(matrix);
-
-  if (rank == 0) {
-    auto referenceMinValuesByRows = GetMinValuesByRowsSequential(matrix);
-    ASSERT_EQ(referenceMinValuesByRows, minValuesByRows);
-  }
-}
-
-TEST(Parallel_Operations_MPI, Test_Sum_2) {
-  int rank;
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  Matrix<int> matrix;
-  const size_t rowCount = 10;
-  const size_t colCount = 10;
-
-  if (rank == 0) {
-    matrix = GetRandomMatrix<int>(rowCount, colCount, random_0_to_99);
-  }
-
-  auto minValuesByRows = GetMinValuesByRowsParallel(matrix);
-
-  if (rank == 0) {
-    auto referenceMinValuesByRows = GetMinValuesByRowsSequential(matrix);
-
-    ASSERT_EQ(referenceMinValuesByRows, minValuesByRows);
-  }
-}
-
-TEST(Parallel_Operations_MPI, Test_Sum_3) {
-  int rank;
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  Matrix<int> matrix;
-  const size_t rowCount = 10;
-  const size_t colCount = 20;
-
-  if (rank == 0) {
-    matrix = GetRandomMatrix<int>(rowCount, colCount, random_0_to_99);
-  }
-
-  auto minValuesByRows = GetMinValuesByRowsParallel(matrix);
-
-  if (rank == 0) {
-    auto referenceMinValuesByRows = GetMinValuesByRowsSequential(matrix);
-
-    ASSERT_EQ(referenceMinValuesByRows, minValuesByRows);
-  }
-}
-
-TEST(Parallel_Operations_MPI, Test_Sum_4) {
-  int rank;
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  Matrix<int> matrix;
-  const size_t rowCount = 20;
-  const size_t colCount = 10;
-
-  if (rank == 0) {
-    matrix = GetRandomMatrix<int>(rowCount, colCount, random_0_to_99);
-  }
-
-  auto minValuesByRows = GetMinValuesByRowsParallel(matrix);
-
-  if (rank == 0) {
-    auto referenceMinValuesByRows = GetMinValuesByRowsSequential(matrix);
-
-    ASSERT_EQ(referenceMinValuesByRows, minValuesByRows);
-  }
-}
-
-TEST(Parallel_Operations_MPI, Test_Sum_5) {
-  int rank;
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  Matrix<int> matrix;
-  const size_t rowCount = 13;
-  const size_t colCount = 17;
-
-  if (rank == 0) {
-    matrix = GetRandomMatrix<int>(rowCount, colCount, random_0_to_99);
-  }
-
-  auto minValuesByRows = GetMinValuesByRowsParallel(matrix);
-
-  if (rank == 0) {
-    auto referenceMinValuesByRows = GetMinValuesByRowsSequential(matrix);
-
-    ASSERT_EQ(referenceMinValuesByRows, minValuesByRows);
+  else if (isReaderProcess) {
+    auto readResult = readerProcessFunction(writersCount);
+    for (auto & value : readResult) {
+      EXPECT_GT(value, -1 * writersCount);
+      EXPECT_LT(value, 1 * writersCount);
+    }
   }
 }
 
