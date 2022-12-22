@@ -1,6 +1,5 @@
 // Copyright 2022 Voronov Alexander
 
-
 #include <gtest/gtest.h>
 #include "./min_column_matrix.h"
 #include <gtest-mpi-listener.hpp>
