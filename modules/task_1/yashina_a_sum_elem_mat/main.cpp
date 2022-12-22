@@ -14,11 +14,11 @@ void testing_lab(int size) {
     std::vector<int> matrix(size, 0);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     if (rank == 0) {
-        matrix = getMatrix(size);
+        matrix = getMat(size);
     }
-    ans = Work(size, matrix);
+    ans = Sum(size, matrix);
     if (rank == 0) {
-      res = SumOfMatrixElementsPartly(matrix);
+      res = SumPart(matrix);
     }
     ASSERT_EQ(res, ans);
 }
@@ -78,7 +78,7 @@ TEST(Sum_of_matrix_elements_MPI, Empty_matrix) {
     std::vector<int> matrix(size, 0);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     if (rank == 0) {
-        ASSERT_ANY_THROW(Work(size, matrix));
+        ASSERT_ANY_THROW(Sum(size, matrix));
     }
 }
 
