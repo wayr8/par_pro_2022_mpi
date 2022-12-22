@@ -32,54 +32,56 @@ void waitingRoom(int waitingRoomSize) {
   MPI_Comm_size(MPI_COMM_WORLD, &procCount);
 
   INFO("Begin");
+  bool barberIsFree = false;
   while (true) {
     int procNum;
     MPI_Status status;
-    
-    if (queue.empty() == false) {
+    MPI_Recv(&procNum, 1, MPI_INT, MPI_ANY_SOURCE, 0, MPI_COMM_WORLD, &status);
+    {
+      std::string message("receive from ");
+      message += std::to_string(procNum);
+      INFO(message);
+    }
+    if (procNum == barberProc) {  // пришёл ответ от парикмахера - он закончил
+      if (queue.empty() == false) {
+        int clientToBarber = queue.front();
+        sendClientToBarber(&clientToBarber);
+        queue.pop();
+      } else if (servedCust == procCount - 2) {
+        INFO("timeout: send begin");
+        int message = no_more_clients;
+        sendClientToBarber(&message);
+        INFO("timeout: send end");
+        return;
+      } else {
+        barberIsFree = true;
+      }
+    } else {  // пришёл запрос от клиента - он хочет узнать, есть ли место в
+              // очереди
+      {
+        std::string message("new client ");
+        message += std::to_string(procNum);
+        INFO(message);
+      }
+      int response = take_your_sit;
+      try {
+        queue.push(procNum);  // пытаемся пропихнуть его в очередь
+      } catch (const std::exception &) {
+        response = no_place;
+      }
+      ++servedCust;
+      // отправим этому клиенту,можно ли ему сесть в комнате ожидания
+      sendResponseToClient(&response, procNum);
+      // MPI_Send(&response, 1, MPI_INT, procNum, 0, MPI_COMM_WORLD);
+      INFO("new client end");
+    }
+    if (barberIsFree && queue.empty() == false) {
       int clientToBarber = queue.front();
       sendClientToBarber(&clientToBarber);
       queue.pop();
+      barberIsFree = false;
     }
-
-    if (servedCust < procCount - 2) {
-      MPI_Recv(&procNum, 1, MPI_INT, MPI_ANY_SOURCE, 0, MPI_COMM_WORLD,
-               &status);
-    } else if (queue.empty()) {
-      INFO("timeout: send begin");
-      int message = no_more_clients;
-      sendClientToBarber(&message);
-      INFO("timeout: send end");
-      return;
-    }
-
-    // пришёл запрос от клиента - он хочет узнать, есть ли место в очереди
-    {
-      std::string message("client ");
-      message += std::to_string(procNum);
-      message += " comes";
-      INFO(message);
-    }
-
-    // отправим этому клиенту,можно ли ему сесть в комнате ожидания
-    int response = take_your_sit;
-    try {
-      queue.push(procNum);  // пытаемся пропихнуть его в очередь
-    } catch (const std::exception &) {
-      response = no_place;
-    }
-    ++servedCust;
-    
-    sendResponseToClient(&response, procNum);
-    // MPI_Send(&response, 1, MPI_INT, procNum, 0, MPI_COMM_WORLD);
-    {
-      std::string message("client ");
-      message += std::to_string(procNum);
-      message += (response == take_your_sit ? " is waiting for haircut"
-                                            : " has to go");
-      INFO(message);
-    }
-  }
+  }  
 }
 void customer() {
   int rank;
@@ -117,8 +119,7 @@ void customer() {
   {
     std::string message("client ");
     message += std::to_string(rank);
-    message += (response == take_your_sit ? " sits: end" 
-                                          : " goes out: end");
+    message += (response == take_your_sit ? " sits: end" : " goes out: end");
     INFO_CLIENT(message);
   }
 
@@ -142,11 +143,73 @@ void customer() {
     }
   }
 }
+/* void customer() {
+  int rank;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  int response;
+  MPI_Status status;
+
+  {
+    std::string message("client ");
+    message += std::to_string(rank);
+    message += " wait for send 1: begin";
+    INFO_CLIENT(message);
+  }
+
+  double end = MPI_Wtime();
+  MPI_Send(&rank, 1, MPI_INT, waitingRoomProc, 0, MPI_COMM_WORLD);
+  double start = MPI_Wtime();
+
+  {
+    std::string message("client ");
+    message += std::to_string(rank);
+    message += " wait for send 1: end; time = ";
+    message += std::to_string(start - end);
+    INFO_CLIENT(message);
+  }
+
+  {
+    std::string message("client ");
+    message += std::to_string(rank);
+    message += " wait for recv 1: begin";
+    INFO_CLIENT(message);
+  }
+
+  MPI_Recv(&response, 1, MPI_INT, waitingRoomProc, 0, MPI_COMM_WORLD, &status);
+
+  {
+    std::string message("client ");
+    message += std::to_string(rank);
+    message += " wait for recv 1: end";
+    INFO_CLIENT(message);
+  }
+
+  if (response == take_your_sit) {
+    int res;
+
+    {
+      std::string message("client ");
+      message += std::to_string(rank);
+      message += " wait for recv 2: begin";
+      INFO_CLIENT(message);
+    }
+
+    MPI_Recv(&res, 1, MPI_INT, barberProc, 0, MPI_COMM_WORLD, &status);
+
+    {
+      std::string message("client ");
+      message += std::to_string(rank);
+      message += " wait for recv 2: end";
+      INFO_CLIENT(message);
+    }
+  }
+}*/
 int barber() {
   int servedСust = 0;
   MPI_Status status;
   int clientNum = 0;
   while (clientNum != no_more_clients) {
+    MPI_Send(&clientNum, 1, MPI_INT, waitingRoomProc, 0, MPI_COMM_WORLD);
     MPI_Recv(&clientNum, 1, MPI_INT, waitingRoomProc, 0, MPI_COMM_WORLD,
              &status);
     // можно устроить некоторое время ожидания для симуляции стрижки
@@ -161,7 +224,8 @@ int barber() {
       ++servedСust;
       std::string message("i finished a haircut for client ");
       message += std::to_string(clientNum);
-      INFO_BARBER(message);
+      INFO_BARBER(message);      
+      clientNum = barberProc;
     }
   }
   return servedСust;
