@@ -1,4 +1,5 @@
 // Copyright 2022 Yashina Anastasia
+
 #include <gtest/gtest.h>
 #include <gtest-mpi-listener.hpp>
 #include <mpi.h>
