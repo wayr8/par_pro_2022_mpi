@@ -1,4 +1,5 @@
 // Copyright Goncharova Anna
+
 #include <gtest/gtest.h>
 #include "../../../modules/task_2/goncharova_a_star/star.h"
 #include <gtest-mpi-listener.hpp>
