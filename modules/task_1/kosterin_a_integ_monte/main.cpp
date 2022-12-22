@@ -34,7 +34,6 @@ TEST(Parallel_Operations_MPI, Test_hard_log) {
   int low = 2, high = 3;
   double res = floor(monteCarlo(low, high, count, &f2) * 10) / 10;
   double corRes = 1.1;
-  // сделать ран и вывод если ранк==0 и смотри его мейн
   if (rank == 0) {
     if (abs(res - corRes) <= err)
       flag = true;
@@ -51,7 +50,6 @@ TEST(Parallel_Operations_MPI, Test_hard_exp) {
   int low = 1, high = 2;
   double res = floor(monteCarlo(low, high, count, &f3) * 100) / 100;
   double corRes = 3.05;
-  // сделать ран и вывод если ранк==0 и смотри его мейн
   if (rank == 0) {
     if (abs(res - corRes) <= err)
       flag = true;
@@ -67,7 +65,6 @@ TEST(Parallel_Operations_MPI, Test_log) {
   int low = 0, high = 1;
   double res = floor(monteCarlo(low, high, count, &f4) * 10) / 10;
   double corRes = 1.9;
-  // сделать ран и вывод если ранк==0 и смотри его мейн
   if (rank == 0) {
     if (abs(res - corRes) <= err)
       flag = true;
@@ -84,7 +81,6 @@ TEST(Parallel_Operations_MPI, Test_exp) {
   int low = 0, high = 1;
   double res = floor(monteCarlo(low, high, count, &f5) * 100) / 100;
   double corRes = 0.71;
-  // сделать ран и вывод если ранк==0 и смотри его мейн
   if (rank == 0) {
     if (abs(res - corRes) <= err)
       flag = true;
