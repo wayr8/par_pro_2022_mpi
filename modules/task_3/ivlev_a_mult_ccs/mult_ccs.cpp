@@ -182,6 +182,7 @@ matrix_ccs matrix_ccs::mpi_mult(matrix_ccs b) {
     }
 
     if (rank == 0) {
+        std::cout << block_size << ' ' << last_block_size << ' ' << max_size << '\n';
         for (int i = 1; i < max_size; i++) {
             MPI_Send(values, val_n, MPI_DOUBLE, i, 0, MPI_COMM_WORLD);
             MPI_Send(rows, val_n, MPI_INT, i, 1, MPI_COMM_WORLD);
