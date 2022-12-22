@@ -169,7 +169,7 @@ matrix_ccs matrix_ccs::mpi_mult(matrix_ccs b) {
     int val_n_b, block_size, last_block_size;
     int max_size = size;
     if (m >= size) {
-        if(size != 1) {
+        if (size != 1) {
             block_size = m/(size-1);
             last_block_size = m%(size-1);
             if (last_block_size == 0) {
@@ -179,7 +179,7 @@ matrix_ccs matrix_ccs::mpi_mult(matrix_ccs b) {
         } else {
             return mult(b);
         }
-        
+
     } else {
         block_size = 1;
         last_block_size = 1;
