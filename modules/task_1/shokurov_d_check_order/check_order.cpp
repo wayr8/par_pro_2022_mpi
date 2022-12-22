@@ -12,6 +12,7 @@ std::string scatter_string(std::string str1) {
   int numProc = 0;
   MPI_Comm_size(MPI_COMM_WORLD, &numProc);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  if (str1.size() == 0)str1 = " ";
   if (rank == 0) {
     int count = str1.size();
     const char* ptr1 = nullptr;
