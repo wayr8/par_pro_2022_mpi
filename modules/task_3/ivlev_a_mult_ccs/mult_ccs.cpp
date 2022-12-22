@@ -168,21 +168,23 @@ matrix_ccs matrix_ccs::mpi_mult(matrix_ccs b) {
 
     int val_n_b, block_size, last_block_size;
     int max_size = size;
-    std::cout << rank << ' ' << size << ' ' << m << '\n';
     if (m >= size) {
-        block_size = m/(size-1);
-        last_block_size = m%(size-1);
-        if (last_block_size == 0) {
-            block_size -= 1;
-            last_block_size = size-1;
+        if(size != 1) {
+            block_size = m/(size-1);
+            last_block_size = m%(size-1);
+            if (last_block_size == 0) {
+                block_size -= 1;
+                last_block_size = size-1;
+            }
+        } else {
+            return mult(b);
         }
+        
     } else {
         block_size = 1;
         last_block_size = 1;
         max_size = m;
     }
-
-    std::cout << rank << ' ' <<  block_size << ' ' << last_block_size << ' ' << max_size << '\n';
 
     if (rank == 0) {
         for (int i = 1; i < max_size; i++) {
