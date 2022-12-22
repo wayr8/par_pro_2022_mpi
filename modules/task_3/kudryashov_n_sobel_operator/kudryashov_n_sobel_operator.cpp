@@ -42,7 +42,7 @@ std::vector<int> matrixToVector(std::vector<std::vector<int>> mat, int height, i
     return res;
 }
 
-int calcNewPixelColor(const std::vector<std::vector<int>> image, int height, int width, int y, int x) {
+int calcNewPixelColor(std::vector<std::vector<int>> image, int height, int width, int y, int x) {
     int kernelX[3][3] = { {-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1} };
     int kernelY[3][3] = { {-1, -2, -1}, {0, 0, 0}, {1, 2, 1} };
 
@@ -62,7 +62,7 @@ int calcNewPixelColor(const std::vector<std::vector<int>> image, int height, int
     return G;
 }
 
-std::vector<std::vector<int>> calcSobel(const std::vector<std::vector<int>> image, int height, int width) {
+std::vector<std::vector<int>> calcSobel(const std::vector<std::vector<int>>& image, int height, int width) {
     std::vector<std::vector<int>> resultImage(height, std::vector<int>(width));
     int kernelX[3][3] = { {-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1} };
     int kernelY[3][3] = { {-1, -2, -1}, {0, 0, 0}, {1, 2, 1} };
@@ -74,7 +74,7 @@ std::vector<std::vector<int>> calcSobel(const std::vector<std::vector<int>> imag
     return resultImage;
 }
 
-std::vector<std::vector<int>> calcSobelParallel(const std::vector<std::vector<int>> image, int height, int width) {
+std::vector<std::vector<int>> calcSobelParallel(const std::vector<std::vector<int>>& image, int height, int width) {
     int kernelX[3][3] = { {-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1}};
     int kernelY[3][3] = { {-1, -2, -1}, {0, 0, 0}, {1, 2, 1}};
     int proc_num, rank;
