@@ -72,7 +72,7 @@ void customer() {
   }
 }
 int barber() {
-  int served—ust = 0;
+  int servedCust = 0;
   MPI_Status status;
   int clientNum = 0;
   while (clientNum != no_more_clients) {
@@ -82,9 +82,9 @@ int barber() {
     if (clientNum != no_more_clients) {
       int res = you_got_a_beautiful_haircut;
       MPI_Send(&res, 1, MPI_INT, clientNum, 0, MPI_COMM_WORLD);
-      ++served—ust;
+      ++servedCust;
       clientNum = barberProc;
     }
   }
-  return served—ust;
+  return servedCust;
 }

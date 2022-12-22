@@ -1,11 +1,10 @@
 // Copyright 2022 Korobeynikova Alisa
 
 #include <gtest/gtest.h>
-
-#include <chrono>
 #include <gtest-mpi-listener.hpp>
-#include <thread>
-#include <vector>
+
+#include <chrono> // NOLINT [build/c++11]
+#include <thread> // NOLINT [build/c++11]
 
 #include "./sleeping_barber.h"
 

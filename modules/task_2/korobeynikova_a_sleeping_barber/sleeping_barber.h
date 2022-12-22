@@ -17,10 +17,10 @@ class CustomerQueue : public std::queue<int> {
   int fixedSize;
 
  public:
-  CustomerQueue(int _size) : std::queue<int>(), fixedSize(_size) {}
+  explicit CustomerQueue(int _size) : std::queue<int>(), fixedSize(_size) {}
   void push(const int &value) {
     if (size() == fixedSize) {
-      throw std::exception("there is no place for you");
+      throw std::exception();
     }
     std::queue<int>::push(value);
   }
