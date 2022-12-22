@@ -1,9 +1,9 @@
 // Copyright 2022 Voronov Alexander
 
-#include <gtest-mpi-listener.hpp>
+
 #include <gtest/gtest.h>
-#include <vector>
 #include "./min_column_matrix.h"
+#include <gtest-mpi-listener.hpp>
 
 TEST(Min_Columns_MPI, Incorrect_Arguments_Create_Matrix) {
     int rank;
