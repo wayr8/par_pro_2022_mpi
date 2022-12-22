@@ -34,20 +34,19 @@ TEST(Parallel_Operations_MPI, Test_2) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     int m = size + 3;
-    int n = size + 3;
 
-    std::vector<int> global_mat(m * n);
-    std::vector<int> parallel_result(m * n);
+    std::vector<int> global_mat(m * m);
+    std::vector<int> parallel_result(m * m);
 
     if (rank == 0) {
-        global_mat = getRandomMatrix(m, n);
+        global_mat = getRandomMatrix(m, m);
     }
 
-    parallel_result = getMedianFilterParallel(global_mat, m, n);
+    parallel_result = getMedianFilterParallel(global_mat, m, m);
 
     if (rank == 0) {
-        std::vector<int> sequence_result(m * n);
-        sequence_result = getMedianFilterSequence(global_mat, m, n);
+        std::vector<int> sequence_result(m * m);
+        sequence_result = getMedianFilterSequence(global_mat, m, m);
         ASSERT_EQ(sequence_result, parallel_result);
     }
 }
@@ -58,20 +57,19 @@ TEST(Parallel_Operations_MPI, Test_3) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     int m = size;
-    int n = size;
 
-    std::vector<int> global_mat(m * n);
-    std::vector<int> parallel_result(m * n);
+    std::vector<int> global_mat(m * m);
+    std::vector<int> parallel_result(m * m);
 
     if (rank == 0) {
-        global_mat = getRandomMatrix(m, n);
+        global_mat = getRandomMatrix(m, m);
     }
 
-    parallel_result = getMedianFilterParallel(global_mat, m, n);
+    parallel_result = getMedianFilterParallel(global_mat, m, m);
 
     if (rank == 0) {
-        std::vector<int> sequence_result(m * n);
-        sequence_result = getMedianFilterSequence(global_mat, m, n);
+        std::vector<int> sequence_result(m * m);
+        sequence_result = getMedianFilterSequence(global_mat, m, m);
         ASSERT_EQ(sequence_result, parallel_result);
     }
 }
