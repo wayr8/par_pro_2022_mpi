@@ -54,6 +54,7 @@ int getMaxParallel(std::vector<int>& vec, int vec_size) {
     MPI_Reduce(&proc_max, &total_max, 1, MPI_INT, MPI_MAX, 0, MPI_COMM_WORLD);
 
     return total_max;
+
 }
 
 
