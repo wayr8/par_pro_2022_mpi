@@ -30,7 +30,7 @@ void ProcessInitialization(int ProcRank, int ProcSize, std::vector<int>* matrix,
         (*matrix).resize(*row_num * *column_num);
         (*results).resize(*column_num);
         CreateRandomMatrix(matrix, *row_num, *column_num);
-        PrintMatrix(*matrix, *row_num, *column_num);
+        // PrintMatrix(*matrix, *row_num, *column_num);
     }
 }
 void PrintMatrix(const std::vector<int>& matrix, int row_num, int column_num) {
@@ -135,7 +135,7 @@ void DoWork(std::vector<int>* a, std::vector<int>* b) {
     ColumnSumsParallel(ProcRank, ProcSize, &pSendInd
     , &pSendNum, &result, pProcColumns, &pProcResults, row_num, column_num, ColumnNum);
     if (ProcRank == 0) {
-        PrintVector(result, column_num);
+        // PrintVector(result, column_num);
         std::vector<int> sequental = SequencallSum(matrix, row_num, column_num);
         *a = sequental;
         *b = result;
