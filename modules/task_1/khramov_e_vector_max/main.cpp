@@ -6,13 +6,21 @@
 
 
 TEST(Parallel_Operations_MPI, Test_Vector_Max_1) {
-    int rank;
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    std::vector<int> randomVector = getRandomVector(20);
-
-    printVector(randomVector);
     
-    ASSERT_EQ(2, 2);
+    int rank, vec_size = 10;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    std::vector<int> random_vector;
+
+    if (rank == 0)
+        random_vector = getRandomVector(vec_size);
+
+    int max_sequential;
+    int max_parallel = getMaxParallel(random_vector, vec_size);
+
+    if (rank == 0) {
+        max_sequential = getMax(random_vector);
+        ASSERT_EQ(max_sequential, max_parallel);
+    }
 
 }
 
