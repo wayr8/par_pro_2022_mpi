@@ -88,7 +88,7 @@ std::vector<std::vector<int>> calcSobelParallel(const std::vector<std::vector<in
     std::vector<int> recvcounts(proc_num);
     std::vector<int> displs(proc_num);
     std::vector<int> vecImage(height * width);
-    
+
     if (rank == 0) {
         vecImage = matrixToVector(image, height, width);
         for (int proc = 1; proc < proc_num; proc++) {
@@ -123,7 +123,8 @@ std::vector<std::vector<int>> calcSobelParallel(const std::vector<std::vector<in
     }
     for (int i = 0; i < (localRes.size() / width); i++) {
         for (int j = 0; j < width; j++) {
-            localRes[i * width + j] = calcNewPixelColor(vectorToMatrix(vecImage, height, width), height, width, row + i, j);
+            localRes[i * width + j] = calcNewPixelColor(vectorToMatrix(vecImage, height, width)
+                , height, width, row + i, j);
         }
     }
     std::vector<int> global_res(width * height);
