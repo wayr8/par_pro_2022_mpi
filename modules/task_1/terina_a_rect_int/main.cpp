@@ -1,9 +1,8 @@
 // Copyright 2022 Terina Alina
-#include "../../../modules/task_1/terina_a_rect_int/rect_int.h"
 #include <cmath>
 #include <gtest-mpi-listener.hpp>
 #include <gtest/gtest.h>
-
+#include "../../../modules/task_1/terina_a_rect_int/rect_int.h"
 
 TEST(Parallel_Operations_MPI, int_cos_0_to_1) {
     int rank;
@@ -74,4 +73,4 @@ int main(int argc, char** argv) {
 
     listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
     return RUN_ALL_TESTS();
-} 
+}
