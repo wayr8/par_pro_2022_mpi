@@ -1,8 +1,8 @@
 ﻿  //  Copyright 2022 Antonova Nastya
 #include <gtest/gtest.h>
 #include <gtest-mpi-listener.hpp>
-#include <vector>
 #include "./num_violation_order_vector.h"
+#include <vector>
 
 TEST(Num_Violation_Order_Vector, Test_Num) {
   int rank;
