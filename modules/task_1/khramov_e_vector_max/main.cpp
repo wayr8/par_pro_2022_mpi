@@ -4,15 +4,12 @@
 #include "./vector_max.h"
 #include <gtest-mpi-listener.hpp>
 
-
 TEST(Parallel_Operations_MPI, Test_Vector_Max_10_elements) {
-    
     int rank, vec_size = 10;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> random_vector;
 
-    if (rank == 0)
-        random_vector = getRandomVector(vec_size);
+    if (rank == 0) random_vector = getRandomVector(vec_size);
 
     int max_sequential;
     int max_parallel = getMaxParallel(random_vector, vec_size);
@@ -24,13 +21,11 @@ TEST(Parallel_Operations_MPI, Test_Vector_Max_10_elements) {
 }
 
 TEST(Parallel_Operations_MPI, Test_Vector_Max_10000_elements) {
-    
     int rank, vec_size = 10000;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> random_vector;
 
-    if (rank == 0)
-        random_vector = getRandomVector(vec_size);
+    if (rank == 0) random_vector = getRandomVector(vec_size);
 
     int max_sequential;
     int max_parallel = getMaxParallel(random_vector, vec_size);
@@ -42,13 +37,11 @@ TEST(Parallel_Operations_MPI, Test_Vector_Max_10000_elements) {
 }
 
 TEST(Parallel_Operations_MPI, Test_Vector_Max_100000_elements) {
-    
     int rank, vec_size = 100000;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> random_vector;
 
-    if (rank == 0)
-        random_vector = getRandomVector(vec_size);
+    if (rank == 0) random_vector = getRandomVector(vec_size);
 
     int max_sequential;
     int max_parallel = getMaxParallel(random_vector, vec_size);
@@ -60,13 +53,11 @@ TEST(Parallel_Operations_MPI, Test_Vector_Max_100000_elements) {
 }
 
 TEST(Parallel_Operations_MPI, Test_Vector_Max_1_million_elements) {
-    
     int rank, vec_size = 1000000;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> random_vector;
 
-    if (rank == 0)
-        random_vector = getRandomVector(vec_size);
+    if (rank == 0) random_vector = getRandomVector(vec_size);
 
     int max_sequential;
     int max_parallel = getMaxParallel(random_vector, vec_size);
@@ -76,7 +67,6 @@ TEST(Parallel_Operations_MPI, Test_Vector_Max_1_million_elements) {
         ASSERT_EQ(max_sequential, max_parallel);
     }
 }
-
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);

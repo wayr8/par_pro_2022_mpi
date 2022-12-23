@@ -1,12 +1,12 @@
-#include <iostream>
-#include <mpi.h>
-#include <random>
 #include "./vector_max.h"
 
+#include <mpi.h>
+
+#include <iostream>
+#include <random>
 
 void printVector(std::vector<int>& vec) {
-    for (int i = 0; i < vec.size(); ++i)
-        std::cout << vec[i] << " ";
+    for (int i = 0; i < vec.size(); ++i) std::cout << vec[i] << " ";
     std::cout << std::endl;
 }
 
@@ -23,8 +23,7 @@ std::vector<int> getRandomVector(int size) {
 int getMax(std::vector<int> vec) {
     int max = vec[0];
     for (int i = 1; i < vec.size(); ++i)
-        if (vec[i] > max)
-            max = vec[i];
+        if (vec[i] > max) max = vec[i];
     return max;
 }
 
@@ -43,20 +42,18 @@ int getMaxParallel(std::vector<int>& vec, int vec_size) {
 
     if (rank == 0)
         for (int i = 1; i < comm_size; ++i)
-            MPI_Send(vec.data() + remainder + local_size * i, local_size, MPI_INT, i, 0, MPI_COMM_WORLD);
-        
+            MPI_Send(vec.data() + remainder + local_size * i, local_size,
+                     MPI_INT, i, 0, MPI_COMM_WORLD);
+
     if (rank == 0)
-        local_vector = std::vector<int>(vec.begin(), vec.begin() + local_size + remainder);
+        local_vector =
+            std::vector<int>(vec.begin(), vec.begin() + local_size + remainder);
     else
-        MPI_Recv(local_vector.data(), local_size, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
-    
+        MPI_Recv(local_vector.data(), local_size, MPI_INT, 0, 0, MPI_COMM_WORLD,
+                 &status);
+
     proc_max = getMax(local_vector);
     MPI_Reduce(&proc_max, &total_max, 1, MPI_INT, MPI_MAX, 0, MPI_COMM_WORLD);
 
     return total_max;
-
 }
-
-
-
-
