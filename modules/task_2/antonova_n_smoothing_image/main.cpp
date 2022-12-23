@@ -1,8 +1,8 @@
 // Copyright 2022 Antonova Anastsya
-#include <gtest-mpi-listener.hpp>
 #include <gtest/gtest.h>
 #include <vector>
 #include <algorithm>
+#include <gtest-mpi-listener.hpp>
 #include "../../../modules/task_2/antonova_n_smoothing_image/smoothing_image.h"
 
 TEST(SMOOTHING_IMAGE, test1_on_wrong_image) {
