@@ -75,8 +75,8 @@ std::vector<std::vector<int>> calcSobel(const std::vector<std::vector<int>>& ima
 }
 
 std::vector<std::vector<int>> calcSobelParallel(const std::vector<std::vector<int>>& image, int height, int width) {
-    int kernelX[3][3] = { {-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1}};
-    int kernelY[3][3] = { {-1, -2, -1}, {0, 0, 0}, {1, 2, 1}};
+    int kernelX[3][3] = { {-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1} };
+    int kernelY[3][3] = { {-1, -2, -1}, {0, 0, 0}, {1, 2, 1} };
     int proc_num, rank;
 
     MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
@@ -85,33 +85,26 @@ std::vector<std::vector<int>> calcSobelParallel(const std::vector<std::vector<in
     int remain = height % proc_num;
 
     std::vector<int> sendbuf(height);
-    int* recvcounts = new int[proc_num];
-    int* sendcounts = new int[proc_num];
-    int* displs = new int[proc_num];
+    std::vector<int> recvcounts(proc_num);
+    std::vector<int> displs(proc_num);
     std::vector<int> vecImage(height * width);
-
+    
     if (rank == 0) {
-        sendcounts[0] = shift * width + remain * width;
-        displs[0] = width * shift * (proc_num - 1);
-        for (int i = 1; i < proc_num; i++) {
-            sendcounts[i] = shift * width;
-            if (i == 1) {
-                displs[i] = 0;
-            } else {
-                displs[i] = displs[i - 1] + sendcounts[i];
-            }
+        vecImage = matrixToVector(image, height, width);
+        for (int proc = 1; proc < proc_num; proc++) {
+            MPI_Send(vecImage.data() + (proc - 1) * shift * width, shift * width, MPI_INT, proc, 0, MPI_COMM_WORLD);
         }
     }
+    MPI_Bcast(vecImage.data(), width* height, MPI_INT, 0, MPI_COMM_WORLD);
+    std::vector<int> localRes(shift * width);
 
-    std::vector<int> recvbuf(shift * width);
     if (rank == 0) {
-        recvbuf.resize(shift * width + remain * width);
+        localRes.resize(vecImage.end() - (vecImage.begin() + width * shift * (proc_num - 1)));
+        localRes = std::vector<int>(vecImage.begin() + width * shift * (proc_num - 1), vecImage.end());
+    } else {
+        MPI_Status status;
+        MPI_Recv(localRes.data(), shift * width, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
     }
-    vecImage = matrixToVector(image, height, width);
-
-    MPI_Scatterv(vecImage.data(), sendcounts, displs, MPI_INT, recvbuf.data(), sendcounts[rank],
-        MPI_INT, 0, MPI_COMM_WORLD);
-
     int row;
     if (rank == 0) {
         row = (proc_num - 1) * shift;
@@ -128,17 +121,15 @@ std::vector<std::vector<int>> calcSobelParallel(const std::vector<std::vector<in
     } else {
         row = (rank - 1) * shift;
     }
-    std::vector<int> localRes(recvbuf.size());
     for (int i = 0; i < (localRes.size() / width); i++) {
         for (int j = 0; j < width; j++) {
-            int resG = calcNewPixelColor(image, height, width, row + i, j);
-            localRes[i * width + j] = resG;
+            localRes[i * width + j] = calcNewPixelColor(vectorToMatrix(vecImage, height, width), height, width, row + i, j);
         }
     }
     std::vector<int> global_res(width * height);
 
     MPI_Gatherv(localRes.data(), localRes.size(), MPI_INT, global_res.data(),
-        recvcounts, displs, MPI_INT, 0, MPI_COMM_WORLD);
+        recvcounts.data(), displs.data(), MPI_INT, 0, MPI_COMM_WORLD);
 
     return vectorToMatrix(global_res, height, width);
 }
