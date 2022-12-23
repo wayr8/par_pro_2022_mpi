@@ -75,8 +75,6 @@ std::vector<std::vector<int>> calcSobel(const std::vector<std::vector<int>>& ima
 }
 
 std::vector<std::vector<int>> calcSobelParallel(const std::vector<std::vector<int>>& image, int height, int width) {
-    int kernelX[3][3] = { {-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1} };
-    int kernelY[3][3] = { {-1, -2, -1}, {0, 0, 0}, {1, 2, 1} };
     int proc_num, rank;
 
     MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
