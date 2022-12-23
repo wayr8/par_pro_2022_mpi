@@ -1,6 +1,6 @@
 ﻿  //  Copyright 2022 Antonova Nastya
-#include <gtest-mpi-listener.hpp>
 #include <gtest/gtest.h>
+#include <gtest-mpi-listener.hpp>
 #include <vector>
 #include "./num_violation_order_vector.h"
 
