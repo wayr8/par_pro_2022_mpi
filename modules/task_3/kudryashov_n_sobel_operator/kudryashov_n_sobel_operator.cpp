@@ -3,7 +3,6 @@
 #include <random>
 #include <ctime>
 #include "../../../modules/task_3/kudryashov_n_sobel_operator/kudryashov_n_sobel_operator.h"
-#include <iostream>
 
 std::vector<std::vector<int>> generateRandomImage(int height, int width) {
     std::mt19937 rnd;
