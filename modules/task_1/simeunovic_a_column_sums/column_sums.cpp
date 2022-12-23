@@ -113,12 +113,12 @@ void ColumnSumsParallel(int ProcRank, int ProcSize, std::vector<int>* pSendInd, 
     MPI_Gatherv((*pProcResults).data(), (*pSendNum)[ProcRank], MPI_INT, (*result).data(), (*pSendNum).data()
     , (*pSendInd).data(), MPI_INT, 0, MPI_COMM_WORLD);
 }
-std::vector<int>SequencallSum(std::vector<int>matrix, int row_num, int column_num) {
+std::vector<int>SequencallSum(std::vector<int>* matrix, int row_num, int column_num) {
     std::vector<int>result;
     for (int i = 0; i < column_num; i++) {
         int sum = 0;
         for (int j = 0; j < row_num; j++) {
-             sum += matrix[j * column_num + i];
+             sum +=  (*matrix)[j * column_num + i];
         }
         result.push_back(sum);
     }
@@ -136,7 +136,7 @@ void DoWork(std::vector<int>* a, std::vector<int>* b) {
     , &pSendNum, &result, pProcColumns, &pProcResults, row_num, column_num, ColumnNum);
     if (ProcRank == 0) {
         // PrintVector(result, column_num);
-        std::vector<int> sequental = SequencallSum(matrix, row_num, column_num);
+        std::vector<int> sequental = SequencallSum(&matrix, row_num, column_num);
         *a = sequental;
         *b = result;
     }
