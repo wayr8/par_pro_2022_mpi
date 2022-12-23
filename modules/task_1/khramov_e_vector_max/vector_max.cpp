@@ -4,7 +4,7 @@
 #include "./vector_max.h"
 
 
-void printVector(std::vector<int> vec) {
+void printVector(std::vector<int>& vec) {
     for (int i = 0; i < vec.size(); ++i)
         std::cout << vec[i] << " ";
     std::cout << std::endl;
@@ -28,42 +28,32 @@ int getMax(std::vector<int> vec) {
     return max;
 }
 
-int getMaxParallel(std::vector<int> vec, int vec_size) {
+int getMaxParallel(std::vector<int>& vec, int vec_size) {
     int rank, comm_size;
-
     int total_max = 0, proc_max = 0;
+    MPI_Status status;
 
     MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    MPI_Bcast(vec.data(), vec_size, MPI_INT, 0, MPI_COMM_WORLD);
+    int local_size = vec_size / comm_size;
+    int remainder = vec_size % comm_size;
 
-    int delta = vec_size / comm_size;
-    int i1 = delta * rank;
-    int i2 = delta * (rank + 1);
+    std::vector<int> local_vector(local_size);
 
-    if (rank == comm_size - 1) 
-        i2 = vec_size;
-
-    for (int i = i1; i < i2; ++i) {
-        if (vec[i] > proc_max) {
-            proc_max = vec[i];
-        }
-    }
-
-    std::cout << "vec_size = " << vec_size << "\n";
-    std::cout << "rank = " << rank << "\n";
-    std::cout << "comm_size = " << comm_size << "\n";
-    std::cout << "delta = " << delta << "\n";
-    std::cout << "i1 = " << i1 << "\n";
-    std::cout << "i2 = " << i2 << "\n";
-    std::cout << "proc_max = " << proc_max << "\n";
-    std::cout << "total_max = " << total_max << "\n";
-
+    if (rank == 0)
+        for (int i = 1; i < comm_size; ++i)
+            MPI_Send(vec.data() + remainder + local_size * i, local_size, MPI_INT, i, 0, MPI_COMM_WORLD);
+        
+    if (rank == 0)
+        local_vector = std::vector<int>(vec.begin(), vec.begin() + local_size + remainder);
+    else
+        MPI_Recv(local_vector.data(), local_size, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+    
+    proc_max = getMax(local_vector);
     MPI_Reduce(&proc_max, &total_max, 1, MPI_INT, MPI_MAX, 0, MPI_COMM_WORLD);
 
     return total_max;
-
 }
 
 

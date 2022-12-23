@@ -5,7 +5,7 @@
 #include <gtest-mpi-listener.hpp>
 
 
-TEST(Parallel_Operations_MPI, Test_Vector_Max_1) {
+TEST(Parallel_Operations_MPI, Test_Vector_Max_10_elements) {
     
     int rank, vec_size = 10;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -21,7 +21,60 @@ TEST(Parallel_Operations_MPI, Test_Vector_Max_1) {
         max_sequential = getMax(random_vector);
         ASSERT_EQ(max_sequential, max_parallel);
     }
+}
 
+TEST(Parallel_Operations_MPI, Test_Vector_Max_10000_elements) {
+    
+    int rank, vec_size = 10000;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    std::vector<int> random_vector;
+
+    if (rank == 0)
+        random_vector = getRandomVector(vec_size);
+
+    int max_sequential;
+    int max_parallel = getMaxParallel(random_vector, vec_size);
+
+    if (rank == 0) {
+        max_sequential = getMax(random_vector);
+        ASSERT_EQ(max_sequential, max_parallel);
+    }
+}
+
+TEST(Parallel_Operations_MPI, Test_Vector_Max_100000_elements) {
+    
+    int rank, vec_size = 100000;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    std::vector<int> random_vector;
+
+    if (rank == 0)
+        random_vector = getRandomVector(vec_size);
+
+    int max_sequential;
+    int max_parallel = getMaxParallel(random_vector, vec_size);
+
+    if (rank == 0) {
+        max_sequential = getMax(random_vector);
+        ASSERT_EQ(max_sequential, max_parallel);
+    }
+}
+
+TEST(Parallel_Operations_MPI, Test_Vector_Max_1_million_elements) {
+    
+    int rank, vec_size = 1000000;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    std::vector<int> random_vector;
+
+    if (rank == 0)
+        random_vector = getRandomVector(vec_size);
+
+    int max_sequential;
+    int max_parallel = getMaxParallel(random_vector, vec_size);
+
+    if (rank == 0) {
+        max_sequential = getMax(random_vector);
+        ASSERT_EQ(max_sequential, max_parallel);
+    }
 }
 
 
