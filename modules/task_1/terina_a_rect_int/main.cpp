@@ -20,11 +20,10 @@ TEST(Parallel_Operations_MPI, int_xcub_0_to_5) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    double p_res = paralInt(0, 5, triplex, 5000);
+    double p_res = paralInt(0, 5, triplex, 20000);
     if (rank == 0) {
-        double ord_res = ordinaryInt(0, 5, triplex, 5000);
-        ASSERT_LT(std::fabs(p_res - ord_res),
-            std::numeric_limits<double>::epsilon() * 1000);
+        double ord_res = ordinaryInt(0, 5, triplex, 20000);
+        ASSERT_NEAR(p_res, ord_res, 1);
     }
 }
 
