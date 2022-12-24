@@ -14,7 +14,7 @@ double **arr(int size) {
   for (int i = 0; i < size; i++) {
     ar[i] = new double[size];
     for (int j = 0; j < size; j++) {
-      double ran = static_cast<double>((gen() % 200));
+      double ran = static_cast<double>((gen() % 10));
       ar[i][j] = ran + 1;
     }
   }
@@ -116,7 +116,7 @@ TEST(Parallel_Operations_MPI, Test_100x100) {
   bool flag = false;
   double err = 0.1;
   int rank;
-  int size = 10;
+  int size = 100;
   double **array = arr(size);
   double *ans = answer(size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
