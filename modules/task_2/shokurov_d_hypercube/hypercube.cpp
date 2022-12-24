@@ -8,20 +8,17 @@
 
 #include "../../modules/task_2/shokurov_d_hypercube/hypercube.h"
 
-int inv(int x, int i)
-{
+int inv(int x, int i) {
     int v = (x & (1 << i));
     if (v) {
         x &= ~(1 << i);
-    }
-    else {
+    } else {
         x |= (1 << i);
     }
     return x;
 }
 
-std::vector<int> right_to_left(int i, int j)
-{
+std::vector<int> right_to_left(int i, int j) {
     std::vector<int> v;
     int y = j;
     int temp = i;
@@ -38,21 +35,18 @@ std::vector<int> right_to_left(int i, int j)
     return v;
 }
 
-std::vector<int> find_path(int i, int j)
-{
+std::vector<int> find_path(int i, int j) {
     std::vector<int> path;
     if (i <= j) {
         path = right_to_left(i, j);
-    }
-    else {
+    } else {
         path = right_to_left(j, i);
         reverse(path.begin(), path.end());
     }
     return path;
 }
 
-void send(int i, int j, char** mes, int* n)
-{
+void send(int i, int j, char** mes, int* n) {
     int rank = 0;
     int ProcNum = 0;
     MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
@@ -78,8 +72,7 @@ void send(int i, int j, char** mes, int* n)
             }
             MPI_Send(&j, 1, MPI_INT, j, 102, MPI_COMM_WORLD);
             MPI_Send(*mes, *n, MPI_CHAR, path[1], 103, MPI_COMM_WORLD);
-        }
-        else {
+        } else {
             int busy = 0;
             for (int k = 0; k < ProcNum; ++k) {
                 if (k == rank)
@@ -87,8 +80,7 @@ void send(int i, int j, char** mes, int* n)
                 MPI_Send(&busy, 1, MPI_INT, k, 101, MPI_COMM_WORLD);
             }
         }
-    }
-    else {
+    } else {
         MPI_Status status;
         int busy;
         MPI_Recv(&busy, 1, MPI_INT, MPI_ANY_SOURCE, 101, MPI_COMM_WORLD, &status);
@@ -102,8 +94,7 @@ void send(int i, int j, char** mes, int* n)
                 *n = count;
                 *mes = new char[count];
                 MPI_Recv(*mes, count, MPI_CHAR, MPI_ANY_SOURCE, 103, MPI_COMM_WORLD, &status);
-            }
-            else {
+            } else {
                 int count;
                 MPI_Probe(MPI_ANY_SOURCE, 103, MPI_COMM_WORLD, &status);
                 MPI_Get_count(&status, MPI_CHAR, &count);
@@ -112,8 +103,7 @@ void send(int i, int j, char** mes, int* n)
                 MPI_Send(ch, count, MPI_CHAR, j, 103, MPI_COMM_WORLD);
                 delete[] ch;
             }
-        }
-        else {
+        } else {
             return;
         }
     }

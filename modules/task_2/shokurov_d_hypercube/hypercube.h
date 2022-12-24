@@ -9,4 +9,4 @@
 
 void send(int i, int j, char** mes, int* n);
 
-#endif // MODULES_TASK_2_SHOKUROV_D_HYPERCUBE_HYPERCUBE_H_
+#endif  // MODULES_TASK_2_SHOKUROV_D_HYPERCUBE_HYPERCUBE_H_
