@@ -1,5 +1,6 @@
 // Copyright 2022 Khramov Egor
 
+#include <iostream>
 #include <mpi.h>
 #include <algorithm>
 #include <random>

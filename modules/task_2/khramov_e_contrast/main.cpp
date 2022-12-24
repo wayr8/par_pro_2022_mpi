@@ -1,4 +1,5 @@
 // Copyright 2022 Khramov Egor
+#include <iostream>
 #include <gtest/gtest.h>
 #include <stdio.h>
 #include <vector>
