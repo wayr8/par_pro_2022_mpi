@@ -7,17 +7,34 @@
 
 
 TEST(Test_contrast, Test_0) {
-    int size, rank;
+    int rank;
 
-    auto matrix = getRandomMatrix(3, 2);
+    int w = 5, h = 4;
 
-    auto result = getContrastedMatrixSequential(matrix);
+    std::vector<int> matrix;
+    std::vector<int> resultSequential;
+    std::vector<int> resultParallel;
 
-    std::cout << "First matrix: " << std::endl;
-    printVector(matrix);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    std::cout << "Result matrix: " << std::endl;
-    printVector(result);
+    if (rank == 0) {
+
+        // std::cout << 5 / 2;
+
+        matrix = getRandomMatrix(w, h);
+
+        std::cout << "Main vector: "; printVector(matrix);
+        std::cout << std::endl;
+        // resultSequential = getContrastedMatrixSequential(matrix);
+
+        // std::cout << "First matrix: " << std::endl;
+        // printVector(matrix);
+
+        // std::cout << "Result matrix: " << std::endl;
+        // printVector(resultSequential);
+    }
+
+    resultParallel = getContrastedMatrixParallel(matrix, w * h);
 
     ASSERT_EQ(1, 1);
 }

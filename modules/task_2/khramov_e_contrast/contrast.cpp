@@ -12,6 +12,12 @@ void printVector(std::vector<int> vector) {
     std::cout << std::endl;
 }
 
+void printArray(int* arr, int n) {
+    for (int i = 0; i < n; i++) {
+        std::cout << arr[i] << " ";
+    }
+    std::cout << std::endl;
+}
 
 std::vector<int> getRandomVector(int size) {
     std::random_device dev;
@@ -40,7 +46,6 @@ int truncate(size_t value) {
 
 
 std::vector<int> getContrastedMatrixSequential(std::vector<int> matrix) {
-
     int length = matrix.size();
 
     std::vector<int> result(length);
@@ -54,4 +59,66 @@ std::vector<int> getContrastedMatrixSequential(std::vector<int> matrix) {
     }
 
     return result;
+}
+
+
+int* getSendCount(int matrixSize, int commSize) {
+    int* sendCount = new int[commSize];
+    int div = matrixSize / commSize;
+    int ren = matrixSize % commSize;
+    for (int i = 0; i < commSize; i++) {
+        sendCount[i] = div;
+    }
+    if (ren != 0) {
+        sendCount[commSize - 1] = sendCount[commSize - 1] + ren;
+    }
+    return sendCount;
+}
+
+int* getDispls(int matrixSize, int commSize) {
+    int* displs = new int[commSize];
+    int div = matrixSize / commSize;
+    displs[0] = 0;
+    for (int i = 1; i < commSize; i++) {
+        displs[i] = displs[i - 1] + div;
+    }
+    return displs;
+}
+
+
+std::vector<int> getContrastedMatrixParallel(std::vector<int> matrix, int size) {
+    int rank, commSize;
+
+    int recvCount;
+
+
+    std::vector<int> result;
+
+    MPI_Comm_size(MPI_COMM_WORLD, &commSize);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    if (rank != commSize - 1) {
+        recvCount = size / commSize;
+    } else {
+        recvCount = size / commSize + size % commSize;
+    }
+
+    int* sendCount = getSendCount(size, commSize);
+    int* displs = getDispls(size, commSize);
+
+    std::vector<int> localVec(recvCount);
+    std::vector<int> localResult(recvCount);
+
+    // std::cout << recvCount;
+
+    MPI_Scatterv(matrix.data(), sendCount, displs, MPI_INT, localVec.data(), recvCount, MPI_INT, 0, MPI_COMM_WORLD);
+    
+    // std::cout << "Process " << rank << ": " << recvCount << ": ";
+    printVector(localVec);
+
+    localResult = getContrastedMatrixSequential(localVec);
+    printVector(localResult);
+
+    return result;
+
 }

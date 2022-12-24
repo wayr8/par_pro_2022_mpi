@@ -6,6 +6,8 @@
 
 void printVector(std::vector<int> vector);
 
+void printArray(int* arr, int n);
+
 std::vector<int> getRandomVector(int size);
 
 std::vector<int> getRandomMatrix(int w, int h);
@@ -14,8 +16,10 @@ float getContrastCoeff(int contrast);
 
 int truncate(size_t value);
 
+std::vector<int> getSendCount(int matrixSize, int commSize);
+
 std::vector<int> getContrastedMatrixSequential(std::vector<int> matrix);
 
-std::vector<int> getContrastedMatrixParallel(std::vector<int> matrix);
+std::vector<int> getContrastedMatrixParallel(std::vector<int> matrix, int size);
 
 #endif  // MODULES_TASK_2_KHRAMOV_E_CONTRAST_CONTRAST_H_
