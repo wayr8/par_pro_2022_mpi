@@ -5,7 +5,15 @@
 #include "./gaus_lent_horiz.h"
 #include <gtest-mpi-listener.hpp>
 
-
+/*
+ if(rank==0)
+  for(int i = 0;i<size;i++){
+    for(int j=0;j<size;j++){
+      printf("%f ",array[i][j]);
+    }
+    printf("%f\n", ans[i]);
+  }
+*/
 std::random_device dev;
 std::mt19937 gen(dev());
 std::uniform_real_distribution<> dist(0, 1);
@@ -15,7 +23,7 @@ double **arr(int size) {
   for (int i = 0; i < size; i++) {
     ar[i] = new double[size];
     for (int j = 0; j < size; j++) {
-      double ran = static_cast<double>((gen() % 100));
+      double ran = static_cast<double>((gen() % 10));
       ar[i][j] = ran + i + j;
     }
   }
@@ -27,7 +35,7 @@ double *answer(int size) {
   double *ar = 0;
   ar = new double[size];
   for (int j = 0; j < size; j++) {
-    double ran = static_cast<double>((gen() % 100));
+    double ran = static_cast<double>((gen() % 10));
     ar[j] = ran + 1;
   }
   return ar;
