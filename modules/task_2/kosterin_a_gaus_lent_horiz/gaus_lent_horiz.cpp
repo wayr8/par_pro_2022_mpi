@@ -1,6 +1,6 @@
 // Copyright 2022 Kosterin Alexey
-#include <cmath>
 #include <mpi.h>
+#include <cmath>
 
 #include "../../../modules/task_2/kosterin_a_gaus_lent_horiz/gaus_lent_horiz.h"
 
