@@ -1,4 +1,3 @@
-  
 #include <mpi.h>
 #include "min_value_in_matrix.h"
 
@@ -52,7 +51,6 @@ void par_min_value(int* matrix, int size, int process_num, int* min_values)
                 min_values[0] = matrix[i];
             }
         }
-        /////////////////////////////////////////////// ќбеспечить ожидание минимальных значений
         for (int i = 1; i < process_num; i++) {
             if (min_values[0] > min_values[i]) {
                 min_values[0] = min_values[i];
