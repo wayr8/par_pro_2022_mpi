@@ -2,6 +2,7 @@
 #ifndef MODULES_TASK_2_KHAIRETDINOV_T_SCATTER_SCATTER_H_
 #define MODULES_TASK_2_KHAIRETDINOV_T_SCATTER_SCATTER_H_
 
+#include <mpi.h>
 #include <string.h>
 #include <cmath>
 #include <iostream>
