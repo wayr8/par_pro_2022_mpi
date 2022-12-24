@@ -5,7 +5,7 @@
 #include<numeric>
 #include<iostream>
 #include<random>
-#include"../../../modules/task_2/Sasa_2Lab/Reduce.h"
+#include"../../../modules/task_2/bikova_a_reduce/Reduce.h"
 #define MAXSIZE 100
 int ProcRank, ProcSize;
 void DoWork(MPI_Op op, std::vector<int>* a, std::vector<int>* b) {
