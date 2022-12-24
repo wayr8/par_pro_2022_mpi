@@ -1,10 +1,10 @@
 // Copyright 2022 Khramov Egor
 
 #include <mpi.h>
-#include "../../../modules/task_2/khramov_e_contrast/contrast.h"
 #include <algorithm>
 #include <random>
 #include <vector>
+#include "../../../modules/task_2/khramov_e_contrast/contrast.h"
 
 void printVector(std::vector<int> vector) {
     for (int i = 0; i < vector.size(); i++) {
