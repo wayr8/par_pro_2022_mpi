@@ -8,7 +8,6 @@
 #include <cmath>
 #include <utility>
 
-
 //=============================================================================
 // Function : WorkSplitter::WorkSplitter
 // Purpose  : Constructor.
@@ -29,7 +28,6 @@ WorkSplitter::WorkSplitter(size_t work, size_t workerCount)
   }
 }
 
-
 //=============================================================================
 // Function : GetPartWork
 // Purpose  : Determining how much work a worker should do.
@@ -37,7 +35,6 @@ WorkSplitter::WorkSplitter(size_t work, size_t workerCount)
 size_t WorkSplitter::GetPartWork(size_t workerNumber) const {
   return m_workDistribution[workerNumber];
 }
-
 
 //=============================================================================
 // Function : GetPrevPartWork
@@ -52,20 +49,17 @@ size_t WorkSplitter::GetPrevPartWork(size_t workerNumber) const {
   return work;
 }
 
-
 //=============================================================================
 // Struct  : Sequential
 // Purpose : For sequential execution strategy
 //=============================================================================
 struct Sequential {};
 
-
 //=============================================================================
 // Struct  : Parallel
 // Purpose : For parallel execution strategy
 //=============================================================================
 struct Parallel {};
-
 
 namespace {
 //=============================================================================
@@ -74,9 +68,8 @@ namespace {
 //  M = max{1 <= i <= n}(abs((Z_{i}.end - Z_{i}.begin) / (Y_{i}.end -
 //  Y_{i}.begin))
 //=============================================================================
-template<class ExectionPolicy>
+template <class ExectionPolicy>
 double Calculate_M(Function&& f, const std::vector<Segment>& y);
-
 
 //=============================================================================
 // Function : Calculate_M
@@ -101,7 +94,6 @@ double Calculate_M<Sequential>(Function&& f, const std::vector<Segment>& y) {
   return M;
 }
 
-
 //=============================================================================
 // Function : Calculate_M
 // Purpose  : Calculate_M - parallel version
@@ -118,14 +110,14 @@ double Calculate_M<Parallel>(Function&& f, const std::vector<Segment>& y) {
 
   size_t workForThisProc = workSplitter.GetPartWork(rank);
   std::vector<Segment> localY;
-  
+
   if (rank == 0) {
     for (int procNum = 1; procNum < procCount; ++procNum) {
       size_t workForProc = workSplitter.GetPartWork(procNum);
       if (workForProc != 0) {
         size_t workForPrevProc = workSplitter.GetPrevPartWork(procNum);
-        MPI_Send(&y.at(workForPrevProc), workForProc * sizeof(Segment), MPI_CHAR, procNum, 0,
-                 MPI_COMM_WORLD);
+        MPI_Send(&y.at(workForPrevProc), workForProc * sizeof(Segment),
+                 MPI_CHAR, procNum, 0, MPI_COMM_WORLD);
       }
     }
 
@@ -145,10 +137,9 @@ double Calculate_M<Parallel>(Function&& f, const std::vector<Segment>& y) {
   MPI_Allreduce(&M, &result, 1, MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD);
   // after this call, the value "res" of the variable will be synchronized in
   // all processes, so calling "MPI_Bcast" is not required
-  
+
   return result;
 }
-
 
 //=============================================================================
 // Function : Calculate_m
@@ -163,7 +154,6 @@ double Calculate_m(const double M, const double r) {
   assert(r > 1);
   return (M == 0 ? 1 : r * M);
 }
-
 
 //=============================================================================
 // Function : CalculateIndexOfMaxR
@@ -190,7 +180,6 @@ std::pair<double, int> CalculateIndexOfMaxR<Sequential>(
   for (int i = 0; i < y.size(); ++i) {
     const double y_begin = y.at(i).begin;
     const double y_end = y.at(i).end;
-    Debug(i, " handle: ", y_begin, ' ', y_end, '\n');
 
     const double yDif = y_end - y_begin;
     const double zDif = f(y_end) - f(y_begin);
@@ -205,10 +194,9 @@ std::pair<double, int> CalculateIndexOfMaxR<Sequential>(
       maxIndex = i;
     }
   }
-  Debug("Handle result: ", maxR_Index.first, ' ', maxR_Index.second, "\n\n");
+
   return maxR_Index;
 }
-
 
 //=============================================================================
 // Function : CalculateIndexOfMaxR
@@ -251,15 +239,16 @@ std::pair<double, int> CalculateIndexOfMaxR<Parallel>(
 
   auto indexOfMaxR =
       CalculateIndexOfMaxR<Sequential>(std::forward<Function>(f), localY, m);
-  
+
   // the sequential version finds the index of the maximum R relative to the
   // beginning of the "localY", so we add an offset:
   indexOfMaxR.second += workSplitter.GetPrevPartWork(rank);
 
   std::pair<double, int> res;
 
-  // this function will find the maximum R ("indexOfMaxR.first") of all processes
-  // and write it, as well as its index ("indexOfMaxR.second"), to "res"
+  // this function will find the maximum R ("indexOfMaxR.first") of all
+  // processes and write it, as well as its index ("indexOfMaxR.second"), to
+  // "res"
   MPI_Allreduce(&indexOfMaxR, &res, 1, MPI_DOUBLE_INT, MPI_MAXLOC,
                 MPI_COMM_WORLD);
 
@@ -268,7 +257,6 @@ std::pair<double, int> CalculateIndexOfMaxR<Parallel>(
 
   return res;
 }
-
 
 //=============================================================================
 // Function : GetMin
@@ -283,13 +271,10 @@ double GetMin(Function&& f, double a, double b, double epsilon) {
 
   for (size_t iterationIndex = 0; iterationIndex < maxIterationCount;
        ++iterationIndex) {
-    Debug("________________\nIteration index: ", iterationIndex, "\n");
     double _M = Calculate_M<ExecutionPolicy>(std::forward<Function>(f), y);
     const double m = Calculate_m(_M, r);
     auto indexOfMaxR =
         CalculateIndexOfMaxR<ExecutionPolicy>(std::forward<Function>(f), y, m);
-    Debug("Current indexOfMaxR = ", indexOfMaxR.first, ' ', indexOfMaxR.second,
-          '\n');
     const auto& currentSegment = y.at(indexOfMaxR.second);
     const double y_begin = currentSegment.begin;
     const double y_end = currentSegment.end;
@@ -300,18 +285,12 @@ double GetMin(Function&& f, double a, double b, double epsilon) {
         y_begin + (y_end - y_begin) / 2 + (f(y_end) - f(y_begin)) / (2 * m);
     y.push_back(Segment{y_begin, yn});
     y.at(indexOfMaxR.second).begin = yn;
-    Debug("Segments: ");
-    for (const auto& segment : y) {
-      Debug(segment.begin, ' ', segment.end, "; ");
-    }
-    Debug("\n");
   }
 
   // calculation error
   return NAN;
 }
 }  // namespace
-
 
 //=============================================================================
 // Function : GetMinSequential
@@ -320,7 +299,6 @@ double GetMin(Function&& f, double a, double b, double epsilon) {
 double GetMinSequential(Function&& f, double a, double b, double epsilon) {
   return GetMin<Sequential>(std::forward<Function>(f), a, b, epsilon);
 }
-
 
 //=============================================================================
 // Function : GetMinParallel

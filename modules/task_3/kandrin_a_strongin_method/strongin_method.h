@@ -2,30 +2,13 @@
 #ifndef MODULES_TASK_3_KANDRIN_A_STRONGIN_METHOD_STRONGIN_METHOD_H_
 #define MODULES_TASK_3_KANDRIN_A_STRONGIN_METHOD_STRONGIN_METHOD_H_
 
-#include <vector>
 #include <mpi.h>
 
 #include <algorithm>
 #include <cassert>
 #include <cmath>
 #include <utility>
-
-
-
-#include <string>
-#include <fstream>
-#include <iostream>
-template <class... Args>
-static void Debug(Args... args) {
-  if (true) return;
-  int rank;
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-
-  std::ofstream out("output" + std::to_string(rank) + ".txt",
-                    std::ios_base::app);
-  int dummy[] = {(out << args, 0)...};
-}
-
+#include <vector>
 
 //=============================================================================
 // Class   : WorkSplitter
@@ -49,15 +32,14 @@ class WorkSplitter {
   // of work)
   size_t GetPartWork(size_t workerNumber) const;
 
-  // Determines how much work will be done by workers from 0 to workerNumber - 1.
-  // \param workerNumber you need to sum up all the work up to this number
+  // Determines how much work will be done by workers from 0 to workerNumber
+  // - 1. \param workerNumber you need to sum up all the work up to this number
   // \return What work will be done by workers [0..workerNumber - 1]
   size_t GetPrevPartWork(size_t workerNumber) const;
 };
 
 // The type of function that can be evaluated
 using Function = double (*)(double);
-
 
 //=============================================================================
 // Struct  : Segment
@@ -68,7 +50,6 @@ struct Segment {
   double begin;
   double end;
 };
-
 
 // Get minimum of function f in [a; b] (sequential version)
 double GetMinSequential(Function&& f, double a, double b, double epsilon);
