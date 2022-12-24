@@ -8,7 +8,6 @@ std::random_device dev;
 std::mt19937 gen(dev());
 std::uniform_real_distribution<> dist(0, 1);
 double **arr(int size) {
-  printf("%f\n", dist(gen));
   double **ar = 0;
   ar = new double *[size];
   for (int i = 0; i < size; i++) {
