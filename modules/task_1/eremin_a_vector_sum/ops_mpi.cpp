@@ -2,8 +2,6 @@
 #include <mpi.h>
 #include <math.h>
 #include <iostream>
-#include <vector>
-#include <string>
 #include <random>
 #include <algorithm>
 #include "../../../modules/test_tasks/test_mpi/ops_mpi.h"
@@ -44,7 +42,7 @@ int sumParallel(std::vector<int> Vector, int size) {
     std::vector<int> local_vec(delta);
     if (ProcRank == 0) {
         local_vec = std::vector<int>(Vector.begin(), Vector.begin() + delta);
-        for (int i = 1; i < tmp; i++) {
+        for (size_t i = 1; i < tmp; i++) {
             MPI_Send(Vector.data() + i * delta, delta, MPI_INT, i, 0, MPI_COMM_WORLD);
         }
     } else if (ProcRank < size) {
@@ -53,7 +51,7 @@ int sumParallel(std::vector<int> Vector, int size) {
     }
     if (ProcRank == 0) {
         if (size % tmp > 0) {
-            int j = 0;
+            size_t j = 0;
             local_vec.resize(local_vec.size() + size % ProcNum);
             for (int i = (size - size % ProcNum); i < size; i++) {
                 local_vec[j + delta] = Vector[i];
