@@ -3,7 +3,6 @@
 #include <cmath>
 #include "../../../modules/task_2/kosterin_a_gaus_lent_horiz/gaus_lent_horiz.h"
 
-
 double Gaus(double **a, double *b, int size) {
   double d, s;
   int sizeProc, rank;
@@ -24,11 +23,11 @@ double Gaus(double **a, double *b, int size) {
   double *x = new double[size];
   for (int k = 0; k < size; k++) {
     if (rank == 0) {
-      if(a[k][k]==0){
+      if (a[k][k] == 0) {
         for (int i = k; i < size; i++) {
           if (abs(a[i][k]) > max) {
             index = i;
-            max=abs(a[i][k]);
+            max = abs(a[i][k]);
           }
         }
         for (int i = 0; i < size; i++) {
