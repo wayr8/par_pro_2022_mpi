@@ -1,4 +1,4 @@
-// Copyright 2022 Khairetdinov Timur
+// Copyright  2022 Khairetdinov Timur
 #ifndef MODULES_TASK_1_KHAIRETDINOV_T_VECTOR_MID_VALUE_VECTOR_MID_VALUE_H_
 #define MODULES_TASK_1_KHAIRETDINOV_T_VECTOR_MID_VALUE_VECTOR_MID_VALUE_H_
 #include <vector>

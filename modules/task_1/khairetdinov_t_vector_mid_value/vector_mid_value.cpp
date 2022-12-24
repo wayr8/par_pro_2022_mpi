@@ -23,7 +23,6 @@ double midValueOfVectorParallel(const std::vector <int> vector, int vector_size)
   double local_sum = 0.0;
   int comm_size, rank;
   MPI_Status status;
-
   MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 

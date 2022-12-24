@@ -50,7 +50,6 @@ TEST(Mid_Value_Vector_MPI, Test_Random_Vector_With_30_Elements) {
   std::vector <int> global_vector;
 
   const int vector_size = 30;
-
   if (rank == 0) {
     global_vector = getRandomVector(vector_size);
   }
