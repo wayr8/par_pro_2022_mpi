@@ -1,9 +1,9 @@
 // Copyright 2022 Khairetdinov Timur
-#include <gtest-mpi-listener.hpp>
 #include <gtest/gtest.h>
 #include <vector>
 #include <iostream>
 #include "../../../modules/task_1/khairetdinov_t_vector_mid_value/vector_mid_value.h"
+#include <gtest-mpi-listener.hpp>
 
 TEST(Mid_Value_Vector_MPI, Test_Random_Vector_Whith_2_Elements) {
   int rank;
