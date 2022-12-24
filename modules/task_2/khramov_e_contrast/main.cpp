@@ -9,15 +9,15 @@
 TEST(Test_contrast, Test_0) {
     int size, rank;
 
-    auto matrix = getRandomMatrix(10, 5);
+    auto matrix = getRandomMatrix(3, 2);
 
     auto result = getContrastedMatrixSequential(matrix);
 
     std::cout << "First matrix: " << std::endl;
-    printMatrix(matrix);
+    printVector(matrix);
 
     std::cout << "Result matrix: " << std::endl;
-    printMatrix(result);
+    printVector(result);
 
     ASSERT_EQ(1, 1);
 }

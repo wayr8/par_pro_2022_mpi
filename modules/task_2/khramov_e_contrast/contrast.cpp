@@ -12,11 +12,6 @@ void printVector(std::vector<int> vector) {
     std::cout << std::endl;
 }
 
-void printMatrix(std::vector<std::vector<int>> matrix) {
-    for (int i = 0; i < matrix.size(); i++) {
-        printVector(matrix[i]);
-    }
-}
 
 std::vector<int> getRandomVector(int size) {
     std::random_device dev;
@@ -28,14 +23,8 @@ std::vector<int> getRandomVector(int size) {
     return vec;
 }
 
-std::vector<std::vector<int>> getRandomMatrix(int w, int h) {
-    std::vector<std::vector<int>> matrix(h);
-
-    for (int i = 0; i < h; i++) {
-        matrix[i] = getRandomVector(w);
-    }
-
-    return matrix;
+std::vector<int> getRandomMatrix(int w, int h) {
+    return getRandomVector(w * h);
 }
 
 float getContrastCoeff(int contrast) {
@@ -50,21 +39,18 @@ int truncate(size_t value) {
 }
 
 
-std::vector<std::vector<int>> getContrastedMatrixSequential(std::vector<std::vector<int>> matrix) {
+std::vector<int> getContrastedMatrixSequential(std::vector<int> matrix) {
 
-    int h = matrix.size();
-    int w = matrix[0].size();
+    int length = matrix.size();
 
-    std::vector<std::vector<int>> result(h, std::vector<int>(w, 0));
+    std::vector<int> result(length);
 
     float coeff = getContrastCoeff(10);
 
-    for (int i = 0; i < h; i++) {
-        for (int j = 0; j < w; j++) {
-            int color = matrix[i][j];
-            int newColor = truncate((int)(coeff * (color - 128) + 128));
-            result[i][j] = newColor;
-        }
+    for (int i = 0; i < length; i++) {
+        int color = matrix[i];
+        int newColor = truncate((int)(coeff * (color - 128) + 128));
+        result[i] = newColor;
     }
 
     return result;
