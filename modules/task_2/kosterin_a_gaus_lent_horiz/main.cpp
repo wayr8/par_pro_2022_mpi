@@ -18,7 +18,7 @@ double **arr(int size) {
       ar[i][j] = ran + 1;
     }
   }
-  for (int i = 0; i < size; i++){
+  for (int i = 0; i < size; i++) {
     ar[i][i] = ar[i][i] * 2;
   }
   return ar;
