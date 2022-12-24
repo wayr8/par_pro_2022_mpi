@@ -45,7 +45,7 @@ double Calculate_m(Function&& f, const std::vector<Segment>& y, const double r) 
 // Z_{i} = f(Y_{i})
 int CalculateIndexOfMaxR(Function&& f, const std::vector<Segment>& y,
                          const double m) {
-  std::pair<double, int> maxR_Index(-1, -1);
+  std::pair<double, int> maxR_Index(-DBL_MAX, -1);
 
   for (int i = 0; i < y.size(); ++i) {
     const double y_begin = y.at(i).begin;

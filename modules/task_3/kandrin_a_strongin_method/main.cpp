@@ -7,9 +7,11 @@
 
 #include "./strongin_method.h"
 
+double function(double x) { return sqrt(1 + 3 * cos(x)*cos(x)) + cos(10 * x); }
+
 TEST(Parallel_Operations_MPI, Test_1) {
-  auto min = GetMin(std::cos, M_PI / 2, M_PI * 3 / 2, 0.01);
-  ASSERT_NEAR(min, -1, 0.01);
+  auto min = GetMin(function, 1, 50, 0.01);
+  ASSERT_NEAR(min, 0, 0.01);
 }
 
 int main(int argc, char** argv) {
