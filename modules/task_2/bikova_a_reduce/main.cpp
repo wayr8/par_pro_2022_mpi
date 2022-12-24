@@ -1,7 +1,7 @@
 // Copyright 2022 Alexandra Bikova
 #include<gtest/gtest.h>
 #include <iostream>
-#include"../../../modules/task_2/Sasa_2Lab/Reduce.h"
+#include"../../../modules/task_2/bikova_a_reduce/Reduce.h"
 #include<gtest-mpi-listener.hpp>
 extern int ProcRank;
 extern int ProcSize;
