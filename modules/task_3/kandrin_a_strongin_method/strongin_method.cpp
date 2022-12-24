@@ -13,14 +13,14 @@ struct Segment {
   double begin;
   double end;
 };
-}
 
 // calculate the "m" estimate of the Lipschitz constant:
-// M = max{1 <= i <= n}(abs((Z_{i}.end - Z_{i}.begin) / (Y_{i}.end - Y_{i}.begin))
-// m = {1 if M = 0, r*M if M > 0}, where r > 1 - parameter,
+// M = max{1 <= i <= n}(abs((Z_{i}.end - Z_{i}.begin) / (Y_{i}.end -
+// Y_{i}.begin)) m = {1 if M = 0, r*M if M > 0}, where r > 1 - parameter,
 // Z_{i}.begin = f(Y_{i}.begin)
 // Z_{i}.end = f(Y_{i}.end)
-double Calculate_m(Function&& f, const std::vector<Segment>& y, const double r) {
+double Calculate_m(Function&& f, const std::vector<Segment>& y,
+                   const double r) {
   assert(r > 1);
 
   double M = 0;
@@ -67,18 +67,20 @@ int CalculateIndexOfMaxR(Function&& f, const std::vector<Segment>& y,
 
   return maxR_Index.second;
 }
+}  // namespace
 
 // Get minimum of function f in [a; b]
-double GetMin(Function&& f, double a, double b, double epsilon) {
+double GetMinSequential(Function&& f, double a, double b, double epsilon) {
   std::vector<Segment> y = {Segment{a, b}};
 
   const double r = 2.0;
+  const size_t maxIterationCount = 100000;
 
-  while (true) {
-
+  for (size_t iterationIndex = 0; iterationIndex < maxIterationCount;
+       ++iterationIndex) {
     const double m = Calculate_m(std::forward<Function>(f), y, r);
-    int i = CalculateIndexOfMaxR(std::forward<Function>(f), y, m);
-    const auto& currentSegment = y.at(i);
+    int indexOfMaxR = CalculateIndexOfMaxR(std::forward<Function>(f), y, m);
+    const auto& currentSegment = y.at(indexOfMaxR);
     const double y_begin = currentSegment.begin;
     const double y_end = currentSegment.end;
     if (y_end - y_begin < epsilon) {
@@ -87,6 +89,8 @@ double GetMin(Function&& f, double a, double b, double epsilon) {
     double yn =
         y_begin + (y_end - y_begin) / 2 + (f(y_end) - f(y_begin)) / (2 * m);
     y.push_back(Segment{y_begin, yn});
-    y.at(i).begin = yn;
+    y.at(indexOfMaxR).begin = yn;
   }
+
+  return NAN;  // calculation error
 }
