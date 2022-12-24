@@ -57,12 +57,12 @@ dvec batcher_merge(dvec first, dvec second) {
 }
 
 dvec seq_batcher_merges(std::vector<dvec> vecs) {
-    auto it = vecs.begin();
+    int i = 0;
     while (vecs.size() > 1) {
-        if (it + 1 == vecs.end()) it = vecs.begin();
-        *it = batcher_merge(*it, *(it + 1));
-        vecs.erase(it + 1);
-        if (it + 1 != vecs.end()) it++;
+        if (i + 1 == vecs.size()) i = 0;
+        vecs[i] = batcher_merge(vecs[i], vecs[i + 1]);
+        vecs.erase(vecs.begin() + i + 1);
+        if (i + 1 != vecs.size()) i++;
     }
     return vecs[0];
 }
