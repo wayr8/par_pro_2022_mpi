@@ -33,6 +33,22 @@ TEST(Test_contrast, Test_100x50) {
     testWithSize(100, 50);
 }
 
+TEST(Test_contrast, Test_512x512) {
+    testWithSize(512, 512);
+}
+
+TEST(Test_contrast, Test_278x451) {
+    testWithSize(278, 451);
+}
+
+TEST(Test_contrast, Test_567x129) {
+    testWithSize(567, 129);
+}
+
+TEST(Test_contrast, Test_2560x1920) {
+    testWithSize(2560, 1920);
+}
+
 
 
 
