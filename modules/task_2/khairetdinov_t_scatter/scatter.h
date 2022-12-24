@@ -1,6 +1,6 @@
 // Copyright 2022 Khairetdinov Timur
-#ifndef MODULES_TASK_2_KHAIRETDINOV_T_SCATTER_H_
-#define MODULES_TASK_2_KHAIRETDINOV_T_SCATTER_H_
+#ifndef MODULES_TASK_2_KHAIRETDINOV_T_SCATTER_SCATTER_H_
+#define MODULES_TASK_2_KHAIRETDINOV_T_SCATTER_SCATTER_H_
 
 #include <string.h>
 #include <cmath>
@@ -15,4 +15,4 @@ int FasterScatter(void* send_data, int send_count, MPI_Datatype send_datatype, v
 int MyTest(std::vector<int> mas, std::function<int(void* , int , MPI_Datatype , void* ,
   int , MPI_Datatype , int , MPI_Comm)> func);
 
-#endif  // MODULES_TASK_2_KHAIRETDINOV_T_SCATTER_H_
+#endif  // MODULES_TASK_2_KHAIRETDINOV_T_SCATTER_SCATTER_H_
