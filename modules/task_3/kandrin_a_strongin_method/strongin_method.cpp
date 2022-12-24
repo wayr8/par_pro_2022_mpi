@@ -8,11 +8,42 @@
 #include <cmath>
 #include <utility>
 
-namespace {
-struct Segment {
-  double begin;
-  double end;
-};
+
+//=============================================================================
+// Function : WorkSplitter::WorkSplitter
+// Purpose  : Constructor.
+//=============================================================================
+WorkSplitter::WorkSplitter(size_t work, size_t workerCount)
+    : m_workDistribution(workerCount, 0) {
+  if (work <= workerCount) {
+    for (size_t currentWorker = 0; currentWorker < work; ++currentWorker) {
+      m_workDistribution[currentWorker] = 1;
+    }
+  } else {
+    for (size_t currentWorker = 0; work != 0; ++currentWorker) {
+      size_t workForCurrentWorker = work / workerCount;
+      m_workDistribution[currentWorker] = work / workerCount;
+      work -= workForCurrentWorker;
+      workerCount -= 1;
+    }
+  }
+}
+
+//=============================================================================
+// Function : GetPartWork
+// Purpose  : Determining how much work a worker should do.
+//=============================================================================
+size_t WorkSplitter::GetPartWork(size_t workerNumber) const {
+  return m_workDistribution[workerNumber];
+}
+
+size_t WorkSplitter::GetPrevPartWork(size_t workerNumber) const {
+  size_t work = 0;
+  for (size_t i = 0; i < workerNumber; ++i) {
+    work += m_workDistribution.at(i);
+  }
+  return work;
+}
 
 // calculate the "m" estimate of the Lipschitz constant:
 // M = max{1 <= i <= n}(abs((Z_{i}.end - Z_{i}.begin) / (Y_{i}.end -
@@ -39,17 +70,18 @@ double Calculate_m(Function&& f, const std::vector<Segment>& y,
   return (M == 0 ? 1 : r * M);
 }
 
-// Calculate all of characteristic "R".
-// R(i) = m(Y_{i} - Y_{i - 1}) + sqr(Z_{i} - Z_{i - 1}) / m(Y_{i} - Y{i - 1}) -
-// 2(Z_{i} + Z_{i-1}), where m = Calculate_M(...) (see above),
-// Z_{i} = f(Y_{i})
-int CalculateIndexOfMaxR(Function&& f, const std::vector<Segment>& y,
-                         const double m) {
+
+// sequential version
+template <>
+std::pair<double, int> CalculateIndexOfMaxR<true>(Function&& f,
+                                                  const std::vector<Segment>& y,
+                                                  const double m) {
   std::pair<double, int> maxR_Index(-DBL_MAX, -1);
 
   for (int i = 0; i < y.size(); ++i) {
     const double y_begin = y.at(i).begin;
     const double y_end = y.at(i).end;
+    Debug(i, " handle: ", y_begin, ' ', y_end, '\n');
 
     const double yDif = y_end - y_begin;
     const double zDif = f(y_end) - f(y_begin);
@@ -64,33 +96,95 @@ int CalculateIndexOfMaxR(Function&& f, const std::vector<Segment>& y,
       maxIndex = i;
     }
   }
-
-  return maxR_Index.second;
+  Debug("Handle result: ", maxR_Index.first, ' ', maxR_Index.second, "\n\n");
+  return maxR_Index;
 }
-}  // namespace
 
-// Get minimum of function f in [a; b]
-double GetMinSequential(Function&& f, double a, double b, double epsilon) {
-  std::vector<Segment> y = {Segment{a, b}};
+// parallel version
+template <>
+std::pair<double, int> CalculateIndexOfMaxR<false>(
+    Function&& f, const std::vector<Segment>& y, const double m) {
+  std::pair<double, int> maxR_Index(-DBL_MAX, -1);
 
-  const double r = 2.0;
-  const size_t maxIterationCount = 100000;
+  int procCount;
+  MPI_Comm_size(MPI_COMM_WORLD, &procCount);
 
-  for (size_t iterationIndex = 0; iterationIndex < maxIterationCount;
-       ++iterationIndex) {
-    const double m = Calculate_m(std::forward<Function>(f), y, r);
-    int indexOfMaxR = CalculateIndexOfMaxR(std::forward<Function>(f), y, m);
-    const auto& currentSegment = y.at(indexOfMaxR);
-    const double y_begin = currentSegment.begin;
-    const double y_end = currentSegment.end;
-    if (y_end - y_begin < epsilon) {
-      return f(y_end);
+  int rank;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+  WorkSplitter workSplitter(y.size(), procCount);
+  /*if (rank == 0) {
+    for (size_t i = 0; i < procCount; ++i) {
+      Debug("For proc ", i, " workCount = ", workSplitter.GetPartWork(i), "\n");
     }
-    double yn =
-        y_begin + (y_end - y_begin) / 2 + (f(y_end) - f(y_begin)) / (2 * m);
-    y.push_back(Segment{y_begin, yn});
-    y.at(indexOfMaxR).begin = yn;
+  }*/
+
+  size_t workForThisProc = workSplitter.GetPartWork(rank);
+  std::vector<Segment> localY;
+
+  if (rank == 0) {
+    size_t distributedWork = workForThisProc;
+
+    for (int procNum = 1; procNum < procCount; ++procNum) {
+      size_t workForProc = workSplitter.GetPartWork(procNum);
+      if (workForProc != 0) {
+        MPI_Send(&y.at(distributedWork), workForProc * sizeof(Segment), MPI_CHAR,
+                 procNum,
+                 0, MPI_COMM_WORLD);
+      }
+
+      distributedWork += workForProc;
+    }
+
+    localY = std::vector<Segment>(y.begin(), y.begin() + workForThisProc);
+  } else {
+    if (workForThisProc != 0) {
+      localY = std::vector<Segment>(workForThisProc);
+      MPI_Recv(localY.data(), workForThisProc * sizeof(Segment), MPI_CHAR, 0,
+               0,
+               MPI_COMM_WORLD, MPI_STATUSES_IGNORE);
+    }
   }
 
-  return NAN;  // calculation error
+  auto indexOfMaxR =
+      CalculateIndexOfMaxR<true>(std::forward<Function>(f), localY, m);
+
+  Debug(indexOfMaxR.first, ' ', indexOfMaxR.second, '\n');
+
+  if (rank == 0) {
+    std::vector<std::pair<double, int>> results(procCount, std::pair<double, int>(-DBL_MAX, -1));
+    results.at(0) = indexOfMaxR;
+
+    for (int procNum = 1; procNum < procCount; ++procNum) {
+      if (workSplitter.GetPartWork(procNum) != 0) {
+        MPI_Recv(&results.at(procNum), sizeof(indexOfMaxR), MPI_CHAR, procNum,
+                 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+      }
+    }
+
+    Debug("pairs:\n");
+    for (const auto& pair : results) {
+      Debug(pair.first, ' ', pair.second, '\n');
+    }
+
+    auto iter = std::max_element(
+        results.begin(), results.end(),
+        [](const std::pair<double, int>& a, const std::pair<double, int>& b) {
+          return a.first < b.first;
+        });
+    size_t indexOfMaxElement = iter - results.begin();
+    results.at(indexOfMaxElement).second +=
+        workSplitter.GetPrevPartWork(indexOfMaxElement);
+    
+    Debug("Max pair = ", iter->first, ' ', iter->second, '\n');
+    return *iter;
+
+  } else {
+    if (workForThisProc != 0) {
+      MPI_Send(&indexOfMaxR, sizeof(indexOfMaxR), MPI_CHAR, 0, 0,
+               MPI_COMM_WORLD);
+    }
+  }
+
+  return {};
 }
