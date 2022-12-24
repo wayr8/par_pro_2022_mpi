@@ -1,7 +1,7 @@
 // Copyright 2022 Kosterin Alexey
-#include <mpi.h>
-#include <cmath>
 #include "../../../modules/task_2/kosterin_a_gaus_lent_horiz/gaus_lent_horiz.h"
+#include <cmath>
+#include <mpi.h>
 
 double Gaus(double **a, double *b, int size) {
   double d, s;
@@ -51,6 +51,7 @@ double Gaus(double **a, double *b, int size) {
     if (ibeg == k)
       ibeg++;
     for (int j = ibeg; j < iend; j++) {
+      if(a[j][k]==0){continue;}
       d = a[j][k] / a[k][k];
       for (int i = k; i < size; i++) {
         a[j][i] = a[j][i] - d * a[k][i];
