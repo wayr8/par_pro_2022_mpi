@@ -11,7 +11,11 @@ TEST(sobel_operator, test_little_square_image) {
 
     int height = 2;
     int width = 2;
-    std::vector<std::vector<int>> img = generateRandomImage(height, width);
+    std::vector<std::vector<int>> img(height, std::vector<int>(width));
+
+    if (rank == 0) {
+        img = generateRandomImage(height, width);
+    }
 
     std::vector<std::vector<int>>  global_res = calcSobelParallel(img, height, width);
 
@@ -27,7 +31,11 @@ TEST(sobel_operator, test_little_not_square_image1) {
 
     int height = 3;
     int width = 1;
-    std::vector<std::vector<int>> img = generateRandomImage(height, width);
+    std::vector<std::vector<int>> img(height, std::vector<int>(width));
+
+    if (rank == 0) {
+        img = generateRandomImage(height, width);
+    }
 
     std::vector<std::vector<int>>  global_res = calcSobelParallel(img, height, width);
 
@@ -43,7 +51,11 @@ TEST(sobel_operator, test_little_not_square_image2) {
 
     int height = 1;
     int width = 3;
-    std::vector<std::vector<int>> img = generateRandomImage(height, width);
+    std::vector<std::vector<int>> img(height, std::vector<int>(width));
+
+    if (rank == 0) {
+        img = generateRandomImage(height, width);
+    }
 
     std::vector<std::vector<int>>  global_res = calcSobelParallel(img, height, width);
 
@@ -57,9 +69,13 @@ TEST(sobel_operator, test_large_square_image) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    int height = 30;
-    int width = 30;
-    std::vector<std::vector<int>> img = generateRandomImage(height, width);
+    int height = 20;
+    int width = 20;
+    std::vector<std::vector<int>> img(height, std::vector<int>(width));
+
+    if (rank == 0) {
+        img = generateRandomImage(height, width);
+    }
 
     std::vector<std::vector<int>>  global_res = calcSobelParallel(img, height, width);
 
@@ -73,9 +89,13 @@ TEST(sobel_operator, test_large_not_square_image1) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    int height = 20;
-    int width = 40;
-    std::vector<std::vector<int>> img = generateRandomImage(height, width);
+    int height = 15;
+    int width = 25;
+    std::vector<std::vector<int>> img(height, std::vector<int>(width));
+
+    if (rank == 0) {
+        img = generateRandomImage(height, width);
+    }
 
     std::vector<std::vector<int>>  global_res = calcSobelParallel(img, height, width);
 
@@ -89,9 +109,13 @@ TEST(sobel_operator, test_large_not_square_image2) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    int height = 40;
-    int width = 20;
-    std::vector<std::vector<int>> img = generateRandomImage(height, width);
+    int height = 25;
+    int width = 15;
+    std::vector<std::vector<int>> img(height, std::vector<int>(width));
+
+    if (rank == 0) {
+        img = generateRandomImage(height, width);
+    }
 
     std::vector<std::vector<int>>  global_res = calcSobelParallel(img, height, width);
 

@@ -75,8 +75,6 @@ std::vector<std::vector<int>> calcSobel(const std::vector<std::vector<int>>& ima
 }
 
 std::vector<std::vector<int>> calcSobelParallel(const std::vector<std::vector<int>>& image, int height, int width) {
-    int kernelX[3][3] = { {-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1}};
-    int kernelY[3][3] = { {-1, -2, -1}, {0, 0, 0}, {1, 2, 1}};
     int proc_num, rank;
 
     MPI_Comm_size(MPI_COMM_WORLD, &proc_num);
@@ -88,13 +86,14 @@ std::vector<std::vector<int>> calcSobelParallel(const std::vector<std::vector<in
     std::vector<int> recvcounts(proc_num);
     std::vector<int> displs(proc_num);
     std::vector<int> vecImage(height * width);
+
     if (rank == 0) {
         vecImage = matrixToVector(image, height, width);
         for (int proc = 1; proc < proc_num; proc++) {
             MPI_Send(vecImage.data() + (proc - 1) * shift * width, shift * width, MPI_INT, proc, 0, MPI_COMM_WORLD);
         }
     }
-
+    MPI_Bcast(vecImage.data(), width* height, MPI_INT, 0, MPI_COMM_WORLD);
     std::vector<int> localRes(shift * width);
 
     if (rank == 0) {
@@ -104,7 +103,6 @@ std::vector<std::vector<int>> calcSobelParallel(const std::vector<std::vector<in
         MPI_Status status;
         MPI_Recv(localRes.data(), shift * width, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
     }
-
     int row;
     if (rank == 0) {
         row = (proc_num - 1) * shift;
@@ -121,10 +119,10 @@ std::vector<std::vector<int>> calcSobelParallel(const std::vector<std::vector<in
     } else {
         row = (rank - 1) * shift;
     }
-
     for (int i = 0; i < (localRes.size() / width); i++) {
         for (int j = 0; j < width; j++) {
-            localRes[i * width + j] = calcNewPixelColor(image, height, width, row + i, j);
+            localRes[i * width + j] = calcNewPixelColor(vectorToMatrix(vecImage, height, width)
+                , height, width, row + i, j);
         }
     }
     std::vector<int> global_res(width * height);
