@@ -49,7 +49,7 @@ TEST(Parallel_Operations_MPI, Test_4x4) {
   delete[] array;
   delete[] ans;
   if (rank == 0) {
-    EXPECT_NEAR(res,answer,err);
+    EXPECT_NEAR(res, answer, err);
   }
 }
 
@@ -69,7 +69,7 @@ TEST(Parallel_Operations_MPI, Test_10x10) {
   delete[] array;
   delete[] ans;
   if (rank == 0) {
-    EXPECT_NEAR(res,answer,err);
+    EXPECT_NEAR(res, answer, err);
   }
 }
 
@@ -89,7 +89,7 @@ TEST(Parallel_Operations_MPI, Test_20x20) {
   delete[] array;
   delete[] ans;
   if (rank == 0) {
-    EXPECT_NEAR(res,answer,err);
+    EXPECT_NEAR(res, answer, err);
   }
 }
 TEST(Parallel_Operations_MPI, Test_50x50) {
@@ -108,7 +108,7 @@ TEST(Parallel_Operations_MPI, Test_50x50) {
   delete[] array;
   delete[] ans;
   if (rank == 0) {
-    EXPECT_NEAR(res,answer,err);
+    EXPECT_NEAR(res, answer, err);
   }
 }
 
@@ -128,7 +128,7 @@ TEST(Parallel_Operations_MPI, Test_100x100) {
   delete[] array;
   delete[] ans;
   if (rank == 0) {
-    EXPECT_NEAR(res,answer,err);
+    EXPECT_NEAR(res, answer, err);
   }
 }
 
