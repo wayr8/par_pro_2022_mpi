@@ -56,7 +56,6 @@ double midValueOfVectorParallel(const std::vector <int> vector, int vector_size)
   return global_sum / static_cast<double>(vector_size);
 }
 
-
 double sumOfVectorSequential(const std::vector<int> vector) {
   double sum = 0;
   int size = vector.size();
