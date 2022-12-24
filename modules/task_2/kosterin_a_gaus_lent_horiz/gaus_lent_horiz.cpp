@@ -1,5 +1,6 @@
 // Copyright 2022 Kosterin Alexey
 #include <mpi.h>
+#include <cmath>
 #include "../../../modules/task_2/kosterin_a_gaus_lent_horiz/gaus_lent_horiz.h"
 
 
@@ -13,31 +14,35 @@ double Gaus(double **a, double *b, int size) {
   int beg = ibeg;
   int iend = (rank + 1) * delta;
   int ost = size % sizeProc;
-  double temp = 0;
+  double temp = 0, max = 0;
   int index = 0;
   for (int i = 0; i < size; i++) {
     MPI_Bcast((a[i]), size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    MPI_Bcast((b), size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   }
+  MPI_Bcast((b), size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
   double *x = new double[size];
   for (int k = 0; k < size; k++) {
     if (rank == 0) {
-      if (a[k][k] == 0) {
+      if(a[k][k]==0){
         for (int i = k; i < size; i++) {
-          if (a[k][i] != 0) {
+          if (abs(a[i][k]) > max) {
             index = i;
-            break;
+            max=abs(a[i][k]);
           }
         }
         for (int i = 0; i < size; i++) {
-          temp = a[i][k];
-          a[i][k] = a[i][index];
-          a[i][index] = temp;
+          temp = a[k][i];
+          a[k][i] = a[index][i];
+          a[index][i] = temp;
         }
+        temp = b[k];
+        b[k] = b[index];
+        b[index] = temp;
         for (int i = 0; i < size; i++) {
           MPI_Bcast((a[i]), size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-          MPI_Bcast((b), size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
         }
+        MPI_Bcast((b), size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
       }
     }
 
