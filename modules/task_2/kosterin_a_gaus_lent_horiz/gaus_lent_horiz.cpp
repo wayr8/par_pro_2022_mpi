@@ -16,10 +16,6 @@ double Gaus(double **a, double *b, int size) {
   int ost = size % sizeProc;
   double temp = 0, max = 0;
   int index = 0;
-  for (int i = 0; i < size; i++) {
-    MPI_Bcast((a[i]), size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-  }
-  MPI_Bcast((b), size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   double *x = new double[size];
   for (int k = 0; k < size; k++) {

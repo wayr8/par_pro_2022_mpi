@@ -5,6 +5,7 @@
 #include "./gaus_lent_horiz.h"
 #include <gtest-mpi-listener.hpp>
 
+
 std::random_device dev;
 std::mt19937 gen(dev());
 std::uniform_real_distribution<> dist(0, 1);
@@ -32,6 +33,26 @@ double *answer(int size) {
   return ar;
 }
 
+TEST(Parallel_Operations_MPI, Test_3x3) {
+  bool flag = false;
+  double err = 0.1;
+  int rank;
+  int size = 3;
+  double **array = arr(size);
+  double *ans = answer(size);
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  double res = Gaus(array, ans, size);
+  int answer = ans[0];
+  for (int i = 0; i < size; i++) {
+    delete[] array[i];
+  }
+  delete[] array;
+  delete[] ans;
+  if (rank == 0) {
+    EXPECT_NEAR(res, answer, err);
+  }
+}
+
 TEST(Parallel_Operations_MPI, Test_4x4) {
   bool flag = false;
   double err = 0.1;
@@ -52,6 +73,25 @@ TEST(Parallel_Operations_MPI, Test_4x4) {
   }
 }
 
+TEST(Parallel_Operations_MPI, Test_5x5) {
+  bool flag = false;
+  double err = 0.1;
+  int rank;
+  int size = 5;
+  double **array = arr(size);
+  double *ans = answer(size);
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  double res = Gaus(array, ans, size);
+  int answer = ans[0];
+  for (int i = 0; i < size; i++) {
+    delete[] array[i];
+  }
+  delete[] array;
+  delete[] ans;
+  if (rank == 0) {
+    EXPECT_NEAR(res, answer, err);
+  }
+}
 TEST(Parallel_Operations_MPI, Test_10x10) {
   bool flag = false;
   double err = 0.1;
@@ -72,50 +112,11 @@ TEST(Parallel_Operations_MPI, Test_10x10) {
   }
 }
 
-TEST(Parallel_Operations_MPI, Test_20x20) {
+TEST(Parallel_Operations_MPI, Test_15x15) {
   bool flag = false;
   double err = 0.1;
   int rank;
-  int size = 20;
-  double **array = arr(size);
-  double *ans = answer(size);
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  double res = Gaus(array, ans, size);
-  int answer = ans[0];
-  for (int i = 0; i < size; i++) {
-    delete[] array[i];
-  }
-  delete[] array;
-  delete[] ans;
-  if (rank == 0) {
-    EXPECT_NEAR(res, answer, err);
-  }
-}
-TEST(Parallel_Operations_MPI, Test_50x50) {
-  bool flag = false;
-  double err = 0.1;
-  int rank;
-  int size = 50;
-  double **array = arr(size);
-  double *ans = answer(size);
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  double res = Gaus(array, ans, size);
-  int answer = ans[0];
-  for (int i = 0; i < size; i++) {
-    delete[] array[i];
-  }
-  delete[] array;
-  delete[] ans;
-  if (rank == 0) {
-    EXPECT_NEAR(res, answer, err);
-  }
-}
-
-TEST(Parallel_Operations_MPI, Test_100x100) {
-  bool flag = false;
-  double err = 0.1;
-  int rank;
-  int size = 100;
+  int size = 15;
   double **array = arr(size);
   double *ans = answer(size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
