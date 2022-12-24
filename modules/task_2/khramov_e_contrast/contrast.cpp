@@ -1,7 +1,7 @@
 // Copyright 2022 Khramov Egor
 
-#include <iostream>
 #include <mpi.h>
+#include <iostream>
 #include <algorithm>
 #include <random>
 #include <vector>

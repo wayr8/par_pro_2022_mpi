@@ -1,9 +1,7 @@
 // Copyright 2022 Khramov Egor
-#include <iostream>
 #include <gtest/gtest.h>
-#include <stdio.h>
 #include <vector>
-#include "../../../modules/task_2/khramov_e_contrast/contrast.h"
+#include "./contrast.h"
 #include <gtest-mpi-listener.hpp>
 
 void testWithSize(int w, int h) {
