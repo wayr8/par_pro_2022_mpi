@@ -1,7 +1,7 @@
 // Copyright 2022 Khramov Egor
 
 #include <mpi.h>
-
+#include "../../../modules/task_2/khramov_e_contrast/contrast.h"
 #include <algorithm>
 #include <random>
 #include <vector>
@@ -54,7 +54,7 @@ std::vector<int> getContrastedMatrixSequential(std::vector<int> matrix) {
 
     for (int i = 0; i < length; i++) {
         int color = matrix[i];
-        int newColor = truncate((int)(coeff * (color - 128) + 128));
+        int newColor = truncate(static_cast<int>(coeff * (color - 128) + 128));
         result[i] = newColor;
     }
 

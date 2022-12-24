@@ -16,7 +16,9 @@ float getContrastCoeff(int contrast);
 
 int truncate(size_t value);
 
-std::vector<int> getSendCount(int matrixSize, int commSize);
+int* getSendCount(int matrixSize, int commSize);
+
+int* getDispls(int matrixSize, int commSize);
 
 std::vector<int> getContrastedMatrixSequential(std::vector<int> matrix);
 
