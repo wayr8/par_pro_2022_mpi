@@ -1,7 +1,8 @@
 // Copyright 2022 Kosterin Alexey
-#include "../../../modules/task_2/kosterin_a_gaus_lent_horiz/gaus_lent_horiz.h"
 #include <cmath>
 #include <mpi.h>
+
+#include "../../../modules/task_2/kosterin_a_gaus_lent_horiz/gaus_lent_horiz.h"
 
 double Gaus(double **a, double *b, int size) {
   double d, s;
