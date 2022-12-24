@@ -1,9 +1,9 @@
 // Copyright 2022 Kandrin Alexey
 #include <gtest/gtest.h>
-
-#include <gtest-mpi-listener.hpp>
 #define _USE_MATH_DEFINES
 #include <math.h>
+
+#include <gtest-mpi-listener.hpp>
 
 #include "./strongin_method.h"
 
