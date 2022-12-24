@@ -51,7 +51,7 @@ double Gaus(double **a, double *b, int size) {
     if (ibeg == k)
       ibeg++;
     for (int j = ibeg; j < iend; j++) {
-      if(a[j][k]==0){continue;}
+      if (a[j][k] == 0) {continue;}
       d = a[j][k] / a[k][k];
       for (int i = k; i < size; i++) {
         a[j][i] = a[j][i] - d * a[k][i];
