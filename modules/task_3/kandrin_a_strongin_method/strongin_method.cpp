@@ -142,7 +142,9 @@ double Calculate_M<Parallel>(Function&& f, const std::vector<Segment>& y) {
 
   double result;
 
-  MPI_Reduce(&M, &result, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
+  MPI_Allreduce(&M, &result, 1, MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD);
+  // after this call, the value "res" of the variable will be synchronized in
+  // all processes, so calling "MPI_Bcast" is not required
   
   return result;
 }
@@ -229,16 +231,13 @@ std::pair<double, int> CalculateIndexOfMaxR<Parallel>(
   std::vector<Segment> localY;
 
   if (rank == 0) {
-    size_t distributedWork = workForThisProc;
-
     for (int procNum = 1; procNum < procCount; ++procNum) {
       size_t workForProc = workSplitter.GetPartWork(procNum);
       if (workForProc != 0) {
-        MPI_Send(&y.at(distributedWork), workForProc * sizeof(Segment),
+        size_t workForPrevProc = workSplitter.GetPrevPartWork(procNum);
+        MPI_Send(&y.at(workForPrevProc), workForProc * sizeof(Segment),
                  MPI_CHAR, procNum, 0, MPI_COMM_WORLD);
       }
-
-      distributedWork += workForProc;
     }
 
     localY = std::vector<Segment>(y.begin(), y.begin() + workForThisProc);
@@ -252,46 +251,22 @@ std::pair<double, int> CalculateIndexOfMaxR<Parallel>(
 
   auto indexOfMaxR =
       CalculateIndexOfMaxR<Sequential>(std::forward<Function>(f), localY, m);
+  
+  // the sequential version finds the index of the maximum R relative to the
+  // beginning of the "localY", so we add an offset:
+  indexOfMaxR.second += workSplitter.GetPrevPartWork(rank);
 
-  Debug(indexOfMaxR.first, ' ', indexOfMaxR.second, '\n');
+  std::pair<double, int> res;
 
-  if (rank == 0) {
-    std::vector<std::pair<double, int>> results(
-        procCount, std::pair<double, int>(-DBL_MAX, -1));
-    results.at(0) = indexOfMaxR;
+  // this function will find the maximum R ("indexOfMaxR.first") of all processes
+  // and write it, as well as its index ("indexOfMaxR.second"), to "res"
+  MPI_Allreduce(&indexOfMaxR, &res, 1, MPI_DOUBLE_INT, MPI_MAXLOC,
+                MPI_COMM_WORLD);
 
-    for (int procNum = 1; procNum < procCount; ++procNum) {
-      if (workSplitter.GetPartWork(procNum) != 0) {
-        MPI_Recv(&results.at(procNum), sizeof(indexOfMaxR), MPI_CHAR, procNum,
-                 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-      }
-    }
+  // after this call, the value "res" of the variable will be synchronized in
+  // all processes, so calling "MPI_Bcast" is not required
 
-    Debug("pairs:\n");
-    for (const auto& pair : results) {
-      Debug(pair.first, ' ', pair.second, '\n');
-    }
-
-    auto iter = std::max_element(
-        results.begin(), results.end(),
-        [](const std::pair<double, int>& a, const std::pair<double, int>& b) {
-          return a.first < b.first;
-        });
-    size_t indexOfMaxElement = iter - results.begin();
-    results.at(indexOfMaxElement).second +=
-        workSplitter.GetPrevPartWork(indexOfMaxElement);
-
-    Debug("Max pair = ", iter->first, ' ', iter->second, '\n');
-    return *iter;
-
-  } else {
-    if (workForThisProc != 0) {
-      MPI_Send(&indexOfMaxR, sizeof(indexOfMaxR), MPI_CHAR, 0, 0,
-               MPI_COMM_WORLD);
-    }
-  }
-
-  return {};
+  return res;
 }
 
 
@@ -310,12 +285,9 @@ double GetMin(Function&& f, double a, double b, double epsilon) {
        ++iterationIndex) {
     Debug("________________\nIteration index: ", iterationIndex, "\n");
     double _M = Calculate_M<ExecutionPolicy>(std::forward<Function>(f), y);
-    MPI_Bcast(&_M, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     const double m = Calculate_m(_M, r);
     auto indexOfMaxR =
         CalculateIndexOfMaxR<ExecutionPolicy>(std::forward<Function>(f), y, m);
-
-    MPI_Bcast(&indexOfMaxR, sizeof(indexOfMaxR), MPI_CHAR, 0, MPI_COMM_WORLD);
     Debug("Current indexOfMaxR = ", indexOfMaxR.first, ' ', indexOfMaxR.second,
           '\n');
     const auto& currentSegment = y.at(indexOfMaxR.second);
