@@ -6,6 +6,7 @@
 #include <vector>
 #include <iostream>
 #include <cfloat>
+#include <cmath>
 
 using dvec = std::vector<double>;
 

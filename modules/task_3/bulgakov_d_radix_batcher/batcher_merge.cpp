@@ -25,7 +25,7 @@ void merge(double * input, int size, int seq_len, int start_ind = 0, int offset 
 int find_size_of_pow2(int val1, int val2) {
     int val = std::max(val1, val2);
     if ((val & (val - 1))) {
-        val = (1 << static_cast<int>(log2(val)+1));
+        val = (1 << static_cast<int>(std::log2(val)+1));
     }
     return val;
 }
