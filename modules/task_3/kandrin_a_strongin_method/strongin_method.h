@@ -2,6 +2,8 @@
 #ifndef MODULES_TASK_3_KANDRIN_A_STRONGIN_METHOD_STRONGIN_METHOD_H_
 #define MODULES_TASK_3_KANDRIN_A_STRONGIN_METHOD_STRONGIN_METHOD_H_
 
+#define NDEBUG
+
 #include <mpi.h>
 
 #include <algorithm>

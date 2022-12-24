@@ -116,8 +116,9 @@ double Calculate_M<Parallel>(Function&& f, const std::vector<Segment>& y) {
       size_t workForProc = workSplitter.GetPartWork(procNum);
       if (workForProc != 0) {
         size_t workForPrevProc = workSplitter.GetPrevPartWork(procNum);
-        MPI_Send(&y.at(workForPrevProc), workForProc * sizeof(Segment),
-                 MPI_CHAR, procNum, 0, MPI_COMM_WORLD);
+        MPI_Send(&y.at(workForPrevProc),
+                 static_cast<int>(workForProc * sizeof(Segment)), MPI_CHAR,
+                 procNum, 0, MPI_COMM_WORLD);
       }
     }
 
@@ -125,8 +126,9 @@ double Calculate_M<Parallel>(Function&& f, const std::vector<Segment>& y) {
   } else {
     if (workForThisProc != 0) {
       localY = std::vector<Segment>(workForThisProc);
-      MPI_Recv(localY.data(), workForThisProc * sizeof(Segment), MPI_CHAR, 0, 0,
-               MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+      MPI_Recv(localY.data(),
+               static_cast<int>(workForThisProc * sizeof(Segment)), MPI_CHAR, 0,
+               0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
     }
   }
 
@@ -223,8 +225,9 @@ std::pair<double, int> CalculateIndexOfMaxR<Parallel>(
       size_t workForProc = workSplitter.GetPartWork(procNum);
       if (workForProc != 0) {
         size_t workForPrevProc = workSplitter.GetPrevPartWork(procNum);
-        MPI_Send(&y.at(workForPrevProc), workForProc * sizeof(Segment),
-                 MPI_CHAR, procNum, 0, MPI_COMM_WORLD);
+        MPI_Send(&y.at(workForPrevProc),
+                 static_cast<int>(workForProc * sizeof(Segment)), MPI_CHAR,
+                 procNum, 0, MPI_COMM_WORLD);
       }
     }
 
@@ -232,8 +235,9 @@ std::pair<double, int> CalculateIndexOfMaxR<Parallel>(
   } else {
     if (workForThisProc != 0) {
       localY = std::vector<Segment>(workForThisProc);
-      MPI_Recv(localY.data(), workForThisProc * sizeof(Segment), MPI_CHAR, 0, 0,
-               MPI_COMM_WORLD, MPI_STATUSES_IGNORE);
+      MPI_Recv(localY.data(),
+               static_cast<int>(workForThisProc * sizeof(Segment)), MPI_CHAR, 0,
+               0, MPI_COMM_WORLD, MPI_STATUSES_IGNORE);
     }
   }
 
@@ -242,7 +246,7 @@ std::pair<double, int> CalculateIndexOfMaxR<Parallel>(
 
   // the sequential version finds the index of the maximum R relative to the
   // beginning of the "localY", so we add an offset:
-  indexOfMaxR.second += workSplitter.GetPrevPartWork(rank);
+  indexOfMaxR.second += static_cast<int>(workSplitter.GetPrevPartWork(rank));
 
   std::pair<double, int> res;
 
