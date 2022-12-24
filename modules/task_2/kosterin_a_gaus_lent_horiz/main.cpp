@@ -49,9 +49,7 @@ TEST(Parallel_Operations_MPI, Test_4x4) {
   delete[] array;
   delete[] ans;
   if (rank == 0) {
-    if (abs(res - answer) <= err)
-      flag = true;
-    ASSERT_EQ(flag, true);
+    EXPECT_NEAR(res,answer,err);
   }
 }
 
@@ -71,9 +69,7 @@ TEST(Parallel_Operations_MPI, Test_10x10) {
   delete[] array;
   delete[] ans;
   if (rank == 0) {
-    if (abs(res - answer) <= err)
-      flag = true;
-    ASSERT_EQ(flag, true);
+    EXPECT_NEAR(res,answer,err);
   }
 }
 
@@ -93,9 +89,7 @@ TEST(Parallel_Operations_MPI, Test_20x20) {
   delete[] array;
   delete[] ans;
   if (rank == 0) {
-    if (abs(res - answer) <= err)
-      flag = true;
-    ASSERT_EQ(flag, true);
+    EXPECT_NEAR(res,answer,err);
   }
 }
 TEST(Parallel_Operations_MPI, Test_50x50) {
@@ -114,9 +108,7 @@ TEST(Parallel_Operations_MPI, Test_50x50) {
   delete[] array;
   delete[] ans;
   if (rank == 0) {
-    if (abs(res - answer) <= err)
-      flag = true;
-    ASSERT_EQ(flag, true);
+    EXPECT_NEAR(res,answer,err);
   }
 }
 
@@ -124,7 +116,7 @@ TEST(Parallel_Operations_MPI, Test_100x100) {
   bool flag = false;
   double err = 0.1;
   int rank;
-  int size = 100;
+  int size = 10;
   double **array = arr(size);
   double *ans = answer(size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -136,9 +128,7 @@ TEST(Parallel_Operations_MPI, Test_100x100) {
   delete[] array;
   delete[] ans;
   if (rank == 0) {
-    if (abs(res - answer) <= err)
-      flag = true;
-    ASSERT_EQ(flag, true);
+    EXPECT_NEAR(res,answer,err);
   }
 }
 
