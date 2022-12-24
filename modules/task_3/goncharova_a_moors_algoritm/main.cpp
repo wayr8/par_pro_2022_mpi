@@ -1,5 +1,4 @@
 // Copyright Anna Goncharova
-
 #include <gtest/gtest.h>
 #include "../../../modules/task_3/goncharova_a_moors_algoritm/moors_algoritm.h"
 #include <gtest-mpi-listener.hpp>
