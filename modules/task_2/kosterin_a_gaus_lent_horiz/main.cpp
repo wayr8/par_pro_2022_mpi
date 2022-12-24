@@ -61,26 +61,6 @@ TEST(Parallel_Operations_MPI, Test_3x3) {
   }
 }
 
-TEST(Parallel_Operations_MPI, Test_4x4) {
-  bool flag = false;
-  double err = 0.1;
-  int rank;
-  int size = 4;
-  double **array = arr(size);
-  double *ans = answer(size);
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  double res = Gaus(array, ans, size);
-  int answer = ans[0];
-  for (int i = 0; i < size; i++) {
-    delete[] array[i];
-  }
-  delete[] array;
-  delete[] ans;
-  if (rank == 0) {
-    EXPECT_NEAR(res, answer, err);
-  }
-}
-
 TEST(Parallel_Operations_MPI, Test_5x5) {
   bool flag = false;
   double err = 0.1;
@@ -125,6 +105,26 @@ TEST(Parallel_Operations_MPI, Test_15x15) {
   double err = 0.1;
   int rank;
   int size = 15;
+  double **array = arr(size);
+  double *ans = answer(size);
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  double res = Gaus(array, ans, size);
+  int answer = ans[0];
+  for (int i = 0; i < size; i++) {
+    delete[] array[i];
+  }
+  delete[] array;
+  delete[] ans;
+  if (rank == 0) {
+    EXPECT_NEAR(res, answer, err);
+  }
+}
+
+TEST(Parallel_Operations_MPI, Test_20x20) {
+  bool flag = false;
+  double err = 0.1;
+  int rank;
+  int size = 20;
   double **array = arr(size);
   double *ans = answer(size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
