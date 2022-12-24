@@ -12,7 +12,6 @@ int Scatter(void* send_data, int send_count, MPI_Datatype send_datatype, void* r
                   int recv_count, MPI_Datatype recv_datatype, int root, MPI_Comm communicator);
 int FasterScatter(void* send_data, int send_count, MPI_Datatype send_datatype, void* recv_data,
   int recv_count, MPI_Datatype recv_datatype, int root, MPI_Comm communicator);
-
 int MyTest(std::vector<int> mas, std::function<int(void* , int , MPI_Datatype , void* ,
   int , MPI_Datatype , int , MPI_Comm)> func);
 
