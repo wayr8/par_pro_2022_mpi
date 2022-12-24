@@ -1,10 +1,11 @@
 // Copyright 2022 Khramov Egor
 #include <gtest/gtest.h>
 #include <stdio.h>
-#include <vector>
-#include "../../../modules/task_2/khramov_e_contrast/contrast.h"
-#include <gtest-mpi-listener.hpp>
 
+#include <gtest-mpi-listener.hpp>
+#include <vector>
+
+#include "../../../modules/task_2/khramov_e_contrast/contrast.h"
 
 void testWithSize(int w, int h) {
     int rank;
@@ -29,28 +30,15 @@ void testWithSize(int w, int h) {
     }
 }
 
-TEST(Test_contrast, Test_100x50) {
-    testWithSize(100, 50);
-}
+TEST(Test_contrast, Test_100x50) { testWithSize(100, 50); }
 
-TEST(Test_contrast, Test_512x512) {
-    testWithSize(512, 512);
-}
+TEST(Test_contrast, Test_512x512) { testWithSize(512, 512); }
 
-TEST(Test_contrast, Test_278x451) {
-    testWithSize(278, 451);
-}
+TEST(Test_contrast, Test_278x451) { testWithSize(278, 451); }
 
-TEST(Test_contrast, Test_567x129) {
-    testWithSize(567, 129);
-}
+TEST(Test_contrast, Test_567x129) { testWithSize(567, 129); }
 
-TEST(Test_contrast, Test_2560x1920) {
-    testWithSize(2560, 1920);
-}
-
-
-
+TEST(Test_contrast, Test_2560x1920) { testWithSize(2560, 1920); }
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);

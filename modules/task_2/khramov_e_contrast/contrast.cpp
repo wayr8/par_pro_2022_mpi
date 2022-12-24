@@ -1,9 +1,10 @@
 // Copyright 2022 Khramov Egor
 
 #include <mpi.h>
-#include <vector>
-#include <random>
+
 #include <algorithm>
+#include <random>
+#include <vector>
 
 void printVector(std::vector<int> vector) {
     for (int i = 0; i < vector.size(); i++) {
@@ -38,12 +39,11 @@ float getContrastCoeff(int contrast) {
 }
 
 int truncate(size_t value) {
-    if(value < 0) return 0;
-    if(value > 255) return 255;
+    if (value < 0) return 0;
+    if (value > 255) return 255;
 
     return value;
 }
-
 
 std::vector<int> getContrastedMatrixSequential(std::vector<int> matrix) {
     int length = matrix.size();
@@ -60,7 +60,6 @@ std::vector<int> getContrastedMatrixSequential(std::vector<int> matrix) {
 
     return result;
 }
-
 
 int* getSendCount(int matrixSize, int commSize) {
     int* sendCount = new int[commSize];
@@ -85,8 +84,8 @@ int* getDispls(int matrixSize, int commSize) {
     return displs;
 }
 
-
-std::vector<int> getContrastedMatrixParallel(std::vector<int> matrix, int size) {
+std::vector<int> getContrastedMatrixParallel(std::vector<int> matrix,
+                                             int size) {
     int rank, commSize;
 
     int recvCount;
@@ -108,11 +107,13 @@ std::vector<int> getContrastedMatrixParallel(std::vector<int> matrix, int size) 
     std::vector<int> localVec(recvCount);
     std::vector<int> localResult(recvCount);
 
-    MPI_Scatterv(matrix.data(), sendCount, displs, MPI_INT, localVec.data(), recvCount, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Scatterv(matrix.data(), sendCount, displs, MPI_INT, localVec.data(),
+                 recvCount, MPI_INT, 0, MPI_COMM_WORLD);
 
     localResult = getContrastedMatrixSequential(localVec);
 
-    MPI_Gatherv(localResult.data(), recvCount, MPI_INT, result.data(), sendCount, displs, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Gatherv(localResult.data(), recvCount, MPI_INT, result.data(),
+                sendCount, displs, MPI_INT, 0, MPI_COMM_WORLD);
 
     return result;
 }
