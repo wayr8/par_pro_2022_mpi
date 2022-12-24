@@ -6,10 +6,8 @@
 #include <gtest-mpi-listener.hpp>
 
 
-TEST(Test_contrast, Test_0) {
+void testWithSize(int w, int h) {
     int rank;
-
-    int w = 5, h = 4;
 
     std::vector<int> matrix;
     std::vector<int> resultSequential;
@@ -18,26 +16,23 @@ TEST(Test_contrast, Test_0) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     if (rank == 0) {
-
-        // std::cout << 5 / 2;
-
         matrix = getRandomMatrix(w, h);
-
-        std::cout << "Main vector: "; printVector(matrix);
-        std::cout << std::endl;
-        // resultSequential = getContrastedMatrixSequential(matrix);
-
-        // std::cout << "First matrix: " << std::endl;
-        // printVector(matrix);
-
-        // std::cout << "Result matrix: " << std::endl;
-        // printVector(resultSequential);
+        resultSequential = getContrastedMatrixSequential(matrix);
     }
 
     resultParallel = getContrastedMatrixParallel(matrix, w * h);
 
-    ASSERT_EQ(1, 1);
+    if (rank == 0) {
+        // std::cout << "sequential: "; printVector(resultSequential);
+        // std::cout << "parallel: "; printVector(resultParallel);
+        ASSERT_EQ(resultSequential, resultParallel);
+    }
 }
+
+TEST(Test_contrast, Test_100x50) {
+    testWithSize(100, 50);
+}
+
 
 
 

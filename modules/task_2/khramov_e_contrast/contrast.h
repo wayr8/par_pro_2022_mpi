@@ -22,4 +22,6 @@ std::vector<int> getContrastedMatrixSequential(std::vector<int> matrix);
 
 std::vector<int> getContrastedMatrixParallel(std::vector<int> matrix, int size);
 
+void testWithSize(int w, int h);
+
 #endif  // MODULES_TASK_2_KHRAMOV_E_CONTRAST_CONTRAST_H_

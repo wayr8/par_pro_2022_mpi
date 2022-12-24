@@ -91,8 +91,7 @@ std::vector<int> getContrastedMatrixParallel(std::vector<int> matrix, int size) 
 
     int recvCount;
 
-
-    std::vector<int> result;
+    std::vector<int> result(size);
 
     MPI_Comm_size(MPI_COMM_WORLD, &commSize);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -109,16 +108,11 @@ std::vector<int> getContrastedMatrixParallel(std::vector<int> matrix, int size) 
     std::vector<int> localVec(recvCount);
     std::vector<int> localResult(recvCount);
 
-    // std::cout << recvCount;
-
     MPI_Scatterv(matrix.data(), sendCount, displs, MPI_INT, localVec.data(), recvCount, MPI_INT, 0, MPI_COMM_WORLD);
-    
-    // std::cout << "Process " << rank << ": " << recvCount << ": ";
-    printVector(localVec);
 
     localResult = getContrastedMatrixSequential(localVec);
-    printVector(localResult);
+
+    MPI_Gatherv(localResult.data(), recvCount, MPI_INT, result.data(), sendCount, displs, MPI_INT, 0, MPI_COMM_WORLD);
 
     return result;
-
 }
