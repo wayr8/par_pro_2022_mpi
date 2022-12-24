@@ -1,6 +1,7 @@
 // Copyright 2022 Kosterin Alexey
 #include <gtest/gtest.h>
 #include <random>
+#include <cmath>
 #include "./gaus_lent_horiz.h"
 #include <gtest-mpi-listener.hpp>
 
