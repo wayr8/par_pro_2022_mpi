@@ -7,14 +7,18 @@
 
 #include "./strongin_method.h"
 
-double function(double x) {
+namespace {
+double function1(double x) {
   return sqrt(1 + 3 * cos(x) * cos(x)) + cos(10 * x);
 }
+}  // namespace
 
 TEST(Parallel_Operations_MPI, Test_1) {
-  auto min = GetMin<parallel>(function, 1, 50, 0.01);
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    
+  auto min = GetMinParallel(function1, 1, 50, 0.01);
+  
   if (rank == 0) {
     ASSERT_NEAR(min, 0, 0.01);
   }
