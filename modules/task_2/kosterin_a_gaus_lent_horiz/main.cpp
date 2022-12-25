@@ -5,16 +5,6 @@
 #include <gtest/gtest.h>
 #include <random>
 
-
-/*
- if(rank==0)
-  for(int i = 0;i<size;i++){
-    for(int j=0;j<size;j++){
-      printf("%f ",array[i][j]);
-    }
-    printf("%f\n", ans[i]);
-  }
-*/
 std::random_device dev;
 std::mt19937 gen(dev());
 std::uniform_real_distribution<> dist(0, 1);
