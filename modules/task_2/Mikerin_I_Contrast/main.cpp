@@ -7,34 +7,15 @@
 
 #define debug
 
-TEST(Parallel, Concret) {
-    int rank;
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    std::vector<std::vector<int>> global_vec;
-    std::vector<std::vector<int>> res_vec;
-    int weight = 3;
-    int height = 4;
-
-    if (rank == 0)
-        global_vec = std::vector<std::vector<int>>({{1, 0, 1, 1}, { 0, 1, 1, 1}, { 0, 1, 1, 1}});
-
-    res_vec = ParallelContrast(global_vec, weight, height);
-
-
-    if (rank == 0) {
-        ASSERT_EQ(res_vec, std::vector<std::vector<int>>(
-            {{255, 50, 255, 255}, { 50, 255, 255, 255}, { 50, 255, 255, 255}}));
-    }
-}
-
 TEST(Parallel, RANDOM) {
-    int rank;
+    int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
     std::vector<std::vector<int>> global_vec;
     std::vector<std::vector<int>> res_paral;
     std::vector<std::vector<int>> res_seq;
-    int weight = 5;
-    int height = 7;
+    int weight = size + 1;
+    int height = size + 2;
 
     if (rank == 0) {
         global_vec = std::vector<std::vector<int>>(weight);
