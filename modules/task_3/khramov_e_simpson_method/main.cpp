@@ -1,8 +1,8 @@
 // Copyright 2022 Khramov Egor
 #include <gtest/gtest.h>
-#include "./simpson.h"
-#include <math.h>
+#include <cmath>
 #include <gtest-mpi-listener.hpp>
+#include "./simpson.h"
 
 const double epsilon = 0.1;
 const double e = 2.71828182846;
