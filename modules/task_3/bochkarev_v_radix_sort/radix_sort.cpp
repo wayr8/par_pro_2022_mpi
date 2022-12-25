@@ -100,7 +100,7 @@ std::vector<int> getParallelOperations(std::vector<int> vector, int vec_size) {
         }
 
         std::vector<int> l_res = getSequentialOperations(local_vec);
-        
+
         if (rank == 0) {
             std::vector<std::vector<int> > res;
             res.push_back(l_res);
