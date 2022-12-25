@@ -1,7 +1,7 @@
 // Copyright 2022 Uvarkin Ilya
 #include <gtest/gtest.h>
-#include <gtest-mpi-listener.hpp>
 #include "./count_char_in_string.h"
+#include <gtest-mpi-listener.hpp>
 
 TEST(count_char_in_string, test1) {
     int rank;
