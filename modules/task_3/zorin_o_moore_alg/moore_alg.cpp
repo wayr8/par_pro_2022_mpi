@@ -125,7 +125,11 @@ Vector MooreAlgParallel(const Matrix& weight_matrix, int start) {
 
     for (int i = 0; i < size; i++) {
       if (to_erase[i] > -1) {
-        std::remove(Q.begin(), Q.end(), to_erase[i]);
+        for (auto it = Q.begin(); it != Q.end(); it++) {
+          if (*it == to_erase[i]) {
+            Q.erase(it);
+          }
+        }
       }
     }
     for (int i = 0; i < size; i++) {
