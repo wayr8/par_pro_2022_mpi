@@ -5,10 +5,10 @@
 #include <string>
 #include <vector>
 
-std::vector<int> RandomVector(int vecSize);
+std::vector<int> Random(int vecSize);
 
-double VectorMin(const std::vector<int>& vec);
+int Min(const std::vector<int>& vec);
 
-double VectorMinParralel(const std::vector<int>& globVec, const int vecSize);
+int MinParallel(const std::vector<int>& globVec, const int vecSize);
 
 #endif  // MODULES_TASK_1_NIKITIN_A_VECTOR_MIN_VALUE_VECTOR_MIN_VALUE_H_

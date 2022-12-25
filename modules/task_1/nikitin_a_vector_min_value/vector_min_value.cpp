@@ -6,59 +6,69 @@
 #include <random>
 #include <vector>
 
-std::vector<int> RandomVector(int vecSize) {
+std::vector<int> Random(const int vecSize) {
   if (vecSize > 0) {
-    std::random_device device;
-    std::mt19937 gen(device());
-    std::vector<int> vectr(vecSize);
-    for (int i = 0; i < vecSize; i++) vectr[i] = gen() % 100;
-    return vectr;
+    std::random_device devive;
+    std::mt19937 gen(devive());
+    std::vector<int> info(vecSize);
+    for (int i = 0; i < vecSize; i++) {
+      info[i] = -10000 + gen() % 100000;
+    }
+    return info;
   }
-  throw "Error: Size is small!";
+  throw "Error: uncorrect size";
 }
 
-double VectorMin(const std::vector<int>& vectr) {
-  int res = vectr[0];
-
-  for (int i = 1; i < static_cast<int>(vectr.size()); i++) {
-    if (vectr[i] < res) {
-      res = vectr[i];
+int Min(const std::vector<int>& vectr) {
+  if (!vectr.empty()) {
+    int min = vectr[0];
+    for (int i = 1; i < static_cast<int>(vectr.size()); i++) {
+      if (min > vectr[i]) min = vectr[i];
     }
+    return min;
   }
+  return 0;
+}
+
+int MinParallel(const std::vector<int>& globVec, const int vecSize) {
+  int cntProc, rankProc;
+  MPI_Comm_size(MPI_COMM_WORLD, &cntProc);
+  MPI_Comm_rank(MPI_COMM_WORLD, &rankProc);
+
+  int sizeBlock = vecSize / cntProc;
+  int elementsRemaining = vecSize % cntProc;
+
+  int res = 0;
+  int localMin;
+
+  if (rankProc < elementsRemaining) sizeBlock++;
+
+  if (vecSize / cntProc == 0) {
+    localMin = Min(globVec);
+    return localMin;
+  }
+
+  std::vector<int> countSends;
+  std::vector<int> tmp;
+  std::vector<int> dataReceived(sizeBlock);
+
+  if (rankProc == 0) {
+    countSends.assign(cntProc, globVec.size() / cntProc);
+    tmp.resize(cntProc);
+
+    for (int i = 0; i < elementsRemaining; i++) countSends[i]++;
+    for (int i = 0; i < cntProc - 1; i++)
+      tmp[i + 1] = tmp[i] + countSends[i];
+  }
+  MPI_Scatterv(reinterpret_cast<const void*>(globVec.data()), countSends.data(),
+               tmp.data(), MPI_INT, dataReceived.data(), sizeBlock, MPI_INT, 0,
+               MPI_COMM_WORLD);
+
+  localMin = Min(dataReceived);
+
+  MPI_Reduce(reinterpret_cast<void*>(&localMin),
+             reinterpret_cast<void*>(&localMin), 1, MPI_INT, MPI_MIN, 0,
+             MPI_COMM_WORLD);
 
   return res;
-}
-
-double VectorMinParralel(const std::vector<int>& globVec, const int size) {
-  int cSize = 1, pRank;
-  int min = 0;
-  MPI_Comm_size(MPI_COMM_WORLD, &cSize);
-  MPI_Comm_rank(MPI_COMM_WORLD, &pRank);
-
-  int count = size / cSize;
-  int rem = size % cSize;
-
-  if (cSize == 0 && count > 0) {
-    for (int pRank = 1; pRank <= cSize - 1; pRank++) {
-      MPI_Send(globVec.data() + rem + pRank * count, count, MPI_INT, pRank, 0,
-               MPI_COMM_WORLD);
-    }
-  }
-
-  std::vector<int> local(count);
-  if (pRank == 0) {
-    local = std::vector<int>(globVec.begin(), globVec.begin() + (count + rem));
-  } else if (count > 0) {
-    MPI_Status status;
-    MPI_Recv(local.data(), count, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
-  }
-
-  if (count > 0) {
-    int localMin = VectorMin(local);
-    MPI_Reduce(&localMin, &min, 1, MPI_INT, MPI_MIN, 0, MPI_COMM_WORLD);
-  } else if (count == 0 && pRank == 0) {
-    min = VectorMin(local);
-  }
-
-  return min;
 }
