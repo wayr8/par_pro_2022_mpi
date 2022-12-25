@@ -69,7 +69,7 @@ double Gaus(double **a, double *b, int size) {
         for (int l = 0; l < delta + of; l++) {
           MPI_Recv(a[delta * s + l], size, MPI_LONG_DOUBLE, s, 0,
                    MPI_COMM_WORLD, &status);
-          MPI_Recv(&b[delta * s + l], size, MPI_LONG_DOUBLE, s, 0,
+          MPI_Recv(&b[delta * s + l], 1, MPI_LONG_DOUBLE, s, 0,
                    MPI_COMM_WORLD, &status);
         }
       }
