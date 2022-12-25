@@ -17,6 +17,7 @@ double **arr(int size) {
       double ran = static_cast<double>((gen() % 100));
       ar[i][j] = ran + i + j;
     }
+    a[i][i] = 0;
   }
 
   return ar;
