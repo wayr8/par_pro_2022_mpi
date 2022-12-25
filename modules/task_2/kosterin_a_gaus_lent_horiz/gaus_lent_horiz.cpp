@@ -46,17 +46,15 @@ double Gaus(double **a, double *b, int size) {
     }
     for (int i = 0; i < size; i++) {
       MPI_Bcast((a[i]), size, MPI_LONG_DOUBLE, 0, MPI_COMM_WORLD);
+      MPI_Bcast((b), size, MPI_LONG_DOUBLE, 0, MPI_COMM_WORLD);
     }
-    MPI_Bcast((b), size, MPI_LONG_DOUBLE, 0, MPI_COMM_WORLD);
     if ((rank == sizeProc - 1) && (ost != 0)) {
       iend = size;
     }
     if (ibeg == k)
       ibeg++;
     for (int j = ibeg; j < iend; j++) {
-      if (a[j][k] == 0) {
-        continue;
-      }
+      
       d = a[j][k] / a[k][k];
       for (int i = k; i < size; i++) {
         a[j][i] = a[j][i] - d * a[k][i];
