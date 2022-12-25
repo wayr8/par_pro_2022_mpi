@@ -14,7 +14,7 @@ if( USE_MPI )
     file(GLOB_RECURSE ALL_SOURCE_FILES *.cpp *.h)
 
     set(PACK_LIB "${ProjectId}_lib")
-    add_library(${PACK_LIB} STATIC ${ALL_SOURCE_FILES} main.cpp count_char_in_string.cpp count_char_in_string.h)
+    add_library(${PACK_LIB} STATIC ${ALL_SOURCE_FILES} )
 
     add_executable( ${ProjectId} ${ALL_SOURCE_FILES} )
 
