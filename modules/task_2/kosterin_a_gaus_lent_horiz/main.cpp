@@ -115,7 +115,7 @@ TEST(Parallel_Operations_MPI, Simple_Test_2x2) {
   bool flag = false;
   double err = 0.5;
   int rank;
-  int size = 2;
+  int size = 3;
   double **array = arr(size);
   double *ans = answer(size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
