@@ -1,6 +1,6 @@
 // Copyright 2022 Zorin Oleg
-#ifndef MODULES_TASK_1_ZORIN_O_NON_CHAR_MPI_NON_CHAR_H_
-#define MODULES_TASK_1_ZORIN_O_NON_CHAR_MPI_NON_CHAR_H_
+#ifndef MODULES_TASK_1_ZORIN_O_NON_CHAR_NON_CHAR_H_
+#define MODULES_TASK_1_ZORIN_O_NON_CHAR_NON_CHAR_H_
 
 #include <string>
 
@@ -11,4 +11,4 @@ int countNonMatchingCharSequential(const char *str, int len,
 
 int countNonMatchingCharParallel(const char *global_str, int len, const char *global_compare_str, int compare_len);
 
-#endif  // MODULES_TASK_1_ZORIN_O_NON_CHAR_MPI_NON_CHAR_H_
+#endif  // MODULES_TASK_1_ZORIN_O_NON_CHAR_NON_CHAR_H_
