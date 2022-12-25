@@ -18,6 +18,9 @@ double Gaus(double **a, double *b, int size) {
   int index = 0;
 
   double *x = new double[size];
+  for (int i = 0; i < size; i++) {
+    x[i] = 0;
+  }
   for (int k = 0; k < size; k++) {
     if (rank == 0) {
       if (a[k][k] == 0) {
@@ -35,13 +38,17 @@ double Gaus(double **a, double *b, int size) {
         temp = b[k];
         b[k] = b[index];
         b[index] = temp;
-        for (int i = 0; i < size; i++) {
+        if (max == 0) {
+          k++;
+        }
+        max = 0;
+        
+      }
+    }
+    for (int i = 0; i < size; i++) {
           MPI_Bcast((a[i]), size, MPI_LONG_DOUBLE, 0, MPI_COMM_WORLD);
         }
         MPI_Bcast((b), size, MPI_LONG_DOUBLE, 0, MPI_COMM_WORLD);
-      }
-    }
-
     if ((rank == sizeProc - 1) && (ost != 0)) {
       iend = size;
     }

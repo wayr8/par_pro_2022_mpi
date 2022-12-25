@@ -1,9 +1,10 @@
 // Copyright 2022 Kosterin Alexey
+#include "./gaus_lent_horiz.h"
+#include <cmath>
+#include <gtest-mpi-listener.hpp>
 #include <gtest/gtest.h>
 #include <random>
-#include <cmath>
-#include "./gaus_lent_horiz.h"
-#include <gtest-mpi-listener.hpp>
+
 
 /*
  if(rank==0)
@@ -23,7 +24,7 @@ double **arr(int size) {
   for (int i = 0; i < size; i++) {
     ar[i] = new double[size];
     for (int j = 0; j < size; j++) {
-      double ran = static_cast<double>((gen() % 10));
+      double ran = static_cast<double>((gen() % 100));
       ar[i][j] = ran + i + j;
     }
   }
@@ -35,7 +36,7 @@ double *answer(int size) {
   double *ar = 0;
   ar = new double[size];
   for (int j = 0; j < size; j++) {
-    double ran = static_cast<double>((gen() % 10));
+    double ran = static_cast<double>((gen() % 100));
     ar[j] = ran + 1;
   }
   return ar;
