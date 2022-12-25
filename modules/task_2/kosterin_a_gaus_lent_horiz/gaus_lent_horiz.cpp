@@ -64,7 +64,7 @@ double Gaus(double **a, double *b, int size) {
       for (int s = 1; s < sizeProc; ++s) {
         MPI_Status status;
         int of = 0;
-        if ((ost != 0) && (s == sizeProc - 1)){
+        if ((ost != 0) && (s == sizeProc - 1)) {
           of = ost;
         }
         for (int l = 0; l < delta + of; l++) {
