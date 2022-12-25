@@ -49,7 +49,7 @@ std::vector<double> sumMatrix(bool isSum, const std::vector<double>& mat1, const
 
 std::vector<std::vector<double>> splitMatrixTo4SubMatrix(const std::vector<double>& mat) {
     std::vector<std::vector<double>> result(4);
-    int n = (int)sqrt(mat.size());
+    int n = static_cast<int>(sqrt(mat.size()));
     int split_n = n / 2;
 
     for (int i = 0; i < 4; ++i) {
@@ -94,42 +94,27 @@ std::vector<double> getStrassenSequence(const std::vector<double>& matA, const s
         matC[3] = P1 - P2 + P3 + P6;
 
         return matC;
-    }
-    else {
+    } else {
         std::vector<std::vector<double>> subMatsA(4);
         std::vector<std::vector<double>> subMatsB(4);
 
         subMatsA = splitMatrixTo4SubMatrix(matA);
         subMatsB = splitMatrixTo4SubMatrix(matB);
 
-        std::vector<double> P1 = getStrassenSequence(
-            sumMatrix(true, subMatsA[0], subMatsA[3]),
-            sumMatrix(true, subMatsB[0], subMatsB[3])
-        );
-        std::vector<double> P2 = getStrassenSequence(
-            sumMatrix(true, subMatsA[2], subMatsA[3]),
-            subMatsB[0]
-        );
-        std::vector<double> P3 = getStrassenSequence(
-            subMatsA[0],
-            sumMatrix(false, subMatsB[1], subMatsB[3])
-        );
-        std::vector<double> P4 = getStrassenSequence(
-            subMatsA[3],
-            sumMatrix(false, subMatsB[2], subMatsB[0])
-        );
-        std::vector<double> P5 = getStrassenSequence(
-            sumMatrix(true, subMatsA[0], subMatsA[1]),
-            subMatsB[3]
-        );
-        std::vector<double> P6 = getStrassenSequence(
-            sumMatrix(false, subMatsA[2], subMatsA[0]),
-            sumMatrix(true, subMatsB[0], subMatsB[1])
-        );
-        std::vector<double> P7 = getStrassenSequence(
-            sumMatrix(false, subMatsA[1], subMatsA[3]),
-            sumMatrix(true, subMatsB[2], subMatsB[3])
-        );
+        std::vector<double> P1 = getStrassenSequence(sumMatrix(true, subMatsA[0], subMatsA[3]),
+            sumMatrix(true, subMatsB[0], subMatsB[3]) );
+        std::vector<double> P2 = getStrassenSequence(sumMatrix(true, subMatsA[2], subMatsA[3]),
+            subMatsB[0]);
+        std::vector<double> P3 = getStrassenSequence(subMatsA[0],sumMatrix(false, subMatsB[1],
+            subMatsB[3]));
+        std::vector<double> P4 = getStrassenSequence(subMatsA[3],sumMatrix(false, subMatsB[2],
+            subMatsB[0]));
+        std::vector<double> P5 = getStrassenSequence(sumMatrix(true, subMatsA[0], subMatsA[1]),
+            subMatsB[3]);
+        std::vector<double> P6 = getStrassenSequence(sumMatrix(false, subMatsA[2], subMatsA[0]),
+            sumMatrix(true, subMatsB[0], subMatsB[1]));
+        std::vector<double> P7 = getStrassenSequence(sumMatrix(false, subMatsA[1], subMatsA[3]),
+            sumMatrix(true, subMatsB[2], subMatsB[3]));
 
         std::vector<double> C11(P1.size());
         std::vector<double> C12(P1.size());
@@ -145,7 +130,7 @@ std::vector<double> getStrassenSequence(const std::vector<double>& matA, const s
 
         std::vector<double> matC(matA.size());
 
-        int n = (int)sqrt(matC.size());
+        int n = static_cast<int>(sqrt(matC.size()));
         int split_n = n / 2;
 
         for (int i = 0; i < matC.size() / 2; ++i) {
@@ -169,7 +154,8 @@ std::vector<double> getStrassenSequence(const std::vector<double>& matA, const s
     }
 }
 
-std::vector<double> getStrassenParallel(const std::vector<double>& matA, const std::vector<double>& matB, int m, int n) {
+std::vector<double> getStrassenParallel(const std::vector<double>& matA, 
+    const std::vector<double>& matB, int m, int n) {
     int rank, size;
 
     MPI_Comm_size(MPI_COMM_WORLD, &size);
