@@ -120,7 +120,7 @@ TEST(Parallel_Operations_MPI, Simple_Test_2x2) {
   double *ans = answer(size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   double res = Gaus(array, ans, size);
-  int answer = res;
+  double answer = ans[0];
   for (int i = 0; i < size; i++) {
     delete[] array[i];
   }
