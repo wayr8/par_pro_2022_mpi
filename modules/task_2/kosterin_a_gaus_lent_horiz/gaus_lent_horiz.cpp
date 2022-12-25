@@ -45,9 +45,9 @@ double Gaus(double **a, double *b, int size) {
       }
     }
     for (int i = 0; i < size; i++) {
-      MPI_Bcast((a[i]), size, MPI_LONG_DOUBLE, 0, MPI_COMM_WORLD);
+      MPI_Bcast((a[i]), size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     }
-    MPI_Bcast((b), size, MPI_LONG_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_Bcast((b), size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     if ((rank == sizeProc - 1) && (ost != 0)) {
       iend = size;
     }
@@ -64,19 +64,20 @@ double Gaus(double **a, double *b, int size) {
       for (int s = 1; s < sizeProc; ++s) {
         MPI_Status status;
         int of = 0;
-        if ((ost != 0) && (s == sizeProc - 1))
+        if ((ost != 0) && (s == sizeProc - 1)){
           of = ost;
+        }
         for (int l = 0; l < delta + of; l++) {
-          MPI_Recv(a[delta * s + l], size, MPI_LONG_DOUBLE, s, 0,
+          MPI_Recv(a[delta * s + l], size, MPI_DOUBLE, s, 0,
                    MPI_COMM_WORLD, &status);
-          MPI_Recv(&b[delta * s + l], 1, MPI_LONG_DOUBLE, s, 0,
+          MPI_Recv(&b[delta * s + l], 1, MPI_DOUBLE, s, 0,
                    MPI_COMM_WORLD, &status);
         }
       }
     } else {
       for (int s = beg; s < iend; s++) {
-        MPI_Send(a[s], size, MPI_LONG_DOUBLE, 0, 0, MPI_COMM_WORLD);
-        MPI_Send(&b[s], 1, MPI_LONG_DOUBLE, 0, 0, MPI_COMM_WORLD);
+        MPI_Send(a[s], size, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
+        MPI_Send(&b[s], 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
       }
     }
   }
@@ -91,9 +92,9 @@ double Gaus(double **a, double *b, int size) {
     }
     x[k] = (b[k] - d) / a[k][k];
   }
-  double result = 0;
+  double res = 0;
   for (int i = 0; i < size; i++) {
-    result += a[0][i] * x[i];
+    res += a[0][i] * x[i];
   }
-  return result;
+  return res;
 }
