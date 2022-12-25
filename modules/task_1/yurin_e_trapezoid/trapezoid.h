@@ -30,7 +30,6 @@ double trapezoidalIntegralParallel(double a, double b, int n, F f) {
   for (int step = rank; step < n; step += size) {
     const double x1 = a + step * h;
     const double x2 = a + (step + 1) * h;
-
     localSumm += 0.5 * h * (f(x1) + f(x2));
   }
 
