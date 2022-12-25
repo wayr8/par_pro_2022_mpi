@@ -34,7 +34,7 @@ double *answer(int size) {
 
 TEST(Parallel_Operations_MPI, Test_3x3) {
   bool flag = false;
-  double err = 0.1;
+  double err = 0.5;
   int rank;
   int size = 3;
   double **array = arr(size);
@@ -54,7 +54,7 @@ TEST(Parallel_Operations_MPI, Test_3x3) {
 
 TEST(Parallel_Operations_MPI, Test_5x5) {
   bool flag = false;
-  double err = 0.1;
+  double err = 0.5;
   int rank;
   int size = 5;
   double **array = arr(size);
@@ -73,7 +73,7 @@ TEST(Parallel_Operations_MPI, Test_5x5) {
 }
 TEST(Parallel_Operations_MPI, Test_10x10) {
   bool flag = false;
-  double err = 0.1;
+  double err = 0.5;
   int rank;
   int size = 10;
   double **array = arr(size);
@@ -93,7 +93,7 @@ TEST(Parallel_Operations_MPI, Test_10x10) {
 
 TEST(Parallel_Operations_MPI, Test_15x15) {
   bool flag = false;
-  double err = 0.1;
+  double err = 0.5;
   int rank;
   int size = 15;
   double **array = arr(size);
@@ -113,7 +113,7 @@ TEST(Parallel_Operations_MPI, Test_15x15) {
 
 TEST(Parallel_Operations_MPI, Test_20x20) {
   bool flag = false;
-  double err = 0.1;
+  double err = 0.5;
   int rank;
   int size = 20;
   double **array = arr(size);
