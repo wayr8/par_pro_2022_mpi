@@ -1,5 +1,5 @@
 // Copyright 2022 Uvarkin Ilya
-#include "count_char_in_string.h"
+#include "../../../modules/task_1/uvarkin_i_count_char_in_string/count_char_in_string.h"
 #include "mpi.h"
 
 int getCountCharInString(const char* str, char ch){
