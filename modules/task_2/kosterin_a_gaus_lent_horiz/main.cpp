@@ -1,9 +1,9 @@
 // Copyright 2022 Kosterin Alexey
 #include <gtest/gtest.h>
 #include <math.h>
-#include <gtest-mpi-listener.hpp>
 #include <vector>
 #include "../../../modules/task_2/kosterin_a_gaus_lent_horiz/gaus_lent_horiz.h"
+#include <gtest-mpi-listener.hpp>
 
 TEST(Horiz_Scheme_MPI, Test_3x3) {
   int size = 12;
