@@ -4,30 +4,29 @@
 #include "./simpson.h"
 #include <gtest-mpi-listener.hpp>
 
-void testWithSize(int w, int h) {
+TEST(Test_simpson_method, test) {
     int rank;
-
-    std::vector<int> matrix;
-    std::vector<int> resultSequential;
-    std::vector<int> resultParallel;
 
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    if (rank = 0)
-        std::cout << "Working";
+    auto func = [](double x, double y, double z) {
+        return 10 * x * y * z * z;
+    };
+
+    double result;
+
+    double a[3] = {0, 0, 0};
+    double b[3] = {1, 1, 1};
+    double n[3] = {100, 100, 100};
+
+    if (rank == 0) {
+        result = integrateSequential(func, a, b, n);
+        std::cout << result;
+    }
 
     ASSERT_EQ(1, 1);
 }
 
-TEST(Test_contrast, Test_100x50) { testWithSize(100, 50); }
-
-TEST(Test_contrast, Test_512x512) { testWithSize(512, 512); }
-
-TEST(Test_contrast, Test_278x451) { testWithSize(278, 451); }
-
-TEST(Test_contrast, Test_567x129) { testWithSize(567, 129); }
-
-TEST(Test_contrast, Test_2560x1920) { testWithSize(2560, 1920); }
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
