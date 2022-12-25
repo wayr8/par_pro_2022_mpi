@@ -112,15 +112,15 @@ Vector MooreAlgParallel(const Matrix& weight_matrix, int start) {
       }
     }
 
-    MPI_Allgather(to_front.data() + prank * delta, delta, MPI_INT,
+    MPI_Allgather(MPI_IN_PLACE, delta, MPI_INT,
                   to_front.data(), delta, MPI_INT, MPI_COMM_WORLD);
-    MPI_Allgather(to_back.data() + prank * delta, delta, MPI_INT,
+    MPI_Allgather(MPI_IN_PLACE, delta, MPI_INT,
                   to_back.data(), delta, MPI_INT, MPI_COMM_WORLD);
-    MPI_Allgather(to_erase.data() + prank * delta, delta, MPI_INT,
+    MPI_Allgather(MPI_IN_PLACE, delta, MPI_INT,
                   to_erase.data(), delta, MPI_INT, MPI_COMM_WORLD);
-    MPI_Allgather(d.data() + prank * delta, delta, MPI_INT, d.data(), delta,
+    MPI_Allgather(MPI_IN_PLACE, delta, MPI_INT, d.data(), delta,
                   MPI_INT, MPI_COMM_WORLD);
-    MPI_Allgather(was.data() + prank * delta, delta, MPI_INT, was.data(), delta,
+    MPI_Allgather(MPI_IN_PLACE, delta, MPI_INT, was.data(), delta,
                   MPI_INT, MPI_COMM_WORLD);
 
     for (int i = 0; i < size; i++) {
