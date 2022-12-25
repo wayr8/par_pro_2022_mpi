@@ -22,7 +22,7 @@ TEST(Parallel_Operations_MPI, TEST_FIND_MIN_VAL_IN_VECTOR) {
   }
 }
 
-TEST(Parallel_Operations_MPI, TEST_TEST_2) {
+TEST(Parallel_Operations_MPI, TEST_2) {
   int commRank;
   std::vector<int> vector;
 
@@ -40,6 +40,22 @@ TEST(Parallel_Operations_MPI, TEST_TEST_2) {
   }
 }
 
+TEST(Parallel_Operations_MPI, TEST_3) {
+  int commRank;
+  std::vector<int> vector;
+  int minFir, minSec;
+
+  MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
+  if (commRank == 0) {
+    vector = Random(4);
+    minFir = Min(vector);
+  }
+  minSec = MinParallel(vector, 4);
+  if (commRank == 0) {
+    ASSERT_EQ(minFir, minSec);
+  }
+}
+
 TEST(Parallel_Operations_MPI,
      TEST_PUT_VECTOR_HAS_FEWER_ELEMENTS_THAN_CPU_CORES_GET_MIN_VAL) {
   int commRank;
@@ -52,6 +68,22 @@ TEST(Parallel_Operations_MPI,
     minFir = Min(vector);
   }
   minSec = MinParallel(vector, 4);
+  if (commRank == 0) {
+    ASSERT_EQ(minFir, minSec);
+  }
+}
+
+TEST(Parallel_Operations_MPI, TEST_4) {
+  int commRank;
+  std::vector<int> vector;
+  int minFir, minSec;
+
+  MPI_Comm_rank(MPI_COMM_WORLD, &commRank);
+  if (commRank == 0) {
+    vector = Random(100);
+    minFir = Min(vector);
+  }
+  minSec = MinParallel(vector, 100);
   if (commRank == 0) {
     ASSERT_EQ(minFir, minSec);
   }
