@@ -46,8 +46,8 @@ double Gaus(double **a, double *b, int size) {
     }
     for (int i = 0; i < size; i++) {
       MPI_Bcast((a[i]), size, MPI_LONG_DOUBLE, 0, MPI_COMM_WORLD);
-      MPI_Bcast((b), size, MPI_LONG_DOUBLE, 0, MPI_COMM_WORLD);
     }
+    MPI_Bcast((b), size, MPI_LONG_DOUBLE, 0, MPI_COMM_WORLD);
     if ((rank == sizeProc - 1) && (ost != 0)) {
       iend = size;
     }
