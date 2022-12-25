@@ -5,12 +5,11 @@
 #include <math.h>
 #include <gtest-mpi-listener.hpp>
 
-
 const double epsilon = 0.1;
 const double e = 2.71828182846;
 
 void testIntegral(function func) {
-        int rank;
+    int rank;
 
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
@@ -36,35 +35,25 @@ void testIntegral(function func) {
     }
 }
 
-
 TEST(Test_simpson_method, test_1) {
-    testIntegral([](double x, double y, double z) {
-        return 1;
-    });
+    testIntegral([](double x, double y, double z) { return 1; });
 }
 
 TEST(Test_simpson_method, test_e) {
-    testIntegral([](double x, double y, double z) {
-        return e;
-    });
+    testIntegral([](double x, double y, double z) { return e; });
 }
 
 TEST(Test_simpson_method, test_xyz) {
-    testIntegral([](double x, double y, double z) {
-        return x * y * z;
-    });
+    testIntegral([](double x, double y, double z) { return x * y * z; });
 }
 
 TEST(Test_simpson_method, test_some) {
-    testIntegral([](double x, double y, double z) {
-        return y * x - y - z;
-    });
+    testIntegral([](double x, double y, double z) { return y * x - y - z; });
 }
 
 TEST(Test_simpson_method, test_last) {
-    testIntegral([](double x, double y, double z) {
-        return 2 * x * y * pow(z, 2);
-    });
+    testIntegral(
+        [](double x, double y, double z) { return 2 * x * y * pow(z, 2); });
 }
 
 int main(int argc, char** argv) {
