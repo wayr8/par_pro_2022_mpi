@@ -30,7 +30,7 @@ double VectorMin(const std::vector<int>& vectr) {
 }
 
 double VectorMinParralel(const std::vector<int>& globVec, const int size) {
-  int cSize, pRank;
+  int cSize = 1, pRank;
   int min = 0;
   MPI_Comm_size(MPI_COMM_WORLD, &cSize);
   MPI_Comm_rank(MPI_COMM_WORLD, &pRank);
