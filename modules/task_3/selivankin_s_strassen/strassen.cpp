@@ -105,9 +105,9 @@ std::vector<double> getStrassenSequence(const std::vector<double>& matA, const s
             sumMatrix(true, subMatsB[0], subMatsB[3]) );
         std::vector<double> P2 = getStrassenSequence(sumMatrix(true, subMatsA[2], subMatsA[3]),
             subMatsB[0]);
-        std::vector<double> P3 = getStrassenSequence(subMatsA[0],sumMatrix(false, subMatsB[1],
-            subMatsB[3]));
-        std::vector<double> P4 = getStrassenSequence(subMatsA[3],sumMatrix(false, subMatsB[2],
+        std::vector<double> P3 = getStrassenSequence(subMatsA[0], 
+            sumMatrix(false, subMatsB[1], subMatsB[3]));
+        std::vector<double> P4 = getStrassenSequence(subMatsA[3], sumMatrix(false, subMatsB[2],
             subMatsB[0]));
         std::vector<double> P5 = getStrassenSequence(sumMatrix(true, subMatsA[0], subMatsA[1]),
             subMatsB[3]);
@@ -154,7 +154,7 @@ std::vector<double> getStrassenSequence(const std::vector<double>& matA, const s
     }
 }
 
-std::vector<double> getStrassenParallel(const std::vector<double>& matA, 
+std::vector<double> getStrassenParallel(const std::vector<double>& matA,
     const std::vector<double>& matB, int m, int n) {
     int rank, size;
 
