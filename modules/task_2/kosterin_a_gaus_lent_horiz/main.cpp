@@ -14,8 +14,8 @@ double **arr(int size) {
   for (int i = 0; i < size; i++) {
     ar[i] = new double[size];
     for (int j = 0; j < size; j++) {
-      double ran = static_cast<double>((gen() % 100));
-      ar[i][j] = ran + i + j;
+      double ran = static_cast<double>((gen() % 5));
+      ar[i][j] = ran - 3;
     }
     ar[i][i] = 0;
   }
@@ -27,8 +27,8 @@ double *answer(int size) {
   double *ar = 0;
   ar = new double[size];
   for (int j = 0; j < size; j++) {
-    double ran = static_cast<double>((gen() % 100));
-    ar[j] = ran + 1;
+    double ran = static_cast<double>((gen() % 5));
+    ar[j] = ran - 3;
   }
   return ar;
 }
