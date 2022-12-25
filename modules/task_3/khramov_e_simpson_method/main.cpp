@@ -1,6 +1,5 @@
 // Copyright 2022 Khramov Egor
 #include <gtest/gtest.h>
-#include <vector>
 #include "./simpson.h"
 #include <math.h>
 #include <gtest-mpi-listener.hpp>
