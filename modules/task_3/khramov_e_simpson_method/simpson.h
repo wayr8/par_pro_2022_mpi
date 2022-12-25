@@ -17,4 +17,6 @@ double getSimpsonValue(function f, double x, double y, double z, double* h);
 
 double integrateSequential(function f, double* a, double* b, double* n);
 
+double integrateParallel(function f, double* a, double* b, double* n);
+
 #endif  // MODULES_TASK_3_KHRAMOV_E_SIMPSON_METHOD_SIMPSON_H_

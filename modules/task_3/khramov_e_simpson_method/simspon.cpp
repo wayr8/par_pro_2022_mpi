@@ -24,20 +24,6 @@ void printArray(T* arr, int n) {
     std::cout << std::endl;
 }
 
-std::vector<int> getRandomVector(int size) {
-    std::random_device dev;
-    std::mt19937 gen(dev());
-    std::vector<int> vec(size);
-    for (int i = 0; i < size; i++) {
-        vec[i] = gen() % 255;
-    }
-    return vec;
-}
-
-std::vector<int> getRandomMatrix(int w, int h) {
-    return getRandomVector(w * h);
-}
-
 double getRectangleValue(function f, double x, double y, double z, double* h) {
     return f(x + h[0]/2, y + h[1]/2, z + h[2]/2);
 }
@@ -70,12 +56,33 @@ double integrateSequential(function f, double* a, double* b, double* n) {
 double integrateParallel(function f, double* a, double* b, double* n) {
     double result = 0.0;
 
-    int comm_size, rank;
+    int commSize, rank;
 
-    MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
+    MPI_Comm_size(MPI_COMM_WORLD, &commSize);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    std::cout << "Process number " << rank << std::endl; 
+
+    double k = abs(b[0] - a[0]) / static_cast<double>(commSize);
+    double i1 = a[0] + k * rank;
+    double i2 = a[0] + k * (rank + 1);
+    if (rank == commSize - 1)
+        i2 = b[0];
+
+    a[0] = i1;
+    b[0] = i2;
+
+    std::cout << "process number " << rank << std::endl;
+    std::cout << "k = " << k << std::endl;
+    std::cout << "i1 = " << i1 << std::endl;
+    std::cout << "i2 = " << i2 << std::endl;
+
+    for (int i = 0; i < commSize; i++) {
+        n[i] = n[i] / commSize;
+    }
+
+    double localResult = integrateSequential(f, a, b, n);
+
+    MPI_Reduce(&localResult, &result, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 
     return result;
 }

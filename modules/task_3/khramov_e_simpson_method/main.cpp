@@ -4,6 +4,8 @@
 #include "./simpson.h"
 #include <gtest-mpi-listener.hpp>
 
+const double epsilon = 0.01;
+
 TEST(Test_simpson_method, test) {
     int rank;
 
@@ -13,18 +15,24 @@ TEST(Test_simpson_method, test) {
         return 10 * x * y * z * z;
     };
 
-    double result;
+    double resultSequential, resultParallel;
 
     double a[3] = {0, 0, 0};
     double b[3] = {1, 1, 1};
     double n[3] = {100, 100, 100};
 
     if (rank == 0) {
-        result = integrateSequential(func, a, b, n);
-        std::cout << result;
+        resultSequential = integrateSequential(func, a, b, n);
     }
 
-    ASSERT_EQ(1, 1);
+    resultParallel = integrateParallel(func, a, b, n);
+
+    if (rank == 0) {
+        // std::cout << "Parallel: " << resultParallel;
+        // std::cout << "Sequential: " << resultSequential;
+        ASSERT_NEAR(resultSequential, resultParallel, epsilon);
+    }
+
 }
 
 
