@@ -1,10 +1,8 @@
 // Copyright 2022 Zorin Oleg
 #include <gtest/gtest.h>
-
+#include "./moore_alg.h"
 #include <gtest-mpi-listener.hpp>
 #include <vector>
-
-#include "./moore_alg.h"
 
 TEST(moore_alg, test_sequential) {
   int rank;
@@ -35,16 +33,7 @@ TEST(moore_alg, test_sequential_expanded) {
   if (rank == 0) {
     weight_matrix = expandMatrix(weight_matrix, 4);
     Vector res = MooreAlgSequential(weight_matrix, start);
-    res.erase(res.
-
-                  end()
-
-                  - 4,
-              res.
-
-              end()
-
-    );
+    res.erase(res.end()- 4, res.end());
     ASSERT_EQ(ans, res);
   }
 }
