@@ -128,6 +128,7 @@ Vector MooreAlgParallel(const Matrix& weight_matrix, int start) {
         for (auto it = Q.begin(); it != Q.end(); it++) {
           if (*it == to_erase[i]) {
             Q.erase(it);
+            break;
           }
         }
       }
