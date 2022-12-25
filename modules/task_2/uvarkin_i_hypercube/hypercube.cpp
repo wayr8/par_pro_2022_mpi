@@ -28,7 +28,7 @@ std::map<int, int> CreateHypercube(int procNum) {
         return hypercube;
     }
 
-    int count = static_cast<int>std::pow(2, dimension);
+    int count = static_cast<int>(std::pow(2, dimension));
     for (int i = 0; i < count; ++i) {
         hypercube[i] = i;
     }
