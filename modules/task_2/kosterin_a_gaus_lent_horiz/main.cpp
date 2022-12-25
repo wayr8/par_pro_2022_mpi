@@ -17,7 +17,7 @@ double **arr(int size) {
       double ran = static_cast<double>((gen() % 100));
       ar[i][j] = ran + i + j;
     }
-    a[i][i] = 0;
+    ar[i][i] = 0;
   }
 
   return ar;
@@ -112,7 +112,7 @@ TEST(Parallel_Operations_MPI, Test_15x15) {
   }
 }
 
-TEST(Parallel_Operations_MPI, Test_10x10) {
+TEST(Parallel_Operations_MPI, Test2_10x10) {
   bool flag = false;
   double err = 0.1;
   int rank;
