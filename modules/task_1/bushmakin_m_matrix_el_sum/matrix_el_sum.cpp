@@ -1,8 +1,6 @@
 // Copyright 2022 Bushmakin Maksim
 #include "../../../modules/task_1/bushmakin_m_matrix_el_sum/matrix_el_sum.h"
-
 #include <mpi.h>
-
 #include <algorithm>
 #include <iostream>
 #include <random>
