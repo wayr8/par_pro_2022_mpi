@@ -84,6 +84,9 @@ double Gaus(double **a, double *b, int size) {
     }
   }
   for (int k = size - 1; k >= 0; k--) {
+    if (a[k][k] == 0) {
+      a[k][k]++;
+    }
     d = 0;
     for (int j = k + 1; j <= size; j++) {
       s = a[k][j] * x[j];
