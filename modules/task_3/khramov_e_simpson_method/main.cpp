@@ -2,24 +2,26 @@
 #include <gtest/gtest.h>
 #include <vector>
 #include "./simpson.h"
+#include <math.h>
 #include <gtest-mpi-listener.hpp>
 
-const double epsilon = 0.01;
 
-TEST(Test_simpson_method, test) {
-    int rank;
+const double epsilon = 0.1;
+const double e = 2.71828182846;
+
+void testIntegral(function func) {
+        int rank;
 
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    auto func = [](double x, double y, double z) {
-        return 10 * x * y * z * z;
-    };
-
     double resultSequential, resultParallel;
+    double a[3], b[3], n[3];
 
-    double a[3] = {0, 0, 0};
-    double b[3] = {1, 1, 1};
-    double n[3] = {100, 100, 100};
+    for (int i = 0; i < 3; i++) {
+        a[i] = 0;
+        b[i] = 1;
+        n[i] = 100;
+    }
 
     if (rank == 0) {
         resultSequential = integrateSequential(func, a, b, n);
@@ -32,9 +34,38 @@ TEST(Test_simpson_method, test) {
         // std::cout << "Sequential: " << resultSequential;
         ASSERT_NEAR(resultSequential, resultParallel, epsilon);
     }
-
 }
 
+
+TEST(Test_simpson_method, test_1) {
+    testIntegral([](double x, double y, double z) {
+        return 1;
+    });
+}
+
+TEST(Test_simpson_method, test_e) {
+    testIntegral([](double x, double y, double z) {
+        return e;
+    });
+}
+
+TEST(Test_simpson_method, test_xyz) {
+    testIntegral([](double x, double y, double z) {
+        return x * y * z;
+    });
+}
+
+TEST(Test_simpson_method, test_some) {
+    testIntegral([](double x, double y, double z) {
+        return y * x - y - z;
+    });
+}
+
+TEST(Test_simpson_method, test_last) {
+    testIntegral([](double x, double y, double z) {
+        return 2 * x * y * pow(z, 2);
+    });
+}
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);

@@ -61,7 +61,6 @@ double integrateParallel(function f, double* a, double* b, double* n) {
     MPI_Comm_size(MPI_COMM_WORLD, &commSize);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-
     double k = abs(b[0] - a[0]) / static_cast<double>(commSize);
     double i1 = a[0] + k * rank;
     double i2 = a[0] + k * (rank + 1);
@@ -70,15 +69,6 @@ double integrateParallel(function f, double* a, double* b, double* n) {
 
     a[0] = i1;
     b[0] = i2;
-
-    std::cout << "process number " << rank << std::endl;
-    std::cout << "k = " << k << std::endl;
-    std::cout << "i1 = " << i1 << std::endl;
-    std::cout << "i2 = " << i2 << std::endl;
-
-    for (int i = 0; i < commSize; i++) {
-        n[i] = n[i] / commSize;
-    }
 
     double localResult = integrateSequential(f, a, b, n);
 
