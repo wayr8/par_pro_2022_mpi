@@ -1,8 +1,8 @@
 // Copyright 2022 Zorin Oleg
 #include <gtest/gtest.h>
+#include <vector>
 #include "./moore_alg.h"
 #include <gtest-mpi-listener.hpp>
-#include <vector>
 
 TEST(moore_alg, test_sequential) {
   int rank;
@@ -55,9 +55,7 @@ TEST(moore_alg, test_expand_matrix) {
       {INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
       {INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
       {INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
-      {INF, INF, INF, INF, INF, INF, INF, INF, INF, INF},
-
-  };
+      {INF, INF, INF, INF, INF, INF, INF, INF, INF, INF}};
 
   if (rank == 0) {
     Matrix res = expandMatrix(matrix, 4);
