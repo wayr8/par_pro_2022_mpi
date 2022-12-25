@@ -8,8 +8,8 @@
 
 std::vector<int> Random(const int vecSize) {
   if (vecSize > 0) {
-    std::random_device devive;
-    std::mt19937 gen(devive());
+    std::random_device dev;
+    std::mt19937 gen(dev());
     std::vector<int> info(vecSize);
     for (int i = 0; i < vecSize; i++) {
       info[i] = -10000 + gen() % 100000;
@@ -31,9 +31,9 @@ int Min(const std::vector<int>& vectr) {
 }
 
 int MinParallel(const std::vector<int>& globVec, const int vecSize) {
-  int cntProc, rankProc;
+  int cntProc, rnkProc;
   MPI_Comm_size(MPI_COMM_WORLD, &cntProc);
-  MPI_Comm_rank(MPI_COMM_WORLD, &rankProc);
+  MPI_Comm_rank(MPI_COMM_WORLD, &rnkProc);
 
   int sizeBlock = vecSize / cntProc;
   int elementsRemaining = vecSize % cntProc;
@@ -41,7 +41,7 @@ int MinParallel(const std::vector<int>& globVec, const int vecSize) {
   int res = 0;
   int localMin;
 
-  if (rankProc < elementsRemaining) sizeBlock++;
+  if (rnkProc < elementsRemaining) sizeBlock++;
 
   if (vecSize / cntProc == 0) {
     localMin = Min(globVec);
@@ -52,13 +52,12 @@ int MinParallel(const std::vector<int>& globVec, const int vecSize) {
   std::vector<int> tmp;
   std::vector<int> dataReceived(sizeBlock);
 
-  if (rankProc == 0) {
+  if (rnkProc == 0) {
     countSends.assign(cntProc, globVec.size() / cntProc);
     tmp.resize(cntProc);
 
     for (int i = 0; i < elementsRemaining; i++) countSends[i]++;
-    for (int i = 0; i < cntProc - 1; i++)
-      tmp[i + 1] = tmp[i] + countSends[i];
+    for (int i = 0; i < cntProc - 1; i++) tmp[i + 1] = tmp[i] + countSends[i];
   }
   MPI_Scatterv(reinterpret_cast<const void*>(globVec.data()), countSends.data(),
                tmp.data(), MPI_INT, dataReceived.data(), sizeBlock, MPI_INT, 0,
@@ -66,9 +65,8 @@ int MinParallel(const std::vector<int>& globVec, const int vecSize) {
 
   localMin = Min(dataReceived);
 
-  MPI_Reduce(reinterpret_cast<void*>(&localMin),
-             reinterpret_cast<void*>(&localMin), 1, MPI_INT, MPI_MIN, 0,
-             MPI_COMM_WORLD);
+  MPI_Reduce(reinterpret_cast<void*>(&localMin), reinterpret_cast<void*>(&res),
+             1, MPI_INT, MPI_MIN, 0, MPI_COMM_WORLD);
 
   return res;
 }
