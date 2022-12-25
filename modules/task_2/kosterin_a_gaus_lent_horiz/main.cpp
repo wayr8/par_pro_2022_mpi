@@ -41,7 +41,7 @@ TEST(Parallel_Operations_MPI, Test_3x3) {
   double *ans = answer(size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   double res = Gaus(array, ans, size);
-  int answer = ans[0];
+  double answer = ans[0];
   for (int i = 0; i < size; i++) {
     delete[] array[i];
   }
@@ -61,7 +61,7 @@ TEST(Parallel_Operations_MPI, Test_5x5) {
   double *ans = answer(size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   double res = Gaus(array, ans, size);
-  int answer = ans[0];
+  double answer = ans[0];
   for (int i = 0; i < size; i++) {
     delete[] array[i];
   }
@@ -80,7 +80,7 @@ TEST(Parallel_Operations_MPI, Test_10x10) {
   double *ans = answer(size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   double res = Gaus(array, ans, size);
-  int answer = ans[0];
+  double answer = ans[0];
   for (int i = 0; i < size; i++) {
     delete[] array[i];
   }
@@ -100,7 +100,7 @@ TEST(Parallel_Operations_MPI, Test_15x15) {
   double *ans = answer(size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   double res = Gaus(array, ans, size);
-  int answer = ans[0];
+  double answer = ans[0];
   for (int i = 0; i < size; i++) {
     delete[] array[i];
   }
@@ -143,6 +143,6 @@ int main(int argc, char **argv) {
   listeners.Release(listeners.default_xml_generator());
 
   listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
-  return RUN_ALL_TESTS();
   MPI_Finalize();
+  return RUN_ALL_TESTS();
 }
