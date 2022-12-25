@@ -111,11 +111,11 @@ TEST(Parallel_Operations_MPI, Test_15x15) {
   }
 }
 
-TEST(Parallel_Operations_MPI, Test_30x30) {
+TEST(Parallel_Operations_MPI, Test_10x10) {
   bool flag = false;
   double err = 0.1;
   int rank;
-  int size = 30;
+  int size = 10;
   double **array = arr(size);
   double *ans = answer(size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
