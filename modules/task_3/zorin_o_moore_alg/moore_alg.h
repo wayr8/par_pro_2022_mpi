@@ -13,5 +13,4 @@ Matrix expandMatrix(const Matrix& M, int shift);
 Vector MooreAlgSequential(const Matrix& weight_matrix, int start);
 Vector MooreAlgParallel(const Matrix& weight_matrix, int start);
 
-
 #endif  // MODULES_TASK_3_ZORIN_O_MOORE_ALG_MOORE_ALG_H_
