@@ -10,4 +10,4 @@ double RectParall(double (*func)(std::vector<double>), std::vector <std::pair<do
 double RectSequen(double (*func)(std::vector<double>), std::vector <std::pair<double,
   double>> cordinate, const int leN);
 
-#endif  // MODULES_TASK_3_KHAIRETDINOV_T_RECTANG_INTEG_RECTANG_INTEG_H_
+#endif  // MODULES_TASK_3_KHAIRETDINOV_T_RECTANGLE_INTEG_RECTANG_INTEG_H_
