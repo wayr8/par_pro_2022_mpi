@@ -1,9 +1,9 @@
 // Copyright 2022 Terina Alina
-#include <gtest-mpi-listener.hpp>
 #include <gtest/gtest.h>
 #include <math.h>
 #include <vector>
 #include "../../../modules/task_3/terina_a_mn_int_trap_method/trap_method.h"
+#include <gtest-mpi-listener.hpp>
 
 TEST(trapez_int, test_1) {
     int rank;

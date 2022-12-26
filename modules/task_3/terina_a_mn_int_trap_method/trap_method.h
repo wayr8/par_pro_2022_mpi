@@ -1,11 +1,10 @@
 // Copyright 2022 Terina Alina
-#ifndef MODULES_TASK_3_TERINA_A_MN_INT_TRAP_METHOD_TRAP_H_
-#define MODULES_TASK_3_TERINA_A_MN_INT_TRAP_METHOD_TRAP_H_
-
+#ifndef MODULES_TASK_3_TERINA_A_MN_INT_TRAP_METHOD_TRAP_METHOD_H_
+#define MODULES_TASK_3_TERINA_A_MN_INT_TRAP_METHOD_TRAP_METHOD_H_
+#include <mpi.h>
 #include <algorithm>
 #include <cmath>
 #include <iostream>
-#include <mpi.h>
 #include <string>
 #include <vector>
 
@@ -18,4 +17,4 @@ double ParInt(std::vector<double> first_c, std::vector<double> second_c,
 double OrdinaryInt(std::vector<double> first_c, std::vector<double> second_c,
     double (*PodIntF)(std::vector<double>), int n);
 
-#endif // MODULES_TASK_3_TERINA_A_MN_INT_TRAP_METHOD_TRAP_H_
+#endif //  MODULES_TASK_3_TERINA_A_MN_INT_TRAP_METHOD_TRAP_METHOD_H_
