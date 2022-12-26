@@ -4,7 +4,7 @@
 static int offset = 0;
 static const double tolerance = 1e-8;
 
-static bool checkSolution(const std::vector <double> &coefs, size_t rows,
+bool checkSolution(const std::vector <double> &coefs, size_t rows,
                         size_t columns, const std::vector <double> &xAns) {
     if (rows * columns != coefs.size()) {
         throw "Matrix sizes does not match";
@@ -27,7 +27,7 @@ static bool checkSolution(const std::vector <double> &coefs, size_t rows,
     return true;
 }
 
-static bool checkEqualOfMatrix(const std::vector <double> &firstMatrix,
+bool checkEqualOfMatrix(const std::vector <double> &firstMatrix,
                                 const std::vector <double> &secondMatrix) {
     if (firstMatrix.size() != secondMatrix.size()) {
         return 0;
@@ -49,7 +49,7 @@ std::vector <double> getRandomMatrix(int rows, int columns,
     int index = 0;
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < columns; ++j) {
-            newMatrix[index++] = randomVal(gen);
+            newMatrix[index++] = randomVal(generator);
         }
     }
     return newMatrix;
@@ -80,9 +80,9 @@ std::vector <double> nonParSolution(const std::vector <double> &coefs,
     }
 
     for (int k = static_cast<int>(rows) - 1; k >= 0; --k) {
-        result[k] = b[k * cols + cols - 1];
+        result[k] = b[k * columns + columns - 1];
         for (int i = 0; i < k; i++) {
-            b[i * cols + cols - 1] -= b[i * cols + k] * result[k];
+            b[i * columns + columns - 1] -= b[i * columns + k] * result[k];
         }
     }
     return result;
@@ -163,7 +163,7 @@ std::vector <double> ParSolution(const std::vector <double> &coefs,
     }
 
     if ((columns - 1) % procCount ==
-        static_cast<size_t>procId) {
+        static_cast<size_t>(procId)) {
         MPI_Request request;
         MPI_Isend(oneProcVect.data() + ((columns - 1) / procCount) *
                 rows, rows, MPI_DOUBLE, 0, 2, MPI_COMM_WORLD, &request);
