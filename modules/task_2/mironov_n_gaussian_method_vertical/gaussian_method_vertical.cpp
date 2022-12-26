@@ -4,7 +4,7 @@
 static int offset = 0;
 static const double tolerance = 1e-8;
 
-bool checkSolution(const std::vector <double> &coefs, size_t rows,
+static bool checkSolution(const std::vector <double> &coefs, size_t rows,
                         size_t columns, const std::vector <double> &xAns) {
     if (rows * columns != coefs.size()) {
         throw "Matrix sizes does not match";
@@ -27,7 +27,7 @@ bool checkSolution(const std::vector <double> &coefs, size_t rows,
     return true;
 }
 
-bool checkEqualOfMatrix(const std::vector <double> &firstMatrix,
+static bool checkEqualOfMatrix(const std::vector <double> &firstMatrix,
                                 const std::vector <double> &secondMatrix) {
     if (firstMatrix.size() != secondMatrix.size()) {
         return 0;
