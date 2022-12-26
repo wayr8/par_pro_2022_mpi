@@ -84,7 +84,7 @@ int doParallel(const std::string& first_str, const std::string& second_str,
   }
   part_res = compareStrings(first_str_part, second_str_part);
   if (rank == 0) final_answers.resize(size);
-  MPI_Gather(&part_res, 1, MPI_INT, &final_answers[0], 1, MPI_INT, 0,
+  MPI_Gather(&part_res, 1, MPI_INT, final_answers.data(), 1, MPI_INT, 0,
              MPI_COMM_WORLD);
 
   if (rank == 0) {
