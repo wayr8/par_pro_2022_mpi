@@ -1,13 +1,12 @@
-#include <mpi.h>
+// Copyright 2022 Pashina Alina
 
+#include <mpi.h>
 #include <algorithm>
 #include <iostream>
 #include <random>
 #include <string>
 #include <vector>
-
 #include "pashina_a_lex_compare_strings.h";
-#include "mpi.h"
 
 int compareStrings(const std::string& first_str,
                    const std::string& second_str) {
@@ -117,3 +116,4 @@ int doParallel(const std::string& first_str, const std::string& second_str,
 
   return part_res;
 }
+

@@ -1,7 +1,9 @@
+// Copyright 2022 Pashina Alina
+
 #include <gtest/gtest.h>
-#include <gtest-mpi-listener.hpp>
 #include <vector>
 #include "./pashina_a_lex_compare_strings.h"  ////
+#include <gtest-mpi-listener.hpp>
 
 TEST(generateString_MPI_Checks, get_rand_str) {
   ASSERT_NO_THROW(generateString(11));
@@ -97,4 +99,5 @@ int main(int argc, char** argv) {
   listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
   return RUN_ALL_TESTS();
 }
-    
+  
+
