@@ -1,11 +1,11 @@
 // Copyright 2022 Kosterin Alexey
-#include "../../../modules/task_2/kosterin_a_gaus_lent_horiz/gaus_lent_horiz.h"
 #include <mpi.h>
 #include <algorithm>
 #include <cmath>
 #include <random>
 #include <stdexcept>
 #include <vector>
+#include "../../../modules/task_2/kosterin_a_gaus_lent_horiz/gaus_lent_horiz.h"
 
 std::vector<double> newMatrix(int size) {
   std::random_device dev;
@@ -47,13 +47,13 @@ std::vector<double> getGauss(const std::vector<double> &a, int size) {
 bool ChekTrueAnswer(const std::vector<double> &a, int size,
                     const std::vector<double> &x) {
   std::vector<double> res(size);
-  double e = 0.5;
-    for (int j = 0; j < size; j++) {
-      res[0] += a[j] * x[j];
-    }
-    if (std::abs(res[0] - a[0 * (size + 1) + size]) > e) {
-      return false;
-    }
+  double e = 2;
+  for (int j = 0; j < size; j++) {
+    res[0] += a[j] * x[j];
+  }
+  if (std::abs(res[0] - a[0 * (size + 1) + size]) > e) {
+    return false;
+  }
   return true;
 }
 
