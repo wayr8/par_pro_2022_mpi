@@ -28,7 +28,7 @@ void Sleeping(int* mutex, bool* thread_running) {
     while (*thread_running) {
         if (!(*mutex)) {
             // std::cout << "Barber sleeping..." << std::endl;
-            std::this_thread::sleep_for(std::chrono::microseconds(10));
+            std::this_thread::sleep_for(std::chrono::microseconds(1));
         }
     }
 }
@@ -101,7 +101,7 @@ void Checking(int ProcRank) {
         working = true;
         std::thread Empty(Empty_Buffer, &working, &count);
         while (true) {
-            std::this_thread::sleep_for(std::chrono::microseconds(25));
+            std::this_thread::sleep_for(std::chrono::microseconds(5));
             if (last_count == count) {
                 working = false;
                 break;
@@ -139,7 +139,7 @@ void ClientLoop(int ProcRank) {
     while (true) {
         message.id = rand_r() % 1000000;
         message.ProcRank = ProcRank;
-        std::this_thread::sleep_for(std::chrono::microseconds(10));
+        std::this_thread::sleep_for(std::chrono::microseconds(5));
         MPI_Send(&message, 1, MPI_2INT, 0, REQUEST, MPI_COMM_WORLD);
         MPI_Recv(&signal, 1, MPI_INT, 0, RESPONSE, MPI_COMM_WORLD, &status);
         if (signal == 1) {
