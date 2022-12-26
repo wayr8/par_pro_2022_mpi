@@ -23,7 +23,11 @@ TEST(RadixSortBatcher, test1_int_chet) {
         ne[i] = vec1[i];
     }
 
-    if (rank == 0) EXPECT_EQ(ne, res);
+    if (rank == 0) {
+        for (int i = 0; i < s; i++) {
+            EXPECT_EQ(ne[i], res[i]);
+        }
+    }
 }
 
 TEST(RadixSortBatcher, test2_int_chet_with_neg) {
@@ -45,7 +49,11 @@ TEST(RadixSortBatcher, test2_int_chet_with_neg) {
         ne[i] = vec1[i];
     }
 
-    if (rank == 0) EXPECT_EQ(ne, res);
+    if (rank == 0) {
+        for (int i = 0; i < s; i++) {
+            EXPECT_EQ(ne[i], res[i]);
+        }
+    }
 }
 
 TEST(RadixSortBatcher, test3_double_chet) {
@@ -67,7 +75,11 @@ TEST(RadixSortBatcher, test3_double_chet) {
         ne[i] = vec1[i];
     }
 
-    if (rank == 0) EXPECT_EQ(ne, res);
+    if (rank == 0) {
+        for (int i = 0; i < s; i++) {
+            EXPECT_EQ(ne[i], res[i]);
+        }
+    }
 }
 
 TEST(RadixSortBatcher, test4_double_chet_with_neg) {
@@ -89,7 +101,11 @@ TEST(RadixSortBatcher, test4_double_chet_with_neg) {
         ne[i] = vec1[i];
     }
 
-    if (rank == 0) EXPECT_EQ(ne, res);
+    if (rank == 0) {
+        for (int i = 0; i < s; i++) {
+            EXPECT_EQ(ne[i], res[i]);
+        }
+    }
 }
 
 TEST(RadixSortBatcher, test5_double_nechet_with_neg) {
@@ -111,7 +127,11 @@ TEST(RadixSortBatcher, test5_double_nechet_with_neg) {
         ne[i] = vec1[i];
     }
 
-    if (rank == 0) EXPECT_EQ(ne, res);
+    if (rank == 0) {
+        for (int i = 0; i < s; i++) {
+            EXPECT_EQ(ne[i], res[i]);
+        }
+    }
 }
 
 
