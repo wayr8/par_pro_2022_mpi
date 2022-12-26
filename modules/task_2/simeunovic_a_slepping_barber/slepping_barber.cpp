@@ -14,9 +14,9 @@ void Cutting_Hair(int client) {
     std::mt19937 rand_r(dev());
     int count = rand_r() % 15;
     while (count--) {
-          // std::cout << "Working on client with id:" << client << std::endl;
+           std::cout << "Working on client with id:" << client << std::endl;
     }
-    // std::cout << "Ended work on client with id:" << client << std::endl;
+     std::cout << "Ended work on client with id:" << client << std::endl;
 }
 struct buffer {
     int id;
@@ -27,7 +27,7 @@ void Sleeping(int* mutex, bool* thread_running) {
     std::mt19937 rand_r(dev());
     while (*thread_running) {
         if (!(*mutex)) {
-            // std::cout << "Barber sleeping..." << std::endl;
+             std::cout << "Barber sleeping..." << std::endl;
             std::this_thread::sleep_for(std::chrono::microseconds(1));
         }
     }
@@ -49,7 +49,7 @@ void DoBarberLoop(int n, int ProcSize, int ProcRank) {
         if (free_barber) {
             if (!ocered.empty()) {
                 signal = 1;
-                // std::cout << "Started working on client with id:" << ocered.front().id << std::endl;
+                 std::cout << "Started working on client with id:" << ocered.front().id << std::endl;
                 MPI_Send(&signal, 1, MPI_INT, ocered.front().ProcRank, RESPONSE, MPI_COMM_WORLD);
                 ocered.pop();
                 free_barber = false;
@@ -62,10 +62,10 @@ void DoBarberLoop(int n, int ProcSize, int ProcRank) {
             case REQUEST: {
                 if (ocered.size() < n) {
                     mutex = 1;
-                       // std::cout << "Customer witi id:" << message.id << " has arrived." << std::endl;
+                        std::cout << "Customer witi id:" << message.id << " has arrived." << std::endl;
                     ocered.push(message);
                 } else {
-                      // std::cout << "There is no place for customer with id:" << message.id << std::endl;
+                       std::cout << "There is no place for customer with id:" << message.id << std::endl;
                     thrown_clients++;
                     signal = 0;
                     MPI_Send(&signal, 1, MPI_INT, message.ProcRank, RESPONSE, MPI_COMM_WORLD);
