@@ -7,8 +7,8 @@ TEST(gaussian_method_vertical, matrix_2_rows_3_columns_test) {
     int procId;
     MPI_Comm_rank(MPI_COMM_WORLD, &procId);
     std::vector<double> coefs;
-    const int rows = 2;
-    const int columns = 3;
+    const size_t rows = 2;
+    const size_t columns = 3;
 
     if (procId == 0) {
         coefs = {
@@ -30,8 +30,8 @@ TEST(gaussian_method_vertical,  matrix_3_rows_4_columns_test) {
     int procId;
     MPI_Comm_rank(MPI_COMM_WORLD, &procId);
     std::vector<double> coefs;
-    const int rows = 3;
-    const int columns = 4;
+    const size_t rows = 3;
+    const size_t columns = 4;
 
     if (procId == 0) {
         coefs = {
@@ -55,8 +55,8 @@ TEST(gaussian_method_vertical,
     int procId;
     MPI_Comm_rank(MPI_COMM_WORLD, &procId);
     std::vector<double> coefs;
-    const int rows = 3;
-    const int columns = 4;
+    const size_t rows = 3;
+    const size_t columns = 4;
 
     if (procId == 0) {
         coefs = {
@@ -74,8 +74,8 @@ TEST(gaussian_method_vertical,
     int procId;
     MPI_Comm_rank(MPI_COMM_WORLD, &procId);
     std::vector<double> coefs;
-    const int rows = 3;
-    const int columns = 4;
+    const size_t rows = 3;
+    const size_t columns = 4;
 
     if (procId == 0) {
         coefs = {
@@ -95,8 +95,8 @@ TEST(gaussian_method_vertical,
     int procId;
     MPI_Comm_rank(MPI_COMM_WORLD, &procId);
     std::vector<double> coefs;
-    const int rows = 3;
-    const int columns = 4;
+    const size_t rows = 3;
+    const size_t columns = 4;
 
     if (procId == 0) {
         coefs = {

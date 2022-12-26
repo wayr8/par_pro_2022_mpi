@@ -40,21 +40,6 @@ static bool checkEqualOfMatrix(const std::vector <double> &firstMatrix,
     return true;
 }
 
-std::vector <double> getRandomMatrix(int rows, int columns,
-                        double min_value, double max_value) {
-    std::mt19937 generator;
-    generator.seed((unsigned)time(0) + ++offset);
-    std::uniform_real_distribution<> randomVal(min_value, max_value);
-    std::vector <double> newMatrix(rows * columns);
-    int index = 0;
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < columns; ++j) {
-            newMatrix[index++] = randomVal(generator);
-        }
-    }
-    return newMatrix;
-}
-
 std::vector <double> nonParSolution(const std::vector <double> &coefs,
                                     size_t rows, size_t columns) {
     if (rows * columns != coefs.size()) {
