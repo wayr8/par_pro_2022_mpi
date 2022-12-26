@@ -4,6 +4,7 @@
 #include <cmath>
 #include <ctime>
 #include <algorithm>
+#include <cstring>
 #include <utility>
 
 
