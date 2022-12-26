@@ -10,8 +10,7 @@ void swap(int a, int b) {
 void Shuf(std::vector<int>* vec, int vec_size, int left_bord, int right_bord) {
     auto half = (left_bord + right_bord) / 2;
     std::vector<int>* tmp = vec;
-    for (int i = left_bord, j = 0; i <= right_bord; i += 2, j++)
-    {
+    for (int i = left_bord, j = 0; i <= right_bord; i += 2, j++) {
         tmp[i] = vec[left_bord + j];
         tmp[i + 1] = vec[half + j + 1];
     }
@@ -66,7 +65,7 @@ std::vector<int> Merge(std::vector<std::vector<int>> vec) {
         for (size_t i = 0; i < vec.size(); i++) {
             std::vector<int> tmp = vec.at(i);
             tmp.insert(tmp.end(), vec.at(i+1).begin(), vec.at(i+1).end());
-            BatcherMerge(&tmp,tmp.size(), 0, tmp.size());
+            BatcherMerge(&tmp, tmp.size(), 0, tmp.size());
             vec.at(i) = tmp;
             vec.erase(vec.begin() + i);
         }
