@@ -4,7 +4,7 @@
 #include "../../../modules/task_1/mironov_n_count_required_char_in_str/count_required_char_in_str.h"
 #include <gtest-mpi-listener.hpp>
 
-TEST(Count_required_char_in_str, count_an_existing_character_in_string) {
+TEST(Count_required_char_in_str, test_1) {
     int procId;
     MPI_Comm_rank(MPI_COMM_WORLD, &procId);
 
@@ -19,7 +19,7 @@ TEST(Count_required_char_in_str, count_an_existing_character_in_string) {
     }
 }
 
-TEST(Count_required_char_in_str, count_a_missing_character_in_string) {
+TEST(Count_required_char_in_str, test_2) {
     int procId;
     MPI_Comm_rank(MPI_COMM_WORLD, &procId);
 
@@ -34,8 +34,7 @@ TEST(Count_required_char_in_str, count_a_missing_character_in_string) {
     }
 }
 
-TEST(Count_required_char_in_str,
-    count_character_in_string_containing_only_that_character) {
+TEST(Count_required_char_in_str, test_3) {
     int procId;
     MPI_Comm_rank(MPI_COMM_WORLD, &procId);
 
@@ -50,7 +49,7 @@ TEST(Count_required_char_in_str,
     }
 }
 
-TEST(Count_required_char_in_str, throw_when_string_is_empty) {
+TEST(Count_required_char_in_str, test_4) {
     int procId;
     MPI_Comm_rank(MPI_COMM_WORLD, &procId);
 
@@ -60,15 +59,13 @@ TEST(Count_required_char_in_str, throw_when_string_is_empty) {
     ASSERT_ANY_THROW(countRequiredCharInStr(str, requiredChar));
 }
 
-TEST(Count_required_char_in_str,
-    throw_when_create_random_string_with_negative_size) {
+TEST(Count_required_char_in_str, test_5) {
     int size = -5;
     char *str = new char[5];
     ASSERT_ANY_THROW(getRandomStr(str, size));
 }
 
-TEST(Count_required_char_in_str,
-    count_character_in_random_string_and_random_char) {
+TEST(Count_required_char_in_str, test_6) {
     int procId;
     MPI_Comm_rank(MPI_COMM_WORLD, &procId);
 
