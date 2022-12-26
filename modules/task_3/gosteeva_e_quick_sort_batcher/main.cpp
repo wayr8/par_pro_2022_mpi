@@ -1,10 +1,10 @@
 // Copyright 2022 Gosteeva Ekaterina
 
-#include "quick_sort_batcher.h"
-#include <mpi.h>
-#include <gtest-mpi-listener.hpp>
+
 #include <gtest/gtest.h>
 #include <vector>
+#include "./quick_sort_batcher.h"
+#include <gtest-mpi-listener.hpp>
 
 void SortTEST(int vec_size) {
     int MPI_rank, MPI_size;
