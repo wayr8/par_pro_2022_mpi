@@ -14,7 +14,7 @@ CCSMatrix getCCSMatrix(const std::vector<std::vector<double>>& matrix) {
     ccsMatrix.points.push_back(0);
     for (int i = 0; i < ccsMatrix.columns; ++i) {
         for (int j = 0; j < ccsMatrix.rows; ++j) {
-            if (std::abs(matrix[j][i]) == 0) {
+            if (matrix[j][i] == 0) {
                 continue;
             }
 
