@@ -19,7 +19,8 @@ TEST(Parallel_Operations_MPI, Test_Sum) {
     result = calculateParallelMatrixRowSum(global_matrix, count_rows_matrix, count_columns_matrix);
 
     if (rank == 0) {
-        std::vector<int> reference_result = calculateSequentialMatrixRowSum(global_matrix, count_rows_matrix, count_columns_matrix);
+        std::vector<int> reference_result = calculateSequentialMatrixRowSum(global_matrix,
+          count_rows_matrix, count_columns_matrix);
         ASSERT_EQ(reference_result, result);
     }
 }

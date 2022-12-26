@@ -43,25 +43,20 @@ std::vector<int> calculateParallelMatrixRowSum(std::vector<int> global_matrix, i
   std::vector<int> localResult;
   std::vector<int> result;
 
-  //Если число процессов меньше числа строк матрицы
   if (dataPerProc == 0) {
-    //Пусть все считает нулевой процесс(ну или с помощью remainder понимаем, сколько данныХ)
     if (rank == 0) {
-
       result.resize(countRows);
       result = calculateSequentialMatrixRowSum(global_matrix, countRows, lenRow);
     }
-  }
-  else {
-
-    //Разбираемся с частью, которую можно разделить на равные куски
+  } else {
     if (rank == 0) {
       localBuff.resize(dataPerProc * lenRow);
       result.resize(countRows);
-      MPI_Scatter(global_matrix.data(), dataPerProc * lenRow, MPI_INT, localBuff.data(), dataPerProc * lenRow, MPI_INT, 0, MPI_COMM_WORLD);
+      MPI_Scatter(global_matrix.data(), dataPerProc * lenRow, MPI_INT,
+        localBuff.data(), dataPerProc * lenRow, MPI_INT, 0, MPI_COMM_WORLD);
       localResult = calculateSequentialMatrixRowSum(localBuff, dataPerProc, lenRow);
-      MPI_Gather(localResult.data(), dataPerProc, MPI_INT, result.data(), dataPerProc, MPI_INT, 0, MPI_COMM_WORLD);
-      // Я думаю, что выгоднее не пересылать по 1 строчке каждому процессу, а сразу посчитать на нулевом для оставшихся строк
+      MPI_Gather(localResult.data(), dataPerProc, MPI_INT,
+        result.data(), dataPerProc, MPI_INT, 0, MPI_COMM_WORLD);
       if (remainder != 0) {
         int calculatedIndex = dataPerProc * lenRow * size;
         std::vector<int> tmp(global_matrix.begin() + calculatedIndex, global_matrix.begin() +
@@ -72,12 +67,13 @@ std::vector<int> calculateParallelMatrixRowSum(std::vector<int> global_matrix, i
           result[i] = localResult[i - dataPerProc * size];
         }
       }
-    }
-    else {
+    } else {
       localBuff.resize(dataPerProc * lenRow);
-      MPI_Scatter(nullptr, dataPerProc * lenRow, MPI_INT, localBuff.data(), dataPerProc * lenRow, MPI_INT, 0, MPI_COMM_WORLD);
+      MPI_Scatter(nullptr, dataPerProc * lenRow, MPI_INT,
+        localBuff.data(), dataPerProc * lenRow, MPI_INT, 0, MPI_COMM_WORLD);
       localResult = calculateSequentialMatrixRowSum(localBuff, dataPerProc, lenRow);
-      MPI_Gather(localResult.data(), dataPerProc, MPI_INT, nullptr, dataPerProc, MPI_INT, 0, MPI_COMM_WORLD);
+      MPI_Gather(localResult.data(), dataPerProc, MPI_INT,
+        nullptr, dataPerProc, MPI_INT, 0, MPI_COMM_WORLD);
     }
     return result;
   }
