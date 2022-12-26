@@ -74,7 +74,7 @@ std::vector<int> calculateParallelMatrixRowSum(std::vector<int> global_matrix, i
       localResult = calculateSequentialMatrixRowSum(localBuff, dataPerProc, lenRow);
       MPI_Gather(localResult.data(), dataPerProc, MPI_INT,
         nullptr, dataPerProc, MPI_INT, 0, MPI_COMM_WORLD);
-    }
-    return result;
+    } 
   }
+  return result;
 }
