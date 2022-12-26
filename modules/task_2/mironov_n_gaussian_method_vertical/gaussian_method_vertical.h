@@ -13,9 +13,9 @@
 
 bool checkEqualOfMatrix(const std::vector <double> &firstMatrix,
                         const std::vector <double> &secondMatrix);
-std::vector <double> nonParSolution(const std::vector <double> &coefs,
+std::vector <double> nonParSolution(const std::vector <double> coefs,
                                   size_t rows, size_t cols);
-std::vector <double> ParSolution(const std::vector <double> &coefs,
+std::vector <double> ParSolution(const std::vector <double> coefs,
                                   size_t rows, size_t cols);
 bool checkSolution(const std::vector <double> &coefs, size_t rows, size_t cols,
                     const std::vector <double> &xAns);
