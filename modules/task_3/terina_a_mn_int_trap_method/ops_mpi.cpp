@@ -1,8 +1,9 @@
 // Copyright 2022 Terina Alina
 #include "../../../modules/task_3/terina_a_mn_int_trap_method/trap_method.h"
-#include "mpi.h"
-#include <vector>
+#include <mpi.h>
 #include <random>
+#include <vector>
+
 
 double First(std::vector<double> coefs) {
     double x = coefs[0];
@@ -57,7 +58,7 @@ double ParInt(std::vector <double> first_c, std::vector <double> second_c,
     if (rank < remain) {
         count_sz += 1;
         local_sz = rank * count_sz;
-    }else {
+    } else {
         local_sz = rank * count_sz + remain;
     }
 

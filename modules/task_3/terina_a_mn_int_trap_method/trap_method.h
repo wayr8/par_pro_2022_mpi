@@ -17,4 +17,4 @@ double ParInt(std::vector<double> first_c, std::vector<double> second_c,
 double OrdinaryInt(std::vector<double> first_c, std::vector<double> second_c,
     double (*PodIntF)(std::vector<double>), int n);
 
-#endif //  MODULES_TASK_3_TERINA_A_MN_INT_TRAP_METHOD_TRAP_METHOD_H_
+#endif  //  MODULES_TASK_3_TERINA_A_MN_INT_TRAP_METHOD_TRAP_METHOD_H_
