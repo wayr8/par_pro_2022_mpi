@@ -47,6 +47,7 @@ std::vector<int> calculateParallelMatrixRowSum(std::vector<int> global_matrix, i
   if (dataPerProc == 0) {
     //ѕусть все считает нулевой процесс(ну или с помощью remainder понимаем, сколько данны’)
     if (rank == 0) {
+
       result.resize(countRows);
       result = calculateSequentialMatrixRowSum(global_matrix, countRows, lenRow);
     }
