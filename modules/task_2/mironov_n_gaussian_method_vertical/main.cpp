@@ -3,7 +3,7 @@
 #include "../../../modules/task_2/mironov_n_gaussian_method_vertical/gaussian_method_vertical.h"
 #include <gtest-mpi-listener.hpp>
 
-TEST(gaussian_method_vertical, matrix_2_rows_3_columns_test) {
+TEST(Gaussian_method_vertical, test_1) {
     int procId;
     MPI_Comm_rank(MPI_COMM_WORLD, &procId);
     std::vector<double> coefs;
@@ -26,7 +26,7 @@ TEST(gaussian_method_vertical, matrix_2_rows_3_columns_test) {
     }
 }
 
-TEST(gaussian_method_vertical,  matrix_3_rows_4_columns_test) {
+TEST(Gaussian_method_vertical, test_2) {
     int procId;
     MPI_Comm_rank(MPI_COMM_WORLD, &procId);
     std::vector<double> coefs;
@@ -50,7 +50,7 @@ TEST(gaussian_method_vertical,  matrix_3_rows_4_columns_test) {
     }
 }
 
-TEST(gaussian_method_vertical, par_test_with_incorrect_columns_num_1) {
+TEST(Gaussian_method_vertical, test_3) {
     int procId;
     MPI_Comm_rank(MPI_COMM_WORLD, &procId);
     std::vector<double> coefs;
@@ -68,7 +68,7 @@ TEST(gaussian_method_vertical, par_test_with_incorrect_columns_num_1) {
     EXPECT_ANY_THROW(ParSolution(coefs, rows, columns + 1));
 }
 
-TEST(gaussian_method_vertical, non_par_test_with_incorrect_columns_num) {
+TEST(Gaussian_method_vertical, test_4) {
     int procId;
     MPI_Comm_rank(MPI_COMM_WORLD, &procId);
     std::vector<double> coefs;
@@ -88,7 +88,7 @@ TEST(gaussian_method_vertical, non_par_test_with_incorrect_columns_num) {
     }
 }
 
-TEST(gaussian_method_vertical, par_test_with_incorrect_columns_num_1) {
+TEST(Gaussian_method_vertical, test_5) {
     int procId;
     MPI_Comm_rank(MPI_COMM_WORLD, &procId);
     std::vector<double> coefs;
