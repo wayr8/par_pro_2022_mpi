@@ -1,9 +1,8 @@
 // Copyright 2022 Terina Alina
-#include "../../../modules/task_3/terina_a_mn_int_trap_method/trap_method.h"
 #include <mpi.h>
 #include <random>
 #include <vector>
-
+#include "../../../modules/task_3/terina_a_mn_int_trap_method/trap_method.h"
 
 double First(std::vector<double> coefs) {
     double x = coefs[0];
