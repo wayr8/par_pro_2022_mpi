@@ -2,44 +2,48 @@
 
 #include "../../../modules/task_3/gosteeva_e_quick_sort_batcher/quick_sort_batcher.h"
 
-void swap(int a, int b) {
+void swap(int a, int b)
+{
     if (b < a)
         std::swap(a, b);
 }
 
-void Shuf(std::vector<int>* vec, int vec_size, int left_bord, int right_bord) {
+void Shuf(std::vector<int>* vec,int vec_size, int left_bord, int right_bord)
+{
     auto half = (left_bord + right_bord) / 2;
     std::vector<int>* tmp = nullptr;
-    for (int i = left_bord, j = 0; i <= right_bord; i += 2, j++) {
+    for (int i = left_bord, j = 0; i <= right_bord; i += 2, j++)
+    {
         tmp[i] = vec[left_bord + j];
         tmp[i + 1] = vec[half + j + 1];
     }
-    for (size_t i = 0; i < vec_size; i++) {
+    for (size_t i = 0; i < vec_size; i++)
         vec[i] = tmp[i];
-    }
 }
 
-void Share(std::vector<int>* vec, int vec_size, int left_bord, int right_bord) {
+void Share(std::vector<int>* vec, int vec_size, int left_bord, int right_bord)
+{
     int half = (left_bord + right_bord) / 2;
     std::vector<int>* tmp = nullptr;
-    for (int i = left_bord, j = 0; i <= right_bord; i += 2, j++) {
+    for (int i = left_bord, j = 0; i <= right_bord; i += 2, j++)
+    {
         tmp[left_bord +j] = vec[i];
         tmp[half + j + 1] = vec[i+1];
     }
-    for (size_t i = 0; i < vec_size; i++) {
+    for (size_t i = 0; i < vec_size; i++)
         vec[i] = tmp[i];
-    }
 }
 
-void BatcherMerge(std::vector<int>* vec, int vec_size, int left_bord, int right_bord) {
+void BatcherMerge(std::vector<int>* vec, int vec_size,int left_bord, int right_bord)
+{
     if (right_bord == left_bord + 1) {
         swap(vec[left_bord], vec[right_bord]);
     }
     if (right_bord > left_bord + 2) {
-        Share(vec, right_bord - left_bord, left_bord, right_bord);
+        Share(vec, right_bord- left_bord, left_bord, right_bord);
         int half = (left_bord + right_bord) / 2;
         BatcherMerge(vec, half - left_bord, left_bord, half);
-        BatcherMerge(vec, right_bord - half + left_bord, half + left_bord, right_bord);
+        BatcherMerge(vec, right_bord- half + left_bord, half + left_bord, right_bord);
         Shuf(vec, right_bord - left_bord, left_bord, right_bord);
         for (int i = left_bord + 1; i < right_bord; i += 2) {
             swap(vec[i], vec[i+1]);
@@ -66,7 +70,7 @@ std::vector<int> Merge(std::vector<std::vector<int>> vec) {
         for (size_t i = 0; i < vec.size(); i++) {
             std::vector<int> tmp = vec.at(i);
             tmp.insert(tmp.end(), vec.at(i+1).begin(), vec.at(i+1).end());
-            BatcherMerge(&tmp, tmp.size(), 0, tmp.size());
+            BatcherMerge(&tmp,tmp.size(), 0, tmp.size());
             vec.at(i) = tmp;
             vec.erase(vec.begin() + i);
         }
