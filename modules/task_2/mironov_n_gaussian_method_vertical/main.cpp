@@ -51,7 +51,7 @@ TEST(gaussian_method_vertical,  matrix_3_rows_4_columns_test) {
 }
 
 TEST(gaussian_method_vertical,
-    par_perfomance_check_with_incorrect_columns_num_1) {
+    par_perfomance_check_with_incorrect_columns_num_1_test) {
     int procId;
     MPI_Comm_rank(MPI_COMM_WORLD, &procId);
     std::vector<double> coefs;
@@ -70,7 +70,7 @@ TEST(gaussian_method_vertical,
 }
 
 TEST(gaussian_method_vertical,
-    non_par_perfomance_check_with_incorrect_columns_num) {
+    non_par_perfomance_check_with_incorrect_columns_num_test) {
     int procId;
     MPI_Comm_rank(MPI_COMM_WORLD, &procId);
     std::vector<double> coefs;
@@ -91,7 +91,7 @@ TEST(gaussian_method_vertical,
 }
 
 TEST(gaussian_method_vertical,
-    par_perfomance_check_with_incorrect_columns_num_2) {
+    par_perfomance_check_with_incorrect_columns_num_2_test) {
     int procId;
     MPI_Comm_rank(MPI_COMM_WORLD, &procId);
     std::vector<double> coefs;
