@@ -30,10 +30,7 @@ std::vector<int> preset1() {
   for (int i = 0; i < rows; i++)
     for (int j = 0; j < colls; j++) {
       vec[i * colls + j] = matr[i][j];
-      // if (j % colls == 0) std::cout << std::endl;
-      // std::cout << std::setw(2) << matr[i][j];
     }
-  // std::cout << std::endl;
   vec.push_back(rows);
   vec.push_back(colls);
   return vec;
@@ -62,10 +59,7 @@ std::vector<int> preset2() {
   for (int i = 0; i < rows; i++)
     for (int j = 0; j < colls; j++) {
       vec[i * colls + j] = matr2[i][j];
-      // if (j % colls == 0) std::cout << std::endl;
-      // std::cout << matr2[i][j] << " ";
     }
-  // std::cout << std::endl;
   vec.push_back(rows);
   vec.push_back(colls);
   return vec;
@@ -91,10 +85,7 @@ std::vector<int> preset3() {
   for (int i = 0; i < rows; i++)
     for (int j = 0; j < colls; j++) {
       vec[i * colls + j] = matr2[i][j];
-      // if (j % colls == 0) std::cout << std::endl;
-      // std::cout << matr2[i][j] << "";
     }
-  // std::cout << std::endl;
   vec.push_back(rows);
   vec.push_back(colls);
   return vec;
@@ -111,10 +102,7 @@ std::vector<int> preset4() {
   for (int i = 0; i < rows; i++)
     for (int j = 0; j < colls; j++) {
       vec[i * colls + j] = matr2[i][j];
-      // if (j % colls == 0) std::cout << std::endl;
-      // std::cout << matr2[i][j] << "";
     }
-  // std::cout << std::endl;
   vec.push_back(rows);
   vec.push_back(colls);
   return vec;
@@ -128,10 +116,7 @@ std::vector<int> preset5() {
   for (int i = 0; i < rows; i++)
     for (int j = 0; j < colls; j++) {
       vec[i * colls + j] = matr2[i][j];
-      // if (j % colls == 0) std::cout << std::endl;
-      // std::cout << matr2[i][j] << "";
     }
-  // std::cout << std::endl;
   vec.push_back(rows);
   vec.push_back(colls);
   return vec;
@@ -153,7 +138,6 @@ std::vector<int> marking(std::vector<int> vecInput, int rows, int colls) {
   }
 
   std::vector<std::vector<int>> pairs;
-  // std::cout << "pairs size is " << pairs.size() << std::endl;
 
   for (int i = 0; i < rows * colls; i++) {
     if (i - colls > 0 && vec[i - colls] != 0 && vec[i] != 0 &&
@@ -161,22 +145,7 @@ std::vector<int> marking(std::vector<int> vecInput, int rows, int colls) {
       pairs.push_back({vec[i], vec[i - colls]});
   }
 
-  /* std::cout << "Now pairs size is " << pairs.size() << std::endl;
-   for (int i = 0; i < pairs.size(); i++) {
-     for (int j = 0; j < 2; j++) std::cout << pairs[i][j] << " ";
-     std::cout << std::endl;
-   }
-   std::cout << std::endl;*/
-
   std::vector<std::set<int>> totalMarks;
-
-  /*std::cout << "pairs.size() is " << pairs.size() << std::endl;
-  std::cout << "Start view of totalMarks:" << std::endl;
-  if (pairs.size() != 0) {
-  totalMarks.push_back({pairs[0][0], pairs[0][1]});
-  std::copy(totalMarks[0].begin(), totalMarks[0].end(),
-  std::ostream_iterator<int>(std::cout, " ")); std::cout << std::endl;
-  }*/
 
   for (int i = 0; i < pairs.size(); i++) {
     int coinc = -1;
@@ -202,12 +171,6 @@ std::vector<int> marking(std::vector<int> vecInput, int rows, int colls) {
     }
   }
 
-  /*for (int i = 0; i < totalMarks.size(); i++) {
-    std::cout << "Set number " << i << std::endl;
-    std::copy(totalMarks[i].begin(), totalMarks[i].end(),
-  std::ostream_iterator<int>(std::cout, " ")); std::cout << std::endl;
-  }*/
-
   std::vector<int> vec2 = vec;
 
   for (int i = 0; i < totalMarks.size(); i++) {
@@ -218,20 +181,11 @@ std::vector<int> marking(std::vector<int> vecInput, int rows, int colls) {
     }
   }
 
-  /*std::cout << "vec:";
-  for (int i = 0; i < rows * colls; i++) {
-    if (i % colls == 0) std::cout << std::endl;
-    std::cout << std::setw(3) << vec[i];
-  }
-  std::cout << std::endl;*/
-
   std::set<int> elems;
   for (int i = 0; i < rows * colls; i++) {
     elems.insert(vec2[i]);
   }
   if (elems.count(0) >= 1) elems.erase(elems.begin());
-  // std::copy(elems.begin(), elems.end(), std::ostream_iterator<int>(std::cout,
-  // " "));
 
   std::set<int>::iterator iter = elems.begin();
   for (int i = 1; i < elems.size() + 1; i++, iter++) {
@@ -239,13 +193,6 @@ std::vector<int> marking(std::vector<int> vecInput, int rows, int colls) {
       if (*iter == vec2[j]) vec2[j] = i;
     }
   }
-
-  /*std::cout << "Final vec2:";
-  for (int i = 0; i < rows * colls; i++) {
-    if (i % colls == 0) std::cout << std::endl;
-    std::cout << std::setw(3) << vec2[i];
-  }
-  std::cout << std::endl;*/
 
   return vec2;
 }
@@ -261,15 +208,6 @@ std::vector<int> rowsDistrib(std::vector<int> vecInput, int rows, int colls) {
   if (ProcRank == ProcNum - 1 && rows % (ProcNum - 1) != 0)
     localrows += rows % (ProcNum - 1);
 
-  // For debugging variables
-  /*MPI_Barrier(MPI_COMM_WORLD);
-  for (int i = 1; i < ProcNum; i++) {
-    if (ProcRank == i) {
-      std::cout << "Proc " << ProcRank << " var is " << var << std::endl;
-    }
-    MPI_Barrier(MPI_COMM_WORLD);
-  }*/
-
   std::vector<int> localvec;
 
   int localstart, localend;
@@ -280,17 +218,11 @@ std::vector<int> rowsDistrib(std::vector<int> vecInput, int rows, int colls) {
 
   if (ProcRank != 0) localend = localstart + localrows * colls;
 
-  // MPI_Barrier(MPI_COMM_WORLD);
-
   if (ProcRank != 0) {
     for (int i = localstart; i < localend; i++) {
       localvec.push_back(vecInput[i]);
     }
   }
-  // std::cout << "Proc " << ProcRank << " localvec.size is " << localvec.size()
-  // << std::endl;
-
-  // MPI_Barrier(MPI_COMM_WORLD);
 
   int temp = localrows * colls;
   int temp2 = temp + (rows % (ProcNum - 1)) * colls;
@@ -299,10 +231,6 @@ std::vector<int> rowsDistrib(std::vector<int> vecInput, int rows, int colls) {
   std::vector<int> res(temp);
   std::vector<int> res2(temp2);
 
-  // std::cout << ProcRank << "\n!!!!!localvec.size() is " << localvec.size();
-  // std::cout << ProcRank << "\nlocalrows*colls is " << localrows * colls;
-
-  // MPI_Barrier(MPI_COMM_WORLD);
   int mark = (ProcRank - 1) * (colls * localrows / 2) + 1;
 
   if (ProcRank != 0) {
@@ -330,7 +258,6 @@ std::vector<int> rowsDistrib(std::vector<int> vecInput, int rows, int colls) {
         tempvec.insert(tempvec.end(), res.begin(), res.end());
       }
     } else if (rows % (ProcNum - 1) != 0) {
-      // std::cout << std::endl << "ProcNum-1 is " << ProcNum - 1 << std::endl;
       for (int i = 1; i < ProcNum - 1; i++) {
         MPI_Recv(&res.front(), temp, MPI_INT, i, 0, MPI_COMM_WORLD, &status);
         tempvec.insert(tempvec.end(), res.begin(), res.end());
@@ -340,26 +267,7 @@ std::vector<int> rowsDistrib(std::vector<int> vecInput, int rows, int colls) {
                &status);
       tempvec.insert(tempvec.end(), res2.begin(), res2.end());
     }
-
-    /*std::cout << std::endl << "tempvec.size() is " << tempvec.size() <<
-    std::endl; for (int i = 0; i < tempvec.size(); i++) { if (i % colls == 0)
-    std::cout << std::endl; std::cout << std::setw(3) << tempvec[i];
-    }
-    std::cout << std::endl;*/
   }
-
-  /*MPI_Barrier(MPI_COMM_WORLD);
-  if (ProcRank == 0) {
-    std::cout << std::endl
-      << "localrows is " << localrows << std::endl;
-    for (int i = 0; i < tempvec.size(); i++) {
-      if (i % colls == 0) std::cout << std::endl;
-      std::cout << std::setw(3) << tempvec[i];
-    }
-    std::cout << std::endl;
-    std::cout << "tempvec.size() is " << tempvec.size() << std::endl;
-  }
-  MPI_Barrier(MPI_COMM_WORLD);*/
 
   if (ProcRank == 0) {
     return markingMPI(tempvec, localrows, rows, colls, ProcRank);
@@ -373,7 +281,6 @@ std::vector<int> markingMPI(std::vector<int> vecInput, int locrows, int rows,
   std::vector<int> vec = vecInput;
 
   std::vector<std::vector<int>> pairs;
-  // std::cout << "pairs size is " << pairs.size() << std::endl;
 
   for (int i = 0; i < rows * colls; i++) {
     if (i - colls > 0 && vec[i - colls] != 0 && vec[i] != 0 &&
@@ -381,22 +288,7 @@ std::vector<int> markingMPI(std::vector<int> vecInput, int locrows, int rows,
       pairs.push_back({vec[i], vec[i - colls]});
   }
 
-  /*std::cout << "Now pairs size is " << pairs.size() << std::endl;
-  for (int i = 0; i < pairs.size(); i++) {
-    for (int j = 0; j < 2; j++) std::cout << pairs[i][j] << " ";
-    std::cout << std::endl;
-  }
-  std::cout << std::endl;*/
-
   std::vector<std::set<int>> totalMarks;
-
-  /*std::cout << "Start view of totalMarks (mpi):" << std::endl;
-  if (pairs.size() != 0) {
-    totalMarks.push_back({pairs[0][0], pairs[0][1]});
-    std::copy(totalMarks[0].begin(), totalMarks[0].end(),
-              std::ostream_iterator<int>(std::cout, " "));
-    std::cout << std::endl;
-  }*/
 
   for (int i = 0; i < pairs.size(); i++) {
     int coinc = -1;
@@ -419,13 +311,6 @@ std::vector<int> markingMPI(std::vector<int> vecInput, int locrows, int rows,
     if (coinc == -1) totalMarks.push_back({pairs[i][0], pairs[i][1]});
   }
 
-  /*for (int i = 0; i < totalMarks.size(); i++) {
-    std::cout << "Set number " << i << std::endl;
-    std::copy(totalMarks[i].begin(), totalMarks[i].end(),
-              std::ostream_iterator<int>(std::cout, " "));
-    std::cout << std::endl;
-  }*/
-
   std::vector<int> vec2 = vec;
   for (int i = 0; i < totalMarks.size(); i++) {
     for (int j = 0; j < rows * colls; j++) {
@@ -433,21 +318,11 @@ std::vector<int> markingMPI(std::vector<int> vecInput, int locrows, int rows,
     }
   }
 
-  /*std::cout << "vec:";
-  for (int i = 0; i < rows * colls; i++) {
-    if (i % colls == 0) std::cout << std::endl;
-    std::cout << std::setw(3) << vec[i];
-  }
-  std::cout << std::endl;*/
-
   std::set<int> elems;
   for (int i = 0; i < rows * colls; i++) {
     elems.insert(vec2[i]);
   }
   if (elems.count(0) >= 1) elems.erase(elems.begin());
-
-  // std::copy(elems.begin(), elems.end(), std::ostream_iterator<int>(std::cout,
-  // " "));
 
   std::set<int>::iterator iter = elems.begin();
   for (int i = 1; i < elems.size() + 1; i++, iter++) {
@@ -455,13 +330,6 @@ std::vector<int> markingMPI(std::vector<int> vecInput, int locrows, int rows,
       if (*iter == vec2[j]) vec2[j] = i;
     }
   }
-
-  /*std::cout << "Final MPI vec2:";
-  for (int i = 0; i < rows * colls; i++) {
-    if (i % colls == 0) std::cout << std::endl;
-    std::cout << std::setw(3) << vec2[i];
-  }
-  std::cout << std::endl;*/
 
   return vec2;
 }
