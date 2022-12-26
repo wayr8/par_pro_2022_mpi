@@ -112,12 +112,12 @@ TEST(RadixSortBatcher, test5_double_nechet_with_neg) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    int s = 5;
-    double check[5] = {2.1, -3.24, 0.014, 5.6, -5.4};
-    double res[5] = {-5.4, -3.24, 0.014, 2.1, 5.6};
+    int s = 3;
+    double check[3] = {2.1, -3.24, -5.4};
+    double res[3] = {-5.4, -3.24, 2.1};
 
-    double ne[5];
-    double *vec1 = new double[5];
+    double ne[3];
+    double *vec1 = new double[3];
     for (int i = 0; i < s; i++) {
         vec1[i] = check[i];
     }
