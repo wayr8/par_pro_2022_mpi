@@ -122,7 +122,7 @@ std::vector<int> preset5() {
   return vec;
 }
 
-std::vector<int> marking(std::vector<int> vecInput, int rows, int colls) {
+std::vector<int> marking(const std::vector<int> &vecInput, int rows, int colls) {
   std::vector<int> vec = vecInput;
   int mark = 1;
 
@@ -188,10 +188,11 @@ std::vector<int> marking(std::vector<int> vecInput, int rows, int colls) {
   if (elems.count(0) >= 1) elems.erase(elems.begin());
 
   std::set<int>::iterator iter = elems.begin();
-  for (int i = 1; i < elems.size() + 1; i++, iter++) {
+  for (int i = 1; i < elems.size() + 1; i++) {
     for (int j = 0; j < rows * colls; j++) {
       if (*iter == vec2[j]) vec2[j] = i;
     }
+    ++iter;
   }
 
   return vec2;
@@ -276,7 +277,8 @@ std::vector<int> rowsDistrib(std::vector<int> vecInput, int rows, int colls) {
   return {0};
 }
 
-std::vector<int> markingMPI(std::vector<int> vecInput, int locrows, int rows,
+std::vector<int> markingMPI(const std::vector<int> &vecInput, int locrows,
+                            int rows,
                             int colls, int rank) {
   std::vector<int> vec = vecInput;
 
@@ -325,10 +327,11 @@ std::vector<int> markingMPI(std::vector<int> vecInput, int locrows, int rows,
   if (elems.count(0) >= 1) elems.erase(elems.begin());
 
   std::set<int>::iterator iter = elems.begin();
-  for (int i = 1; i < elems.size() + 1; i++, iter++) {
+  for (int i = 1; i < elems.size() + 1; i++) {
     for (int j = 0; j < rows * colls; j++) {
       if (*iter == vec2[j]) vec2[j] = i;
     }
+    ++iter;
   }
 
   return vec2;
