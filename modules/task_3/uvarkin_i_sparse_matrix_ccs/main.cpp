@@ -1,24 +1,8 @@
 // Copyright 2022 Uvarkin Ilya
-#include "../../../modules/task_3/uvarkin_i_sparse_matrix_ccs/sparse_matrix.h"
 #include <gtest/gtest.h>
-#include <gtest-mpi-listener.hpp>
 #include <cmath>
-
-//TEST(sparse_matrix_ccs, multiplication) {
-//    int ProcRank;
-//    MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
-//
-//    if (ProcRank == 0) {
-//        CCSMatrix A, B;
-//        A = CCS(std::vector<double>{0, 0, 1, 0, 2, 0, 0, 0, 3, 0, 0, 0}, 3, 4);
-//        B = CCS(std::vector<double>{3, 0, 0, 0, 4, 0}, 2, 3);
-//
-//        std::vector<double> result = Multiply(A, B);
-//        std::vector<double> exp_result{ 4, 0, 0, 0, 12, 0, 0, 0 };
-//
-//        ASSERT_EQ(result, exp_result);
-//    }
-//}
+#include "../../../modules/task_3/uvarkin_i_sparse_matrix_ccs/sparse_matrix.h"
+#include <gtest-mpi-listener.hpp>
 
 TEST(sparse_matrix_ccs, multiplication) {
     int ProcRank;
@@ -107,12 +91,12 @@ TEST(sparse_matrix_ccs, parallelMultiplication_3) {
     std::vector<std::vector<double>> martixA = {{3, 0, 1, 0},
                                                 {1, 0, 0, 2},
                                                 {0, 0, 3, 0},
-                                                {5, 0, 0, 0},};
+                                                {5, 0, 0, 0}};
 
     std::vector<std::vector<double>> martixB = {{1, 0, 0, 0},
                                                 {0, 0, 2, 0},
                                                 {0, 9, 0, 0},
-                                                {0, 0, 7, 0},};
+                                                {0, 0, 7, 0}};
 
     CCSMatrix A, B;
     if (ProcRank == 0) {
@@ -123,7 +107,7 @@ TEST(sparse_matrix_ccs, parallelMultiplication_3) {
     std::vector<double> result = MultiplyParallel(A, B);
 
     if (ProcRank == 0) {
-        std::vector<double> expect{ 3, 9, 0, 0, 1, 0, 14, 0, 0, 27, 0, 0, 5, 0, 0 ,0};
+        std::vector<double> expect{ 3, 9, 0, 0, 1, 0, 14, 0, 0, 27, 0, 0, 5, 0, 0, 0};
 
         ASSERT_EQ(result, expect);
     }
@@ -136,7 +120,7 @@ TEST(sparse_matrix_ccs, parallelMultiplication_4) {
     std::vector<std::vector<double>> martixA = {{0, 8, 0, 0},
                                                 {0, 0, 7, 0},
                                                 {5, 0, 0, 3},
-                                                {0, 2, 0, 0},};
+                                                {0, 2, 0, 0}};
 
     std::vector<std::vector<double>> martixB = {{0},
                                                 {5},

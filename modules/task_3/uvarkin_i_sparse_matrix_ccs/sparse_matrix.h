@@ -21,6 +21,6 @@ CCSMatrix CCS(const std::vector<double>& _newMatrix,
               const int _newColumns, const int _newRows);
 
 std::vector<double> MultiplyParallel(CCSMatrix matrixA, CCSMatrix matrixB);
-void setMetaToMatrix(CCSMatrix& matrix);
-void growVectorsMatrix(CCSMatrix& matrix);
-void SendDataMatrix(CCSMatrix& matrix);
+void setMetaToMatrix(CCSMatrix* matrix);
+void growVectorsMatrix(CCSMatrix* matrix);
+void SendDataMatrix(CCSMatrix* matrix);
