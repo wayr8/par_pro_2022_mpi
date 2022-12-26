@@ -114,7 +114,7 @@ TEST(RadixSortBatcher, test5_double_nechet_with_neg) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     int s = 5;
     double check[5] = {2.1, -3.24, 0.014, 5.6, -5.4};
-    double res[5] = {-5.4, -3.24, 0.14, 2.1, 5.6};
+    double res[5] = {-5.4, -3.24, 0.014, 2.1, 5.6};
 
     double ne[5];
     double *vec1 = new double[5];
