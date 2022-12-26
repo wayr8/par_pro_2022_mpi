@@ -17,10 +17,10 @@ TEST(gaussian_method_vertical, matrix_2_rows_3_columns_test) {
         };
     }
 
-    std::vector <double> paralSolution = ParSolution(coefs, rows, columns);
+    std::vector <double> paralSolution = ParSolution(&coefs, rows, columns);
     if (procId == 0) {
         std::vector <double> nonParalSolution =
-            nonParSolution(coefs, rows, columns);
+            nonParSolution(&coefs, rows, columns);
         ASSERT_TRUE(checkEqualOfMatrix(nonParalSolution, paralSolution));
         ASSERT_TRUE(checkSolution(coefs, rows, columns, paralSolution));
     }
