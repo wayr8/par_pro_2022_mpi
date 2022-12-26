@@ -17,11 +17,11 @@ TEST(gaussian_method_vertical, matrix_2_rows_3_columns_test) {
         };
     }
 
-    std::vector <double> parSolution = ParSolution(coefs, rows, columns);
+    std::vector <double> paralSolution = ParSolution(&coefs, rows, columns);
     if (procId == 0) {
-        std::vector <double> nonParSolution =
-            nonParSolution(coefs, rows, columns);
-        ASSERT_TRUE(checkEqualOfMatrix(nonParSolution, parSolution));
+        std::vector <double> nonParalSolution =
+            nonParSolution(&coefs, rows, columns);
+        ASSERT_TRUE(checkEqualOfMatrix(nonParalSolution, paralSolution));
         ASSERT_TRUE(checkSolution(coefs, rows, columns, parSolution));
     }
 }
@@ -41,11 +41,11 @@ TEST(gaussian_method_vertical,  matrix_3_rows_4_columns_test) {
         };
     }
 
-    std::vector <double> parSolution = ParSolution(coefs, rows, columns);
+    std::vector <double> paralSolution = ParSolution(&coefs, rows, columns);
     if (procId == 0) {
-        std::vector <double> nonParSolution =
-            nonParSolution(coefs, rows, columns);
-        ASSERT_TRUE(checkEqualOfMatrix(nonParSolution, parSolution));
+        std::vector <double> nonParalSolution =
+            nonParSolution(&coefs, rows, columns);
+        ASSERT_TRUE(checkEqualOfMatrix(nonParalSolution, paralSolution));
         ASSERT_TRUE(checkSolution(coefs, rows, columns, parSolution));
     }
 }
@@ -66,7 +66,7 @@ TEST(gaussian_method_vertical,
         };
     }
 
-    EXPECT_ANY_THROW(ParSolution(coefs, rows, columns + 1));
+    EXPECT_ANY_THROW(ParSolution(&coefs, rows, columns + 1));
 }
 
 TEST(gaussian_method_vertical,
@@ -86,7 +86,7 @@ TEST(gaussian_method_vertical,
     }
 
     if (procId == 0) {
-        EXPECT_ANY_THROW(nonParSolution(coefs, rows, columns + 1));
+        EXPECT_ANY_THROW(nonParSolution(&coefs, rows, columns + 1));
     }
 }
 
@@ -106,7 +106,7 @@ TEST(gaussian_method_vertical,
         };
     }
 
-    EXPECT_ANY_THROW(ParSolution(coefs, rows, columns));
+    EXPECT_ANY_THROW(ParSolution(&coefs, rows, columns));
 }
 
 int main(int argc, char** argv) {
