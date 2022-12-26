@@ -1,5 +1,5 @@
 // Copyright 2022 Uvarkin Ilya
-#include "sparse_matrix.h"
+#include "../../../modules/task_3/uvarkin_i_sparse_matrix_ccs/sparse_matrix.h"
 #include <mpi.h>
 #include <vector>
 
@@ -14,7 +14,7 @@ CCSMatrix getCCSMatrix(const std::vector<std::vector<double>>& matrix) {
     ccsMatrix.points.push_back(0);
     for (int i = 0; i < ccsMatrix.columns; ++i) {
         for (int j = 0; j < ccsMatrix.rows; ++j) {
-            if(std::abs(matrix[j][i]) < 0.000000001){
+            if (std::abs(matrix[j][i]) < 0.000000001) {
                 continue;
             }
 
@@ -62,8 +62,13 @@ std::vector<double> MultiplyParallel(CCSMatrix matrixA, CCSMatrix matrixB) {
         return Multiply(matrixA, matrixB);
     }
 
-    setMetaToMatrix(matrixA);
-    setMetaToMatrix(matrixB);
+    MPI_Bcast(&matrixA.columns, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&matrixA.rows, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&matrixA.non_zero, 1, MPI_INT, 0, MPI_COMM_WORLD);
+
+    MPI_Bcast(&matrixB.columns, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&matrixB.rows, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&matrixB.non_zero, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
     if (matrixA.non_zero == 0 || matrixB.non_zero == 0) {
         if (ProcRank == 0) {
@@ -82,12 +87,12 @@ std::vector<double> MultiplyParallel(CCSMatrix matrixA, CCSMatrix matrixB) {
     }
 
     if (ProcRank != 0) {
-        growVectorsMatrix(matrixA);
-        growVectorsMatrix(matrixB);
+        growVectorsMatrix(&matrixA);
+        growVectorsMatrix(&matrixB);
     }
 
-    SendDataMatrix(matrixA);
-    SendDataMatrix(matrixB);
+    SendDataMatrix(&matrixA);
+    SendDataMatrix(&matrixB);
 
     int count = matrixA.columns / ProcNum;
 
@@ -132,20 +137,26 @@ std::vector<double> MultiplyParallel(CCSMatrix matrixA, CCSMatrix matrixB) {
     return resMatrix;
 }
 
-void setMetaToMatrix(CCSMatrix& matrix){
-    MPI_Bcast(&matrix.columns, 1, MPI_INT, 0, MPI_COMM_WORLD);
-    MPI_Bcast(&matrix.rows, 1, MPI_INT, 0, MPI_COMM_WORLD);
-    MPI_Bcast(&matrix.non_zero, 1, MPI_INT, 0, MPI_COMM_WORLD);
+void setMetaToMatrix(CCSMatrix* matrix) {
+    int *columnPoint = nullptr, *rowsPoint = nullptr,  *non_zeroPoint = nullptr;
+
+    MPI_Bcast(columnPoint, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(rowsPoint, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(non_zeroPoint, 1, MPI_INT, 0, MPI_COMM_WORLD);
+
+    matrix->columns = *columnPoint;
+    matrix->rows = *rowsPoint;
+    matrix->non_zero = *non_zeroPoint;
 }
 
-void growVectorsMatrix(CCSMatrix& matrix){
-    matrix.value.resize(matrix.non_zero);
-    matrix.rowIndex.resize(matrix.non_zero);
-    matrix.points.resize(matrix.columns + 1);
+void growVectorsMatrix(CCSMatrix* matrix) {
+    matrix->value.resize(matrix->non_zero);
+    matrix->rowIndex.resize(matrix->non_zero);
+    matrix->points.resize(matrix->columns + 1);
 }
 
-void SendDataMatrix(CCSMatrix& matrix){
-    MPI_Bcast(&matrix.value[0], matrix.non_zero, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    MPI_Bcast(&matrix.rowIndex[0], matrix.non_zero, MPI_INT, 0, MPI_COMM_WORLD);
-    MPI_Bcast(&matrix.points[0], matrix.columns + 1, MPI_INT, 0, MPI_COMM_WORLD);
+void SendDataMatrix(CCSMatrix* matrix) {
+    MPI_Bcast(&matrix->value[0], matrix->non_zero, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&matrix->rowIndex[0], matrix->non_zero, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&matrix->points[0], matrix->columns + 1, MPI_INT, 0, MPI_COMM_WORLD);
 }
