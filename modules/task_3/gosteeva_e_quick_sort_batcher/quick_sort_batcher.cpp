@@ -11,7 +11,7 @@ void swap(int a, int b)
 void Shuf(std::vector<int>* vec,int vec_size, int left_bord, int right_bord)
 {
     auto half = (left_bord + right_bord) / 2;
-    std::vector<int>* tmp = nullptr;
+    std::vector<int>* tmp = vec;
     for (int i = left_bord, j = 0; i <= right_bord; i += 2, j++)
     {
         tmp[i] = vec[left_bord + j];
@@ -24,7 +24,7 @@ void Shuf(std::vector<int>* vec,int vec_size, int left_bord, int right_bord)
 void Share(std::vector<int>* vec, int vec_size, int left_bord, int right_bord)
 {
     int half = (left_bord + right_bord) / 2;
-    std::vector<int>* tmp = nullptr;
+    std::vector<int>* tmp = vec;
     for (int i = left_bord, j = 0; i <= right_bord; i += 2, j++)
     {
         tmp[left_bord +j] = vec[i];
