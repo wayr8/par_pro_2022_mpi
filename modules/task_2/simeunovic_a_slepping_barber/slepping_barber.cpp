@@ -12,13 +12,11 @@ enum MessageType{REQUEST, RESPONSE, SIGNAL};
 void Cutting_Hair(int client) {
     std::random_device dev;
     std::mt19937 rand_r(dev());
-    // std::cout << "Started working on client with id:" << client << std::endl;
-    int count = rand_r() % 8;
+    int count = rand_r() % 15;
     while (count--) {
           // std::cout << "Working on client with id:" << client << std::endl;
-          std::this_thread::sleep_for(std::chrono::milliseconds(rand_r() % 10));
     }
-     // std::cout << "Ended work on client with id:" << client << std::endl;
+    // std::cout << "Ended work on client with id:" << client << std::endl;
 }
 struct buffer {
     int id;
@@ -30,11 +28,12 @@ void Sleeping(int* mutex, bool* thread_running) {
     while (*thread_running) {
         if (!(*mutex)) {
             // std::cout << "Barber sleeping..." << std::endl;
-            std::this_thread::sleep_for(std::chrono::milliseconds(rand_r() % 30));
+            std::this_thread::sleep_for(std::chrono::microseconds(10));
         }
     }
 }
 void DoBarberLoop(int n, int ProcSize, int ProcRank) {
+    MPI_Barrier(MPI_COMM_WORLD);
     std::random_device dev;
     std::mt19937 rand_r(dev());
     buffer message;
@@ -50,6 +49,7 @@ void DoBarberLoop(int n, int ProcSize, int ProcRank) {
         if (free_barber) {
             if (!ocered.empty()) {
                 signal = 1;
+                // std::cout << "Started working on client with id:" << ocered.front().id << std::endl;
                 MPI_Send(&signal, 1, MPI_INT, ocered.front().ProcRank, RESPONSE, MPI_COMM_WORLD);
                 ocered.pop();
                 free_barber = false;
@@ -62,10 +62,10 @@ void DoBarberLoop(int n, int ProcSize, int ProcRank) {
             case REQUEST: {
                 if (ocered.size() < n) {
                     mutex = 1;
-                      // std::cout << "Customer witi id:" << message.id << " has arrived." << std::endl;
+                       // std::cout << "Customer witi id:" << message.id << " has arrived." << std::endl;
                     ocered.push(message);
                 } else {
-                     // std::cout << "There is no place for customer with id:" << message.id << std::endl;
+                      // std::cout << "There is no place for customer with id:" << message.id << std::endl;
                     thrown_clients++;
                     signal = 0;
                     MPI_Send(&signal, 1, MPI_INT, message.ProcRank, RESPONSE, MPI_COMM_WORLD);
@@ -101,7 +101,7 @@ void Checking(int ProcRank) {
         working = true;
         std::thread Empty(Empty_Buffer, &working, &count);
         while (true) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(20));
+            std::this_thread::sleep_for(std::chrono::microseconds(25));
             if (last_count == count) {
                 working = false;
                 break;
@@ -130,15 +130,16 @@ void Empty_Buffer(bool* working, int* count) {
     }
 }
 void ClientLoop(int ProcRank) {
+    MPI_Barrier(MPI_COMM_WORLD);
     std::random_device dev;
     std::mt19937 rand_r(dev());
     buffer message;
     int signal;
     MPI_Status status;
     while (true) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(rand_r() % 100));
         message.id = rand_r() % 1000000;
         message.ProcRank = ProcRank;
+        std::this_thread::sleep_for(std::chrono::microseconds(10));
         MPI_Send(&message, 1, MPI_2INT, 0, REQUEST, MPI_COMM_WORLD);
         MPI_Recv(&signal, 1, MPI_INT, 0, RESPONSE, MPI_COMM_WORLD, &status);
         if (signal == 1) {
