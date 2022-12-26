@@ -12,6 +12,7 @@ TEST(Slepping_Barber, Test_1_place) {
         ASSERT_NO_THROW(DoBarberLoop(1, ProcSize, ProcRank));
     } else {
     ASSERT_NO_THROW(ClientLoop(ProcRank));}
+    MPI_Barrier(MPI_COMM_WORLD);
 }
 TEST(Slepping_Barber, Test_2_place) {
     int ProcRank;
