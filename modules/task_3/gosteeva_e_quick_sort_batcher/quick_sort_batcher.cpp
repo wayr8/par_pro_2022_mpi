@@ -89,7 +89,7 @@ void QuickSort(std::vector<int>* vec, int left_bord, int right_bord) {
     }
 }
 
-std::vector<int> QuickSortParrallel(const std::vector<int> vec) {
+std::vector<int> QuickSortParrallel(const std::vector<int>& vec) {
     int MPI_rank, MPI_size;
     MPI_Status MPI_status;
     MPI_Comm_rank(MPI_COMM_WORLD, &MPI_rank);
