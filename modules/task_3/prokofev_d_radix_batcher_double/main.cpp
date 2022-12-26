@@ -8,7 +8,7 @@ TEST(RadixSortBatcher, test1_int_chet) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    s = 4;
+    int s = 4;
     double check[4] = {2, 3, 0, 5};
     double res[4] = {0, 2, 3, 5};
 
@@ -30,7 +30,7 @@ TEST(RadixSortBatcher, test2_int_chet_with_neg) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    s = 4;
+    int s = 4;
     double check[4] = {2, -3, 0, 5};
     double res[4] = {-3, 0, 2, 5};
 
@@ -52,7 +52,7 @@ TEST(RadixSortBatcher, test3_double_chet) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    s = 4;
+    int s = 4;
     double check[4] = {2.1, 3.014, 0.2, 5.7};
     double res[4] = {0.2, 2.1, 3.014, 5.7};
 
@@ -74,7 +74,7 @@ TEST(RadixSortBatcher, test4_double_chet_with_neg) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    s = 4;
+    int s = 4;
     double check[4] = {2.1, -3.24, 0.014, 5.6};
     double res[4] = {-3.24, 0.014, 2.1, 5.6};
 
@@ -96,7 +96,7 @@ TEST(RadixSortBatcher, test5_double_nechet_with_neg) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    s = 5;
+    int s = 5;
     double check[5] = {2.1, -3.24, 0.014, 5.6, -5.4};
     double res[5] = {-5.4, -3.24, 0.14, 2.1, 5.6};
 
