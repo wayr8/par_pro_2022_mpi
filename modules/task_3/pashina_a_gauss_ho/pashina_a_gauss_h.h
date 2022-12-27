@@ -1,5 +1,8 @@
 // Copyright 2022 Pashina Alina
+
 #pragma once
+#include <iostream>
+#include <string>
 #include <vector>
 
 std::vector<unsigned char> generateNewImage(int rows_num, int columns_num);

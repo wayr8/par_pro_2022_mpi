@@ -1,6 +1,6 @@
 // Copyright 2022 Pashina Alina
 
-#include "pashina_a_gauss_h.h";
+#include "./pashina_a_gauss_h.h";
 
 #include <mpi.h>
 
