@@ -1,6 +1,6 @@
 // Copyright 2022 Ermolaev Danila
-#ifndef MODULES_TASK_2_ERMOLAEV_D_JORDAN_GAUSS_JORDAN_METHOD_H_
-#define MODULES_TASK_2_ERMOLAEV_D_JORDAN_GAUSS_JORDAN_METHOD_H_
+#ifndef MODULES_TASK_3_ERMOLAEV_D_LINEAR_FILTER_3X3_LINEAR_FILTER_3X3_H_
+#define MODULES_TASK_3_ERMOLAEV_D_LINEAR_FILTER_3X3_LINEAR_FILTER_3X3_H_
 
 #include <vector>
 #include <string>
@@ -24,4 +24,4 @@ void mpi_gauss_filter(Image* im, Image* om, int w);
 
 void gauss_filter(Image* im, Image* om, int w);
 
-#endif  // MODULES_TASK_2_ERMOLAEV_D_JORDAN_GAUSS_JORDAN_METHOD_H_
+#endif  // MODULES_TASK_3_ERMOLAEV_D_LINEAR_FILTER_3X3_LINEAR_FILTER_3X3_H_ 

@@ -1,7 +1,6 @@
 ﻿  // Copyright 2022 Ermolaev Danila
 #include <gtest/gtest.h>
 #include <stdlib.h>
-#include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <vector>
@@ -66,8 +65,7 @@ TEST(Parallel_MPI, Random_Matrix_test_10x10) {
         if (rank == 0) {
             if ((om_par.w != om_seq.w) || (om_par.h != om_seq.h)) {
                 std::cerr << "Dimensions mismatch" << std::endl;
-            }
-            else {
+            } else {
                 unsigned char* pi1 = om_seq.data;
                 unsigned char* pi2 = om_par.data;
                 for (int i = 0; i < om_par.w * om_par.h; i++, pi1++, pi2++) {
@@ -141,8 +139,7 @@ TEST(Parallel_MPI, Random_Matrix_test_50x50) {
         if (rank == 0) {
             if ((om_par.w != om_seq.w) || (om_par.h != om_seq.h)) {
                 std::cerr << "Dimensions mismatch" << std::endl;
-            }
-            else {
+            } else {
                 unsigned char* pi1 = om_seq.data;
                 unsigned char* pi2 = om_par.data;
                 for (int i = 0; i < om_par.w * om_par.h; i++, pi1++, pi2++) {
@@ -216,8 +213,7 @@ TEST(Parallel_MPI, Random_Matrix_test_100x100) {
         if (rank == 0) {
             if ((om_par.w != om_seq.w) || (om_par.h != om_seq.h)) {
                 std::cerr << "Dimensions mismatch" << std::endl;
-            }
-            else {
+            } else {
                 unsigned char* pi1 = om_seq.data;
                 unsigned char* pi2 = om_par.data;
                 for (int i = 0; i < om_par.w * om_par.h; i++, pi1++, pi2++) {
@@ -290,8 +286,7 @@ TEST(Parallel_MPI, Random_Matrix_test_1000x1000) {
         if (rank == 0) {
             if ((om_par.w != om_seq.w) || (om_par.h != om_seq.h)) {
                 std::cerr << "Dimensions mismatch" << std::endl;
-            }
-            else {
+            } else {
                 unsigned char* pi1 = om_seq.data;
                 unsigned char* pi2 = om_par.data;
                 for (int i = 0; i < om_par.w * om_par.h; i++, pi1++, pi2++) {

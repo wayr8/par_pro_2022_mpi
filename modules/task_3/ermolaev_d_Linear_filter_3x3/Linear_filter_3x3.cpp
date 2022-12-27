@@ -49,11 +49,11 @@ void mpi_gauss_filter(Image* im, Image* om, int w) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-    double* g = (double*)malloc(sizeof(double) * w * w);
-    double sigma2 = ((double)w) / 6.0;
+    double* g = reinterpret_cast<double*>(malloc(sizeof(double) * w * w));
+    double sigma2 = (static_cast<double>(w)) / 6.0;
     sigma2 *= sigma2;
     double x, y, r;
-    double c = ((double)w) / 2;
+    double c = (static_cast<double>(w)) / 2;
     double* pg = g;
     for (int i = 0; i < w; i++) {
         x = i - c;
@@ -102,8 +102,7 @@ void mpi_gauss_filter(Image* im, Image* om, int w) {
         om->data = b;
         om->w = im->w - w;
         om->h = im->h - w;
-    }
-    else {
+    } else {
         MPI_Send(b, (im->w - w) * psize, MPI_UNSIGNED_CHAR, 0, tag, MPI_COMM_WORLD);
         free(data);
         free(b);
@@ -112,11 +111,11 @@ void mpi_gauss_filter(Image* im, Image* om, int w) {
 
 void gauss_filter(Image* im, Image* om, int w) {
     double M_PI = 3.14159265358979323846;
-    double* g = (double*)malloc(sizeof(double) * w * w);
-    double sigma2 = ((double)w) / 6.0;
+    double* g = reinterpret_cast<double*>((malloc(sizeof(double) * w * w)));
+    double sigma2 = (static_cast<double>(w)) / 6.0;
     sigma2 *= sigma2;
     double x, y, r;
-    double c = ((double)w) / 2;
+    double c = (static_cast<double>(w)) / 2;
     double* pg = g;
     for (int i = 0; i < w; i++) {
         x = i - c;
