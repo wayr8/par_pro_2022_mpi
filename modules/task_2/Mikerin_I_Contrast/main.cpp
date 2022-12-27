@@ -5,8 +5,6 @@
 #include "../../../modules/task_2/Mikerin_I_Contrast/Contrast.h"
 #include <gtest-mpi-listener.hpp>
 
-#define debug
-
 TEST(Parallel, RANDOM) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);

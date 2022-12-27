@@ -18,13 +18,17 @@ std::vector<int> getRandomVector(int  sz) {
 
 std::pair<int, int> getSequentialMaxMin(std::vector<int> vec) {
     const int  sz = vec.size();
-    int max = vec[0], min = vec[0];
-    for ( int i = 1; i < sz; i++ ) {
-        if ( vec[i] > max) max = vec[i];
-        if ( vec[i] < min) min = vec[i];
-    }
+    if ( sz > 0 ) {
+        int max = vec[0], min = vec[0];
+        for ( int i = 1; i < sz; i++ ) {
+            if ( vec[i] > max) max = vec[i];
+            if ( vec[i] < min) min = vec[i];
+        }
 
-    return std::make_pair(min, max);
+        return std::make_pair(min, max);
+    } else {
+        return std::make_pair(2147483647, 0);
+    }
 }
 
 int Clamp(int a, int l, int r) {
@@ -89,37 +93,38 @@ std::vector<std::vector<int>> ParallelContrast(std::vector<std::vector<int>> vec
     int* sendcount = new int[size];
     int* displs = new int[size];
 
-    std::vector<int> global_vec = std::vector<int>(width * height);;
+    std::vector<int> global_vec = std::vector<int>(width * height);
 
     sendcount[0] = delta + static_cast<int>(remainder > 0);
     displs[0] = 0;
 
-        if (remainder > 0) {
-            for (int proc =1; proc < remainder ; proc++) {
-                sendcount[proc] = delta + 1;
-                displs[proc] = proc * delta + proc;
-            }
-            for (int proc = remainder; proc < size; proc++) {
-                if (proc > 0) {
-                    sendcount[proc] = delta;
-                    displs[proc] = proc * delta + remainder;
-                }
-            }
-        } else {
-            for (int proc = 1; proc < size; proc++) {
+    if (remainder > 0) {
+        for (int proc =1; proc < remainder ; proc++) {
+            sendcount[proc] = delta + 1;
+            displs[proc] = proc * delta + proc;
+        }
+        for (int proc = remainder; proc < size; proc++) {
+            if (proc > 0) {
                 sendcount[proc] = delta;
-                displs[proc] = proc * delta;
+                displs[proc] = proc * delta + remainder;
             }
         }
+    } else {
+        for (int proc = 1; proc < size; proc++) {
+            sendcount[proc] = delta;
+            displs[proc] = proc * delta;
+        }
+    }
+
+
+    result = std::vector<int>(width * height);
+    realresult = std::vector<std::vector<int>>(width);
+
+    for ( int i = 0; i < width; i++ ) {
+        realresult[i] = std::vector<int>(height);
+    }
 
     if (rank == 0) {
-        result = std::vector<int>(width * height);
-        realresult = std::vector<std::vector<int>>(width);
-
-        for ( int i = 0; i < width; i++ ) {
-            realresult[i] = std::vector<int>(height);
-        }
-
         for ( int i = 0; i < width * height; i++ ) {
             global_vec[i] = vec[static_cast<int>(i/height)][i % height];
         }
@@ -129,77 +134,35 @@ std::vector<std::vector<int>> ParallelContrast(std::vector<std::vector<int>> vec
     int global_min = 0;
 
     // Max and min search
-    if (rank == 0) {
-        std::vector<int> local_vec(sendcount[rank]);
 
-        // for (int i = 0; i< delta + remainder; i++) {
-        //     local_vec.push_back(global_vec[i]);
-        // }
-        MPI_Scatterv(global_vec.data() , sendcount , displs , MPI_INT ,
-                    local_vec.data() , sendcount[rank] , MPI_INT , 0 , MPI_COMM_WORLD);
+    std::vector<int> local_vec(sendcount[rank]);
 
-        std::pair<int, int> min_max = (getSequentialMaxMin(local_vec));
+    // for (int i = 0; i< delta + remainder; i++) {
+    //     local_vec.push_back(global_vec[i]);
+    // }
+    MPI_Scatterv(global_vec.data() , sendcount , displs , MPI_INT ,
+                local_vec.data() , sendcount[rank] , MPI_INT , 0 , MPI_COMM_WORLD);
 
-        MPI_Reduce(& (min_max.first), &global_min, 1, MPI_INT, MPI_MIN , 0, MPI_COMM_WORLD);
-        MPI_Reduce(& (min_max.second), &global_max, 1, MPI_INT, MPI_MAX , 0, MPI_COMM_WORLD);
+    std::pair<int, int> min_max = (getSequentialMaxMin(local_vec));
 
-    } else {
-        std::vector<int> local_vec(sendcount[rank]);
+    MPI_Reduce(& (min_max.first), &global_min, 1, MPI_INT, MPI_MIN , 0, MPI_COMM_WORLD);
+    MPI_Reduce(& (min_max.second), &global_max, 1, MPI_INT, MPI_MAX , 0, MPI_COMM_WORLD);
 
-
-        MPI_Scatterv(global_vec.data() , sendcount , displs , MPI_INT ,
-                    local_vec.data() , sendcount[rank] , MPI_INT , 0 , MPI_COMM_WORLD);
-        std::pair<int, int> min_max = (getSequentialMaxMin(local_vec));
-
-        MPI_Reduce(& (min_max.first), &global_min, 1, MPI_INT, MPI_MIN , 0, MPI_COMM_WORLD);
-        MPI_Reduce(& (min_max.second), &global_max, 1, MPI_INT, MPI_MAX , 0, MPI_COMM_WORLD);
-    }
 
     MPI_Bcast(&global_max, 1, MPI_INT, 0, MPI_COMM_WORLD);
     MPI_Bcast(&global_min, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
+    local_vec = getSequentialContrast(local_vec, global_max, global_min, B);
+
+    MPI_Gatherv(local_vec.data(), sendcount[rank], MPI_INT, result.data(),
+                     sendcount, displs, MPI_INT, 0, MPI_COMM_WORLD);
+
     if (rank == 0) {
-        std::vector<int> local_vec(sendcount[rank]);
-
-        MPI_Scatterv(global_vec.data() , sendcount , displs , MPI_INT ,
-                    local_vec.data() , sendcount[rank] , MPI_INT , 0 , MPI_COMM_WORLD);
-
-        local_vec = getSequentialContrast(local_vec, global_max, global_min, B);
-
-        for (int i = 0; i< delta+ remainder; i++) {
-            result[i] = local_vec[i];
-        }
-
-        for ( int proc = 1; proc < remainder; proc++ ) {
-            MPI_Status status;
-          //  std::cout << "wait recv " << proc << std::endl;
-            MPI_Recv(result.data() + delta * proc + proc, delta + 1 , MPI_INT, proc, 0, MPI_COMM_WORLD, &status);
-        }
-
-        for (int proc = remainder; proc < size; proc++) {
-            if (proc > 0) {
-            MPI_Status status;
-          //  std::cout << "wait recv " << proc << std::endl;
-            MPI_Recv(result.data() + delta * proc + remainder, delta, MPI_INT, proc, 0, MPI_COMM_WORLD, &status);
-          //  std::cout << "end wait recv " << proc << std::endl;
-            }
-        }
-
         for ( int i = 0; i < width; i++ ) {
             for ( int j = 0; j < height; j++ ) {
                 realresult[i][j] = result[i * height + j];
             }
         }
-    } else {
-        std::vector<int> local_vec(sendcount[rank]);
-        MPI_Status status;
-
-        MPI_Scatterv(global_vec.data() , sendcount , displs , MPI_INT ,
-                    local_vec.data() , sendcount[rank] , MPI_INT , 0 , MPI_COMM_WORLD);
-
-        local_vec = getSequentialContrast(local_vec, global_max, global_min, B);
-
-        MPI_Send(local_vec.data(), sendcount[rank], MPI_INT, 0, 0, MPI_COMM_WORLD);
     }
 
 
