@@ -23,28 +23,29 @@ std::vector<std::vector<double>> CreateMatrix(const int size) {
     return Matrix;
 }
 
-std::vector<double> GetSimpleIter(std::vector<std::vector<double>>& a, std::vector<double>& b, const int size, const double eps) {
-    std::vector<double> answ(size);
+std::vector<double> GetSimpleIter(const std::vector<std::vector<double>>& a, const std::vector<double>& b, const int size, const double eps) {
+    std::vector<double> answ(size), B = b;
+    std::vector<std::vector<double>> A = a;
     for (int i = 0; i < size; i++) {
-        double divid = a.at(i).at(i);
+        double divid = A.at(i).at(i);
         if (divid < 0)
-            b.at(i) /= -divid;
+            B.at(i) /= -divid;
         else
-            b.at(i) /= divid;
+            B.at(i) /= divid;
         
         for (int j = 0; j < size; j++) {
             if (i != j) {
                 if (divid < 0)
-                a.at(i).at(j) /= divid;
+                A.at(i).at(j) /= divid;
                 else
-                    a.at(i).at(j) /= -divid;
+                    A.at(i).at(j) /= -divid;
             }
             else {
-                a.at(i).at(j) = 0;
+                A.at(i).at(j) = 0;
             }
         }
     }
-    std::vector<double> pansw = b;
+    std::vector<double> pansw = B;
     bool flag = false;
     while (!flag) {
         answ = pansw;
@@ -53,9 +54,9 @@ std::vector<double> GetSimpleIter(std::vector<std::vector<double>>& a, std::vect
         }
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                pansw.at(i) += a.at(i).at(j) * answ.at(j);
+                pansw.at(i) += A.at(i).at(j) * answ.at(j);
             }
-            pansw.at(i) += b.at(i);
+            pansw.at(i) += B.at(i);
         }
 
         flag = true;
@@ -69,8 +70,10 @@ std::vector<double> GetSimpleIter(std::vector<std::vector<double>>& a, std::vect
 }
 
 
-std::vector<double> GetSimpleIterParallel(std::vector<std::vector<double>>& a, std::vector<double>& b, const int size, const double eps) {
+std::vector<double> GetSimpleIterParallel(const std::vector<std::vector<double>>& a, const std::vector<double>& b, const int size, const double eps) {
     int ProcCount, ProcId;
+    std::vector<std::vector<double>> A = a;
+    std::vector<double> B = b;
     MPI_Comm_size(MPI_COMM_WORLD, &ProcCount);
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcId);
     int np = (size / ProcCount) * size + size / ProcCount;
@@ -84,8 +87,8 @@ std::vector<double> GetSimpleIterParallel(std::vector<std::vector<double>>& a, s
         int Asize = size * size + size;
         Adata.reserve(Asize);
         for (int i = 0; i < size; i++) {
-            a.at(i).push_back(b.at(i));
-            Adata.insert(Adata.end(), a.at(i).begin(), a.at(i).end());
+            A.at(i).push_back(B.at(i));
+            Adata.insert(Adata.end(), A.at(i).begin(), A.at(i).end());
         }
 
         for (int i = 0; i < size % ProcCount; i++)
