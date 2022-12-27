@@ -6,7 +6,6 @@
 #include <algorithm>
 #include "../../../modules/task_1/chubenko_a_vector_disorder/chubenko_a_vector_disorder.h"
 
-
 std::vector<int> getRandomVector(int sz) {
     std::random_device dev;
     std::mt19937 gen(dev());
@@ -31,19 +30,20 @@ int getParallelNDisorder(const std::vector<int> &global_vec,
     int size, rank;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    const int delta = count_size_vector / size;
+
+    int delta = count_size_vector / size;
 
     if (rank == 0) {
         for (int proc = 1; proc < size; proc++) {
-            MPI_Send(global_vec.data() + proc * delta, delta,
+            MPI_Send(global_vec.data() + (proc - 1) * delta, delta + 1,
                         MPI_INT, proc, 0, MPI_COMM_WORLD);
         }
     }
 
     std::vector<int> local_vec(delta);
     if (rank == 0) {
-        local_vec = std::vector<int>(global_vec.begin(),
-                                     global_vec.begin() + delta);
+        local_vec = std::vector<int>(global_vec.begin() + (size - 1) * delta,
+            global_vec.end());
     } else {
         local_vec.resize(delta + 1);
         MPI_Status status;
@@ -53,6 +53,8 @@ int getParallelNDisorder(const std::vector<int> &global_vec,
 
     int global_n = 0;
     int local_n = getSequentialNDisorder(local_vec);
+
     MPI_Reduce(&local_n, &global_n, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+
     return global_n;
 }
