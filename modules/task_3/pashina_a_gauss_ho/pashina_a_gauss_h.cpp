@@ -51,7 +51,7 @@ unsigned char getNewColor(const std::vector<unsigned char> &myimg, int startX,
   return resCol / gaussDenom;
 }
 
-std::vector<unsigned char> gauss_filt(std::vector<unsigned char> mystart_image,
+std::vector<unsigned char> gauss_filt(const std::vector<unsigned char> mystart_image,
                                       int rows_num, int columns_num) {
   std::vector<unsigned char> result(columns_num * rows_num);
   int yin = 0;
