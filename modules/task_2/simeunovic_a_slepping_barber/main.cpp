@@ -8,6 +8,7 @@ TEST(Slepping_Barber, Test_1_place) {
     int ProcSize;
     MPI_Comm_size(MPI_COMM_WORLD, &ProcSize);
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
+    std::cout << "Proccess rank:" << ProcRank << std::endl;
     if (ProcRank == 0) {
         ASSERT_NO_THROW(DoBarberLoop(1, ProcSize, ProcRank));
     } else {
