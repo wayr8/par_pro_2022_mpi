@@ -104,9 +104,9 @@ std::vector<double> GetSimpleIterParallel(const std::vector<std::vector<double>>
         else
             Procdata.at(BIndex) /= divid;
         for (int j = i; j < i + Size - 1; j++) {
-            if (j != Index + i) {
+            if (j != Index + i)
                 Procdata.at(j) /= (divid < 0) ? divid : -divid;
-            } else
+            else
                 Procdata.at(j) = 0;
         }
         Index++;
@@ -133,7 +133,7 @@ std::vector<double> GetSimpleIterParallel(const std::vector<std::vector<double>>
     int step = 0;
     while (!flag) {
         if (step > 0) {
-            MPI_Allgatherv(psansw.data(), psansw.size(), MPI_DOUBLE, 
+            MPI_Allgatherv(psansw.data(), psansw.size(), MPI_DOUBLE,
                 answ.data(), Counts.data(), Offsets.data(), MPI_DOUBLE, MPI_COMM_WORLD);
             flag = true;
             for (int i = 0; i < size - 1; i++) {
