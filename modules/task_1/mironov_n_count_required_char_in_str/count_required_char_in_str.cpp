@@ -59,6 +59,7 @@ int countRequiredCharInStr(std::string str, char requiredChar) {
             MPI_Comm_split(MPI_COMM_WORLD, color, procId, &commForProcInUse);
             MPI_Comm_size(commForProcInUse, &procCount);
             MPI_Comm_rank(commForProcInUse, &procId);
+            oneProcWorkAmount = 1;
             oneProcWorkAmountForScatterv = new int[str.length()];
             for (int i = 0; i < str.length(); i++) {
                 oneProcWorkAmountForScatterv[i] = 1;
@@ -68,6 +69,7 @@ int countRequiredCharInStr(std::string str, char requiredChar) {
             MPI_Comm_split(MPI_COMM_WORLD, color, procId, &commForNonUsedProc);
             MPI_Comm_size(commForNonUsedProc, &procCount);
             MPI_Comm_rank(commForNonUsedProc, &procId);
+            MPI_Finalize();
             return 0;
         }
     } else {
