@@ -80,8 +80,7 @@ void mpi_gauss_filter(Image* im, Image* om, int w) {
                 MPI_COMM_WORLD);
         }
         psize = (im->h - w) - psize * (size - 1);
-    }
-    else {
+    } else {
         b = (unsigned char*)malloc(sizeof(unsigned char) * (im->w - w) * psize);
         data = (unsigned char*)malloc(sizeof(unsigned char) * im->w * (psize + w));
         MPI_Recv(data, im->w * (psize + w), MPI_UNSIGNED_CHAR, 0, tag,
