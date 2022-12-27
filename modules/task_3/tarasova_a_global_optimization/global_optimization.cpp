@@ -10,12 +10,10 @@ double GetGlobalOpt(const double a, const double b,
     answ.push_back(a);
     answ.push_back(b);
     double M = std::abs(func(&answ.at(1)) - func(&answ.at(0))) / (answ.at(1) - answ.at(0)), m;
-    if (M > 0) {
+    if (M > 0)
         m = r * M;
-    }
-    else {
+    else
         m = 1;
-    }
 
     answ.push_back((answ.at(1) + answ.at(0)) / 2 - (func(&answ.at(1)) - func(&answ.at(0))) / (2 * m));
     int count = answ.size() - 1;
@@ -26,12 +24,10 @@ double GetGlobalOpt(const double a, const double b,
         for (int i = 2; i <= count; i++) {
             M = std::max(M, std::abs(func(&answ.at(i)) - func(&answ.at(i - 1))) / (answ.at(i) - answ.at(i - 1)));
         }
-        if (M > 0) {
+        if (M > 0)
             m = r * M;
-        }
-        else {
+        else
             m = 1;
-        }
 
         R = m * (answ.at(1) - answ.at(0)) +
             pow((func(&answ.at(1)) - func(&answ.at(0))), 2) / (m * (answ.at(1) - answ.at(0))) -
