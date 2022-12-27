@@ -3,7 +3,7 @@
 #include <gtest/gtest.h>
 #include <mpi.h>
 #include <iostream>
-#include "../../../modules/task_2/pashina_a_bubble_sort/pashina_a_bubble_sort.h" 
+#include "../../../modules/task_2/pashina_a_bubble_sort/pashina_a_bubble_sort.h"
 #include <gtest-mpi-listener.hpp>
 
 TEST(generatearr_MPI, can_create_arr) {

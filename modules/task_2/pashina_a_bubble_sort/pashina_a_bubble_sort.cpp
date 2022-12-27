@@ -7,7 +7,7 @@
 #include <iostream>
 #include <random>
 #include <utility>
-#include "../../../modules/task_2/pashina_a_bubble_sort/pashina_a_bubble_sort.h" 
+#include "../../../modules/task_2/pashina_a_bubble_sort/pashina_a_bubble_sort.h"
 
 double *generateNewArr(int al) {
   std::mt19937 generator;
@@ -104,7 +104,8 @@ double *doParallel_BubbleOddEven(int len, double *myarr, int mainstart,
   int thsize;
   MPI_Comm_size(comm, &thsize);
 
-  local_a = (double *)calloc(len / thsize, sizeof(double));
+  local_a = reinterpret_cast<double *>(len / thsize,
+                                       sizeof(double));  //(double *)calloc();
   int index = 0;
   MPI_Scatter(myarr, len / thsize, MPI_DOUBLE, local_a, len / thsize,
               MPI_DOUBLE, mainstart, comm);
