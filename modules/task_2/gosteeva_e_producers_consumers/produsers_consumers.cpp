@@ -12,7 +12,6 @@ int GetAccess(int num) {
     MPI_Status MPI_status;
     while (num > 0) {
         MPI_Recv(&req, 1, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &MPI_status);
-        
         switch (MPI_status.MPI_TAG) {
         case peq_from_prod_tag:
             res = 0;
