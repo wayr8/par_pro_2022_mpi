@@ -89,7 +89,7 @@ pair<int, int> SequenOperation(const vector<int>& v) {
 }
 
 void pairCompare(int* in, int* out, int* lenght, MPI_Datatype* type) {
-    if (abs(out[0] - out[1]) > abs(in[0] - in[1])) {
+    if (abs(out[0] - out[1]) < abs(in[0] - in[1])) {
         out[1] = in[1];
         out[0] = in[0];
     }
