@@ -44,7 +44,7 @@ void DoBarberLoop(int n, int ProcSize, int ProcRank) {
     std::mt19937 rand_r(dev());
     buffer message;
     MPI_Status status;
-    int signal;
+    int signal = 1;
     bool working = true;
     bool free_barber = true;
     int mutex = 0, finished_clients = 0, thrown_clients = 0;
