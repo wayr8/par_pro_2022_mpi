@@ -43,7 +43,6 @@ int *bubble_s_with_return(int *arr, int n) {
 
 int generateNewArr(int al) {
   std::mt19937 generator;
-  int *generated_re = new int[al];
   generator.seed(static_cast<unsigned int>(time(0)));
     return static_cast<int>(generator() % 500);
 }
