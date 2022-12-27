@@ -7,6 +7,6 @@
 
 std::string CreateRandomString(int elems_count);
 int calculateCountSequental(std::string a);
-int calculateCountParallel(const std::string a, int elements_count);
+int calculateCountParallel(const std::string &a, int elements_count);
 
 #endif  // MODULES_TASK_1_ELISTRATOV_V_LETTER_COUNT_LETTER_COUNT_H_

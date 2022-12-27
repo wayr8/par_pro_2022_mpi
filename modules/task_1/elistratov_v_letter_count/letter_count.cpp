@@ -18,7 +18,7 @@ int calculateCountSequental(std::string result) {
   });
 }
 
-int calculateCountParallel(const std::string result, int elements_count) {
+int calculateCountParallel(const std::string &result, int elements_count) {
   int size, rank;
 
   MPI_Comm_size(MPI_COMM_WORLD, &size);
