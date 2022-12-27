@@ -50,7 +50,7 @@ void DoBarberLoop(int n, int ProcSize, int ProcRank) {
     int mutex = 0, finished_clients = 0, thrown_clients = 0;
     bool thread_running = true;
     std::queue<buffer>ocered;
-    bool working_procesess[100];
+    bool working_procesess[10000];
     for (int i = 1; i < ProcSize; i++) {
         working_procesess[i] = true;
     }
@@ -67,9 +67,10 @@ void DoBarberLoop(int n, int ProcSize, int ProcRank) {
                 mutex = 0;
             }
         }
-        MPI_Recv(&message, 1, MPI_2INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+        MPI_Probe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
         switch (status.MPI_TAG) {
         case REQUEST: {
+            MPI_Recv(&message, 1, MPI_2INT, MPI_ANY_SOURCE, REQUEST, MPI_COMM_WORLD, &status);
             if (ocered.size() < n) {
                 mutex = 1;
                 // std::cout << "Customer witi id:" << message.id << " has arrived." << std::endl;
@@ -84,12 +85,14 @@ void DoBarberLoop(int n, int ProcSize, int ProcRank) {
         }
         case SIGNAL:
         {
+            MPI_Recv(&signal, 1, MPI_INT, MPI_ANY_SOURCE, SIGNAL, MPI_COMM_WORLD, &status);
             finished_clients++;
             free_barber = true;
             break;
         }
         case END_SIGNAL:
         {
+            MPI_Recv(&signal, 1, MPI_INT, MPI_ANY_SOURCE, END_SIGNAL, MPI_COMM_WORLD, &status);
             working_procesess[status.MPI_SOURCE] = false;
             if (!AnyWorks(working_procesess, ProcSize))working = false;
         }
