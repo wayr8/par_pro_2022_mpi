@@ -2,11 +2,11 @@
 #include <mpi.h>
 #include <vector>
 #include <utility>
-#include <ctime>
-#include <stdexcept>
-#include "iostream"
-#include "random"
 #include <algorithm>
+#include <stdexcept>
+#include <ctime>
+#include "random"
+#include "iostream"
 #include "../../../modules/task_1/shipilov_a_find_most_diff/find_most_diff.h"
 
 std::vector<int> Random(int size) {
@@ -26,8 +26,7 @@ pair<int, int> ParallelOperation(const vector<int>& v) {
     if ((static_cast<int>(v.size()) <= size) || (size == 1)) {
         if (rank == 0) {
             return SequenOperation(v);
-        }
-        else {
+        } else {
             return std::make_pair(0, 0);
         }
     }
@@ -42,15 +41,13 @@ pair<int, int> ParallelOperation(const vector<int>& v) {
             if (num_proc == size - 1) {
                 MPI_Send(&v[0] + start_index, v.size() - start_index,
                     MPI_INT, num_proc, 0, MPI_COMM_WORLD);
-            }
-            else {
+            } else {
                 MPI_Send(&v[0] + start_index, size_new, MPI_INT, num_proc, 0, MPI_COMM_WORLD);
             }
         }
         vec_loc = vector<int>(size_new);
         vec_loc = vector<int>(v.begin(), v.begin() + size_new);
-    }
-    else {
+    } else {
         MPI_Status status;
 
         if (rank == size - 1) {
@@ -92,8 +89,7 @@ void pairCompare(int* in, int* out, int* lenght, MPI_Datatype* type) {
     if (abs(out[0] - out[1]) < abs(in[0] - in[1])) {
         out[1] = in[1];
         out[0] = in[0];
-    }
-    else {
+    } else {
         if ((in[2] < out[2]) && abs(in[0] - in[1]) == abs(out[0] - out[1])) {
             out[1] = in[1];
             out[0] = in[0];
