@@ -24,7 +24,7 @@ std::vector<std::vector<double>> CreateMatrix(const int size) {
 }
 
 std::vector<double> GetSimpleIter(const std::vector<std::vector<double>>& a, const std::vector<double>& b,
-const int size, const double eps) {
+    const int size, const double eps) {
     std::vector<double> answ(size), B = b;
     std::vector<std::vector<double>> A = a;
     for (int i = 0; i < size; i++) {
@@ -36,8 +36,7 @@ const int size, const double eps) {
         for (int j = 0; j < size; j++) {
             if (i != j) {
                 A.at(i).at(j) /= (divid < 0) ? divid : -divid;
-            }
-            else
+            } else
                 A.at(i).at(j) = 0;
         }
     }
@@ -66,8 +65,8 @@ const int size, const double eps) {
 }
 
 
-std::vector<double> GetSimpleIterParallel(const std::vector<std::vector<double>>& a, const std::vector<double>& b, 
-const int size, const double eps) {
+std::vector<double> GetSimpleIterParallel(const std::vector<std::vector<double>>& a, const std::vector<double>& b,
+    const int size, const double eps) {
     int ProcCount, ProcId;
     std::vector<std::vector<double>> A = a;
     std::vector<double> B = b;
@@ -93,7 +92,7 @@ const int size, const double eps) {
         for (int i = 1; i < ProcCount; i++)
             Offsets.at(i) = Offsets.at(i - 1) + Counts.at(i - 1);
     }
-    MPI_Scatterv(Adata.data(), Counts.data(), Offsets.data(), MPI_DOUBLE, Procdata.data(), 
+    MPI_Scatterv(Adata.data(), Counts.data(), Offsets.data(), MPI_DOUBLE, Procdata.data(),
         np, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     int Index = (size / ProcCount) * ProcId + std::min(ProcId, size % ProcCount);
     int Size = size + 1;
@@ -107,8 +106,7 @@ const int size, const double eps) {
         for (int j = i; j < i + Size - 1; j++) {
             if (j != Index + i) {
                 Procdata.at(j) /= (divid < 0) ? divid : -divid;
-            }
-            else
+            } else
                 Procdata.at(j) = 0;
         }
         Index++;
@@ -128,9 +126,8 @@ const int size, const double eps) {
         Offsets.at(i) = Offsets.at(i - 1) + Counts.at(i - 1);
 
 
-    MPI_Allgatherv(psansw.data(), psansw.size(), MPI_DOUBLE, 
+    MPI_Allgatherv(psansw.data(), psansw.size(), MPI_DOUBLE,
         answ.data(), Counts.data(), Offsets.data(), MPI_DOUBLE, MPI_COMM_WORLD);
-
     pransw = answ;
     bool flag = false;
     int step = 0;
