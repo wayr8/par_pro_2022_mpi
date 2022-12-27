@@ -1,9 +1,10 @@
 // Copyright 2022 Shipilov Artem
-#include <gtest-mpi-listener.hpp>
 #include <gtest/gtest.h>
 #include <vector>
 #include <iostream>
+#include <gtest-mpi-listener.hpp>
 #include "./find_most_diff.h"
+
 
 TEST(Parallel_Operations_MPI, Test_SequenOperation) {
     int rank;

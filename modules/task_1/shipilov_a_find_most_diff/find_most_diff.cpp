@@ -5,8 +5,8 @@
 #include <algorithm>
 #include <stdexcept>
 #include <ctime>
-#include "random"
-#include "iostream"
+#include <random>
+#include <iostream>
 #include "../../../modules/task_1/shipilov_a_find_most_diff/find_most_diff.h"
 
 std::vector<int> Random(int size) {
