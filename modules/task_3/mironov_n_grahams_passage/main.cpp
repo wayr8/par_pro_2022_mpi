@@ -51,7 +51,7 @@ TEST(Grahams_passage, test_4) {
   bool a = 1;
   if (procId == 0) {
     std::vector<Point> nonParalRes = GrahamsPasOneProc(P);
-    for (size_t i = 0; i < res.size(); i++)
+    for (size_t i = 0; i < paralRes.size(); i++)
       if (paralRes[i] != nonParalRes[i])
         a = 0;
     EXPECT_EQ(a, 1);
