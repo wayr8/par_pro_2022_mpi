@@ -1,12 +1,9 @@
 // Copyright 2022 Pashina Alina
+
 #include <gtest/gtest.h>
-#include <mpi.h>
-
-#include <gtest-mpi-listener.hpp>
-#include <iostream>
 #include <vector>
-
 #include "pashina_a_gauss_h.h";
+#include <gtest-mpi-listener.hpp>
 
 TEST(generateImage_MPI, can_create_img) {
   int t_rank;
