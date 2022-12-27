@@ -45,8 +45,9 @@ int getParallelNDisorder(const std::vector<int> &global_vec,
         local_vec = std::vector<int>(global_vec.begin(),
                                      global_vec.begin() + delta);
     } else {
+        local_vec.resize(delta + 1);
         MPI_Status status;
-        MPI_Recv(local_vec.data(), delta, MPI_INT, 0, 0,
+        MPI_Recv(local_vec.data(), delta + 1, MPI_INT, 0, 0,
                  MPI_COMM_WORLD, &status);
     }
 
