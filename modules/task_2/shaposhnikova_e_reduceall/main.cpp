@@ -1,8 +1,8 @@
 // Copyright 2022 Shaposhnikova Ekaterina
+#include <gtest/gtest.h>
 #include <string>
 #include <random>
 #include <iostream>
-#include <gtest/gtest.h>
 #include "./reduceall.h"
 #include <gtest-mpi-listener.hpp>
 
