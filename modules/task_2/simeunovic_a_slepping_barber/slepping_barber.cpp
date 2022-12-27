@@ -43,8 +43,8 @@ void DoBarberLoop(int n, int ProcSize, int ProcRank) {
     // bool thread_running = true;
     std::queue<buffer>ocered;
     // std::thread thr(Sleeping, &mutex, &thread_running);
-    int count = rand_r() %10+5;
-    while (count-->0) {
+    int count = rand_r() % 10 + 5;
+    while (count-- > 0) {
         if (free_barber) {
             if (!ocered.empty()) {
                 signal = 1;
@@ -52,31 +52,33 @@ void DoBarberLoop(int n, int ProcSize, int ProcRank) {
                 MPI_Send(&signal, 1, MPI_INT, ocered.front().ProcRank, RESPONSE, MPI_COMM_WORLD);
                 ocered.pop();
                 free_barber = false;
-            } else {
+            }
+            else {
                 mutex = 0;
             }
         }
-        MPI_Recv(&message, 1, MPI_2INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-        switch (status.MPI_TAG) {
-            case REQUEST: {
-                if (ocered.size() < n) {
-                    mutex = 1;
-                       // std::cout << "Customer witi id:" << message.id << " has arrived." << std::endl;
-                    ocered.push(message);
-                } else {
-                      // std::cout << "There is no place for customer with id:" << message.id << std::endl;
-                    thrown_clients++;
-                    signal = 0;
-                    MPI_Send(&signal, 1, MPI_INT, message.ProcRank, RESPONSE, MPI_COMM_WORLD);
-                }
-                break;
+        MPI_Probe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+        if (status.MPI_TAG == REQUEST)
+        {
+            MPI_Recv(&message, 1, MPI_2INT, MPI_ANY_SOURCE, REQUEST, MPI_COMM_WORLD, &status);
+            if (ocered.size() < n) {
+                mutex = 1;
+                // std::cout << "Customer witi id:" << message.id << " has arrived." << std::endl;
+                ocered.push(message);
             }
-            case SIGNAL: {
-                    finished_clients++;
-                    free_barber = true;
+            else {
+                // std::cout << "There is no place for customer with id:" << message.id << std::endl;
+                thrown_clients++;
+                signal = 0;
+                MPI_Send(&signal, 1, MPI_INT, message.ProcRank, RESPONSE, MPI_COMM_WORLD);
             }
         }
-    }
+        else if(status.MPI_TAG==SIGNAL) {
+            MPI_Recv(&message, 1, MPI_2INT, MPI_ANY_SOURCE, SIGNAL, MPI_COMM_WORLD, &status);
+                finished_clients++;
+                free_barber = true;
+            }
+       }
     // thread_running = false;
     // thr.join();
     signal = 2;
