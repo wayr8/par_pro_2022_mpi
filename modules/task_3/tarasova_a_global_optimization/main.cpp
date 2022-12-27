@@ -15,7 +15,7 @@ void GlobalOptimizationTest(const double a, const double b, std::function<double
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcId);
     double GlobalOptPar = GetGlobalOptParallel(a, b, func, part, eps);
     if (ProcId == 0) {
-        double GlobalOptLin = seq_global_opt(a, b, func, part, eps);
+        double GlobalOptLin = GetGlobalOpt(a, b, func, part, eps);
         ASSERT_NEAR(GlobalOptPar, GlobalOptLin, eps);
     }
 }
