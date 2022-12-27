@@ -24,4 +24,4 @@ void mpi_gauss_filter(Image* im, Image* om, int w);
 
 void gauss_filter(Image* im, Image* om, int w);
 
-#endif  // MODULES_TASK_3_ERMOLAEV_D_LINEAR_FILTER_3X3_LINEAR_FILTER_3X3_H_ 
+#endif  // MODULES_TASK_3_ERMOLAEV_D_LINEAR_FILTER_3X3_LINEAR_FILTER_3X3_H_
