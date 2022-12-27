@@ -52,28 +52,24 @@ void DoBarberLoop(int n, int ProcSize, int ProcRank) {
                 MPI_Send(&signal, 1, MPI_INT, ocered.front().ProcRank, RESPONSE, MPI_COMM_WORLD);
                 ocered.pop();
                 free_barber = false;
-            }
-            else {
+            } else {
                 mutex = 0;
             }
         }
         MPI_Probe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-        if (status.MPI_TAG == REQUEST)
-        {
+        if (status.MPI_TAG == REQUEST) {
             MPI_Recv(&message, 1, MPI_2INT, MPI_ANY_SOURCE, REQUEST, MPI_COMM_WORLD, &status);
             if (ocered.size() < n) {
                 mutex = 1;
                 // std::cout << "Customer witi id:" << message.id << " has arrived." << std::endl;
                 ocered.push(message);
-            }
-            else {
+            } else {
                 // std::cout << "There is no place for customer with id:" << message.id << std::endl;
                 thrown_clients++;
                 signal = 0;
                 MPI_Send(&signal, 1, MPI_INT, message.ProcRank, RESPONSE, MPI_COMM_WORLD);
             }
-        }
-        else if(status.MPI_TAG==SIGNAL) {
+        } else if (status.MPI_TAG == SIGNAL) {
             MPI_Recv(&message, 1, MPI_2INT, MPI_ANY_SOURCE, SIGNAL, MPI_COMM_WORLD, &status);
                 finished_clients++;
                 free_barber = true;
