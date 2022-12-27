@@ -20,7 +20,7 @@ int countRequiredCharInProcStr(const char* str, char requiredChar) {
     return charCount;
 }
 
-int countRequiredCharInStr(std::string& str, char requiredChar) {
+int countRequiredCharInStr(std::string str, char requiredChar) {
     int procCount, procId;
 
     MPI_Comm_size(MPI_COMM_WORLD, &procCount);
@@ -86,12 +86,12 @@ int countRequiredCharInStr(std::string& str, char requiredChar) {
         int messMove = 0;
         for (int proc = 1; proc < procCount; proc++) {
             messMove += oneProcWorkAmount;
-            std::string procStr = str.substr(messMove,oneProcWorkAmountForScatterv[proc]);
+            std::string procStr = str.substr(messMove, oneProcWorkAmountForScatterv[proc]);
             MPI_Send(procStr.c_str(),
             oneProcWorkAmountForScatterv[proc], MPI_CHAR, proc, 1,
             commForProcInUse);
         }
-        std::string procStr = str.substr(0,oneProcWorkAmountForScatterv[0]);
+        std::string procStr = str.substr(0, oneProcWorkAmountForScatterv[0]);
         procCharCount = countRequiredCharInProcStr(procStr.c_str(), requiredChar);
     }
 
