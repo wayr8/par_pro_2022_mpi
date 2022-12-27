@@ -2,7 +2,8 @@
 
 #include <gtest/gtest.h>
 #include <vector>
-#include "./pashina_a_gauss_h.h";
+#include <algorithm>
+#include "../../../modules/task_3/pashina_a_gauss_ho/pashina_a_gauss_h.h"
 #include <gtest-mpi-listener.hpp>
 
 TEST(generateImage_MPI, can_create_img) {
