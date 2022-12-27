@@ -7,8 +7,8 @@ std::vector<double> CreateVector(const int size, const int min, const int max) {
     std::mt19937 random(rand_r());
     std::uniform_real_distribution<double> dist(min, max);
     std::vector<double> Vector(size);
-    for (int i = 0; i < size; i++) { 
-        Vector.at(i) = dist(random); 
+    for (int i = 0; i < size; i++) {
+        Vector.at(i) = dist(random);
     }
     return Vector;
 }
@@ -23,7 +23,7 @@ std::vector<std::vector<double>> CreateMatrix(const int size) {
     return Matrix;
 }
 
-std::vector<double> GetSimpleIter(const std::vector<std::vector<double>>& a, const std::vector<double>& b, 
+std::vector<double> GetSimpleIter(const std::vector<std::vector<double>>& a, const std::vector<double>& b,
 const int size, const double eps) {
     std::vector<double> answ(size), B = b;
     std::vector<std::vector<double>> A = a;
@@ -33,14 +33,12 @@ const int size, const double eps) {
             B.at(i) /= -divid;
         else
             B.at(i) /= divid;
-        
         for (int j = 0; j < size; j++) {
             if (i != j) {
                 A.at(i).at(j) /= (divid < 0) ? divid : -divid;
             }
-            else {
+            else
                 A.at(i).at(j) = 0;
-            }
         }
     }
     std::vector<double> pansw = B;
@@ -97,7 +95,6 @@ const int size, const double eps) {
     }
     MPI_Scatterv(Adata.data(), Counts.data(), Offsets.data(), MPI_DOUBLE, Procdata.data(), 
         np, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-
     int Index = (size / ProcCount) * ProcId + std::min(ProcId, size % ProcCount);
     int Size = size + 1;
     for (int i = 0; i < np; i += Size) {
@@ -111,9 +108,8 @@ const int size, const double eps) {
             if (j != Index + i) {
                 Procdata.at(j) /= (divid < 0) ? divid : -divid;
             }
-            else {
+            else
                 Procdata.at(j) = 0;
-            }
         }
         Index++;
     }
