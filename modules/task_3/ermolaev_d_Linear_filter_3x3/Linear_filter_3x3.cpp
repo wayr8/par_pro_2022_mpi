@@ -45,7 +45,7 @@ void mpi_gauss_filter(Image* im, Image* om, int w) {
     int size, rank;
     MPI_Status status;
     const int tag = 0;
-    double M_PI = 3.14159265358979323846;
+    double mypi = 3.14159265358979323846;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
@@ -60,7 +60,7 @@ void mpi_gauss_filter(Image* im, Image* om, int w) {
         for (int j = 0; j < w; j++, pg++) {
             y = j - c;
             r = x * x + y * y;
-            *pg = 1 / (2 * M_PI * sigma2) * exp(-r / (2 * sigma2));
+            *pg = 1 / (2 * mypi * sigma2) * exp(-r / (2 * sigma2));
         }
     }
 
@@ -109,7 +109,7 @@ void mpi_gauss_filter(Image* im, Image* om, int w) {
 }
 
 void gauss_filter(Image* im, Image* om, int w) {
-    double M_PI = 3.14159265358979323846;
+    double mypi = 3.14159265358979323846;
     double* g = reinterpret_cast<double*>((malloc(sizeof(double) * w * w)));
     double sigma2 = (static_cast<double>(w)) / 6.0;
     sigma2 *= sigma2;
@@ -121,7 +121,7 @@ void gauss_filter(Image* im, Image* om, int w) {
         for (int j = 0; j < w; j++, pg++) {
             y = j - c;
             r = x * x + y * y;
-            *pg = 1 / (2 * M_PI * sigma2) * exp(-r / (2 * sigma2));
+            *pg = 1 / (2 * mypi * sigma2) * exp(-r / (2 * sigma2));
         }
     }
 
