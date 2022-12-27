@@ -8,56 +8,60 @@ TEST(Slepping_Barber, Test_1_place) {
     int ProcSize;
     MPI_Comm_size(MPI_COMM_WORLD, &ProcSize);
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
-    std::cout << "Proccess rank:" << ProcRank << std::endl;
+    if (ProcSize != 1) {
     if (ProcRank == 0) {
         ASSERT_NO_THROW(DoBarberLoop(1, ProcSize, ProcRank));
     } else {
     ASSERT_NO_THROW(ClientLoop(ProcRank));}
-    MPI_Barrier(MPI_COMM_WORLD);
+    }
 }
 TEST(Slepping_Barber, Test_2_place) {
     int ProcRank;
     int ProcSize;
     MPI_Comm_size(MPI_COMM_WORLD, &ProcSize);
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
+    if (ProcSize != 1) {
     if (ProcRank == 0) {
-        ASSERT_NO_THROW(DoBarberLoop(2, ProcSize, ProcRank));
+        ASSERT_NO_THROW(DoBarberLoop(1, ProcSize, ProcRank));
     } else {
     ASSERT_NO_THROW(ClientLoop(ProcRank));}
-    MPI_Barrier(MPI_COMM_WORLD);
+    }
 }
 TEST(Slepping_Barber, Test_4_place) {
     int ProcRank;
     int ProcSize;
     MPI_Comm_size(MPI_COMM_WORLD, &ProcSize);
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
+    if (ProcSize != 1) {
     if (ProcRank == 0) {
-        ASSERT_NO_THROW(DoBarberLoop(4, ProcSize, ProcRank));
+        ASSERT_NO_THROW(DoBarberLoop(1, ProcSize, ProcRank));
     } else {
     ASSERT_NO_THROW(ClientLoop(ProcRank));}
-    MPI_Barrier(MPI_COMM_WORLD);
+    }
 }
 TEST(Slepping_Barber, Test_6_place) {
     int ProcRank;
     int ProcSize;
     MPI_Comm_size(MPI_COMM_WORLD, &ProcSize);
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
+    if (ProcSize != 1) {
     if (ProcRank == 0) {
-        ASSERT_NO_THROW(DoBarberLoop(6, ProcSize, ProcRank));
+        ASSERT_NO_THROW(DoBarberLoop(1, ProcSize, ProcRank));
     } else {
     ASSERT_NO_THROW(ClientLoop(ProcRank));}
-    MPI_Barrier(MPI_COMM_WORLD);
+    }
 }
 TEST(Slepping_Barber, Test_10_place) {
     int ProcRank;
     int ProcSize;
     MPI_Comm_size(MPI_COMM_WORLD, &ProcSize);
     MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
+    if (ProcSize != 1) {
     if (ProcRank == 0) {
-        ASSERT_NO_THROW(DoBarberLoop(10, ProcSize, ProcRank));
+        ASSERT_NO_THROW(DoBarberLoop(1, ProcSize, ProcRank));
     } else {
     ASSERT_NO_THROW(ClientLoop(ProcRank));}
-    MPI_Barrier(MPI_COMM_WORLD);
+    }
 }
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
