@@ -36,10 +36,7 @@ const int size, const double eps) {
         
         for (int j = 0; j < size; j++) {
             if (i != j) {
-                if (divid < 0)
-                A.at(i).at(j) /= divid;
-                else
-                    A.at(i).at(j) /= -divid;
+                A.at(i).at(j) /= (divid < 0) ? divid : -divid;
             }
             else {
                 A.at(i).at(j) = 0;
@@ -112,11 +109,7 @@ const int size, const double eps) {
             Procdata.at(BIndex) /= divid;
         for (int j = i; j < i + Size - 1; j++) {
             if (j != Index + i) {
-                if (divid < 0)
-                    Procdata.at(j) /= divid;
-                else
-                    Procdata.at(j) /= -divid;
-                
+                Procdata.at(j) /= (divid < 0) ? divid : -divid;
             }
             else {
                 Procdata.at(j) = 0;
