@@ -7,7 +7,7 @@ TEST(Count_required_char_in_str, test_1) {
     int procId;
     MPI_Comm_rank(MPI_COMM_WORLD, &procId);
 
-    std::string str[] = "dadsadaababas";
+    std::string str = "dadsadaababas";
     char requiredChar = 'a';
 
     int ppCount = countRequiredCharInStr(str, requiredChar);
@@ -22,7 +22,7 @@ TEST(Count_required_char_in_str, test_2) {
     int procId;
     MPI_Comm_rank(MPI_COMM_WORLD, &procId);
 
-    std::string str[] = "deaaxabas";
+    std::string str = "deaaxabas";
     char requiredChar = 'z';
 
     int ppCount = countRequiredCharInStr(str, requiredChar);
@@ -37,7 +37,7 @@ TEST(Count_required_char_in_str, test_3) {
     int procId;
     MPI_Comm_rank(MPI_COMM_WORLD, &procId);
 
-    std::string str[] = "fffffffffff";
+    std::string str = "fffffffffff";
     char requiredChar = 'f';
 
     int ppCount = countRequiredCharInStr(str, requiredChar);
@@ -52,7 +52,7 @@ TEST(Count_required_char_in_str, test_4) {
     int procId;
     MPI_Comm_rank(MPI_COMM_WORLD, &procId);
 
-    std::string str[] = "";
+    std::string str = "";
     char requiredChar = 'd';
 
     ASSERT_ANY_THROW(countRequiredCharInStr(str, requiredChar));
@@ -68,7 +68,7 @@ TEST(Count_required_char_in_str, test_6) {
     int procId;
     MPI_Comm_rank(MPI_COMM_WORLD, &procId);
 
-    std::string str[] = "     ";
+    std::string str = "     ";
     char requiredChar = ' ';
 
 
