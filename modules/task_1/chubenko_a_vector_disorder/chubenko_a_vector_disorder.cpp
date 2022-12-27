@@ -4,7 +4,7 @@
 #include <string>
 #include <random>
 #include <algorithm>
-#include "../../../modules/task_1/chubenko_a_vector_disorder.h"
+#include "../../../modules/task_1/chubenko_a_vector_disorder/chubenko_a_vector_disorder.h"
 
 
 std::vector<int> getRandomVector(int sz) {
