@@ -10,7 +10,9 @@ TEST(doParallel_BubbleS, par_test_2) {
   int mysize = 2;
   int* start_arr = new int[mysize];
   int* ref_array;
-  start_arr = generateNewArr(mysize);
+  for (int i = 0; i < mysize; i++) {
+    start_arr[i] = generateNewArr(mysize);
+  }
   int* res_arr_Par = doParallel_BubbleS(start_arr, mysize);
   if (th_rank == 0) {
     int* arr = bubble_s_with_return(start_arr, mysize);
@@ -25,7 +27,9 @@ TEST(doParallel_BubbleOddEven_MPI, par_test_11) {
   int* start_arr = new int[mysize];
   int* ref_array;
 
-  start_arr = generateNewArr(mysize);
+  for (int i = 0; i < mysize; i++) {
+    start_arr[i] = generateNewArr(mysize);
+  }
   int* res_arr_Par = doParallel_BubbleS(start_arr, mysize);
 
   if (th_rank == 0) {
@@ -41,7 +45,9 @@ TEST(doParallel_BubbleOddEven_MPI, par_test_15) {
   int* start_arr = new int[mysize];
   int* ref_array;
 
-  start_arr = generateNewArr(mysize);
+   for (int i = 0; i < mysize; i++) {
+    start_arr[i] = generateNewArr(mysize);
+  }
   int* res_arr_Par = doParallel_BubbleS(start_arr, mysize);
 
   if (th_rank == 0) {
@@ -57,7 +63,9 @@ TEST(doParallel_BubbleOddEven_MPI, par_test_15) {
     int* start_arr = new int[mysize];
     int* ref_array;
 
-    start_arr = generateNewArr(mysize);
+    for (int i = 0; i < mysize; i++) {
+      start_arr[i] = generateNewArr(mysize);
+    }
     int* res_arr_Par = doParallel_BubbleS(start_arr, mysize);
 
     if (th_rank == 0) {
@@ -72,7 +80,9 @@ TEST(doParallel_BubbleOddEven_MPI, par_test_15) {
     int* start_arr = new int[mysize];
     int* ref_array;
 
-    start_arr = generateNewArr(mysize);
+     for (int i = 0; i < mysize; i++) {
+      start_arr[i] = generateNewArr(mysize);
+    }
     int* res_arr_Par = doParallel_BubbleS(start_arr, mysize);
 
     if (th_rank == 0) {
