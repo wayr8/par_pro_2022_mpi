@@ -1,8 +1,8 @@
 // Copyright 2022 Gosteeva Ekaterina
 
-#include <gtest-mpi-listener.hpp>
 #include <gtest/gtest.h>
-#include "../../../modules/task_2/gosteeva_e_producers_consumers/producers_consumers.h"
+#include "./producers_consumers.h"
+#include <gtest-mpi-listener.hpp>
 
 void RunTest(int prod_size, int con_size) {
     int MPI_rank, MPI_size;
@@ -30,7 +30,7 @@ void RunTest(int prod_size, int con_size) {
 }
 
 TEST(Producers_consumers, Test1) {
-    RunTest(1,2);
+    RunTest(1, 2);
 }
 
 TEST(Producers_consumers, Test2) {
