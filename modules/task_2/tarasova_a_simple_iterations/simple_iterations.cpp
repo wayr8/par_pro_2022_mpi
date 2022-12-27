@@ -34,9 +34,9 @@ std::vector<double> GetSimpleIter(const std::vector<std::vector<double>>& a, con
         else
             B.at(i) /= divid;
         for (int j = 0; j < size; j++) {
-            if (i != j) {
+            if (i != j)
                 A.at(i).at(j) /= (divid < 0) ? divid : -divid;
-            } else
+            else
                 A.at(i).at(j) = 0;
         }
     }
