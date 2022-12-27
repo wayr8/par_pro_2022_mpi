@@ -23,7 +23,8 @@ std::vector<std::vector<double>> CreateMatrix(const int size) {
     return Matrix;
 }
 
-std::vector<double> GetSimpleIter(const std::vector<std::vector<double>>& a, const std::vector<double>& b, const int size, const double eps) {
+std::vector<double> GetSimpleIter(const std::vector<std::vector<double>>& a, const std::vector<double>& b, 
+const int size, const double eps) {
     std::vector<double> answ(size), B = b;
     std::vector<std::vector<double>> A = a;
     for (int i = 0; i < size; i++) {
@@ -70,7 +71,8 @@ std::vector<double> GetSimpleIter(const std::vector<std::vector<double>>& a, con
 }
 
 
-std::vector<double> GetSimpleIterParallel(const std::vector<std::vector<double>>& a, const std::vector<double>& b, const int size, const double eps) {
+std::vector<double> GetSimpleIterParallel(const std::vector<std::vector<double>>& a, const std::vector<double>& b, 
+const int size, const double eps) {
     int ProcCount, ProcId;
     std::vector<std::vector<double>> A = a;
     std::vector<double> B = b;
@@ -96,7 +98,8 @@ std::vector<double> GetSimpleIterParallel(const std::vector<std::vector<double>>
         for (int i = 1; i < ProcCount; i++)
             Offsets.at(i) = Offsets.at(i - 1) + Counts.at(i - 1);
     }
-    MPI_Scatterv(Adata.data(), Counts.data(), Offsets.data(), MPI_DOUBLE, Procdata.data(), np, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_Scatterv(Adata.data(), Counts.data(), Offsets.data(), MPI_DOUBLE, Procdata.data(), 
+        np, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
     int Index = (size / ProcCount) * ProcId + std::min(ProcId, size % ProcCount);
     int Size = size + 1;
@@ -136,14 +139,16 @@ std::vector<double> GetSimpleIterParallel(const std::vector<std::vector<double>>
         Offsets.at(i) = Offsets.at(i - 1) + Counts.at(i - 1);
 
 
-    MPI_Allgatherv(psansw.data(), psansw.size(), MPI_DOUBLE, answ.data(), Counts.data(), Offsets.data(), MPI_DOUBLE, MPI_COMM_WORLD);
+    MPI_Allgatherv(psansw.data(), psansw.size(), MPI_DOUBLE, 
+        answ.data(), Counts.data(), Offsets.data(), MPI_DOUBLE, MPI_COMM_WORLD);
 
     pransw = answ;
     bool flag = false;
     int step = 0;
     while (!flag) {
         if (step > 0) {
-            MPI_Allgatherv(psansw.data(), psansw.size(), MPI_DOUBLE, answ.data(), Counts.data(), Offsets.data(), MPI_DOUBLE, MPI_COMM_WORLD);
+            MPI_Allgatherv(psansw.data(), psansw.size(), MPI_DOUBLE, 
+                answ.data(), Counts.data(), Offsets.data(), MPI_DOUBLE, MPI_COMM_WORLD);
             flag = true;
             for (int i = 0; i < size - 1; i++) {
                 if (std::abs(pransw.at(i) - answ.at(i)) > eps) {
