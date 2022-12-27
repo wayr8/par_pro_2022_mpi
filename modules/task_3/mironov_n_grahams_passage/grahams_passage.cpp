@@ -23,18 +23,18 @@ Point::~Point() {
 }
 
 Vector::Vector() {
-  this.X = 0;
-  this.Y = 0;
+  this -> X = 0;
+  this -> Y = 0;
 }
 
 Vector::Vector(Point firstPoint, Point secondPoint) {
-  this.X = secondPoint.x - firstPoint.x;
-  this.Y = secondPoint.y - firstPoint.y;
+  this -> X = secondPoint.x - firstPoint.x;
+  this -> Y = secondPoint.y - firstPoint.y;
 }
 
 Vector::Vector(double x, double y) {
-  this.X = x;
-  this.Y = y;
+  this -> X = x;
+  this -> Y = y;
 }
 
 double Modul(const Vector& vector) {
@@ -57,7 +57,7 @@ double Cosinus(const Vector& vectorFirst, const Vector& vectorSecond) {
 Point SearchMinPoint(const std::vector<Point>& Points) {
   Point Minimum = Points[0];
   for (size_t i = 1; i < Points.size(); i++) {
-    Minimum = Minimum.Min(Min, Points[i]);
+    Minimum = Minimum.Min(Minimum, Points[i]);
   }
   return Minimum;
 }
@@ -149,8 +149,8 @@ std::vector<Point> GrahamsPasOneProc(const std::vector<Point>& P) {
   }
   std::vector<Point> resultPoint(Result.size() / 2);
   for (size_t i = 0; i < Result.size(); i += 2) {
-    resPoint[i / 2].x = Result[i];
-    resPoint[i / 2].y = Result[i + 1];
+    resultPoint[i / 2].x = Result[i];
+    resultPoint[i / 2].y = Result[i + 1];
   }
   return resultPoint;
 }
