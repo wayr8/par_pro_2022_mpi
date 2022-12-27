@@ -69,12 +69,9 @@ TEST(Count_required_char_in_str, test_6) {
     int procId;
     MPI_Comm_rank(MPI_COMM_WORLD, &procId);
 
-    int size = 10;
-    char *str = new char[size];
-    char requiredChar;
+    char str[] = "     ";
+    char requiredChar = ' ';
 
-    getRandomStr(str, size);
-    requiredChar = 'a';
 
     int ppCount = countRequiredCharInStr(str, requiredChar);
 
