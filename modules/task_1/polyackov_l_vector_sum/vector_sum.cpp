@@ -9,10 +9,11 @@
 #include "../../../modules/task_1/polyackov_l_vector_sum/vector_sum.h"
 
 std::vector<int> getRandVector(int size) {
-    srand(time(NULL));
+    std::random_device dev;
+    std::mt19937 gen(dev());
     std::vector<int> tmp_vec;
     for (int i = 0; i < size; i++) {
-        tmp_vec.push_back(rand() % 100);
+        tmp_vec.push_back(gen() % 100);
     }
     return tmp_vec;
 }
