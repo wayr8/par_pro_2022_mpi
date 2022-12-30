@@ -144,11 +144,11 @@ TEST(Parallel_Vector_Sum_MPI, Sum_Of_Vector_Does_Not_Change) {
         vec.push_back(unit_elem);
     }
 
-    int first_attempt = getParallelVecSum(vec, vec_size);
-    int second_attempt = getParallelVecSum(vec, vec_size);
+    int first_sum = getParallelVecSum(vec, vec_size);
+    int second_sum = getParallelVecSum(vec, vec_size);
 
     if (rank == 0) {
-        ASSERT_EQ(first_attempt, second_attempt);
+        ASSERT_EQ(first_sum, second_sum);
     }
 }
 
