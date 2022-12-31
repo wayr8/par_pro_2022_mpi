@@ -1,6 +1,6 @@
 // Copyright 2022 Bugrov Andrey
 
-#include "min_value_in_matrix.h"
+#include "../../../modules/task_1/bugrov_a_min_value_in_matrix/min_value_in_matrix.h"
 
 #include <mpi.h>  // for mpi
 
@@ -14,14 +14,6 @@ void CreateRandomValues(int* matrix, int size) {
   }
 }
 
-void MatrixPrinter(int* matrix, int n, int m) {
-  for (int i = 0; i < n; i++) {
-    for (int j = 0; j < m; j++) {
-      std::cout << matrix[i * m + j] << ' ';
-    }
-    std::cout << "\n";
-  }
-}
 
 int SeqMinValue(int* matrix, int size) {
   int min_value = matrix[0];
