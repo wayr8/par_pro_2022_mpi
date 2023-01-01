@@ -63,8 +63,7 @@ TEST(Count_Letters_In_String_MPI, Test_Random_String) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
   std::string globalString = "";
-  char letter;
-  letter = getRandomLetter();
+  char letter = getRandomLetter();
   if (rank == 0) {
     globalString = getRandomString(1000);
   }
@@ -82,8 +81,7 @@ TEST(Count_Letters_In_String_MPI, Test_Random_String_2) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
   std::string globalString = "";
-  char letter;
-  letter = getRandomLetter();
+  char letter = getRandomLetter();
   if (rank == 0) {
     globalString = getRandomString(100000);
   }
