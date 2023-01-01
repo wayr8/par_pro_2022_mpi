@@ -1,8 +1,8 @@
 // Copyright 2022 Sukharev Artem
 
 #include <gtest/gtest.h>
-#include <gtest-mpi-listener.hpp>
 #include <string>
+#include <gtest-mpi-listener.hpp>
 #include "./count_letters_in_string.h"
 
 TEST(Count_Letters_In_String_MPI, Test_Some_Letters_Zzzz) {
