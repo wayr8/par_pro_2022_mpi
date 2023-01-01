@@ -5,7 +5,6 @@
 #include <mpi.h>
 
 #include <algorithm>
-#include <iostream>
 #include <random>
 #include <string>
 
