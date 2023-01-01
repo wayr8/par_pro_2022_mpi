@@ -14,9 +14,7 @@ void CreateRandomValues(int* matrix, int size) {
   }
 }
 
-// Хранить матрицу по столбцам!
-// Переделать умножение 
-// Использовать Скаттер и Reduce либо Gather
+
 int SeqMinValue(int* matrix, int size) {
   int min_value = matrix[0];
   int i = 1;
