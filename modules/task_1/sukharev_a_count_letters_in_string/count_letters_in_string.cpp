@@ -1,70 +1,74 @@
 // Copyright 2022 Sukharev Artem
-#include <mpi.h>
-#include <iostream>
-#include <string>
-#include <random>
-#include <algorithm>
 #include "../../../modules/task_1/sukharev_a_count_letters_in_string/count_letters_in_string.h"
 
+#include <mpi.h>
+
+#include <algorithm>
+#include <iostream>
+#include <random>
+#include <string>
 
 std::string getRandomString(int size) {
-    std::random_device dev;
-    std::mt19937 gen(dev());
-    std::string randomString;
-    randomString.resize(size);
-    for (int i = 0; i < size; i++) {
-        randomString[i] = static_cast<char>(static_cast<int>('a')+gen()%26);
-    }
-    return randomString;
+  std::random_device dev;
+  std::mt19937 gen(dev());
+  std::string randomString;
+  randomString.resize(size);
+  for (int i = 0; i < size; i++) {
+    randomString[i] = static_cast<char>(static_cast<int>('a') + gen() % 26);
+  }
+  return randomString;
 }
 
 char getRandomLetter() {
-    std::random_device dev;
-    std::mt19937 gen(dev());
-    return static_cast<char>(static_cast<int>('a')+gen()%26);
+  std::random_device dev;
+  std::mt19937 gen(dev());
+  return static_cast<char>(static_cast<int>('a') + gen() % 26);
 }
 
-int countLettersSequential(std::string localString,const char letter) {
-    const int size = localString.size();
-    int amount = 0;
-    for(int i = 0; i < size; i++) {
-        if(localString[i] == letter)
-            amount++;
-    }
-    return amount;
+int countLettersSequential(std::string localString, const char letter) {
+  const int size = localString.size();
+  int amount = 0;
+  for (int i = 0; i < size; i++) {
+    if (localString[i] == letter) amount++;
+  }
+  return amount;
 }
 
 int countLettersParallel(const std::string& globalString, const char letter) {
-    int comm_size, rank;
-    MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  int comm_size, rank;
+  MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    if(comm_size==1){
-        return countLettersSequential(globalString,letter);
+  if (comm_size == 1) {
+    return countLettersSequential(globalString, letter);
+  }
+
+  int stringSize = 0;
+  if (rank == 0) {
+    stringSize = globalString.size();
+  }
+  MPI_Bcast(&stringSize, 1, MPI_INT, 0, MPI_COMM_WORLD);
+
+  int localSize = stringSize / comm_size;
+  int rest = stringSize - localSize * (comm_size - 1);
+  std::string localString;
+  if (rank == 0) {
+    localString =
+        std::string(globalString.end() - rest - 1, globalString.end());
+    for (int i = 0; i < comm_size - 1; i++) {
+      MPI_Send(globalString.data() + localSize * i, localSize, MPI_INT, i + 1,
+               0, MPI_COMM_WORLD);
     }
+  } else {
+    localString.resize(localSize);
+    MPI_Status status;
+    MPI_Recv((void*)localString.data(), localSize, MPI_INT, 0, 0,
+             MPI_COMM_WORLD, &status);
+  }
 
-    int stringSize = 0;
-    if(rank == 0){
-        stringSize = globalString.size();
-    }
-    MPI_Bcast(&stringSize,1,MPI_INT,0,MPI_COMM_WORLD);
-
-    int localSize = stringSize/comm_size;
-    int rest = stringSize-localSize*(comm_size-1);
-    std::string localString;
-    if(rank == 0){
-        localString = std::string(globalString.end()-rest-1,globalString.end());
-        for(int i = 0; i < comm_size-1; i++) {
-            MPI_Send(globalString.data()+localSize*i,localSize,MPI_INT,i+1,0,MPI_COMM_WORLD);
-        }
-    }else{
-        localString.resize(localSize);
-        MPI_Status status;
-        MPI_Recv((void *)localString.data(),localSize,MPI_INT,0,0,MPI_COMM_WORLD,&status);
-    }
-
-    int localAmount = countLettersSequential(localString,letter);
-    int globalAmount = 0;
-    MPI_Reduce(&localAmount,&globalAmount,1,MPI_INT,MPI_SUM,0,MPI_COMM_WORLD);
-    return globalAmount;
+  int localAmount = countLettersSequential(localString, letter);
+  int globalAmount = 0;
+  MPI_Reduce(&localAmount, &globalAmount, 1, MPI_INT, MPI_SUM, 0,
+             MPI_COMM_WORLD);
+  return globalAmount;
 }

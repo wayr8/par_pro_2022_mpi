@@ -8,7 +8,7 @@ std::string getRandomString(int size);
 
 char getRandomLetter();
 
-int countLettersSequential(std::string localString,const char letter);
+int countLettersSequential(std::string localString, const char letter);
 
 int countLettersParallel(const std::string& globalString, const char letter);
 
