@@ -1,3 +1,5 @@
+// Copyright 2022 Bugrov Andrey
+
 #include <gtest/gtest.h>
 
 #include <gtest-mpi-listener.hpp>
