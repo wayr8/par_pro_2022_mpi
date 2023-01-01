@@ -1,16 +1,18 @@
-// Copyright 2022 Churkin Alexander
-#ifndef MODULES_TASK_1_CHURKIN_A_VECTOR_SUM_VECTOR_SUM_H_
-#define MODULES_TASK_1_CHURKIN_A_VECTOR_SUM_VECTOR_SUM_H_
+// Copyright 2022 Sukharev Artem
+#ifndef MODULES_TASK_1_SUKHAREV_A_COUNT_LETTERS_IN_STRING_COUNT_LETTERS_IN_STRING_H_
+#define MODULES_TASK_1_SUKHAREV_A_COUNT_LETTERS_IN_STRING_COUNT_LETTERS_IN_STRING_H_
 
-#include <vector>
 #include <string>
 
-std::vector<int> getRandomVector(int size);
+void printString_and_Letter(const std::string& name, const std::string& localString,const char letter);
 
-void printVector(const std::string& name, const std::vector<int>& vec);
+std::string getRandomString(int size);
 
-int getSumSequential(std::vector<int> vec);
+char getRandomLetter();
 
-int getSumParallel(const std::vector<int>& globalVector, int global_vector_size);
 
-#endif  // MODULES_TASK_1_CHURKIN_A_VECTOR_SUM_VECTOR_SUM_H_
+int countLettersSequential(std::string localString,const char letter);
+
+int countLettersParallel(const std::string& globalString, const char letter);
+
+#endif  // MODULES_TASK_1_SUKHAREV_A_COUNT_LETTERS_IN_STRING_COUNT_LETTERS_IN_STRING_H_

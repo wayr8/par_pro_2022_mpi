@@ -1,7 +1,7 @@
-// Copyright 2022 Churkin Alexander
+// Copyright 2022 Sukharev Artem
 #include <gtest/gtest.h>
 #include <vector>
-#include "./vector_sum.h"
+#include "./count_letters_in_string.h"
 #include <gtest-mpi-listener.hpp>
 
 TEST(Vector_Sum_MPI, Test_Vector_Sum_1) {
