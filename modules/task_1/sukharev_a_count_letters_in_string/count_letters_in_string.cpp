@@ -25,7 +25,7 @@ char getRandomLetter() {
   return static_cast<char>(static_cast<int>('a') + gen() % 26);
 }
 
-int countLettersSequential(std::string localString, const char letter) {
+int countLettersSequential(const std::string& localString, const char letter) {
   const int size = localString.size();
   int amount = 0;
   for (int i = 0; i < size; i++) {
@@ -56,14 +56,14 @@ int countLettersParallel(const std::string& globalString, const char letter) {
     localString =
         std::string(globalString.end() - rest - 1, globalString.end());
     for (int i = 0; i < comm_size - 1; i++) {
-      MPI_Send(globalString.data() + localSize * i, localSize, MPI_INT, i + 1,
+      MPI_Send(globalString.data() + localSize * i, localSize, MPI_CHAR, i + 1,
                0, MPI_COMM_WORLD);
     }
   } else {
-    localString.resize(localSize);
+    char* tmp = new char[localSize];
     MPI_Status status;
-    MPI_Recv(static_cast<void*>(localString.data()), localSize, MPI_INT, 0, 0,
-             MPI_COMM_WORLD, &status);
+    MPI_Recv(tmp, localSize, MPI_CHAR, 0, 0, MPI_COMM_WORLD, &status);
+    localString = std::string(tmp);
   }
 
   int localAmount = countLettersSequential(localString, letter);
