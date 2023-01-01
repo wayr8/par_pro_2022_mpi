@@ -1,8 +1,10 @@
 // Copyright 2022 Sukharev Artem
 
 #include <gtest/gtest.h>
-#include <string>
+
 #include <gtest-mpi-listener.hpp>
+#include <string>
+
 #include "./count_letters_in_string.h"
 
 TEST(Count_Letters_In_String_MPI, Test_Some_Letters_Zzzz) {
@@ -62,9 +64,9 @@ TEST(Count_Letters_In_String_MPI, Test_Random_String) {
 
   std::string globalString = "";
   char letter;
+  letter = getRandomLetter();
   if (rank == 0) {
     globalString = getRandomString(1000);
-    letter = getRandomLetter();
   }
 
   int resPar = countLettersParallel(globalString, letter);
@@ -81,9 +83,9 @@ TEST(Count_Letters_In_String_MPI, Test_Random_String_2) {
 
   std::string globalString = "";
   char letter;
+  letter = getRandomLetter();
   if (rank == 0) {
     globalString = getRandomString(100000);
-    letter = getRandomLetter();
   }
 
   int resPar = countLettersParallel(globalString, letter);
