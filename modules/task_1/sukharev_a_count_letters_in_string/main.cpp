@@ -1,6 +1,6 @@
 // Copyright 2022 Sukharev Artem
-#include <gtest/gtest.h>
 
+#include <gtest/gtest.h>
 #include <gtest-mpi-listener.hpp>
 #include <string>
 
