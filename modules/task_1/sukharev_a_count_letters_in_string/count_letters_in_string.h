@@ -4,12 +4,9 @@
 
 #include <string>
 
-void printString_and_Letter(const std::string& name, const std::string& localString,const char letter);
-
 std::string getRandomString(int size);
 
 char getRandomLetter();
-
 
 int countLettersSequential(std::string localString,const char letter);
 
