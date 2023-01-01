@@ -1,9 +1,7 @@
 // Copyright 2022 Sukharev Artem
 
-#include "../../../modules/task_1/sukharev_a_count_letters_in_string/count_letters_in_string.h"
-
+#include "./count_letters_in_string.h"
 #include <mpi.h>
-
 #include <algorithm>
 #include <random>
 #include <string>
