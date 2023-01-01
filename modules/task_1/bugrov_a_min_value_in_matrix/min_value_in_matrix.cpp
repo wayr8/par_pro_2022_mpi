@@ -71,35 +71,3 @@ void ParMinValue(int* matrix, int size, int process_num, int* min_values) {
     }
   }
 }
-
-// int ParMinValue(int* matrix, int size, int process_num)
-//{
-//    int rank = 0;
-//    int part = size / process_num;
-//    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-//    int* min_values = new int[process_num];
-//    if (rank == 0) {
-//        MPI_Scatter(matrix, part, MPI_INT, 0, MPI_INT, MPI_COMM_WORLD);
-//        int remainder = size - part * process_num;
-//        if (remainder) {
-//            int* zero_part = matrix + part * process_num;
-//            min_values[0] = zero_part[0];
-//            for (int i = 1; i < remainder; i++) {
-//                if (min_values[0] > zero_part[i]) {
-//                    min_values[0] = zero_part[i];
-//                }
-//            }
-//        }
-//    }
-//    else {
-//        int* recv_buf;
-//        recv_buf = new int[part];
-//        MPI_Scatter(matrix, part, MPI_INT, 0, MPI_INT, MPI_COMM_WORLD);
-//        min_values[rank] = recv_buf[0];
-//        for (int i = 1; i < part; i++) {
-//            if (min_values[0] > recv_buf[i]) {
-//                min_values[0] = recv_buf[i];
-//            }
-//        }
-//    }
-//}
