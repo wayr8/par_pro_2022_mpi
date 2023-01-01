@@ -1,7 +1,9 @@
 // Copyright 2022 Sukharev Artem
 
 #include "./count_letters_in_string.h"
+
 #include <mpi.h>
+
 #include <algorithm>
 #include <random>
 #include <string>
@@ -60,7 +62,7 @@ int countLettersParallel(const std::string& globalString, const char letter) {
   } else {
     localString.resize(localSize);
     MPI_Status status;
-    MPI_Recv(static_cast<void*>localString.data(), localSize, MPI_INT, 0, 0,
+    MPI_Recv(static_cast<void*>(localString.data()), localSize, MPI_INT, 0, 0,
              MPI_COMM_WORLD, &status);
   }
 
