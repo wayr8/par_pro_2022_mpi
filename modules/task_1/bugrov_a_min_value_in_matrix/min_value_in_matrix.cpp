@@ -27,9 +27,10 @@ int SeqMinValue(int* matrix, int size) {
 }
 
 // result is in min_values[0]
-void ParMinValue(int* matrix, int size, int process_num, int* min_values) {
+int ParMinValue(int* matrix, int size, int process_num) {
   int rank = 0;
   int part = size / process_num;
+  int min_values[process_num];
   MPI_Status status;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == 0) {
@@ -70,4 +71,5 @@ void ParMinValue(int* matrix, int size, int process_num, int* min_values) {
       MPI_Send(tmp_result, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
     }
   }
+  return min_values[0];
 }
