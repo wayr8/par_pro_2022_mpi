@@ -1,8 +1,8 @@
 // Copyright 2023 Anoschenkova Anna
 #include <gtest/gtest.h>
 #include <vector>
-#include "./mat_cols_min.h"
 
+#include "./mat_cols_min.h"
 #include <gtest-mpi-listener.hpp>
 
 void randomMatrixColsMinTest(int m, int n) {
