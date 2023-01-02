@@ -72,6 +72,6 @@ Vector getGauseJordanPar(const Matrix& A, const Vector& b) {
     MPI_Gather(resultB.data(), rowPerProc, MPI_DOUBLE, result.data(), rowPerProc, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
     result.resize(b.size());
-    
+
     return result;
 }
