@@ -33,7 +33,7 @@ TEST(Gather_MPI, Test_IntVector) {
   int localSize = globalSize / ProcNum;
 
   std::vector<int> localVector(localSize);
-  MPI_Scatter(globalVector.data(), globalSize, MPI_INT, localVector.data(),
+  MPI_Scatter(globalVector.data(), localSize, MPI_INT, localVector.data(),
               localSize, MPI_INT, 0, MPI_COMM_WORLD);
 
   double timeImb, timeOwn;
