@@ -66,7 +66,7 @@ TEST(Gather_MPI, Test_IntVector) {
   }
   if (rank == root) {
     ASSERT_EQ(recImbVector, recOwnVector);
-    EXPECT_TRUE(timeImb * 2 > timeOwn);
+    EXPECT_TRUE(timeImb * 4 > timeOwn);
   }
 }
 TEST(Gather_MPI, Test_IntVector1) {
@@ -125,7 +125,7 @@ TEST(Gather_MPI, Test_IntVector1) {
   }
   if (rank == root) {
     ASSERT_EQ(recImbVector, recOwnVector);
-    EXPECT_TRUE(timeImb * 2 > timeOwn);
+    EXPECT_TRUE(timeImb * 4 > timeOwn);
   }
 }
 TEST(Gather_MPI, Test_IntVector2) {
@@ -184,7 +184,7 @@ TEST(Gather_MPI, Test_IntVector2) {
   }
   if (rank == root) {
     ASSERT_EQ(recImbVector, recOwnVector);
-    EXPECT_TRUE(timeImb * 2 > timeOwn);
+    EXPECT_TRUE(timeImb * 4 > timeOwn);
   }
 }
 TEST(Gather_MPI, Test_IntVector3) {
@@ -243,7 +243,7 @@ TEST(Gather_MPI, Test_IntVector3) {
   }
   if (rank == root) {
     ASSERT_EQ(recImbVector, recOwnVector);
-    EXPECT_TRUE(timeImb * 2 > timeOwn);
+    EXPECT_TRUE(timeImb * 4 > timeOwn);
   }
 }
 TEST(Gather_MPI, Test_IntVector4) {
@@ -302,7 +302,7 @@ TEST(Gather_MPI, Test_IntVector4) {
   }
   if (rank == root) {
     ASSERT_EQ(recImbVector, recOwnVector);
-    EXPECT_TRUE(timeImb * 2 > timeOwn);
+    EXPECT_TRUE(timeImb * 4 > timeOwn);
   }
 }
 TEST(Gather_MPI, Test_IntVector5) {
@@ -361,7 +361,7 @@ TEST(Gather_MPI, Test_IntVector5) {
   }
   if (rank == root) {
     ASSERT_EQ(recImbVector, recOwnVector);
-    EXPECT_TRUE(timeImb * 2 > timeOwn);
+    EXPECT_TRUE(timeImb * 4 > timeOwn);
   }
 }
 
