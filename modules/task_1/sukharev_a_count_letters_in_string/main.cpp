@@ -61,8 +61,9 @@ TEST(Count_Letters_In_String_MPI, Test_Random_String) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
   std::string globalString = "";
-  char letter = getRandomLetter();
+  char letter = 0;
   if (rank == 0) {
+    letter = getRandomLetter();
     globalString = getRandomString(1000);
   }
 
@@ -79,8 +80,9 @@ TEST(Count_Letters_In_String_MPI, Test_Random_String_2) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
   std::string globalString = "";
-  char letter = getRandomLetter();
+  char letter = 0;
   if (rank == 0) {
+    letter = getRandomLetter();
     globalString = getRandomString(10000);
   }
 
@@ -97,7 +99,10 @@ TEST(Count_Letters_In_String_MPI, Test_Empty_String) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
   std::string globalString = "";
-  char letter = getRandomLetter();
+  char letter = 0;
+  if (rank == 0) {
+    letter = getRandomLetter();
+  }
 
   int resPar = countLettersParallel(globalString, letter);
 
@@ -112,8 +117,9 @@ TEST(Count_Letters_In_String_MPI, Test_Small_Random_String) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
   std::string globalString = "";
-  char letter = getRandomLetter();
+  char letter = 0;
   if (rank == 0) {
+    letter = getRandomLetter();
     globalString = getRandomString(4);
   }
 

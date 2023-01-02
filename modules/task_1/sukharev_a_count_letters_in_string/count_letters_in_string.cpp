@@ -34,7 +34,7 @@ int countLettersSequential(const std::string& localString, const char letter) {
   return amount;
 }
 
-int countLettersParallel(const std::string& globalString, const char letter) {
+int countLettersParallel(const std::string& globalString, char letter) {
   int comm_size, rank;
   MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -48,6 +48,7 @@ int countLettersParallel(const std::string& globalString, const char letter) {
     stringSize = globalString.size();
   }
   MPI_Bcast(&stringSize, 1, MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Bcast(&letter, 1, MPI_CHAR, 0, MPI_COMM_WORLD);
 
   int localSize = stringSize / comm_size;
   int rest = stringSize - localSize * (comm_size - 1);

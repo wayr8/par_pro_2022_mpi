@@ -11,6 +11,6 @@ char getRandomLetter();
 
 int countLettersSequential(const std::string& localString, const char letter);
 
-int countLettersParallel(const std::string& globalString, const char letter);
+int countLettersParallel(const std::string& globalString, char letter);
 
 #endif  // MODULES_TASK_1_SUKHAREV_A_COUNT_LETTERS_IN_STRING_COUNT_LETTERS_IN_STRING_H_
