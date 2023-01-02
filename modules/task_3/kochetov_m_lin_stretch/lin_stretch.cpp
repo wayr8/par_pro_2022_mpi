@@ -1,5 +1,5 @@
 // Copyright 2022 Kochetov Maksim
-#include "./lin_stretch.h"
+#include "../../../modules/task_3/kochetov_m_lin_stretch/lin_stretch.h"
 #include <mpi.h>
 #include <algorithm>
 #include <iostream>
