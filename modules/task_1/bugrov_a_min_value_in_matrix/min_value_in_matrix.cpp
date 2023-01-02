@@ -31,6 +31,7 @@ int ParMinValue(int* matrix, int size, int process_num) {
   int rank = 0;
   int part = size / process_num;
   int min_values[process_num];
+  min_values[0] = -1;
   MPI_Status status;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == 0) {
