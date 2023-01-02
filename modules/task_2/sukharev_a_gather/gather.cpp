@@ -51,6 +51,7 @@ int MY_Gather(void* sendbuf, int sendcount, MPI_Datatype sendtype,
   int rank, procNum;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &procNum);
+  recvcount *= procNum;
   if (root > procNum) return MPI_ERR_ROOT;
   if (sendtype != recvtype) return MPI_ERR_ARG;
   if (rank == root && recvcount != procNum * sendcount) return MPI_ERR_ARG;
@@ -60,33 +61,31 @@ int MY_Gather(void* sendbuf, int sendcount, MPI_Datatype sendtype,
   char* tmp = nullptr;
   int sizeType = 0;
   MPI_Type_size(sendtype, &sizeType);
-  sendcount = sendcount * sizeType;
-  recvcount = recvcount * sizeType;
+  int messageSize = sendcount * sizeType;
   int firstBit = 0;
-  if (rank > 0) {
+  if (rank != 0) {
     firstBit = rank - (rank & (rank - 1));
   } else {
     firstBit = procNum;
   }
   int sizetmpbuf = 0;
   if (rank == 0)
-    sizetmpbuf = recvcount;
+    sizetmpbuf = recvcount * sizeType;
   else
-    sizetmpbuf = std::min(procNum - rank + 1, (1 << firstBit));
+    sizetmpbuf = std::min(procNum - rank, firstBit) * messageSize;
   tmp = new char[sizetmpbuf];
-  for (int i = 0; i < sendcount; i++) {
+  for (int i = 0; i < messageSize; i++) {
     tmp[i] = *(static_cast<char*>(sendbuf) + i);
   }
-  // std::cout<<"rank: " <<rank<<", "<<sizetmpbuf<<' '<<firstBit<<"\n";
-  // std::cout<<*static_cast<int*>(static_cast<void*>(tmp))<<"\n";
-  for (int i = 1, j = 1; i < firstBit; i *= 2, j++) {
+  for (int i = 1; i < firstBit && rank + i < procNum; i *= 2) {
     MPI_Status status;
-    MPI_Recv(tmp + j * sendcount, i, sendtype, rank + i, 0, comm, &status);
+    int tmpSendCount = std::min(i, procNum - (rank + i)) * sendcount;
+    MPI_Recv(tmp + i * messageSize, tmpSendCount, sendtype, rank + i, 0, comm,
+             &status);
   }
   if (rank != 0) {
-    MPI_Send(tmp, sizetmpbuf, sendtype, rank - firstBit, 0, comm);
+    MPI_Send(tmp, sizetmpbuf / sizeType, sendtype, rank - firstBit, 0, comm);
   }
-  // All data in proc 0
 
   if (root == 0) {
     if (rank == 0) {
@@ -96,7 +95,7 @@ int MY_Gather(void* sendbuf, int sendcount, MPI_Datatype sendtype,
     }
   } else {
     if (rank == 0) {
-      MPI_Send(tmp, sizetmpbuf, sendtype, root, 1, comm);
+      MPI_Send(tmp, sizetmpbuf / sizeType, sendtype, root, 1, comm);
     }
     if (rank == root) {
       MPI_Status status;

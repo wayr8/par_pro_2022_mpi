@@ -24,7 +24,6 @@ TEST(Gather_MPI, Test_IntVector) {
     globalSize = gen() % 100 + 1;
     globalSize = globalSize * ProcNum;
     globalVector = getRandomVectorInt(globalSize);
-    // printVector(globalVector);
   }
 
   MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -42,11 +41,14 @@ TEST(Gather_MPI, Test_IntVector) {
   if (rank == root) {
     recImbVector.resize(globalSize);
     recOwnVector.resize(globalSize);
+  }
+  MPI_Barrier(MPI_COMM_WORLD);
+  if (rank == root) {
     timeImb = MPI_Wtime();
   }
-  //
+
   MPI_Gather(localVector.data(), localSize, MPI_INT, recImbVector.data(),
-             globalSize, MPI_INT, root, MPI_COMM_WORLD);
+             localSize, MPI_INT, root, MPI_COMM_WORLD);
 
   if (rank == root) {
     timeImb = MPI_Wtime() - timeImb;
@@ -55,20 +57,16 @@ TEST(Gather_MPI, Test_IntVector) {
   if (rank == root) {
     timeOwn = MPI_Wtime();
   }
-  //
+
   MY_Gather(localVector.data(), localSize, MPI_INT, recOwnVector.data(),
-            globalSize, MPI_INT, root, MPI_COMM_WORLD);
+            localSize, MPI_INT, root, MPI_COMM_WORLD);
 
   if (rank == root) {
     timeOwn = MPI_Wtime() - timeOwn;
   }
   if (rank == root) {
     ASSERT_EQ(recImbVector, recOwnVector);
-    // std::cout << "Test1:\n";
-    // std::cout << "timeImb = " << timeImb << ", ";
-    // std::cout << "timeOwn = " << timeOwn << ".\n";
-    // printVector(recImbVector);
-    // printVector(recOwnVector);
+    EXPECT_TRUE(timeImb * 2 > timeOwn);
   }
 }
 TEST(Gather_MPI, Test_IntVector1) {
@@ -85,7 +83,6 @@ TEST(Gather_MPI, Test_IntVector1) {
     globalSize = gen() % 100 + 1;
     globalSize = globalSize * ProcNum;
     globalVector = getRandomVectorInt(globalSize);
-    // printVector(globalVector);
   }
 
   MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -94,7 +91,7 @@ TEST(Gather_MPI, Test_IntVector1) {
   int localSize = globalSize / ProcNum;
 
   std::vector<int> localVector(localSize);
-  MPI_Scatter(globalVector.data(), globalSize, MPI_INT, localVector.data(),
+  MPI_Scatter(globalVector.data(), localSize, MPI_INT, localVector.data(),
               localSize, MPI_INT, 0, MPI_COMM_WORLD);
 
   double timeImb, timeOwn;
@@ -103,11 +100,14 @@ TEST(Gather_MPI, Test_IntVector1) {
   if (rank == root) {
     recImbVector.resize(globalSize);
     recOwnVector.resize(globalSize);
+  }
+  MPI_Barrier(MPI_COMM_WORLD);
+  if (rank == root) {
     timeImb = MPI_Wtime();
   }
-  //
+
   MPI_Gather(localVector.data(), localSize, MPI_INT, recImbVector.data(),
-             globalSize, MPI_INT, root, MPI_COMM_WORLD);
+             localSize, MPI_INT, root, MPI_COMM_WORLD);
 
   if (rank == root) {
     timeImb = MPI_Wtime() - timeImb;
@@ -116,20 +116,16 @@ TEST(Gather_MPI, Test_IntVector1) {
   if (rank == root) {
     timeOwn = MPI_Wtime();
   }
-  //
+
   MY_Gather(localVector.data(), localSize, MPI_INT, recOwnVector.data(),
-            globalSize, MPI_INT, root, MPI_COMM_WORLD);
+            localSize, MPI_INT, root, MPI_COMM_WORLD);
 
   if (rank == root) {
     timeOwn = MPI_Wtime() - timeOwn;
   }
   if (rank == root) {
     ASSERT_EQ(recImbVector, recOwnVector);
-    // std::cout << "Test1:\n";
-    // std::cout << "timeImb = " << timeImb << ", ";
-    // std::cout << "timeOwn = " << timeOwn << ".\n";
-    // printVector(recImbVector);
-    // printVector(recOwnVector);
+    EXPECT_TRUE(timeImb * 2 > timeOwn);
   }
 }
 TEST(Gather_MPI, Test_IntVector2) {
@@ -143,10 +139,9 @@ TEST(Gather_MPI, Test_IntVector2) {
   int globalSize = 0;
   if (rank == 0) {
     root = gen() % ProcNum;
-    globalSize = gen() % 100 + 1;
+    globalSize = gen() % 1000 + 1;
     globalSize = globalSize * ProcNum;
     globalVector = getRandomVectorInt(globalSize);
-    // printVector(globalVector);
   }
 
   MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -155,7 +150,7 @@ TEST(Gather_MPI, Test_IntVector2) {
   int localSize = globalSize / ProcNum;
 
   std::vector<int> localVector(localSize);
-  MPI_Scatter(globalVector.data(), globalSize, MPI_INT, localVector.data(),
+  MPI_Scatter(globalVector.data(), localSize, MPI_INT, localVector.data(),
               localSize, MPI_INT, 0, MPI_COMM_WORLD);
 
   double timeImb, timeOwn;
@@ -164,11 +159,14 @@ TEST(Gather_MPI, Test_IntVector2) {
   if (rank == root) {
     recImbVector.resize(globalSize);
     recOwnVector.resize(globalSize);
+  }
+  MPI_Barrier(MPI_COMM_WORLD);
+  if (rank == root) {
     timeImb = MPI_Wtime();
   }
-  //
+
   MPI_Gather(localVector.data(), localSize, MPI_INT, recImbVector.data(),
-             globalSize, MPI_INT, root, MPI_COMM_WORLD);
+             localSize, MPI_INT, root, MPI_COMM_WORLD);
 
   if (rank == root) {
     timeImb = MPI_Wtime() - timeImb;
@@ -177,20 +175,16 @@ TEST(Gather_MPI, Test_IntVector2) {
   if (rank == root) {
     timeOwn = MPI_Wtime();
   }
-  //
+
   MY_Gather(localVector.data(), localSize, MPI_INT, recOwnVector.data(),
-            globalSize, MPI_INT, root, MPI_COMM_WORLD);
+            localSize, MPI_INT, root, MPI_COMM_WORLD);
 
   if (rank == root) {
     timeOwn = MPI_Wtime() - timeOwn;
   }
   if (rank == root) {
     ASSERT_EQ(recImbVector, recOwnVector);
-    // std::cout << "Test1:\n";
-    // std::cout << "timeImb = " << timeImb << ", ";
-    // std::cout << "timeOwn = " << timeOwn << ".\n";
-    // printVector(recImbVector);
-    // printVector(recOwnVector);
+    EXPECT_TRUE(timeImb * 2 > timeOwn);
   }
 }
 TEST(Gather_MPI, Test_IntVector3) {
@@ -204,10 +198,9 @@ TEST(Gather_MPI, Test_IntVector3) {
   int globalSize = 0;
   if (rank == 0) {
     root = gen() % ProcNum;
-    globalSize = gen() % 100 + 1;
+    globalSize = gen() % 10 + 1;
     globalSize = globalSize * ProcNum;
     globalVector = getRandomVectorInt(globalSize);
-    // printVector(globalVector);
   }
 
   MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -216,7 +209,7 @@ TEST(Gather_MPI, Test_IntVector3) {
   int localSize = globalSize / ProcNum;
 
   std::vector<int> localVector(localSize);
-  MPI_Scatter(globalVector.data(), globalSize, MPI_INT, localVector.data(),
+  MPI_Scatter(globalVector.data(), localSize, MPI_INT, localVector.data(),
               localSize, MPI_INT, 0, MPI_COMM_WORLD);
 
   double timeImb, timeOwn;
@@ -225,11 +218,14 @@ TEST(Gather_MPI, Test_IntVector3) {
   if (rank == root) {
     recImbVector.resize(globalSize);
     recOwnVector.resize(globalSize);
+  }
+  MPI_Barrier(MPI_COMM_WORLD);
+  if (rank == root) {
     timeImb = MPI_Wtime();
   }
-  //
+
   MPI_Gather(localVector.data(), localSize, MPI_INT, recImbVector.data(),
-             globalSize, MPI_INT, root, MPI_COMM_WORLD);
+             localSize, MPI_INT, root, MPI_COMM_WORLD);
 
   if (rank == root) {
     timeImb = MPI_Wtime() - timeImb;
@@ -238,20 +234,16 @@ TEST(Gather_MPI, Test_IntVector3) {
   if (rank == root) {
     timeOwn = MPI_Wtime();
   }
-  //
+
   MY_Gather(localVector.data(), localSize, MPI_INT, recOwnVector.data(),
-            globalSize, MPI_INT, root, MPI_COMM_WORLD);
+            localSize, MPI_INT, root, MPI_COMM_WORLD);
 
   if (rank == root) {
     timeOwn = MPI_Wtime() - timeOwn;
   }
   if (rank == root) {
     ASSERT_EQ(recImbVector, recOwnVector);
-    // std::cout << "Test1:\n";
-    // std::cout << "timeImb = " << timeImb << ", ";
-    // std::cout << "timeOwn = " << timeOwn << ".\n";
-    // printVector(recImbVector);
-    // printVector(recOwnVector);
+    EXPECT_TRUE(timeImb * 2 > timeOwn);
   }
 }
 TEST(Gather_MPI, Test_IntVector4) {
@@ -265,10 +257,9 @@ TEST(Gather_MPI, Test_IntVector4) {
   int globalSize = 0;
   if (rank == 0) {
     root = gen() % ProcNum;
-    globalSize = gen() % 100 + 1;
+    globalSize = gen() % 2 + 1;
     globalSize = globalSize * ProcNum;
     globalVector = getRandomVectorInt(globalSize);
-    // printVector(globalVector);
   }
 
   MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -277,7 +268,7 @@ TEST(Gather_MPI, Test_IntVector4) {
   int localSize = globalSize / ProcNum;
 
   std::vector<int> localVector(localSize);
-  MPI_Scatter(globalVector.data(), globalSize, MPI_INT, localVector.data(),
+  MPI_Scatter(globalVector.data(), localSize, MPI_INT, localVector.data(),
               localSize, MPI_INT, 0, MPI_COMM_WORLD);
 
   double timeImb, timeOwn;
@@ -286,11 +277,14 @@ TEST(Gather_MPI, Test_IntVector4) {
   if (rank == root) {
     recImbVector.resize(globalSize);
     recOwnVector.resize(globalSize);
+  }
+  MPI_Barrier(MPI_COMM_WORLD);
+  if (rank == root) {
     timeImb = MPI_Wtime();
   }
-  //
+
   MPI_Gather(localVector.data(), localSize, MPI_INT, recImbVector.data(),
-             globalSize, MPI_INT, root, MPI_COMM_WORLD);
+             localSize, MPI_INT, root, MPI_COMM_WORLD);
 
   if (rank == root) {
     timeImb = MPI_Wtime() - timeImb;
@@ -299,20 +293,16 @@ TEST(Gather_MPI, Test_IntVector4) {
   if (rank == root) {
     timeOwn = MPI_Wtime();
   }
-  //
+
   MY_Gather(localVector.data(), localSize, MPI_INT, recOwnVector.data(),
-            globalSize, MPI_INT, root, MPI_COMM_WORLD);
+            localSize, MPI_INT, root, MPI_COMM_WORLD);
 
   if (rank == root) {
     timeOwn = MPI_Wtime() - timeOwn;
   }
   if (rank == root) {
     ASSERT_EQ(recImbVector, recOwnVector);
-    // std::cout << "Test1:\n";
-    // std::cout << "timeImb = " << timeImb << ", ";
-    // std::cout << "timeOwn = " << timeOwn << ".\n";
-    // printVector(recImbVector);
-    // printVector(recOwnVector);
+    EXPECT_TRUE(timeImb * 2 > timeOwn);
   }
 }
 TEST(Gather_MPI, Test_IntVector5) {
@@ -329,7 +319,6 @@ TEST(Gather_MPI, Test_IntVector5) {
     globalSize = gen() % 100 + 1;
     globalSize = globalSize * ProcNum;
     globalVector = getRandomVectorInt(globalSize);
-    // printVector(globalVector);
   }
 
   MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -338,7 +327,7 @@ TEST(Gather_MPI, Test_IntVector5) {
   int localSize = globalSize / ProcNum;
 
   std::vector<int> localVector(localSize);
-  MPI_Scatter(globalVector.data(), globalSize, MPI_INT, localVector.data(),
+  MPI_Scatter(globalVector.data(), localSize, MPI_INT, localVector.data(),
               localSize, MPI_INT, 0, MPI_COMM_WORLD);
 
   double timeImb, timeOwn;
@@ -347,11 +336,14 @@ TEST(Gather_MPI, Test_IntVector5) {
   if (rank == root) {
     recImbVector.resize(globalSize);
     recOwnVector.resize(globalSize);
+  }
+  MPI_Barrier(MPI_COMM_WORLD);
+  if (rank == root) {
     timeImb = MPI_Wtime();
   }
-  //
+
   MPI_Gather(localVector.data(), localSize, MPI_INT, recImbVector.data(),
-             globalSize, MPI_INT, root, MPI_COMM_WORLD);
+             localSize, MPI_INT, root, MPI_COMM_WORLD);
 
   if (rank == root) {
     timeImb = MPI_Wtime() - timeImb;
@@ -360,20 +352,16 @@ TEST(Gather_MPI, Test_IntVector5) {
   if (rank == root) {
     timeOwn = MPI_Wtime();
   }
-  //
+
   MY_Gather(localVector.data(), localSize, MPI_INT, recOwnVector.data(),
-            globalSize, MPI_INT, root, MPI_COMM_WORLD);
+            localSize, MPI_INT, root, MPI_COMM_WORLD);
 
   if (rank == root) {
     timeOwn = MPI_Wtime() - timeOwn;
   }
   if (rank == root) {
     ASSERT_EQ(recImbVector, recOwnVector);
-    // std::cout << "Test1:\n";
-    // std::cout << "timeImb = " << timeImb << ", ";
-    // std::cout << "timeOwn = " << timeOwn << ".\n";
-    // printVector(recImbVector);
-    // printVector(recOwnVector);
+    EXPECT_TRUE(timeImb * 2 > timeOwn);
   }
 }
 
