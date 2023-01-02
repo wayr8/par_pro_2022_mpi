@@ -66,7 +66,7 @@ int MY_Gather(void* sendbuf, int sendcount, MPI_Datatype sendtype,
   if (rank > 0) {
     firstBit = rank - (rank & (rank - 1));
   } else {
-    firstBit = procNum - 1;
+    firstBit = procNum;
   }
   int sizetmpbuf = 0;
   if (rank == 0)
@@ -79,7 +79,7 @@ int MY_Gather(void* sendbuf, int sendcount, MPI_Datatype sendtype,
   }
   // std::cout<<"rank: " <<rank<<", "<<sizetmpbuf<<' '<<firstBit<<"\n";
   // std::cout<<*static_cast<int*>(static_cast<void*>(tmp))<<"\n";
-  for (int i = 1, j = 1; i <= firstBit; i *= 2, j++) {
+  for (int i = 1, j = 1; i < firstBit; i *= 2, j++) {
     MPI_Status status;
     MPI_Recv(tmp + j * sendcount, i, sendtype, rank + i, 0, comm, &status);
   }
