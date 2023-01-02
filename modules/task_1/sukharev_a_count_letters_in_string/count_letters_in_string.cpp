@@ -60,9 +60,10 @@ int countLettersParallel(const std::string& globalString, char letter) {
                0, MPI_COMM_WORLD);
     }
   } else {
-    char* tmp = new char[localSize];
+    char* tmp = new char[localSize + 1];
     MPI_Status status;
     MPI_Recv(tmp, localSize, MPI_CHAR, 0, 0, MPI_COMM_WORLD, &status);
+    tmp[localSize] = '\0';
     localString = std::string(tmp);
   }
 
