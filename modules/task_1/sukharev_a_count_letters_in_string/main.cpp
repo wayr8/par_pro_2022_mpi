@@ -81,7 +81,40 @@ TEST(Count_Letters_In_String_MPI, Test_Random_String_2) {
   std::string globalString = "";
   char letter = getRandomLetter();
   if (rank == 0) {
-    globalString = getRandomString(100000);
+    globalString = getRandomString(10000);
+  }
+
+  int resPar = countLettersParallel(globalString, letter);
+
+  if (rank == 0) {
+    int resSeq = countLettersSequential(globalString, letter);
+    ASSERT_EQ(resPar, resSeq);
+  }
+}
+
+TEST(Count_Letters_In_String_MPI, Test_Empty_String) {
+  int rank;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+  std::string globalString = "";
+  char letter = getRandomLetter();
+
+  int resPar = countLettersParallel(globalString, letter);
+
+  if (rank == 0) {
+    int resSeq = countLettersSequential(globalString, letter);
+    ASSERT_EQ(resPar, resSeq);
+  }
+}
+
+TEST(Count_Letters_In_String_MPI, Test_Small_Random_String) {
+  int rank;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+  std::string globalString = "";
+  char letter = getRandomLetter();
+  if (rank == 0) {
+    globalString = getRandomString(4);
   }
 
   int resPar = countLettersParallel(globalString, letter);

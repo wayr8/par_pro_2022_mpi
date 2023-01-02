@@ -53,8 +53,7 @@ int countLettersParallel(const std::string& globalString, const char letter) {
   int rest = stringSize - localSize * (comm_size - 1);
   std::string localString;
   if (rank == 0) {
-    localString =
-        std::string(globalString.end() - rest - 1, globalString.end());
+    localString = std::string(globalString.end() - rest, globalString.end());
     for (int i = 0; i < comm_size - 1; i++) {
       MPI_Send(globalString.data() + localSize * i, localSize, MPI_CHAR, i + 1,
                0, MPI_COMM_WORLD);
