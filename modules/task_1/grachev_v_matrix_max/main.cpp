@@ -22,17 +22,7 @@ TEST(Matrix_Max_MPI, Test_Matrix_Max_1_10x10) {
 
     if (rank == 0) {
         resLinear = GetMatrixMaxLinear(*matrix, &timeLinear);
-
         ASSERT_EQ(resLinear, resParal);
-        /*
-        if (resParal == resLinear) {
-            std::cout << "SUCCESS" << "\n";
-        } else {
-            std::cout << "FAILED" << "\n";
-        }   
-        std::cout << "Sequental work time: " << timeLinear << '\n';
-        std::cout << "Parallel work time: " << timeParal << '\n';
-        */
     }
 }
 

@@ -9,27 +9,27 @@
 #include <iostream>
 #include <vector>
 #include <random>
-#include <algorithm> 
+#include <algorithm>
 
 #define NEG_INF -10000000;
 
 
 class TMatrix {
- private:
-double* arr;
-int str_count;
-int col_count;
- public:
-TMatrix(int m, int n);
-~TMatrix();
-void SetElement(int i, int j, double value);
-double GetElement(int i, int j) const;
-void FillRandom(int min, int max);
-int GetStringCount() const;
-int GetColumnCount() const;
-double* GetStringValues(int str_number) const;
-double* GetColumnValues(int col_number) const;
-void PrintElements() const;
+private:
+    double* arr;
+    int str_count;
+    int col_count;
+public:
+    TMatrix(int m, int n);
+    ~TMatrix();
+    void SetElement(int i, int j, double value);
+    double GetElement(int i, int j) const;
+    void FillRandom(int min, int max);
+    int GetStringCount() const;
+    int GetColumnCount() const;
+    double* GetStringValues(int str_number) const;
+    double* GetColumnValues(int col_number) const;
+    void PrintElements() const;
 };
 
 

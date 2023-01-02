@@ -66,7 +66,7 @@ double* TMatrix::GetColumnValues(int col_number) const {
 void TMatrix::PrintElements() const {
     for (int i = 0; i < str_count * col_count; i++) {
         std::cout << arr[i] << ' ';
-    }  
+    }
 }
 
 double GetMax(double* arr, int size) {
@@ -89,7 +89,7 @@ double GetMatrixMaxLinear(const TMatrix& matrix, double* time) {
             result = std::max(result, matrix.GetElement(i, j));
         }
     }
-        
+
     double end_time = clock();
     *time = end_time - start_time;
     *time /= 1000;
@@ -105,7 +105,7 @@ void GetMatrixMaxParallel(const TMatrix& matrix, double* time, double* result) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank_this_process);
 
     double local_max, global_max, start_time, end_time;
-    
+
     if (rank_this_process == 0) {
         start_time = MPI_Wtime();
         for (int i = 0; i < process_quantity; i++) {
