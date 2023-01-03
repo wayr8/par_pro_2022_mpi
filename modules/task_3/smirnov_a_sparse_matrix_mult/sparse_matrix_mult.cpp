@@ -70,36 +70,45 @@ void SparseMatrix::PrintStats() {
 }
 
 bool SparseMatrix::operator==(SparseMatrix m) const {
-  if (this->countColumns != m.countColumns || this->countRows != m.countRows)
+  if (this->countColumns != m.countColumns || this->countRows != m.countRows) {
 	return false;
+  }
+
 
   if (this->values.size() != m.values.size())
 	return false;
   for (size_t i = 0; i < this->values.size(); i++) {
-	if (this->values[i] != m.values[i])
+	if (this->values[i] != m.values[i]) {
 	  return false;
+	}  
   }
 
-  if (this->columnIndex.size() != m.columnIndex.size())
+  if (this->columnIndex.size() != m.columnIndex.size()) {
 	return false;
+  }
+	
   for (size_t i = 0; i < this->columnIndex.size(); i++) {
-	if (this->columnIndex[i] != m.columnIndex[i])
+	if (this->columnIndex[i] != m.columnIndex[i]) {
 	  return false;
+	}
   }
 
-  if (this->rowIndex.size() != m.rowIndex.size())
+  if (this->rowIndex.size() != m.rowIndex.size()) {
 	return false;
-  for (size_t i = 0; i < this->rowIndex.size(); i++) {
-	if (this->rowIndex[i] != m.rowIndex[i])
-	  return false;
   }
 
+  for (size_t i = 0; i < this->rowIndex.size(); i++) {
+	if (this->rowIndex[i] != m.rowIndex[i]) {
+	  return false;
+	}
+  }
   return true;
 }
 
 SparseMatrix seqSparseMatrixMult(std::vector<std::vector<double>> _A, std::vector<std::vector<double>> _B) {
-  if (_A[0].size() != _B.size())
+  if (_A[0].size() != _B.size()) {
 	throw std::string("Non equal sizes matrix");
+  }
   SparseMatrix A(_A);
   SparseMatrix transposedB = SparseMatrix(_B).Transpose();
   SparseMatrix result;
@@ -112,8 +121,8 @@ SparseMatrix seqSparseMatrixMult(std::vector<std::vector<double>> _A, std::vecto
 	bool isNonZero = false;
 	for (size_t j = 0; j < transposedB.countRows; j++) {
 	  double sum = 0;
-	  int aIndex = A.rowIndex[i]; //По элементам вектора в А
-	  int bIndex = transposedB.rowIndex[j]; //По элементам вектора в B
+	  int aIndex = A.rowIndex[i];
+	  int bIndex = transposedB.rowIndex[j];
 	  while (aIndex < A.rowIndex[i + 1] && bIndex < transposedB.rowIndex[j + 1]) {
 		if (A.columnIndex[aIndex] == transposedB.columnIndex[bIndex]) {
 		  sum += A.values[aIndex] * transposedB.values[bIndex];
@@ -131,8 +140,10 @@ SparseMatrix seqSparseMatrixMult(std::vector<std::vector<double>> _A, std::vecto
 		NNZ++;
 	  }
 	}
-	if (isNonZero)
+	if (isNonZero) {
 	  result.rowIndex.push_back(NNZ);
+	}
+	 
   }
   return result;
 }
@@ -144,9 +155,9 @@ SparseMatrix parSparseMatrixMult(std::vector<std::vector<double>> _A, std::vecto
   MPI_Comm_size(MPI_COMM_WORLD, &countProc);
   int countNNZElemsA = 0;
 
-  if (_A[0].size() != _B.size())
+  if (_A[0].size() != _B.size()) {
 	throw std::string("Non equal sizes");
-
+  }
   int dataPerProc = _A.size() / countProc;
   int remainder = _A.size() % countProc;
 
@@ -232,8 +243,9 @@ SparseMatrix parSparseMatrixMult(std::vector<std::vector<double>> _A, std::vecto
 		NNZ++;
 	  }
 	}
-	if (isNonZero)
+	if (isNonZero) {
 	  localResult.rowIndex.push_back(NNZ);
+	}  
   }
 
   SparseMatrix result;
@@ -297,8 +309,9 @@ SparseMatrix parSparseMatrixMult(std::vector<std::vector<double>> _A, std::vecto
 	  i--;
 	  add = rIndexResult[rIndexResult.size() - 1];
 	  currentRank++;
-	  if (currentRank == countProc)
+	  if (currentRank == countProc) {
 		break;
+	  }
 	}
 	result.rowIndex = rIndexResult;
 
