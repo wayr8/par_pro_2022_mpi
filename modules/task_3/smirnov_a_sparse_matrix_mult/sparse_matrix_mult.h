@@ -21,7 +21,9 @@ class SparseMatrix {
   bool operator ==(SparseMatrix m) const;
 };
 
-SparseMatrix seqSparseMatrixMult(std::vector<std::vector<double>> _A, std::vector<std::vector<double>> _B);
-SparseMatrix parSparseMatrixMult(std::vector<std::vector<double>> _A, std::vector<std::vector<double>> _B);
+SparseMatrix seqSparseMatrixMult(const std::vector<std::vector<double>>& _A,
+  const std::vector<std::vector<double>>& _B);
+SparseMatrix parSparseMatrixMult(const std::vector<std::vector<double>>& _A,
+  const std::vector<std::vector<double>>& _B);
 
 #endif  // MODULES_TASK_3_SMIRNOV_A_SPARSE_MATRIX_MULT_SPARSE_MATRIX_MULT_H_
