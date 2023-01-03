@@ -10,11 +10,11 @@ TEST(Vector_Sum_MPI, Test_Sum_1) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> vec;
     if (rank == 0) {
-        vec = {10, 20, 30, 40, 50, 60, 70, 80, 90, 3};
+        vec = {10, 20, 30, 40, 50, 60, 70, 80, 90, 4};
     }
     int sum = getSumParallel(vec);
     if (rank == 0) {
-        int reference_sum = 453;
+        int reference_sum = 454;
         ASSERT_EQ(reference_sum, sum);
     }
 }
