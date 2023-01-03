@@ -61,9 +61,6 @@ int ParMinValue(int* matrix, int size, int process_num) {
       int i = 1;
       min_values[rank] = recv_buf[0];
       for (; i < part; i++) {
-        /*if (min_values[rank] > recv_buf[i]) {
-            min_values[rank] = recv_buf[i];
-        }*/
         if (*tmp_result > recv_buf[i]) {
           *tmp_result = recv_buf[i];
         }
@@ -71,5 +68,7 @@ int ParMinValue(int* matrix, int size, int process_num) {
       MPI_Send(tmp_result, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
     }
   }
-  return min_values[0];
+  int tmp_out = min_values[0];
+  delete[] min_values;
+  return tmp_out;
 }
