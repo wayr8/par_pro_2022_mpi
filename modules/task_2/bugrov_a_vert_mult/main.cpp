@@ -2,10 +2,9 @@
 
 #include <gtest/gtest.h>
 
-#include "./vert_mult.h"
-
 #include <gtest-mpi-listener.hpp>
 
+#include "./vert_mult.h"
 
 bool AreVectorsEqual(int* one, int* two, int size) {
   int i = 0;
@@ -22,13 +21,13 @@ void TestFunction(const int kN, const int kM, int* matrix, int* result_seq,
   int i = 0;
   int rank;
   int* rand_vector = new int[kM];
-  RandCreator(rand_vector, kM);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  for (; i < kN; i++) {
-    result_seq[i] = 0;
-    result_par[i] = 0;
-  }
   if (rank == 0) {
+    RandCreator(rand_vector, kM);
+    for (; i < kN; i++) {
+      result_seq[i] = 0;
+      result_par[i] = 0;
+    }
     SeqMult(matrix, rand_vector, result_seq, kN, kM);
   }
   ParMult(matrix, rand_vector, result_par, kN, kM);
@@ -41,22 +40,20 @@ TEST(vert_mult, regular_square_matr_regular_vector) {
   int rank;
   const int kN = 5, kM = 5;
   int matrix[kN * kM];
-  int *result_seq = new int[kN], *result_par = new int[kN];
-  int* rand_vector = new int[kM];
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == 0) {
     for (i = 0; i < kN * kM; i++) {
       matrix[i] = i + 1;
     }
-    for (i = 0; i < kM; i++) {
-      rand_vector[i] = kM - i;
-    }
   }
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  for (; i < kN; i++) {
-    result_seq[i] = 0;
-    result_par[i] = 0;
-  }
+  int *result_seq = new int[kN], *result_par = new int[kN];
+  int* rand_vector = new int[kM];
+  RandCreator(rand_vector, kM);
   if (rank == 0) {
+    for (i = 0; i < kN; i++) {
+      result_seq[i] = 0;
+      result_par[i] = 0;
+    }
     SeqMult(matrix, rand_vector, result_seq, kN, kM);
   }
   ParMult(matrix, rand_vector, result_par, kN, kM);
@@ -83,6 +80,7 @@ TEST(vert_mult, regular_horizontal_matr) {
   const int kN = 4, kM = 6;
   int rank;
   int matrix[kN * kM];
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == 0) {
     for (int i = 0; i < kN * kM; i++) {
       matrix[i] = i + 1;
@@ -114,6 +112,7 @@ TEST(vert_mult, regular_vertical_matr) {
   const int kN = 7, kM = 4;
   int rank;
   int matrix[kN * kM];
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == 0) {
     for (int i = 0; i < kN * kM; i++) {
       matrix[i] = i + 1;
@@ -129,7 +128,11 @@ TEST(vert_mult, regular_vertical_matr) {
 TEST(vert_mult, random_vertical_matr) {
   const int kN = 313, kM = 173;
   int rank;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   int matrix[kN * kM];
+  if (rank == 0) {
+    RandCreator(matrix, kN * kM);
+  }
   int* rand_vector = new int[kM];
   int *result_seq = new int[kN], *result_par = new int[kN];
   TestFunction(kN, kM, matrix, result_seq, result_par);
