@@ -1,14 +1,13 @@
 // Copyright 2022 Grachev Valentin
-#include <gtest/gtest.h>
+#include "../../../modules/task_1/grachev_v_matrix_max/matrix_max.h"
 #include <gtest-mpi-listener.hpp>
-#include "./matrix_max.h"
-
+#include <gtest/gtest.h>
 
 TEST(Matrix_Max_MPI, Test_Matrix_Max_1_10x10) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    TMatrix* matrix = nullptr;
+    TMatrix *matrix = nullptr;
 
     double timeParal, timeLinear;
     double resParal, resLinear;
@@ -26,12 +25,11 @@ TEST(Matrix_Max_MPI, Test_Matrix_Max_1_10x10) {
     }
 }
 
-
 TEST(Matrix_Max_MPI, Test_Matrix_Max_2_100x10) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    TMatrix* matrix = nullptr;
+    TMatrix *matrix = nullptr;
 
     double timeParal, timeLinear;
     double resParal, resLinear;
@@ -58,12 +56,11 @@ TEST(Matrix_Max_MPI, Test_Matrix_Max_2_100x10) {
     }
 }
 
-
 TEST(Matrix_Max_MPI, Test_Matrix_Max_3_10x1000) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    TMatrix* matrix = nullptr;
+    TMatrix *matrix = nullptr;
 
     double timeParal, timeLinear;
     double resParal, resLinear;
@@ -94,7 +91,7 @@ TEST(Matrix_Max_MPI, Test_Matrix_Max_4_2500x2500) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    TMatrix* matrix = nullptr;
+    TMatrix *matrix = nullptr;
 
     double timeParal, timeLinear;
     double resParal, resLinear;
@@ -121,12 +118,11 @@ TEST(Matrix_Max_MPI, Test_Matrix_Max_4_2500x2500) {
     }
 }
 
-
 TEST(Matrix_Max_MPI, Test_Matrix_Max_5_5000x5000) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    TMatrix* matrix = nullptr;
+    TMatrix *matrix = nullptr;
 
     double timeParal, timeLinear;
     double resParal, resLinear;
@@ -153,14 +149,12 @@ TEST(Matrix_Max_MPI, Test_Matrix_Max_5_5000x5000) {
     }
 }
 
-
-
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     MPI_Init(&argc, &argv);
 
     ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
-    ::testing::TestEventListeners& listeners =
+    ::testing::TestEventListeners &listeners =
         ::testing::UnitTest::GetInstance()->listeners();
 
     listeners.Release(listeners.default_result_printer());

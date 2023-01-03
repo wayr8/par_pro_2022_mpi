@@ -1,7 +1,5 @@
 // Copyright 2022 Grachev Valentin
-#include "./matrix_max.h"
-
-
+#include "../../../modules/task_1/grachev_v_matrix_max/matrix_max.h"
 
 TMatrix::TMatrix(int m, int n) {
     str_count = m;
@@ -9,9 +7,7 @@ TMatrix::TMatrix(int m, int n) {
     arr = new double[m * n];
 }
 
-TMatrix::~TMatrix() {
-    delete[] arr;
-}
+TMatrix::~TMatrix() { delete[] arr; }
 
 void TMatrix::SetElement(int i, int j, double value) {
     int offset = i * col_count;
@@ -23,7 +19,6 @@ double TMatrix::GetElement(int i, int j) const {
     return arr[offset + j];
 }
 
-
 void TMatrix::FillRandom(int min, int max) {
     std::random_device dev;
     std::mt19937 gen(dev());
@@ -33,16 +28,12 @@ void TMatrix::FillRandom(int min, int max) {
     }
 }
 
-int TMatrix::GetStringCount() const {
-    return str_count;
-}
+int TMatrix::GetStringCount() const { return str_count; }
 
-int TMatrix::GetColumnCount() const {
-    return col_count;
-}
+int TMatrix::GetColumnCount() const { return col_count; }
 
-double* TMatrix::GetStringValues(int str_number) const {
-    double* res = new double[col_count];
+double *TMatrix::GetStringValues(int str_number) const {
+    double *res = new double[col_count];
     int offset = str_number * col_count;
 
     for (int i = 0; i < col_count; i++) {
@@ -52,8 +43,8 @@ double* TMatrix::GetStringValues(int str_number) const {
     return res;
 }
 
-double* TMatrix::GetColumnValues(int col_number) const {
-    double* res = new double[str_count];
+double *TMatrix::GetColumnValues(int col_number) const {
+    double *res = new double[str_count];
 
     for (int i = 0; i < str_count; i++) {
         int offset = col_count * i;
@@ -69,7 +60,7 @@ void TMatrix::PrintElements() const {
     }
 }
 
-double GetMax(double* arr, int size) {
+double GetMax(double *arr, int size) {
     double max = arr[0];
     for (int i = 1; i < size; i++) {
         if (arr[i] > max) {
@@ -79,9 +70,7 @@ double GetMax(double* arr, int size) {
     return max;
 }
 
-
-
-double GetMatrixMaxLinear(const TMatrix& matrix, double* time) {
+double GetMatrixMaxLinear(const TMatrix &matrix, double *time) {
     double start_time = clock();
     double result = matrix.GetElement(0, 0);
     for (int i = 0; i < matrix.GetStringCount(); i++) {
@@ -96,8 +85,7 @@ double GetMatrixMaxLinear(const TMatrix& matrix, double* time) {
     return result;
 }
 
-
-void GetMatrixMaxParallel(const TMatrix& matrix, double* time, double* result) {
+void GetMatrixMaxParallel(const TMatrix &matrix, double *time, double *result) {
     int process_quantity;
     MPI_Comm_size(MPI_COMM_WORLD, &process_quantity);
 
@@ -111,23 +99,25 @@ void GetMatrixMaxParallel(const TMatrix& matrix, double* time, double* result) {
         for (int i = 0; i < process_quantity; i++) {
             std::vector<double> vect;
             if (matrix.GetStringCount() >= matrix.GetColumnCount()) {
-                for (int j = i; j < matrix.GetStringCount(); j += process_quantity) {
-                    double* stringValues = matrix.GetStringValues(j);
+                for (int j = i; j < matrix.GetStringCount();
+                     j += process_quantity) {
+                    double *stringValues = matrix.GetStringValues(j);
                     int stringSize = matrix.GetColumnCount();
                     for (int k = 0; k < stringSize; k++) {
                         vect.push_back(stringValues[k]);
                     }
                 }
             } else {
-                for (int j = i; j < matrix.GetColumnCount(); j += process_quantity) {
-                    double* columnValues = matrix.GetColumnValues(j);
+                for (int j = i; j < matrix.GetColumnCount();
+                     j += process_quantity) {
+                    double *columnValues = matrix.GetColumnValues(j);
                     int columnSize = matrix.GetStringCount();
                     for (int k = 0; k < columnSize; k++) {
                         vect.push_back(columnValues[k]);
                     }
                 }
             }
-            double* message = vect.data();
+            double *message = vect.data();
             int size = vect.size();
             if (i == 0) {
                 local_max = GetMax(message, vect.size());
@@ -140,15 +130,18 @@ void GetMatrixMaxParallel(const TMatrix& matrix, double* time, double* result) {
         MPI_Recv(&size, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUSES_IGNORE);
         if (size == 0) {
             local_max = NEG_INF;
-            MPI_Reduce(&local_max, &global_max, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
+            MPI_Reduce(&local_max, &global_max, 1, MPI_DOUBLE, MPI_MAX, 0,
+                       MPI_COMM_WORLD);
             MPI_Finalize();
         }
-        double* arr = new double[size];
-        MPI_Recv(arr, size, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, MPI_STATUSES_IGNORE);
+        double *arr = new double[size];
+        MPI_Recv(arr, size, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD,
+                 MPI_STATUSES_IGNORE);
         local_max = GetMax(arr, size);
     }
 
-    MPI_Reduce(&local_max, &global_max, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
+    MPI_Reduce(&local_max, &global_max, 1, MPI_DOUBLE, MPI_MAX, 0,
+               MPI_COMM_WORLD);
     if (rank_this_process == 0) {
         *result = global_max;
         end_time = MPI_Wtime();
