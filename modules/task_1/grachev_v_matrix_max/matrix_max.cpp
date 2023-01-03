@@ -1,10 +1,31 @@
 // Copyright 2022 Grachev Valentin
 #include "../../../modules/task_1/grachev_v_matrix_max/matrix_max.h"
+#include "matrix_max.h"
 
 TMatrix::TMatrix(int m, int n) {
     str_count = m;
     col_count = n;
     arr = new double[m * n];
+}
+
+TMatrix::TMatrix(const TMatrix &other) {
+    str_count = other.str_count;
+    col_count = other.col_count;
+    arr = new double[str_count * col_count];
+    for (int i = 0; i < str_count * col_count; i++) {
+        arr[i] = other.arr[i];
+    }
+}
+
+TMatrix &TMatrix::operator=(const TMatrix &other) {
+    str_count = other.str_count;
+    col_count = other.col_count;
+    delete[] arr;
+    arr = new double[str_count * col_count];
+    for (int i = 0; i < str_count * col_count; i++) {
+        arr[i] = other.arr[i];
+    }
+    return *this;
 }
 
 TMatrix::~TMatrix() { delete[] arr; }
@@ -123,17 +144,12 @@ void GetMatrixMaxParallel(const TMatrix &matrix, double *time, double *result) {
                 local_max = GetMax(message, vect.size());
             } else {
                 MPI_Send(&size, 1, MPI_INT, i, 0, MPI_COMM_WORLD);
+                MPI_Send(message, vect.size(), MPI_DOUBLE, i, 0, MPI_COMM_WORLD);
             }
         }
     } else {
         int size;
         MPI_Recv(&size, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUSES_IGNORE);
-        if (size == 0) {
-            local_max = NEG_INF;
-            MPI_Reduce(&local_max, &global_max, 1, MPI_DOUBLE, MPI_MAX, 0,
-                       MPI_COMM_WORLD);
-            MPI_Finalize();
-        }
         double *arr = new double[size];
         MPI_Recv(arr, size, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD,
                  MPI_STATUSES_IGNORE);

@@ -21,7 +21,10 @@ class TMatrix {
 
  public:
     TMatrix(int m, int n);
+    TMatrix(const TMatrix& other);
+    TMatrix& operator=(const TMatrix& other);
     ~TMatrix();
+    
     void SetElement(int i, int j, double value);
     double GetElement(int i, int j) const;
     void FillRandom(int min, int max);

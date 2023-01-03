@@ -1,14 +1,13 @@
 // Copyright 2022 Grachev Valentin
-#include <gtest/gtest.h>
 #include "../../../modules/task_1/grachev_v_matrix_max/matrix_max.h"
 #include <gtest-mpi-listener.hpp>
-
+#include <gtest/gtest.h>
 
 TEST(Matrix_Max_MPI, Test_Matrix_Max_1_10x10) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    TMatrix *matrix = nullptr;
+    TMatrix *matrix = new TMatrix(1, 1);
 
     double timeParal, timeLinear;
     double resParal, resLinear;
@@ -19,7 +18,6 @@ TEST(Matrix_Max_MPI, Test_Matrix_Max_1_10x10) {
     }
 
     GetMatrixMaxParallel(*matrix, &timeParal, &resParal);
-
     if (rank == 0) {
         resLinear = GetMatrixMaxLinear(*matrix, &timeLinear);
         ASSERT_EQ(resLinear, resParal);
@@ -30,7 +28,7 @@ TEST(Matrix_Max_MPI, Test_Matrix_Max_2_100x10) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    TMatrix *matrix = nullptr;
+    TMatrix *matrix = new TMatrix(1, 1);
 
     double timeParal, timeLinear;
     double resParal, resLinear;
@@ -45,15 +43,6 @@ TEST(Matrix_Max_MPI, Test_Matrix_Max_2_100x10) {
     if (rank == 0) {
         resLinear = GetMatrixMaxLinear(*matrix, &timeLinear);
         ASSERT_EQ(resLinear, resParal);
-        /*
-        if (resParal == resLinear) {
-            std::cout << "SUCCESS" << "\n";
-        } else {
-            std::cout << "FAILED" << "\n";
-        }
-        std::cout << "Sequental work time: " << timeLinear << '\n';
-        std::cout << "Parallel work time: " << timeParal << '\n';
-        */
     }
 }
 
@@ -61,7 +50,7 @@ TEST(Matrix_Max_MPI, Test_Matrix_Max_3_10x1000) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    TMatrix *matrix = nullptr;
+    TMatrix *matrix = new TMatrix(1, 1);
 
     double timeParal, timeLinear;
     double resParal, resLinear;
@@ -76,15 +65,6 @@ TEST(Matrix_Max_MPI, Test_Matrix_Max_3_10x1000) {
     if (rank == 0) {
         resLinear = GetMatrixMaxLinear(*matrix, &timeLinear);
         ASSERT_EQ(resLinear, resParal);
-        /*
-        if (resParal == resLinear) {
-            std::cout << "SUCCESS" << "\n";
-        } else {
-            std::cout << "FAILED" << "\n";
-        }
-        std::cout << "Sequental work time: " << timeLinear << '\n';
-        std::cout << "Parallel work time: " << timeParal << '\n';
-        */
     }
 }
 
@@ -92,7 +72,7 @@ TEST(Matrix_Max_MPI, Test_Matrix_Max_4_2500x2500) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    TMatrix *matrix = nullptr;
+    TMatrix *matrix = new TMatrix(1, 1);
 
     double timeParal, timeLinear;
     double resParal, resLinear;
@@ -107,15 +87,6 @@ TEST(Matrix_Max_MPI, Test_Matrix_Max_4_2500x2500) {
     if (rank == 0) {
         resLinear = GetMatrixMaxLinear(*matrix, &timeLinear);
         ASSERT_EQ(resLinear, resParal);
-        /*
-        if (resParal == resLinear) {
-            std::cout << "SUCCESS" << "\n";
-        } else {
-            std::cout << "FAILED" << "\n";
-        }
-        std::cout << "Sequental work time: " << timeLinear << '\n';
-        std::cout << "Parallel work time: " << timeParal << '\n';
-        */
     }
 }
 
@@ -123,7 +94,7 @@ TEST(Matrix_Max_MPI, Test_Matrix_Max_5_5000x5000) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    TMatrix *matrix = nullptr;
+    TMatrix *matrix = new TMatrix(1, 1);
 
     double timeParal, timeLinear;
     double resParal, resLinear;
@@ -138,15 +109,6 @@ TEST(Matrix_Max_MPI, Test_Matrix_Max_5_5000x5000) {
     if (rank == 0) {
         resLinear = GetMatrixMaxLinear(*matrix, &timeLinear);
         ASSERT_EQ(resLinear, resParal);
-        /*
-        if (resParal == resLinear) {
-            std::cout << "SUCCESS" << "\n";
-        } else {
-            std::cout << "FAILED" << "\n";
-        }
-        std::cout << "Sequental work time: " << timeLinear << '\n';
-        std::cout << "Parallel work time: " << timeParal << '\n';
-        */
     }
 }
 
