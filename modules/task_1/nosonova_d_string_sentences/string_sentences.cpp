@@ -8,7 +8,7 @@ char *GetRandomString(int size, int pointChancePercent) {
     char *str = new char[size];
 
     for (int i = 0; i < size; i++) {
-        char symbol = char('a' + gen() % ('z' - 'a'));
+        char symbol = static_cast<char>('a' + gen() % ('z' - 'a'));
         int percent = gen() % 101;
         if (pointChancePercent >= percent)
             symbol = '.';
@@ -17,7 +17,7 @@ char *GetRandomString(int size, int pointChancePercent) {
     return str;
 }
 
-int GetSentencesQuantitySequence(char *str, int size, double &t) {
+int GetSentencesQuantitySequence(char *str, int size, double *t) {
     int res = 0;
     double start = 0, end = 0;
     start = clock();
@@ -26,11 +26,11 @@ int GetSentencesQuantitySequence(char *str, int size, double &t) {
             res++;
     }
     end = clock();
-    t = (end - start) / 1000;
+    *t = (end - start) / 1000;
     return res;
 }
 
-int GetSentencesQuantityParallel(char *str, int size, double &t) {
+int GetSentencesQuantityParallel(char *str, int size, double *t) {
     double start_time = 0, end_time = 0;
     start_time = MPI_Wtime();
 
@@ -42,7 +42,7 @@ int GetSentencesQuantityParallel(char *str, int size, double &t) {
 
     int local_result = 0;
 
-    if (rank == 0) { // main process
+    if (rank == 0) {  // main process
         int current_index = 0;
         int size_cut = size / proc_count;
         int size_tail = size % proc_count;
@@ -62,8 +62,7 @@ int GetSentencesQuantityParallel(char *str, int size, double &t) {
             if (str[current_index] == '.')
                 local_result++;
 
-    } else { // other process
-
+    } else {  // other process
         int local_size = 0;
         MPI_Recv(&local_size, 1, MPI_INT, 0, 0, MPI_COMM_WORLD,
                  MPI_STATUSES_IGNORE);
@@ -80,7 +79,7 @@ int GetSentencesQuantityParallel(char *str, int size, double &t) {
     MPI_Reduce(&local_result, &answer, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
 
     end_time = MPI_Wtime();
-    t = end_time - start_time;
+    *t = end_time - start_time;
 
     return answer;
 }

@@ -13,8 +13,8 @@
 
 char *GetRandomString(int size, int sentencesSize);
 
-int GetSentencesQuantitySequence(char *str, int size, double &t);
+int GetSentencesQuantitySequence(char *str, int size, double *t);
 
-int GetSentencesQuantityParallel(char *str, int size, double &t);
+int GetSentencesQuantityParallel(char *str, int size, double *t);
 
-#endif // MODULES_TASK_1_NOSONOVA_D_STRING_SENTENCES_STRING_SENTENCES_H_
+#endif  // MODULES_TASK_1_NOSONOVA_D_STRING_SENTENCES_STRING_SENTENCES_H_

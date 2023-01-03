@@ -9,18 +9,18 @@ TEST(String_Sentences_Mpi, String_Sentences_Test_1_10e2) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
     int size = 10e2, chance = 5, answer_paral = -1, answer_sequence = -1;
-    double time_parallel = 0, time_sequence = 0;
+    double time_parallel, time_sequence;
 
     char *str = nullptr;
 
     if (rank == 0)
         str = GetRandomString(size, chance);
 
-    answer_paral = GetSentencesQuantityParallel(str, size, time_parallel);
+    answer_paral = GetSentencesQuantityParallel(str, size, &time_parallel);
 
     if (rank == 0) {
         answer_sequence =
-            GetSentencesQuantitySequence(str, size, time_sequence);
+            GetSentencesQuantitySequence(str, size, &time_sequence);
 
         ASSERT_EQ(answer_paral, answer_sequence);
     }
@@ -38,11 +38,11 @@ TEST(String_Sentences_Mpi, String_Sentences_Test_2_10e3) {
     if (rank == 0)
         str = GetRandomString(size, chance);
 
-    answer_paral = GetSentencesQuantityParallel(str, size, time_parallel);
+    answer_paral = GetSentencesQuantityParallel(str, size, &time_parallel);
 
     if (rank == 0) {
         answer_sequence =
-            GetSentencesQuantitySequence(str, size, time_sequence);
+            GetSentencesQuantitySequence(str, size, &time_sequence);
 
         ASSERT_EQ(answer_paral, answer_sequence);
     }
@@ -60,11 +60,11 @@ TEST(String_Sentences_Mpi, String_Sentences_Test_3_10e4) {
     if (rank == 0)
         str = GetRandomString(size, chance);
 
-    answer_paral = GetSentencesQuantityParallel(str, size, time_parallel);
+    answer_paral = GetSentencesQuantityParallel(str, size, &time_parallel);
 
     if (rank == 0) {
         answer_sequence =
-            GetSentencesQuantitySequence(str, size, time_sequence);
+            GetSentencesQuantitySequence(str, size, &time_sequence);
 
         ASSERT_EQ(answer_paral, answer_sequence);
     }
@@ -82,11 +82,11 @@ TEST(String_Sentences_Mpi, String_Sentences_Test_4_10e5) {
     if (rank == 0)
         str = GetRandomString(size, chance);
 
-    answer_paral = GetSentencesQuantityParallel(str, size, time_parallel);
+    answer_paral = GetSentencesQuantityParallel(str, size, &time_parallel);
 
     if (rank == 0) {
         answer_sequence =
-            GetSentencesQuantitySequence(str, size, time_sequence);
+            GetSentencesQuantitySequence(str, size, &time_sequence);
 
         ASSERT_EQ(answer_paral, answer_sequence);
     }
@@ -104,11 +104,11 @@ TEST(String_Sentences_Mpi, String_Sentences_Test_5_10e6) {
     if (rank == 0)
         str = GetRandomString(size, chance);
 
-    answer_paral = GetSentencesQuantityParallel(str, size, time_parallel);
+    answer_paral = GetSentencesQuantityParallel(str, size, &time_parallel);
 
     if (rank == 0) {
         answer_sequence =
-            GetSentencesQuantitySequence(str, size, time_sequence);
+            GetSentencesQuantitySequence(str, size, &time_sequence);
 
         ASSERT_EQ(answer_paral, answer_sequence);
     }
