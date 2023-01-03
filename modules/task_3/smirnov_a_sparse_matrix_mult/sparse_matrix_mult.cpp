@@ -1,12 +1,10 @@
 // Copyright 2018 Nesterov Alexander
 #include <mpi.h>
+#include "../../../modules/task_3/smirnov_a_sparse_matrix_mult/sparse_matrix_mult.h"
 #include <iostream>
 #include <vector>
 #include <string>
-#include <random>
-#include <algorithm>
-#include <math.h>
-#include "../../../modules/task_3/smirnov_a_sparse_matrix_mult/sparse_matrix_mult.h"
+#include <cmath>
 
 SparseMatrix::SparseMatrix(std::vector<std::vector<double>> matrix) {
   countRows = matrix.size();
