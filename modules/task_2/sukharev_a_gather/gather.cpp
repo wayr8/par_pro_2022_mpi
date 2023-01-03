@@ -8,6 +8,7 @@
 #include <iostream>
 #include <random>
 #include <vector>
+#include <cstring>
 
 std::vector<int> getRandomVectorInt(const int size) {
   std::random_device dev;
