@@ -17,9 +17,12 @@ TMatrix::TMatrix(const TMatrix &other) {
 }
 
 TMatrix &TMatrix::operator=(const TMatrix &other) {
+    if (this == &other)
+        return *this;
     str_count = other.str_count;
     col_count = other.col_count;
-    delete[] arr;
+    if (arr)
+        delete[] arr;
     arr = new double[str_count * col_count];
     for (int i = 0; i < str_count * col_count; i++) {
         arr[i] = other.arr[i];
@@ -143,7 +146,8 @@ void GetMatrixMaxParallel(const TMatrix &matrix, double *time, double *result) {
                 local_max = GetMax(message, vect.size());
             } else {
                 MPI_Send(&size, 1, MPI_INT, i, 0, MPI_COMM_WORLD);
-                MPI_Send(message, vect.size(), MPI_DOUBLE, i, 0, MPI_COMM_WORLD);
+                MPI_Send(message, vect.size(), MPI_DOUBLE, i, 0,
+                         MPI_COMM_WORLD);
             }
         }
     } else {
