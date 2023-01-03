@@ -103,7 +103,8 @@ bool SparseMatrix::operator==(SparseMatrix m) const {
   return true;
 }
 
-SparseMatrix seqSparseMatrixMult(const std::vector<std::vector<double>>& _A, const std::vector<std::vector<double>>& _B) {
+SparseMatrix seqSparseMatrixMult(const std::vector<std::vector<double>>& _A,
+  const std::vector<std::vector<double>>& _B) {
   if (_A[0].size() != _B.size()) {
     throw std::string("Non equal sizes matrix");
   }
@@ -144,7 +145,8 @@ SparseMatrix seqSparseMatrixMult(const std::vector<std::vector<double>>& _A, con
   return result;
 }
 
-SparseMatrix parSparseMatrixMult(const std::vector<std::vector<double>>& _A, const std::vector<std::vector<double>>& _B) {
+SparseMatrix parSparseMatrixMult(const std::vector<std::vector<double>>& _A,
+  const std::vector<std::vector<double>>& _B) {
   int countProc;
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
