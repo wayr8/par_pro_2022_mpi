@@ -1,6 +1,5 @@
 // Copyright 2022 Grachev Valentin
 #include "../../../modules/task_1/grachev_v_matrix_max/matrix_max.h"
-#include "matrix_max.h"
 
 TMatrix::TMatrix(int m, int n) {
     str_count = m;

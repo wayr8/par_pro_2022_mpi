@@ -1,7 +1,8 @@
 // Copyright 2022 Grachev Valentin
+#include <gtest/gtest.h>
 #include "../../../modules/task_1/grachev_v_matrix_max/matrix_max.h"
 #include <gtest-mpi-listener.hpp>
-#include <gtest/gtest.h>
+
 
 TEST(Matrix_Max_MPI, Test_Matrix_Max_1_10x10) {
     int rank;
