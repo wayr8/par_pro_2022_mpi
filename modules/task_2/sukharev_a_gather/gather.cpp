@@ -15,7 +15,7 @@ std::vector<int> getRandomVectorInt(const int size) {
   std::vector<int> randomVector;
   randomVector.resize(size);
   for (int i = 0; i < size; i++) {
-    randomVector[i] = gen() % 1000;
+    randomVector[i] = gen();
   }
   return randomVector;
 }
@@ -73,10 +73,9 @@ int MY_Gather(void* sendbuf, int sendcount, MPI_Datatype sendtype,
     sizetmpbuf = recvcount * sizeType;
   else
     sizetmpbuf = std::min(procNum - rank, firstBit) * messageSize;
+
   tmp = new char[sizetmpbuf];
-  for (int i = 0; i < messageSize; i++) {
-    tmp[i] = *(static_cast<char*>(sendbuf) + i);
-  }
+  memcpy(tmp, sendbuf, messageSize);
   for (int i = 1; i < firstBit && rank + i < procNum; i *= 2) {
     MPI_Status status;
     int tmpSendCount = std::min(i, procNum - (rank + i)) * sendcount;
@@ -89,9 +88,7 @@ int MY_Gather(void* sendbuf, int sendcount, MPI_Datatype sendtype,
 
   if (root == 0) {
     if (rank == 0) {
-      for (int i = 0; i < sizetmpbuf; i++) {
-        *(static_cast<char*>(recvbuf) + i) = tmp[i];
-      }
+      memcpy(recvbuf, tmp, sizetmpbuf);
     }
   } else {
     if (rank == 0) {
