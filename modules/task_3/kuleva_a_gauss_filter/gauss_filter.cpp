@@ -20,6 +20,7 @@ Matrix generateImage(int sizeX, int sizeY) {
     for (int i = 0; i < sizeX * sizeY; i++) {
         result.push_back(randPixel(generator));
     }
+    return result;
 }
 
 int translateCoordinates(int x, int y, int sizeX) {
