@@ -6,95 +6,6 @@
 
 #include "./min_value_in_matrix.h"
 
-// TEST(min_value_in_matrix, small_matr_no_reminder_2_proc) {
-//  int rank;
-//  int min_value_seq, min_value_par;
-//  const int kSize = 500;
-//  int matrix[kSize];
-//  const int proc_num = 2;
-//  int min_values[proc_num];
-//  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-//  if (rank == 0) {
-//    CreateRandomValues(matrix, kSize);
-//  }
-//  ParMinValue(matrix, kSize, proc_num, min_values);
-//  min_value_par = min_values[0];
-//  if (rank == 0) {
-//    min_value_seq = SeqMinValue(matrix, kSize);
-//    EXPECT_EQ(min_value_par, min_value_seq);
-//  }
-//}
-//
-// TEST(min_value_in_matrix, big_matr_coprime_integers_4_proc) {
-//  int rank;
-//  int min_value_seq, min_value_par;
-//  const int kSize = 998001;
-//  int matrix[kSize];
-//  const int proc_num = 2;
-//  int min_values[proc_num];
-//  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-//  if (rank == 0) {
-//    CreateRandomValues(matrix, kSize);
-//  }
-//  ParMinValue(matrix, kSize, proc_num, min_values);
-//  min_value_par = min_values[0];
-//  if (rank == 0) {
-//    min_value_seq = SeqMinValue(matrix, kSize);
-//    EXPECT_EQ(min_value_par, min_value_seq);
-//  }
-//}
-//
-// TEST(min_value_in_matrix, big_matr_coprime_integers_3_proc) {
-//  int rank;
-//  int min_value_seq, min_value_par;
-//  const int kSize = 1000000;
-//  int matrix[kSize];
-//  const int proc_num = 3;
-//  int min_values[proc_num];
-//  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-//  if (rank == 0) {
-//    CreateRandomValues(matrix, kSize);
-//  }
-//  ParMinValue(matrix, kSize, proc_num, min_values);
-//  min_value_par = min_values[0];
-//  if (rank == 0) {
-//    min_value_seq = SeqMinValue(matrix, kSize);
-//    EXPECT_EQ(min_value_par, min_value_seq);
-//  }
-//}
-// TEST(min_value_in_matrix, big_matr_coprime_integers_10_proc) {
-//  int rank;
-//  int min_value_seq, min_value_par;
-//  const int kSize = 1000998;
-//  int matrix[kSize];
-//  const int proc_num = 10;
-//  int min_values[proc_num];
-//  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-//  CreateRandomValues(matrix, kSize);
-//  ParMinValue(matrix, kSize, proc_num, min_values);
-//  min_value_par = min_values[0];
-//  if (rank == 0) {
-//    min_value_seq = SeqMinValue(matrix, kSize);
-//    EXPECT_EQ(min_value_par, min_value_seq);
-//  }
-//}
-// TEST(min_value_in_matrix, big_matr_1_proc) {
-//  int rank;
-//  int min_value_seq, min_value_par;
-//  const int kSize = 1000998;
-//  int matrix[kSize];
-//  const int proc_num = 1;
-//  int min_values[proc_num];
-//  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-//  CreateRandomValues(matrix, kSize);
-//  ParMinValue(matrix, kSize, proc_num, min_values);
-//  min_value_par = min_values[0];
-//  if (rank == 0) {
-//    min_value_seq = SeqMinValue(matrix, kSize);
-//    EXPECT_EQ(min_value_par, min_value_seq);
-//  }
-//}
-
 TEST(min_value_in_matrix, equal_values) {
   int i;
   int rank;
@@ -116,7 +27,7 @@ TEST(min_value_in_matrix, equal_values) {
   }
 }
 
-TEST(min_value_in_matrix, in_order_of_producing) {
+TEST(min_value_in_matrix, in_ascending_order) {
   int i;
   int rank;
   int min_value_seq, min_value_par;
@@ -137,7 +48,7 @@ TEST(min_value_in_matrix, in_order_of_producing) {
   }
 }
 
-TEST(min_value_in_matrix, in_order_of_reducing) {
+TEST(min_value_in_matrix, in_descending_order) {
   int i;
   int rank;
   int min_value_seq, min_value_par;
