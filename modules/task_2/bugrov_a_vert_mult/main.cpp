@@ -3,7 +3,6 @@
 #include <gtest/gtest.h>
 
 #include <gtest-mpi-listener.hpp>
-#include <iostream>
 
 #include "./vert_mult.h"
 
@@ -123,21 +122,6 @@ TEST(vert_mult, regular_vertical_matr) {
   int *result_seq = new int[kN], *result_par = new int[kN];
   TestFunction(kN, kM, matrix, result_seq, result_par);
   if (rank == 0) {
-    // for (int i = 0; i < kN; i++) {
-    //  std::cout << result_par[i] << " ";
-    //}
-    // for (int i = 0; i < kN; i++) {
-    //  std::cout << result_seq[i] << " ";
-    //}
-    // std::cout << "\n";
-    // for (int i = 0; i < kM * kN; i++) {
-    //  std::cout << matrix[i] << " ";
-    //}
-    // std::cout << "\n";
-    // for (int i = 0; i < kM; i++) {
-    //  std::cout << rand_vector[i] << " ";
-    //}
-    // std::cout << "\n";
     EXPECT_EQ(AreVectorsEqual(result_seq, result_par, kN), true);
   }
 }
