@@ -128,8 +128,7 @@ SparseMatrix seqSparseMatrixMult(std::vector<std::vector<double>> _A, std::vecto
           sum += A.values[aIndex] * transposedB.values[bIndex];
           aIndex++;
           bIndex++;
-        }
-        else {
+        } else {
           A.columnIndex[aIndex] > transposedB.columnIndex[bIndex] ? bIndex++ : aIndex++;
         }
       }
@@ -143,7 +142,6 @@ SparseMatrix seqSparseMatrixMult(std::vector<std::vector<double>> _A, std::vecto
     if (isNonZero) {
       result.rowIndex.push_back(NNZ);
     }
-
   }
   return result;
 }
@@ -196,12 +194,9 @@ SparseMatrix parSparseMatrixMult(std::vector<std::vector<double>> _A, std::vecto
 
     MPI_Bcast(A.values.data(), countNNZElemsA, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     MPI_Bcast(A.columnIndex.data(), countNNZElemsA, MPI_INT, 0, MPI_COMM_WORLD);
-
-  }
-  else {
+  } else {
     MPI_Scatterv(nullptr, sendCountsRowIndex.data(), displsCountsRowIndex.data(),
       MPI_INT, localA.rowIndex.data(), sendCountsRowIndex[rank], MPI_INT, 0, MPI_COMM_WORLD);
-
 
     MPI_Bcast(&countNNZElemsA, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
@@ -210,7 +205,6 @@ SparseMatrix parSparseMatrixMult(std::vector<std::vector<double>> _A, std::vecto
 
     MPI_Bcast(localA.values.data(), countNNZElemsA, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     MPI_Bcast(localA.columnIndex.data(), countNNZElemsA, MPI_INT, 0, MPI_COMM_WORLD);
-
   }
 
   SparseMatrix localResult;
@@ -233,8 +227,7 @@ SparseMatrix parSparseMatrixMult(std::vector<std::vector<double>> _A, std::vecto
           sum += localA.values[aIndex] * transposedB.values[bIndex];
           aIndex++;
           bIndex++;
-        }
-        else {
+        } else {
           localA.columnIndex[aIndex] > transposedB.columnIndex[bIndex] ? bIndex++ : aIndex++;
         }
       }
@@ -318,8 +311,7 @@ SparseMatrix parSparseMatrixMult(std::vector<std::vector<double>> _A, std::vecto
     result.rowIndex = rIndexResult;
 
     return result;
-  }
-  else {
+  } else {
     int vs = localResult.values.size();
     int ris = localResult.rowIndex.size();
     MPI_Gather(&vs, 1, MPI_INT, nullptr, 1, MPI_INT, 0, MPI_COMM_WORLD);
