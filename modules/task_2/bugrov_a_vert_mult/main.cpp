@@ -2,9 +2,10 @@
 
 #include <gtest/gtest.h>
 
+#include "./vert_mult.h"
+
 #include <gtest-mpi-listener.hpp>
 
-#include "./vert_mult.h"
 
 bool AreVectorsEqual(int* one, int* two, int size) {
   int i = 0;
