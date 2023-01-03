@@ -21,7 +21,6 @@ TEST(Parallel_Operations_MPI, Test_ConvertToCRS) {
     ref.rowIndex = { 0, 2, 3, 4 };
     EXPECT_EQ(result, ref);
   }
-
 }
 
 TEST(Parallel_Operations_MPI, Test_SeqSpareMatrixMult) {
@@ -51,7 +50,7 @@ TEST(Parallel_Operations_MPI, Test_SeqSpareMatrixMult) {
 TEST(Parallel_Operations_MPI, Test_ParSpareMatrixMult1) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  std::vector<std::vector<double>> A= { {0, 0, 7, 8},
+  std::vector<std::vector<double>> A = { {0, 0, 7, 8},
                                          {3, 0, 0, 0},
                                          {0, 2, 0, 0}
   };
@@ -67,7 +66,6 @@ TEST(Parallel_Operations_MPI, Test_ParSpareMatrixMult1) {
     SparseMatrix seqResult = seqSparseMatrixMult(A, B);
     EXPECT_EQ(result, seqResult);
   }
-
 }
 
 TEST(Parallel_Operations_MPI, Test_ParSpareMatrixMult2) {
@@ -91,7 +89,6 @@ TEST(Parallel_Operations_MPI, Test_ParSpareMatrixMult2) {
     SparseMatrix seqResult = seqSparseMatrixMult(A, B);
     EXPECT_EQ(result, seqResult);
   }
-
 }
 
 TEST(Parallel_Operations_MPI, Test_ParSpareMatrixMult3) {
@@ -115,7 +112,6 @@ TEST(Parallel_Operations_MPI, Test_ParSpareMatrixMult3) {
     SparseMatrix seqResult = seqSparseMatrixMult(A, B);
     EXPECT_EQ(result, seqResult);
   }
-
 }
 
 TEST(Parallel_Operations_MPI, Test_ParSpareMatrixMult4) {
@@ -136,7 +132,6 @@ TEST(Parallel_Operations_MPI, Test_ParSpareMatrixMult4) {
     SparseMatrix seqResult = seqSparseMatrixMult(A, B);
     EXPECT_EQ(result, seqResult);
   }
-
 }
 
 TEST(Parallel_Operations_MPI, Test_ParSpareMatrixMult5) {
@@ -155,7 +150,6 @@ TEST(Parallel_Operations_MPI, Test_ParSpareMatrixMult5) {
   if (rank == 0) {
     ASSERT_ANY_THROW(parSparseMatrixMult(A, B));
   }
-
 }
 
 int main(int argc, char** argv) {
