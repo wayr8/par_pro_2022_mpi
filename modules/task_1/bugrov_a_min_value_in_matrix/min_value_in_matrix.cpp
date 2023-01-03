@@ -28,24 +28,23 @@ int SeqMinValue(int* matrix, int size) {
 // result is in min_values[0]
 int ParMinValue(int* matrix, int size, int process_num) {
   int rank = 0;
-  const int kProcessNum = process_num;
-  int part = size / kProcessNum;
-  int min_values[kProcessNum];
+  int part = size / process_num;
+  int* min_values = new int[process_num];
   min_values[0] = -1;
   MPI_Status status;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank == 0) {
     int i = 0;
-    for (; i < kProcessNum - 1; i++) {
+    for (; i < process_num - 1; i++) {
       MPI_Send(matrix + i * part, part, MPI_INT, i + 1, 0, MPI_COMM_WORLD);
     }
-    min_values[0] = matrix[(kProcessNum - 1) * part];
-    for (i = (kProcessNum - 1) * part + 1; i < size; i++) {
+    min_values[0] = matrix[(process_num - 1) * part];
+    for (i = (process_num - 1) * part + 1; i < size; i++) {
       if (min_values[0] > matrix[i]) {
         min_values[0] = matrix[i];
       }
     }
-    for (int i = 1; i < kProcessNum; i++) {
+    for (int i = 1; i < process_num; i++) {
       MPI_Recv(min_values + i, 1, MPI_INT, i, MPI_ANY_TAG, MPI_COMM_WORLD,
                &status);
       if (min_values[0] > min_values[i]) {
@@ -53,7 +52,7 @@ int ParMinValue(int* matrix, int size, int process_num) {
       }
     }
   } else {
-    if (rank < kProcessNum) {
+    if (rank < process_num) {
       int* recv_buf;
       recv_buf = new int[part];
       int* tmp_result = new int;
