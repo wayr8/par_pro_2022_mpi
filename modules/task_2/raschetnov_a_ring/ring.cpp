@@ -13,7 +13,7 @@ int getResult(int information, int size, int delta) {
 int SendRingParallel(int information, int count, MPI_Datatype datatype,
                      int root, int delta, int tag, MPI_Comm comm) {
   int size, rank;
-  MPI_Comm_size(MPI_COMM_WORLD, &size);  
+  MPI_Comm_size(MPI_COMM_WORLD, &size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (size == 1)
     return information;
@@ -27,8 +27,7 @@ int SendRingParallel(int information, int count, MPI_Datatype datatype,
     MPI_Recv(&information, 1, MPI_INT, dest, 0, MPI_COMM_WORLD, &status);
 
     return information;
-  }
-  else {
+  } else {
     MPI_Status status;
     int dest = rank - 1;
     if (dest < 0)

@@ -26,7 +26,6 @@ void TestTemplate(std::pair<int, int> a, std::pair<int, int> b) {
     int seq_result = getResult(information, size, delta);
     ASSERT_EQ(par_result, seq_result);
   }
-
 }
 
 TEST(Parallel_Operations_MPI, test_1) {
