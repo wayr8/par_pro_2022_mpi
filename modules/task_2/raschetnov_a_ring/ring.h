@@ -4,8 +4,8 @@
 
 #include <mpi.h>
 
-int SendRingParallel(int information, int count, MPI_Datatype datatype,
-                     int root, int delta, int tag, MPI_Comm comm);
+int SendRingParallel(int& information, int count, MPI_Datatype datatype,
+                     int& root, int& delta, int tag, MPI_Comm comm);
 int getResult(int information, int size, int delta);
 int getRandomNumber(int leftborder, int rightborder);
 

@@ -10,8 +10,8 @@ int getResult(int information, int size, int delta) {
   return information;
 }
 
-int SendRingParallel(int information, int count, MPI_Datatype datatype,
-                     int root, int delta, int tag, MPI_Comm comm) {
+int SendRingParallel(int& information, int count, MPI_Datatype datatype,
+                     int& root, int& delta, int tag, MPI_Comm comm) {
   int size, rank;
   MPI_Comm_size(MPI_COMM_WORLD, &size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
