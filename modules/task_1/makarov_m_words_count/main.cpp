@@ -1,4 +1,5 @@
 // Copyright 2023 Makarov Mikhail
+
 #include <gtest/gtest.h>
 #include <vector>
 #include "./words_count.h"
