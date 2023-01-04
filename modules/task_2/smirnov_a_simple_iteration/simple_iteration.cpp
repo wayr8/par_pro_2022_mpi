@@ -130,9 +130,11 @@ std::vector<double> parSimpleIteration(const std::vector<double>& A,
   std::vector<double> currentX(countRowsA);
 
   if (rank == 0) {
-    MPI_Bcast(std::vector<double>(b).data(), b.size(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    std::vector<double> copyB = b;
+    MPI_Bcast(copyB.data(), countRowsA, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  } else {
+    MPI_Bcast(prevX.data(), countRowsA, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   }
-  MPI_Bcast(prevX.data(), prevX.size(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
   std::vector<int> sendCounts(countProc);
   std::vector<int> displs(countProc);
