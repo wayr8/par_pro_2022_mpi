@@ -38,8 +38,8 @@ TEST(Parallel_Operations_MPI, test_2) {
   int rank, size;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
-  int information, delta, root;
-  int par_result;
+  // int information, delta, root;
+  // int par_result;
 
   // if (rank == 0) {
   //   information = getRandomNumber(a.first, a.second);
@@ -52,8 +52,8 @@ TEST(Parallel_Operations_MPI, test_2) {
   // MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
   par_result = SendRingParallel(0, 1, MPI_INT, 0, 2, 0, MPI_COMM_WORLD);
-  if (rank == root) {
-    int seq_result = getResult(information, size, delta);
+  if (rank == 0) {
+    int seq_result = getResult(0, size, 2);
     ASSERT_EQ(par_result, seq_result);
   }
 }
