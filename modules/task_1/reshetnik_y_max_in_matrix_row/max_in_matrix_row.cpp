@@ -31,7 +31,7 @@ int* min_by_row(int* m, int x_size, int y_size) {
 
 int* parallel_min_by_row(int* m, int x_size, int y_size) {
     int len = x_size * y_size;
-    
+
     if (len == 0) {
         return nullptr;
     }
@@ -63,7 +63,7 @@ int* parallel_min_by_row(int* m, int x_size, int y_size) {
     if (last_row > y_size) {
         last_row = y_size;
         loc_len -= y_size - last_row;
-    } 
+    }
 
     int* loc_min = min_by_row(local + rank * seg * x_size, x_size, loc_len);
 
