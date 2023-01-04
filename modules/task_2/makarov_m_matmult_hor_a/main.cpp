@@ -31,7 +31,7 @@ void MultTest(int m1, int n1, int m2, int n2) {
 
         matrixResSeq =
             multSequential(matrixA, matrixB, m1, n1, m2, n2);
-        
+
         /* std::cout << "\n\n";
         std::cout << "MatrixResSeq:\n";
         printAsMatrix(matrixResSeq, m1, n2);

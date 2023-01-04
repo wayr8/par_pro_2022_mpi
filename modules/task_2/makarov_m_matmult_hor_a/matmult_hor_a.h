@@ -6,7 +6,6 @@
 #include <string>
 
 #define MY_ROOT (0)
-typedef unsigned long long ull;
 
 std::vector<int> getRandVector(int vecSize);
 void printAsMatrix(const std::vector<int>& vec, int m, int n);

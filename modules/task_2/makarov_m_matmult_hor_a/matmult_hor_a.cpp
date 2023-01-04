@@ -13,7 +13,7 @@ std::vector<int> getRandVector(int vecSize) {
     std::random_device device;
     std::mt19937 generator(device());
     std::vector<int> vec(vecSize);
-    for (int k = 0; k < vecSize; k++) vec[k] = generator() % 9;  //%99
+    for (int k = 0; k < vecSize; k++) vec[k] = generator() % 99;
     return vec;
 }
 
@@ -90,7 +90,7 @@ std::vector<int> multParallel(const std::vector<int>& matrixA,
             matrixA.data() + (usual_rows_cnt + lost_rows_cnt) * n1);
 
         // Sending usual_rows_cnt rows of matrix A to other processes
-        for (ull uproc_rank = 1; uproc_rank < useful_procs_cnt;
+        for (size_t uproc_rank = 1; uproc_rank < useful_procs_cnt;
              uproc_rank++) {
             auto pStart =
                 matrixA.data() + (usual_rows_cnt + lost_rows_cnt) * n1;
@@ -128,12 +128,12 @@ std::vector<int> multParallel(const std::vector<int>& matrixA,
         int n3 = n2;
         std::vector<int> matrixRes(m3 * n3);
 
-        for (ull i = 0; i < matrixRes_part.size(); i++) {
+        for (size_t i = 0; i < matrixRes_part.size(); i++) {
             matrixRes[i] = matrixRes_part[i];
         }
 
         // Receiving results from other processes
-        for (ull uproc_rank = 1; uproc_rank < useful_procs_cnt;
+        for (size_t uproc_rank = 1; uproc_rank < useful_procs_cnt;
              uproc_rank++) {
             auto pStart =
                 matrixRes.data() + (usual_rows_cnt + lost_rows_cnt) * n2;
