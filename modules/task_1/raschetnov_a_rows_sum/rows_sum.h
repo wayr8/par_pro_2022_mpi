@@ -1,6 +1,6 @@
 // Copyright 2023 Raschetnov Alexei
-#ifndef MODULES_TASK_1_NESTEROV_A_VECTOR_SUM_OPS_MPI_H_
-#define MODULES_TASK_1_NESTEROV_A_VECTOR_SUM_OPS_MPI_H_
+#ifndef MODULES_TASK_1_RASCHETNOV_A_ROWS_SUM_ROWS_SUM_H_
+#define MODULES_TASK_1_RASCHETNOV_A_ROWS_SUM_ROWS_SUM_H_
 
 #include <vector>
 #include <string>

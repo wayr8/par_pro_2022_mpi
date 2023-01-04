@@ -4,7 +4,6 @@
 #include <string>
 #include <random>
 #include <algorithm>
-#include <iostream>
 #include "../../../modules/task_1/raschetnov_a_rows_sum/rows_sum.h"
 
 std::vector<int> getRandomMatrix(int rows, int columns) {

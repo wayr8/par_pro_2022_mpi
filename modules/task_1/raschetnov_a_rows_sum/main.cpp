@@ -3,7 +3,6 @@
 #include <vector>
 #include "./rows_sum.h"
 #include <gtest-mpi-listener.hpp>
-#include <iostream>
 
 TEST(Parallel_Operations_MPI, test_even_rows) {
   int rank;
