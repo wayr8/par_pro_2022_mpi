@@ -11,7 +11,7 @@ std::string getRandomString(int size) {
     std::random_device dev;
     std::mt19937 gen(dev());
     std::string str;
-    for (int i = 0; i < size; i++) { 
+    for (int i = 0; i < size; i++) {
         str.push_back(ar[gen() % 59]);
     }
     return str;
