@@ -40,7 +40,7 @@ void MultTest(int m1, int n1, int m2, int n2) {
 
     matrixResPar = multParallel(matrixA, matrixB, m1, n1, m2, n2);
 
-    if (rank == 0) {        
+    if (rank == 0) {
         /* std::cout << "\n";
         std::cout << "MatrixResPar:\n";
         printAsMatrix(matrixResPar, m1, n2);
