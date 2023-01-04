@@ -100,14 +100,14 @@ int countWordsParallel(std::string str, int length) {
         }
     } else {
         // Receiving str part from MY_ROOT
-        char pStrPart[usual_symb_cnt + 1];
+        std::vector<char> pStrPart(usual_symb_cnt + 1);
 
         MPI_Status s;
-        MPI_Recv(pStrPart, usual_symb_cnt, MPI_CHAR, MY_ROOT, 0, MY_COMM, &s);
+        MPI_Recv(pStrPart.data(), usual_symb_cnt, MPI_CHAR, MY_ROOT, 0, MY_COMM, &s);
 
         pStrPart[usual_symb_cnt] = '\0';
 
-        std::string strPart(pStrPart);
+        std::string strPart(pStrPart.data());
 
         localResult = countWordsSequential(strPart, usual_symb_cnt);
         hasStartSpace = (strPart[0] == ' ') ? 1 : 0;
@@ -122,9 +122,9 @@ int countWordsParallel(std::string str, int length) {
     }
     std::cout << '\n'; */
 
-    int results[3 * useful_procs_cnt];
+    std::vector<int> results(3 * useful_procs_cnt);
 
-    MPI_Gather(&locResArr, 3, MPI_INT, &results, 3, MPI_INT, MY_ROOT, MY_COMM);
+    MPI_Gather(&locResArr, 3, MPI_INT, results.data(), 3, MPI_INT, MY_ROOT, MY_COMM);
 
     if (is_proc_root) {
         // printIntArr(results, 3 * useful_procs_cnt);
@@ -137,7 +137,7 @@ int countWordsParallel(std::string str, int length) {
             int prevEndHasSpace = results[i - 1];
             int curStartHasSpace = results[i];
 
-            if(!prevEndHasSpace && !curStartHasSpace) {
+            if (!prevEndHasSpace && !curStartHasSpace) {
                 wordsCount--;
             }
         }

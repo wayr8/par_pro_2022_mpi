@@ -8,7 +8,6 @@
 #include <random>
 
 #define MY_ROOT (0)
-typedef unsigned long long ull;
 
 std::string getRandStr(int length);
 void printIntArr(int array[], int size);
