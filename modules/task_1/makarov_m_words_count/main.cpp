@@ -28,15 +28,15 @@ void RandomStringTest(int length) {
     }
 }
 
-TEST(MatMultHorA, Test_MatMultHorA_1) { RandomStringTest(10); }
+TEST(WordsCount, Test_WordsCount_1) { RandomStringTest(10); }
 
-TEST(MatMultHorA, Test_MatMultHorA_2) { RandomStringTest(20); }
+TEST(WordsCount, Test_WordsCount_2) { RandomStringTest(20); }
 
-TEST(MatMultHorA, Test_MatMultHorA_3) { RandomStringTest(50); }
+TEST(WordsCount, Test_WordsCount_3) { RandomStringTest(50); }
 
-TEST(MatMultHorA, Test_MatMultHorA_4) { RandomStringTest(100); }
+TEST(WordsCount, Test_WordsCount_4) { RandomStringTest(100); }
 
-TEST(MatMultHorA, Test_MatMultHorA_5) { RandomStringTest(50000); }
+TEST(WordsCount, Test_WordsCount_5) { RandomStringTest(50000); }
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
