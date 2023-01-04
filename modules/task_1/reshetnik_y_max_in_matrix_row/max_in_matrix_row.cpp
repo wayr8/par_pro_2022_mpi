@@ -40,7 +40,6 @@ int* parallel_min_by_row(int* m, int x_size, int y_size) {
 
     int proc_count;
     int rank;
-
     MPI_Comm_size(MPI_COMM_WORLD, &proc_count);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
