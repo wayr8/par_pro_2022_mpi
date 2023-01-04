@@ -1,5 +1,6 @@
 // Copyright 2022 Yarakhtin Anton
 #include <gtest/gtest.h>
+#include <cmath>
 #include <vector>
 #include "./topology_torus.h"
 #include <gtest-mpi-listener.hpp>

@@ -59,7 +59,7 @@ static MPI_Comm selectComm(int src, int nxt, int rank, const TorusElement& tor) 
     return MPI_COMM_NULL;
 }
 
-static void torusSendImpl(void* buf, int count, MPI_Datatype datatype,
+static void torusSendImpl(void* buf, int count, MPI_Datatype datatype, 
                             int rank, int src, int nxt, int tag, const TorusElement& tor) {
     if (rank == src) {
         MPI_Send(buf, count, datatype, nxt, tag, MPI_COMM_WORLD);

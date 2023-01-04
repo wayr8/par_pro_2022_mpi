@@ -11,8 +11,8 @@ struct Vector2 {
 };
 
 struct TorusElement {
-    Vector2 pos;
-    Vector2 size;
+    Vector2 pos = { 0, 0 };
+    Vector2 size = { 0, 0 };
     MPI_Comm comm_x;
     MPI_Comm comm_y;
 };
