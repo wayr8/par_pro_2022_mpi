@@ -4,35 +4,60 @@
 #include "./ring.h"
 #include <gtest-mpi-listener.hpp>
 
-void TestTemplate(std::pair<int, int> a, std::pair<int, int> b) {
+// void TestTemplate(std::pair<int, int> a, std::pair<int, int> b) {
+//   int rank, size;
+//   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+//   MPI_Comm_size(MPI_COMM_WORLD, &size);
+//   int information, delta, root;
+//   int par_result;
+
+//   if (rank == 0) {
+//     information = getRandomNumber(a.first, a.second);
+//     delta = getRandomNumber(b.first, b.second);
+//     root = getRandomNumber(0, size - 1);
+//   }
+
+//   MPI_Bcast(&information, 1, MPI_INT, 0, MPI_COMM_WORLD);
+//   MPI_Bcast(&delta, 1, MPI_INT, 0, MPI_COMM_WORLD);
+//   MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
+
+//   par_result = SendRingParallel(information, 1, MPI_INT, root, delta, 0, MPI_COMM_WORLD);
+//   if (rank == root) {
+//     int seq_result = getResult(information, size, delta);
+//     ASSERT_EQ(par_result, seq_result);
+//   }
+// }
+
+// TEST(Parallel_Operations_MPI, test_1) {
+//   std::pair<int, int> p1{10, 100};
+//   std::pair<int, int> p2{2, 5};
+//   TestTemplate(p1, p2);
+// }
+
+TEST(Parallel_Operations_MPI, test_2) {
   int rank, size;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
   int information, delta, root;
   int par_result;
 
-  if (rank == 0) {
-    information = getRandomNumber(a.first, a.second);
-    delta = getRandomNumber(b.first, b.second);
-    root = getRandomNumber(0, size - 1);
-  }
+  // if (rank == 0) {
+  //   information = getRandomNumber(a.first, a.second);
+  //   delta = getRandomNumber(b.first, b.second);
+  //   root = getRandomNumber(0, size - 1);
+  // }
 
-  MPI_Bcast(&information, 1, MPI_INT, 0, MPI_COMM_WORLD);
-  MPI_Bcast(&delta, 1, MPI_INT, 0, MPI_COMM_WORLD);
-  MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
+  // MPI_Bcast(&information, 1, MPI_INT, 0, MPI_COMM_WORLD);
+  // MPI_Bcast(&delta, 1, MPI_INT, 0, MPI_COMM_WORLD);
+  // MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-  par_result = SendRingParallel(information, 1, MPI_INT, root, delta, 0, MPI_COMM_WORLD);
+  par_result = SendRingParallel(0, 1, MPI_INT, 0, 2, 0, MPI_COMM_WORLD);
   if (rank == root) {
     int seq_result = getResult(information, size, delta);
     ASSERT_EQ(par_result, seq_result);
   }
 }
 
-TEST(Parallel_Operations_MPI, test_1) {
-  std::pair<int, int> p1{10, 100};
-  std::pair<int, int> p2{2, 5};
-  TestTemplate(p1, p2);
-}
 
 // TEST(Parallel_Operations_MPI, test_2) {
 //   std::pair<int, int> p1{33, 44};
