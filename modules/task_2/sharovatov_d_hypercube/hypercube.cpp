@@ -5,7 +5,7 @@ int* getRandomVector(int size, int seed) {
   if (size <= 0) {
     throw(-1);
   }
-  
+
   int* randomVector = new int[size];
 
   std::mt19937 gen(seed);
