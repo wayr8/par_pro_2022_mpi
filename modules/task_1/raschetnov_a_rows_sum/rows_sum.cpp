@@ -40,7 +40,7 @@ std::vector<int> getParallelSum(const std::vector<int>& global_matrix, int rows,
 
   if (rank == 0) {
     for (int i = 0; i < rows; i++)
-      rule[i % size]++;      
+      rule[i % size]++;
     displs[0] = 0;
     for (int i = 1; i < size; i++) {
       if (i >= rows)
@@ -59,7 +59,8 @@ std::vector<int> getParallelSum(const std::vector<int>& global_matrix, int rows,
     }
   }
 
-  MPI_Scatterv(global_matrix.data(), sendcounts.data(), displs.data(), MPI_INT, local_matrix.data(), local_matrix.size(), MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Scatterv(global_matrix.data(), sendcounts.data(), displs.data(), MPI_INT,
+               local_matrix.data(), local_matrix.size(), MPI_INT, 0, MPI_COMM_WORLD);
   MPI_Bcast(sendcounts.data(), sendcounts.size(), MPI_INT, 0, MPI_COMM_WORLD);
   MPI_Bcast(rule.data(), rule.size(), MPI_INT, 0, MPI_COMM_WORLD);
   MPI_Bcast(recv_displs.data(), recv_displs.size(), MPI_INT, 0, MPI_COMM_WORLD);
@@ -71,6 +72,7 @@ std::vector<int> getParallelSum(const std::vector<int>& global_matrix, int rows,
       sum += local_matrix[j + i * columns];
     tmp.push_back(sum);
   }
-  MPI_Gatherv(tmp.data(), tmp.size(), MPI_INT, result.data(), rule.data(), recv_displs.data(), MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Gatherv(tmp.data(), tmp.size(), MPI_INT, result.data(), rule.data(),
+              recv_displs.data(), MPI_INT, 0, MPI_COMM_WORLD);
   return result;
 }
