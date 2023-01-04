@@ -73,8 +73,8 @@ double getAccuracy(std::vector<double> prevX, std::vector<double> curX) {
   return *std::max_element(delta.begin(), delta.end());
 }
 
-std::vector<double> seqSimpleIteration(std::vector<double> A,
-  std::vector<double> b, double eps,
+std::vector<double> seqSimpleIteration(const std::vector<double>& A,
+  const std::vector<double>& b, double eps,
   int _countIterations, bool checkIterations) {
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -105,8 +105,8 @@ std::vector<double> seqSimpleIteration(std::vector<double> A,
   return currentX;
 }
 
-std::vector<double> parSimpleIteration(std::vector<double> A,
-  std::vector<double> b, int _size, double eps,
+std::vector<double> parSimpleIteration(const std::vector<double>& A,
+  const std::vector<double>& b, int _size, double eps,
   int _countIterations, bool checkIterations) {
   int countProc, rank;
   MPI_Comm_size(MPI_COMM_WORLD, &countProc);
@@ -130,7 +130,7 @@ std::vector<double> parSimpleIteration(std::vector<double> A,
   std::vector<double> currentX(countRowsA);
 
   if (rank == 0) {
-    MPI_Bcast(b.data(), b.size(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_Bcast(std::vector<double>(b).data(), b.size(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
   }
   MPI_Bcast(prevX.data(), prevX.size(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
