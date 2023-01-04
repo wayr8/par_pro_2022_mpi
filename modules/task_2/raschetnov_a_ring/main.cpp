@@ -39,7 +39,7 @@ TEST(Parallel_Operations_MPI, test_2) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
   // int information, delta, root;
-  // int par_result;
+  int par_result;
 
   // if (rank == 0) {
   //   information = getRandomNumber(a.first, a.second);
