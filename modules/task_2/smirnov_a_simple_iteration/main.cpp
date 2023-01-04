@@ -40,7 +40,7 @@ TEST(Parallel_Operations_MPI, Test_ParSimpleIteration1) {
   std::vector<double> A;
   std::vector<double> b;
   if (rank == 0) {
-    getRandMatrVect(size, -10, 10, A, b);
+    getRandMatrVect(size, -10, 10, &A, &b);
   }
   std::vector<double> result = parSimpleIteration(A, b, size, accuracy, 50, true);
   if (rank == 0) {
@@ -56,7 +56,7 @@ TEST(Parallel_Operations_MPI, Test_ParSimpleIteration2) {
   std::vector<double> A;
   std::vector<double> b;
   if (rank == 0) {
-    getRandMatrVect(size, -10, 10, A, b);
+    getRandMatrVect(size, -10, 10, &A, &b);
   }
   std::vector<double> result = parSimpleIteration(A, b, size, accuracy, 50, true);
   if (rank == 0) {
@@ -72,7 +72,7 @@ TEST(Parallel_Operations_MPI, Test_ParSimpleIteration3) {
   std::vector<double> A;
   std::vector<double> b;
   if (rank == 0) {
-    getRandMatrVect(size, -10, 10, A, b);
+    getRandMatrVect(size, -10, 10, &A, &b);
   }
   std::vector<double> result = parSimpleIteration(A, b, size, accuracy, 50, true);
   if (rank == 0) {

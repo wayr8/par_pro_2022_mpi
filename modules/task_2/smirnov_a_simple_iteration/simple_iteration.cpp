@@ -1,21 +1,20 @@
 // Copyright 2018 Nesterov Alexander
 #include <mpi.h>
 #include <iostream>
+#include <cmath>
 #include <vector>
-#include <string>
 #include <random>
 #include <algorithm>
-#include <math.h>
 #include "../../../modules/task_2/smirnov_a_simple_iteration/simple_iteration.h"
 
 void getRandMatrVect(int size, int leftBorder, int rightBorder,
-  std::vector<double>& A, std::vector<double>& b) {
+  std::vector<double>* A, std::vector<double>* b) {
   std::random_device dev;
   std::mt19937 gen(dev());
   std::uniform_int_distribution<> dist(leftBorder, rightBorder);
 
-  A.resize(size * size);
-  b.resize(size);
+  (*A).resize(size * size);
+  (*b).resize(size);
 
   for (size_t i = 0; i < size; i++) {
     double sum = 0;
@@ -23,12 +22,12 @@ void getRandMatrVect(int size, int leftBorder, int rightBorder,
       if (j == i + i * size) {
         continue;
       } else {
-        A[j] = dist(gen);
-        sum += std::fabs(A[j]);
+        (*A)[j] = dist(gen);
+        sum += std::fabs((*A)[j]);
       }
     }
-    b[i] = dist(gen);
-    A[i + i * size] = sum + gen() % 17;
+    (*b)[i] = dist(gen);
+    (*A)[i + i * size] = sum + gen() % 17;
   }
 }
 
@@ -50,17 +49,17 @@ double checkSolution(int size, const std::vector<double>& A,
 
 void getAlfaBetaMatrix(const std::vector<double>& A,
   const std::vector<double>& b,
-  std::vector<double>& alfaMatrix,
-  std::vector<double>& betaMatrix, int size) {
+  std::vector<double>* alfaMatrix,
+  std::vector<double>* betaMatrix, int size) {
   for (size_t i = 0; i < size; i++) {
     for (size_t j = i * size; j < i * size + size; j++) {
       if (j == i + i * size) {
         if (A[j] == 0)
           throw std::string("Zero diagonal element");
-        alfaMatrix[j] = 0;
-        betaMatrix[i] = b[i] / A[j];
+        (*alfaMatrix)[j] = 0;
+        (*betaMatrix)[i] = b[i] / A[j];
       } else {
-        alfaMatrix[j] = -(A[j] / A[i + i * size]);
+        (*alfaMatrix)[j] = -(A[j] / A[i + i * size]);
       }
     }
   }
@@ -89,7 +88,7 @@ std::vector<double> seqSimpleIteration(std::vector<double> A,
   std::vector<double> currentX = b;
   std::vector<double> alfaMatrix(size * size);
   std::vector<double> betaMatrix(size);
-  getAlfaBetaMatrix(A, b, alfaMatrix, betaMatrix, size);
+  getAlfaBetaMatrix(A, b, &alfaMatrix, &betaMatrix, size);
 
   do {
     countIterations++;
@@ -101,7 +100,8 @@ std::vector<double> seqSimpleIteration(std::vector<double> A,
       }
       currentX[i] = betaMatrix[i] + multRowByColumn;
     }
-  } while ((checkIterations && (countIterations < _countIterations)) || (!checkIterations && getAccuracy(prevX, currentX) > eps));
+  } while ((checkIterations && (countIterations < _countIterations)) ||
+    (!checkIterations && getAccuracy(prevX, currentX) > eps));
   return currentX;
 }
 
@@ -157,7 +157,7 @@ std::vector<double> parSimpleIteration(std::vector<double> A,
     AbMatrix.resize(A.size() + b.size());
     std::vector<double> alfaMatrix(countRowsA * countRowsA);
     std::vector<double> betaMatrix(countRowsA);
-    getAlfaBetaMatrix(A, b, alfaMatrix, betaMatrix, countRowsA);
+    getAlfaBetaMatrix(A, b, &alfaMatrix, &betaMatrix, countRowsA);
 
     for (size_t i = 0; i < countRowsA; i++) {
       for (size_t j = i * countRowsA; j < i * countRowsA + countRowsA; j++) {
@@ -181,7 +181,7 @@ std::vector<double> parSimpleIteration(std::vector<double> A,
     }
     MPI_Allgatherv(localX.data(), recvCounts[rank], MPI_DOUBLE,
       currentX.data(), recvCounts.data(), recvDispls.data(), MPI_DOUBLE, MPI_COMM_WORLD);
-
-  } while ((checkIterations && (countIterations < _countIterations)) || (!checkIterations && getAccuracy(prevX, currentX) > eps));
+  } while ((checkIterations && (countIterations < _countIterations)) ||
+    (!checkIterations && getAccuracy(prevX, currentX) > eps));
   return currentX;
 }
