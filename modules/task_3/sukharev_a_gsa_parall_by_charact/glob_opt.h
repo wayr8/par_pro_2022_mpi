@@ -3,16 +3,17 @@
 #define MODULES_TASK_3_SUKHAREV_A_GSA_PARALL_BY_CHARACT_GLOB_OPT_H_
 
 #include <algorithm>
+#include <cmath>
 #include <functional>
 #include <vector>
-#include <cmath>
 
 struct test_point {
   std::vector<double> x;
   double z;
-  explicit test_point(std::vector<double> _x = {0, 0}, double _z = 0)
+  explicit test_point(const std::vector<double>& _x = {0, 0},
+                      const double& _z = 0)
       : x(_x), z(_z) {}
-  bool operator<(const test_point a) const {
+  bool operator<(const test_point& a) const {
     if (x != a.x) return x < a.x;
     return z < a.z;
   }
