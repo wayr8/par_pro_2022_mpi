@@ -85,7 +85,7 @@ vector<double> SubtractCurrentRowMatrix(const vector<double> &matrix, int size, 
     int num_column, double main_elem, double coef) {
     vector<double> matr(matrix);
     for (int j = num_column; j < size; j++) {
-        // std::cout << std::endl << "Вычитаю элемент - (" << num_row << ',' << j << ')' << std::endl;
+        // std::cout << std::endl << "Subtract elem - (" << num_row << ',' << j << ')' << std::endl;
         matr[num_row*size+j] = matr[num_row*size+j] - coef*matr[num_column*size+j];
     }
     return matr;
@@ -130,12 +130,12 @@ vector<double> GaussConsequent(int matrix_size) {
     }
     for (int i = size_matrix-1; i >= 0; i--) {
         for (int j = size_matrix-1; j > i; j--) {
-            // std::cout << "элементы строки матрицы " << matrix[i*size_matrix+j] << std::endl;
+            // std::cout << "Elems row of matrix " << matrix[i*size_matrix+j] << std::endl;
             right_vector[i] = right_vector[i] - results[j]*matrix[i*size_matrix+j];
             matrix[i*size_matrix+j] = 0;
         }
         results[i] = right_vector[i] / matrix[i*size_matrix+i];
-        // std::cout << "элемент матрицы " << matrix[i*size_matrix+i] << std::endl;
+        // std::cout << "elem matrix " << matrix[i*size_matrix+i] << std::endl;
     }
     return results;  // True code
 }
@@ -143,7 +143,7 @@ vector<double> GaussConsequent(int matrix_size) {
 // Сonsequent Gauss End
 
 void PrintMatrixVector(const vector<double> &matr, int size_matr) {
-    std::cout << "Матрица и вектор\n";
+    std::cout << "Matrix and vector\n";
     int i = 0;
     for (int k = 0; k < size_matr * (size_matr + 1); k++) {
         i++;
@@ -157,7 +157,7 @@ void PrintMatrixVector(const vector<double> &matr, int size_matr) {
 }
 
 void PrintMatrix(const vector<double> &matr, int size_matr) {
-    std::cout << "Матрица\n";
+    std::cout << "Matrix\n";
     for (int k = 0; k < size_matr; k++) {
         for (int l = 0; l < size_matr; l++) {
             std::cout << matr[k*size_matr+l] << ' ';
@@ -167,7 +167,7 @@ void PrintMatrix(const vector<double> &matr, int size_matr) {
 }
 
 void PrintVector(const vector<double> &vec, int vec_size) {
-    std::cout << "Правая часть матрицы\n";
+    std::cout << "right part matrix\n";
     for (int i = 0; i < vec_size; i++) {
         std::cout << vec[i] << ' ';
     }
@@ -194,7 +194,7 @@ vector<double> GaussParallel(const vector<double> &matrix, const vector<double> 
     } else {
         proc_num_rows = num_rows;
     }
-    // std::cout << "Число строк " << proc_rank << proc_num_rows << std::endl;
+    // std::cout << "Number of rows " << proc_rank << proc_num_rows << std::endl;
     if (proc_rank == 0) {
     //     matr.resize(size_matr*size_matr);
     //     right_part.resize(size_matr);
@@ -209,8 +209,8 @@ vector<double> GaussParallel(const vector<double> &matrix, const vector<double> 
     vector<double> local_right_vector(proc_num_rows);
     for (int i = 0; i < proc_size; i++) {
         if (proc_rank == i) {
-            std::cout << "номер процесса = " << proc_rank << std::endl;
-            std::cout << "размер данной матрицы = " << local_matr.size() << std::endl;
+            std::cout << "Proc rank = " << proc_rank << std::endl;
+            std::cout << "size this matrix = " << local_matr.size() << std::endl;
         }
         MPI_Barrier(MPI_COMM_WORLD);
     }
@@ -223,8 +223,8 @@ vector<double> GaussParallel(const vector<double> &matrix, const vector<double> 
             num_send_elems[i] = num_rows * size_matr;
         }
         if (i != 0) {
-            std::cout << "номер процесса = " << proc_rank <<
-                " индекс предыдущего " << ind_send_elems[i-1] << " количество элементов " <<
+            std::cout << "Proc rank = " << proc_rank <<
+                " index last " << ind_send_elems[i-1] << " number elements " <<
                 num_send_elems[i-1] << std::endl;
             ind_send_elems[i] = (ind_send_elems[i-1] + num_send_elems[i-1]);
         }
@@ -240,8 +240,8 @@ vector<double> GaussParallel(const vector<double> &matrix, const vector<double> 
             proc_row_num[i] = num_rows;
         }
         if (i != 0) {
-            std::cout << "номер процесса = " << proc_rank <<
-                " индекс предыдущего " << proc_row_ind[i-1] << " количество элементов " <<
+            std::cout << "Proc rank = " << proc_rank <<
+                " index last " << proc_row_ind[i-1] << " number elements " <<
                 proc_row_num[i-1] << std::endl;
             proc_row_ind[i] = (proc_row_ind[i-1] + proc_row_num[i-1]);
         }
