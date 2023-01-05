@@ -8,8 +8,7 @@
 #include <cmath>
 
 class Matrix {
-public:
-
+ public:
     Matrix(int x_size, int y_size);
     Matrix(const Matrix& m);
     ~Matrix();
