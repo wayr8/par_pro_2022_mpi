@@ -7,6 +7,7 @@
 #include <functional>
 #include <iostream>
 #include <vector>
+#include <cmath>
 
 constexpr double R = 9;
 constexpr int K = 200;

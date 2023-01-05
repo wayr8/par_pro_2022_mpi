@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <functional>
 #include <vector>
+#include <cmath>
 
 struct test_point {
   std::vector<double> x;

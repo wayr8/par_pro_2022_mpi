@@ -4,6 +4,7 @@
 
 #include <functional>
 #include <iostream>
+#include <cmath>
 
 #include <gtest-mpi-listener.hpp>
 #include "./glob_opt.h"
