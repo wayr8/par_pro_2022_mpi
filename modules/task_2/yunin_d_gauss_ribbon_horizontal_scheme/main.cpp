@@ -48,7 +48,7 @@ TEST(Solving_Method_Gauss_Ribbon_Horizontal_Scheme, Test_matrix_6x6) {
         // PrintVector(global_vec, count_size_vector);
         std::vector<double> res = GaussConsequent(count_size_vector);
         for (int i = 0; i < count_size_vector; i++) {
-           // std::cout << res[i] << ' ' << global_vec[i] << std::endl;
+        //    std::cout << res[i] << ' ' << global_vec[i] << std::endl;
             ASSERT_NEAR(res[i], global_vec[i], 0.0000001);
         }
     }

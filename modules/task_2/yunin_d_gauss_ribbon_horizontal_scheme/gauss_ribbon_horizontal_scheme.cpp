@@ -94,17 +94,21 @@ vector<int> InitHelpingVector(int size) {
 }
 
 // add this function in header file
-void SubtractCurrentRowMatrix(vector<double> &matr, int size, int num_row,
+vector<double> SubtractCurrentRowMatrix(const vector<double> &matrix, int size, int num_row,
     int num_column, double main_elem, double coef) {
+    vector<double> matr(matrix);
     for (int j = num_column; j < size; j++) {
         // std::cout << std::endl << "Вычитаю элемент - (" << num_row << ',' << j << ')' << std::endl;
         matr[num_row*size+j] = matr[num_row*size+j] - coef*matr[num_column*size+j];
     }
+    return matr;
 }
 
 // add this function in header file
-void SubtractCurrentRowVector(vector<double> &vec, int size, int num_iter, double main_elem, double coef) {
+vector<double> SubtractCurrentRowVector(const vector<double> &vect, int size, int num_iter, double main_elem, double coef) {
+    vector<double> vec(vect);
     vec[num_iter] = vec[num_iter] - coef*main_elem;
+    return vec;
 }
 
 // add this function in header file
@@ -136,8 +140,8 @@ vector<double> GaussConsequent(int matrix_size) {
         double coef = 0;
         for (int j = i+1; j < size_matrix; j++) {
             coef = CalculateCoef(current_matrix_elem, matrix[j*size_matrix+i]);
-            SubtractCurrentRowMatrix(matrix, size_matrix, j, i, current_matrix_elem, coef);
-            SubtractCurrentRowVector(right_vector, size_matrix, j, current_vector_elem, coef);
+            matrix = SubtractCurrentRowMatrix(matrix, size_matrix, j, i, current_matrix_elem, coef);
+            right_vector = SubtractCurrentRowVector(right_vector, size_matrix, j, current_vector_elem, coef);
         }
     }
     // обратный ход
@@ -192,8 +196,10 @@ void PrintVector(const vector<double> &vec, int vec_size) {
 // Parallel Gauss Start
 
 // not correct variant of algorithm
-vector<double> GaussParallel(vector<double> &matr, vector<double> &right_part, int size_matr) {
+vector<double> GaussParallel(const vector<double> &matrix, const vector<double> &right_part_vec, int size_matr) {
     int proc_rank, proc_size;
+    vector<double> matr(matrix);
+    vector<double> right_part(right_part_vec);
     vector<double> global_result;
 
     MPI_Comm_size(MPI_COMM_WORLD, &proc_size);
@@ -240,7 +246,8 @@ vector<double> GaussParallel(vector<double> &matr, vector<double> &right_part, i
         }
         if (i != 0) {
             std::cout << "номер процесса = " << proc_rank <<
-                " индекс предыдущего " << ind_send_elems[i-1] << " количество элементов " << num_send_elems[i-1] << std::endl;
+                " индекс предыдущего " << ind_send_elems[i-1] << " количество элементов " <<
+                num_send_elems[i-1] << std::endl;
             ind_send_elems[i] = (ind_send_elems[i-1] + num_send_elems[i-1]);
         }
     }
@@ -256,7 +263,8 @@ vector<double> GaussParallel(vector<double> &matr, vector<double> &right_part, i
         }
         if (i != 0) {
             std::cout << "номер процесса = " << proc_rank <<
-                " индекс предыдущего " << proc_row_ind[i-1] << " количество элементов " << proc_row_num[i-1] << std::endl;
+                " индекс предыдущего " << proc_row_ind[i-1] << " количество элементов " <<
+                proc_row_num[i-1] << std::endl;
             proc_row_ind[i] = (proc_row_ind[i-1] + proc_row_num[i-1]);
         }
     }
@@ -326,8 +334,9 @@ vector<double> GaussParallel(vector<double> &matr, vector<double> &right_part, i
     return global_result;
 }
 
-vector<double> GaussParallels(vector<double> &matr, int size_matr) {
+vector<double> GaussParallels(const vector<double> &matrix, int size_matr) {
     int proc_size, proc_rank;
+    vector<double> matr(matrix);
     MPI_Comm_size(MPI_COMM_WORLD, &proc_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &proc_rank);
     int num_rows = size_matr / proc_size;
