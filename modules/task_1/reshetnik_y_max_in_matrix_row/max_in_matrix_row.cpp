@@ -15,13 +15,13 @@ int* get_random_matrix(int x_size, int y_size) {
     return m;
 }
 
-int* min_by_row(int* m, int x_size, int y_size) {
+int* max_by_row(int* m, int x_size, int y_size) {
     int* res = new int[y_size];
     for (int y = 0; y < y_size; y++) {
         res[y] = m[y * x_size];
         for (int x = 1; x < x_size; x++) {
             int i = x + y * x_size;
-            if (m[i] < res[y]) {
+            if (m[i] > res[y]) {
                 res[y] = m[i];
             }
         }
@@ -29,7 +29,7 @@ int* min_by_row(int* m, int x_size, int y_size) {
     return res;
 }
 
-int* parallel_min_by_row(int* m, int x_size, int y_size) {
+int* parallel_max_by_row(int* m, int x_size, int y_size) {
     int len = x_size * y_size;
 
     if (len == 0) {
@@ -65,17 +65,17 @@ int* parallel_min_by_row(int* m, int x_size, int y_size) {
         loc_len -= y_size - last_row;
     }
 
-    int* loc_min = min_by_row(local + rank * seg * x_size, x_size, loc_len);
+    int* loc_max = max_by_row(local + rank * seg * x_size, x_size, loc_len);
 
     if (rank != 0) {
-        MPI_Gather(loc_min, loc_len, MPI_INT, 0, 0, 0, 0, MPI_COMM_WORLD);
+        MPI_Gather(loc_max, loc_len, MPI_INT, 0, 0, 0, 0, MPI_COMM_WORLD);
         return nullptr;
     } else {
         int* result = new int[len];
-        MPI_Gather(loc_min, loc_len, MPI_INT, result, seg, MPI_INT, 0, MPI_COMM_WORLD);
+        MPI_Gather(loc_max, loc_len, MPI_INT, result, seg, MPI_INT, 0, MPI_COMM_WORLD);
         return result;
     }
 
-    delete[] loc_min;
+    delete[] loc_max;
     delete[] local;
 }

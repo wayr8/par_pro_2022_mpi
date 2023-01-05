@@ -19,13 +19,13 @@ TEST(Max_In_Matrix_Row, Test_Simple) {
         };
     }
 
-    int* min = parallel_min_by_row(matrix, size, size);
+    int* max = parallel_max_by_row(matrix, size, size);
 
     if (rank == 0) {
         for (int i = 0; i < size; i++)
-            ASSERT_EQ(1, min[i]);
+            ASSERT_EQ(4, max[i]);
 
-        delete[] min;
+        delete[] max;
         delete[] matrix;
     }
 }
@@ -40,16 +40,16 @@ TEST(Max_In_Matrix_Row, Test_Random_Sq_Matrix) {
         matrix = get_random_matrix(size, size);
     }
 
-    int* min = parallel_min_by_row(matrix, size, size);
+    int* max = parallel_max_by_row(matrix, size, size);
 
     if (rank == 0) {
-        int* seq_min = min_by_row(matrix, size, size);
+        int* seq_max = max_by_row(matrix, size, size);
 
         for (int i = 0; i < size; i++)
-            ASSERT_EQ(seq_min[i], min[i]);
+            ASSERT_EQ(seq_max[i], max[i]);
 
-        delete[] min;
-        delete[] seq_min;
+        delete[] max;
+        delete[] seq_max;
         delete[] matrix;
     }
 }
@@ -65,16 +65,16 @@ TEST(Max_In_Matrix_Row, Test_Random_Long_Matrix) {
         matrix = get_random_matrix(size_x, size_y);
     }
 
-    int* min = parallel_min_by_row(matrix, size_x, size_y);
+    int* max = parallel_max_by_row(matrix, size_x, size_y);
 
     if (rank == 0) {
-        int* seq_min = min_by_row(matrix, size_x, size_y);
+        int* seq_max = max_by_row(matrix, size_x, size_y);
 
         for (int i = 0; i < size_y; i++)
-            ASSERT_EQ(seq_min[i], min[i]);
+            ASSERT_EQ(seq_max[i], max[i]);
 
-        delete[] min;
-        delete[] seq_min;
+        delete[] max;
+        delete[] seq_max;
         delete[] matrix;
     }
 }
@@ -90,16 +90,16 @@ TEST(Max_In_Matrix_Row, Test_Random_Short_Matrix) {
         matrix = get_random_matrix(size_x, size_y);
     }
 
-    int* min = parallel_min_by_row(matrix, size_x, size_y);
+    int* max = parallel_max_by_row(matrix, size_x, size_y);
 
     if (rank == 0) {
-        int* seq_min = min_by_row(matrix, size_x, size_y);
+        int* seq_max = max_by_row(matrix, size_x, size_y);
 
         for (int i = 0; i < size_y; i++)
-            ASSERT_EQ(seq_min[i], min[i]);
+            ASSERT_EQ(seq_max[i], max[i]);
 
-        delete[] min;
-        delete[] seq_min;
+        delete[] max;
+        delete[] seq_max;
         delete[] matrix;
     }
 }
@@ -115,16 +115,16 @@ TEST(Max_In_Matrix_Row, Test_Random_Big_Matrix) {
         matrix = get_random_matrix(size_x, size_y);
     }
 
-    int* min = parallel_min_by_row(matrix, size_x, size_y);
+    int* max = parallel_max_by_row(matrix, size_x, size_y);
 
     if (rank == 0) {
-        int* seq_min = min_by_row(matrix, size_x, size_y);
+        int* seq_max = max_by_row(matrix, size_x, size_y);
 
         for (int i = 0; i < size_y; i++)
-            ASSERT_EQ(seq_min[i], min[i]);
+            ASSERT_EQ(seq_max[i], max[i]);
 
-        delete[] min;
-        delete[] seq_min;
+        delete[] max;
+        delete[] seq_max;
         delete[] matrix;
     }
 }
