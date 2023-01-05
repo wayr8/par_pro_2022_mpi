@@ -5,7 +5,7 @@
 #include <vector>
 #include <random>
 
-#include "mpi.h"
+#include <mpi.h>
 
 int* getRandomVector(int size, int seed);
 
