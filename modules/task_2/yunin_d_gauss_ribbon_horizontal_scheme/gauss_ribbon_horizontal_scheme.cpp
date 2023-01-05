@@ -105,7 +105,8 @@ vector<double> SubtractCurrentRowMatrix(const vector<double> &matrix, int size, 
 }
 
 // add this function in header file
-vector<double> SubtractCurrentRowVector(const vector<double> &vect, int size, int num_iter, double main_elem, double coef) {
+vector<double> SubtractCurrentRowVector(const vector<double> &vect, int size, int num_iter,
+    double main_elem, double coef) {
     vector<double> vec(vect);
     vec[num_iter] = vec[num_iter] - coef*main_elem;
     return vec;
