@@ -1,7 +1,7 @@
 // Copyright 2022 Yunin Daniil
-#include <vector>
 #include <mpi.h>
 #include <gtest/gtest.h>
+#include <vector>
 #include <gtest-mpi-listener.hpp>
 #include "./gauss_ribbon_horizontal_scheme.h"
 
