@@ -32,7 +32,7 @@ void cannon_parallel_multiply(double* result, double* m1, int columns1, int rows
                                 double* m2, int columns2, int rows2) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    
+
     if (columns1 != rows2)
         return;
 
@@ -56,7 +56,7 @@ void cannon_parallel_multiply(double* result, double* m1, int columns1, int rows
 
     if (size == 1)
         return multiply_matrix(result, m1, columns1, rows1, m2, columns2, rows2);
-    
+
     MPI_Comm comm;
     int* dr = new int[4] {size, size, 1, 1};
     MPI_Cart_create(MPI_COMM_WORLD, 2, dr, dr + 2, 0, &comm);
