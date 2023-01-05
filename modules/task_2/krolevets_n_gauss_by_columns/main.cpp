@@ -3,7 +3,7 @@
 
 #include <gtest-mpi-listener.hpp>
 
-#include "./gaussian_elimination_by_columns.h"
+#include "./gauss_by_columns.h"
 
 void test_body(uint32_t size_x, uint32_t size_y) {
   int32_t rank;
