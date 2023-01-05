@@ -15,7 +15,8 @@ TEST(Glob_opt_parall_by_characteristics, Test_Independent_Coordinates) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   std::function<double(double, double)> func = [](double x,
                                                   double y) -> double {
-    return sin(x) + sin(y * 20 + 2) / y - 5 * y * cos(3 * y + 10);
+    return std::sin(x) + std::sin(y * 20 + 2) / y -
+           5 * y * std::cos(3 * y + 10);
   };
   double lbX = -3, rbX = 3;
   double lbY = 0.25, rbY = 2.5;
@@ -35,7 +36,7 @@ TEST(Glob_opt_parall_by_characteristics, Test_One_Extremum_Function) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   std::function<double(double, double)> func = [](double x,
                                                   double y) -> double {
-    return (pow(x, 2) + pow(y, 2)) - 4.5;
+    return (std::pow(x, 2) + std::pow(y, 2)) - 4.5;
   };
   double lbX = -2, rbX = 2;
   double lbY = -2, rbY = 2;
@@ -55,7 +56,8 @@ TEST(Glob_opt_parall_by_characteristics, Test_Multi_Extremum_Function1) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   std::function<double(double, double)> func = [](double x,
                                                   double y) -> double {
-    return sin(3 * x + 2 * cos(y)) + cos(pow((x + 1), 2) - 2 * y);
+    return std::sin(3 * x + 2 * std::cos(y)) +
+           std::cos(std::pow((x + 1), 2) - 2 * y);
   };
   double lbX = -4, rbX = 2;
   double lbY = -2, rbY = 3;
@@ -76,7 +78,7 @@ TEST(Glob_opt_parall_by_characteristics, Test_Multi_Extremum_Function2) {
   std::function<double(double, double)> func = [](double x,
                                                   double y) -> double {
     return (y - 1) * (y + 1) *
-           (3 * sin(-x * 2) - x * cos(2 * x) - 2 * sin(5 * x));
+           (3 * std::sin(-x * 2) - x * std::cos(2 * x) - 2 * std::sin(5 * x));
   };
   double lbX = -1, rbX = 2.5;
   double lbY = -1.5, rbY = 1.5;
@@ -96,7 +98,7 @@ TEST(Glob_opt_parall_by_characteristics, Test_One_Dimension) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   std::function<double(double, double)> func = [](double x,
                                                   double y) -> double {
-    return y * sin(2 * y + 2) - cos(2 * y) + 10;
+    return y * std::sin(2 * y + 2) - std::cos(2 * y) + 10;
   };
   double lbX = 10, rbX = 10;
   double lbY = -3, rbY = 10;
