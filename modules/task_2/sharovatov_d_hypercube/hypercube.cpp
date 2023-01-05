@@ -22,16 +22,12 @@ bool isHyperCube(int procNum) {
     throw(-1);
   }
 
-  if (procNum == 1) {
-    return true;
-  }
-
   while (procNum % 2 == 0) {
     procNum /= 2;
+  }
 
-    if (procNum == 1) {
-      return true;
-    }
+  if (procNum == 1) {
+    return true;
   }
 
   return false;
