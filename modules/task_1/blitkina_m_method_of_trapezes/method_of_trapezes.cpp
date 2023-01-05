@@ -1,5 +1,5 @@
 // Copyright 2022 Blitkina Maria
-#include "../../../modules/task_1/golubev_v_method_of_trapezes/method_of_trapezes.h"
+#include "../../../modules/task_1/blitkina_m_method_of_trapezes/method_of_trapezes.h"
 
 double getIntegral(int nIntervals, double(*f)(double), double a, double b) {
   if (nIntervals <= 0)
