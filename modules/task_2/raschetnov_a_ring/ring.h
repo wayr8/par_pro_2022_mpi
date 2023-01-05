@@ -6,7 +6,7 @@
 #include <vector>
 
 int SendRingParallel(int information, int count, MPI_Datatype datatype,
-                     int root, int destination, int tag, MPI_Comm comm);
+                     int root, int destination, int delta, int tag, MPI_Comm comm);
 int getResult(int information, int size, int delta);
 int getRandomNumber(int leftborder, int rightborder);
 std::vector<int> constructPath(int root, int destination, int size);
