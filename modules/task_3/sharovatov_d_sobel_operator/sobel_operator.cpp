@@ -136,14 +136,17 @@ std::vector<std::vector<int>> sobelOperatorParallel(
              newImageVector.data(), rowsNum * width, MPI_INT, 0,
              MPI_COMM_WORLD);
 
-  if (ProcRank == ProcNum - 1) {
-    MPI_Send(matrixToVector(newLocalImage).data() + rowsNum * width,
-             remain * width, MPI_INT, 0, 0, MPI_COMM_WORLD);
-  }
-  if (ProcRank == 0) {
-    MPI_Status status;
-    MPI_Recv(newImageVector.data() + rowsNum * ProcNum * width, remain * width,
-             MPI_INT, ProcNum - 1, 0, MPI_COMM_WORLD, &status);
+  if (ProcNum > 1) {
+    if (ProcRank == ProcNum - 1) {
+      MPI_Send(matrixToVector(newLocalImage).data() + rowsNum * width,
+               remain * width, MPI_INT, 0, 0, MPI_COMM_WORLD);
+    }
+    if (ProcRank == 0) {
+      MPI_Status status;
+      MPI_Recv(newImageVector.data() + rowsNum * ProcNum * width,
+               remain * width, MPI_INT, ProcNum - 1, 0, MPI_COMM_WORLD,
+               &status);
+    }
   }
 
   MPI_Bcast(newImageVector.data(), height * width, MPI_INT, 0, MPI_COMM_WORLD);
