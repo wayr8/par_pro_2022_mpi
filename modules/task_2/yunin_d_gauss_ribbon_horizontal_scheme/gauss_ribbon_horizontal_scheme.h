@@ -1,7 +1,5 @@
 // Copyright 2022 Yunin Daniil
-#ifndef MODULES_TASK_2_YUNIN_D_GAUSS_RIBBON_HORIZONTAL_SCHEME_GAUSS_RIBBON_HORIZONTAL_SCHEME_H_
-#define MODULES_TASK_2_YUNIN_D_GAUSS_RIBBON_HORIZONTAL_SCHEME_GAUSS_RIBBON_HORIZONTAL_SCHEME_H_
-
+#pragma once
 #include <vector>
 #include <random>
 
@@ -19,5 +17,3 @@ vector<double> GaussParallels(const vector<double> &matr, int size_matr);
 vector<double> UnionMatrVect(const vector<double> &matr, const vector<double> &right_vec, int size_matr);
 void PrintMatrixVector(const vector<double> &matr, int size_matr);
 void PrintVector(const vector<double> &vec, int vec_size);
-
-#endif  // MODULES_TASK_2_YUNIN_D_GAUSS_RIBBON_HORIZONTAL_SCHEME_GAUSS_RIBBON_HORIZONTAL_SCHEME_H_

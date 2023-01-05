@@ -156,7 +156,7 @@ void PrintMatrixVector(const vector<double> &matr, int size_matr) {
     }
 }
 
-void PrintMatrix(const vector<double> matr, int size_matr) {
+void PrintMatrix(const vector<double> &matr, int size_matr) {
     std::cout << "Матрица\n";
     for (int k = 0; k < size_matr; k++) {
         for (int l = 0; l < size_matr; l++) {
