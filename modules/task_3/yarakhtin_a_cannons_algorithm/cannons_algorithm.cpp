@@ -46,7 +46,7 @@ Matrix generateMatrix(int x_size, int y_size) {
     std::random_device dev;
     std::mt19937 gen(dev());
     for (int i = 0; i < x_size * y_size; i++) {
-        result.data[i] = 0.01 * (gen() % 10'000);
+        result.data[i] = 0.01 * (gen() % 10000);
     }
     return result;
 }
