@@ -51,7 +51,7 @@ TEST(Solving_Method_Gauss_Ribbon_Horizontal_Scheme, Test_matrix_6x6) {
            // std::cout << res[i] << ' ' << global_vec[i] << std::endl;
             ASSERT_NEAR(res[i], global_vec[i], 0.0000001);
         }
-    }   
+    }
 }
 
 TEST(Solving_Method_Gauss_Ribbon_Horizontal_Scheme, Test_matrix_3x3) {
@@ -76,7 +76,7 @@ TEST(Solving_Method_Gauss_Ribbon_Horizontal_Scheme, Test_matrix_3x3) {
             // std::cout << res[i] << ' ' << global_vec[i] << std::endl;
             ASSERT_NEAR(res[i], global_vec[i], 0.0000001);
         }
-    }   
+    }
 }
 
 TEST(Solving_Method_Gauss_Ribbon_Horizontal_Scheme, Test_matrix_10x10) {
@@ -101,7 +101,7 @@ TEST(Solving_Method_Gauss_Ribbon_Horizontal_Scheme, Test_matrix_10x10) {
             // std::cout << res[i] << ' ' << global_vec[i] << std::endl;
             ASSERT_NEAR(res[i], global_vec[i], 0.0000001);
         }
-    }   
+    }
 }
 
 TEST(Solving_Method_Gauss_Ribbon_Horizontal_Scheme, Test_matrix_1x1) {
@@ -126,7 +126,7 @@ TEST(Solving_Method_Gauss_Ribbon_Horizontal_Scheme, Test_matrix_1x1) {
             // std::cout << res[i] << ' ' << global_vec[i] << std::endl;
             ASSERT_NEAR(res[i], global_vec[i], 0.0000001);
         }
-    }   
+    }
 }
 
 TEST(Solving_Method_Gauss_Ribbon_Horizontal_Scheme, Test_matrix_2x2) {
@@ -151,7 +151,7 @@ TEST(Solving_Method_Gauss_Ribbon_Horizontal_Scheme, Test_matrix_2x2) {
             // std::cout << res[i] << ' ' << global_vec[i] << std::endl;
             ASSERT_NEAR(res[i], global_vec[i], 0.0000001);
         }
-    }   
+    }
 }
 
 

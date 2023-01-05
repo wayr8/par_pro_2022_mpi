@@ -115,7 +115,8 @@ double CalculateCoef(double main_elem, double reduced_elem) {
 
 
 vector<double> GaussConsequent(int matrix_size) {
-    vector<double> matrix(matrix_size * matrix_size);  // матрица коэффициентов (одномерный массив, где элементы хранятся построчно) индекс массива - i*size-matrix+j
+    // матрица коэффициентов (одномерный массив, где элементы хранятся построчно) индекс массива - i*size-matrix+j
+    vector<double> matrix(matrix_size * matrix_size);
     vector<double> right_vector(matrix_size);  // правая части (после знака =) СЛАУ
     vector<double> results(matrix_size);  // вектор с ответами (значения вычесленных x)
     // helping vectors
@@ -151,7 +152,7 @@ vector<double> GaussConsequent(int matrix_size) {
         // std::cout << "элемент матрицы " << matrix[i*size_matrix+i] << std::endl;
     }
     return results;  // True code
-} 
+}
 
 
 // Сonsequent Gauss End
@@ -164,8 +165,9 @@ void PrintMatrixVector(const vector<double> &matr, int size_matr) {
         if (i == size_matr + 1) {
             std::cout << "| " << matr[k] << std::endl;
             i = 0;
-        } 
-        else {
+        }
+        else 
+        {
             std::cout << matr[k] << ' ';
         }
     }
@@ -208,12 +210,12 @@ vector<double> GaussParallel(vector<double> &matr, vector<double> &right_part, i
     if (proc_rank < remaining_rows) {
         proc_num_rows = num_rows + 1;
     }
-    else {
+    else 
+    {
         proc_num_rows = num_rows;
     }
     // отлаживаем число строк в процессе
     // std::cout << "Число строк " << proc_rank << proc_num_rows << std::endl;
-    
     if (proc_rank == 0) {
     //     matr.resize(size_matr*size_matr);
     //     right_part.resize(size_matr);
@@ -224,8 +226,6 @@ vector<double> GaussParallel(vector<double> &matr, vector<double> &right_part, i
         PrintVector(right_part, size_matr);  // для отладки
     }
     // MPI_Barrier(MPI_COMM_WORLD);
-    
-
     vector<double> local_matr(proc_num_rows * size_matr);
     vector<double> local_right_vector(proc_num_rows);
     for (int i = 0; i < proc_size; i++) {
@@ -240,8 +240,7 @@ vector<double> GaussParallel(vector<double> &matr, vector<double> &right_part, i
     for (int i = 0; i < proc_size; i++) {
         if (i < (size_matr % proc_size)) {
             num_send_elems[i] = proc_num_rows * size_matr;
-        }
-        else {
+        } else {
             num_send_elems[i] = num_rows * size_matr;
         }
         if (i != 0) {
@@ -321,7 +320,7 @@ vector<double> GaussParallel(vector<double> &matr, vector<double> &right_part, i
         }
         MPI_Bcast(&global_main_row[0], size_matr+1, MPI_DOUBLE, current_main.proc_rank, MPI_COMM_WORLD);
         double coef;
-        for (int j=0; j<proc_num_rows; j++) {
+        for (int j = 0; j < proc_num_rows; j++) {
             if (num_row_iter_loc[j] == -2) {
                 coef = local_matr[j*size_matr+i] / global_main_row[i];
                 for (int k=i; k<size_matr; k++) {
@@ -349,8 +348,7 @@ vector<double> GaussParallels(vector<double> &matr, int size_matr) {
     // create local vector
     if (local_num_rows == 0) {
         local_matr.resize(1);
-    } 
-    else {
+    } else {
         local_matr.resize(local_num_rows * (size_matr + 1));
     }
     num_send_ind[0] = 0;
@@ -408,7 +406,7 @@ vector<double> GaussParallels(vector<double> &matr, int size_matr) {
         for (int j = 0; j < proc_size; j++, root_proc++) {
             sum += num_send_counts[j] / (size_matr + 1);
             if (i < sum) {
-                root_proc = j; 
+                root_proc = j;
                 break;
             }
         }
