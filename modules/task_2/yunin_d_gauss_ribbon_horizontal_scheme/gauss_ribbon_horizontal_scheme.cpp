@@ -15,23 +15,13 @@ using std::random_device;
 // Матрицы являются плотными - большинство элементов отличны от нуля
 // Если СЛУ - невырожденная (определить матрицы коэффициентов системы отличен от нуля) - решение с определённой точностью
 // Подразумевается, что решаем квадратные матрицы
-//Решение системы линейных уравнений существует только в случае, когда матрица системы линейных уравнений невырожденная (определитель отличен от нуля)
+// Решение системы линейных уравнений существует только в случае, когда матрица системы линейных уравнений невырожденная (определитель отличен от нуля)
 
 // Help functions start
 void UpdateRandNumbers(mt19937 *gen) {
     random_device rd;
     (*gen).seed(rd());
 }
-// Help functions end
-
-// Сonsequent Gauss Start
-
-// 1. Метод создания случайной квадратной матрицы
-// 2. Решение системы
-// 2.1. Прямой ход алгоритма
-// 2.2. Обратный ход алгоритма
-// 3. Вывод результата
-// 4. Посчитать определитель?
 
 void CreateMatrix(vector<double> &matrix, int size) {
     // чтобы сразу было всё хорошо (невырожденная матрица типа)
@@ -49,24 +39,36 @@ void CreateMatrix(vector<double> &matrix, int size) {
         }
         number = i+2;
     }
-    
+}
+
+vector<double> UnionMatrVect(vector<double> &matr, vector<double> &right_vec, int size_matr) {
+    vector<double> result(size_matr * (size_matr + 1));
+    int j = 0, k = 0, iter = 0;
+    for (int i = 0; i < size_matr * (size_matr + 1); i++) {
+        iter++;
+        if (iter == size_matr + 1) {
+            result[i] = right_vec[j];
+            j++;
+            iter = 0;
+        } else {
+            result[i] = matr[k];
+            k++;
+        }
+    }
+    return result;
 }
 
 void CreateVector(vector<double> &vec, int size) {
-    // чтобы сразу было всё хорошо
     for (int i = 0; i < size; i++) {
         vec[i] = i*i*i;
     }
-    
-
 }
 
 void CreateMatrixRandom(vector<double> &matrix, int size, mt19937 *gen) {
     // дело случая
     for (int i = 0; i < size * size; i++) {
         matrix[i] = (*gen)() % size; 
-    }
-    
+    }   
 }
 
 void CreateVectorRandom(vector<double> &vec, int size, mt19937 *gen) {
@@ -74,7 +76,6 @@ void CreateVectorRandom(vector<double> &vec, int size, mt19937 *gen) {
     for (int i = 0; i < size; i++) {    
         vec[i] = (*gen)() % size + 1;
     }
-    
 }
 
 // add this function
@@ -119,60 +120,16 @@ vector<double> GaussConsequent(int matrix_size) {
     CreateMatrix(matrix, size_matrix);
     CreateVector(right_vector, size_matrix);
     InitHelpingVector(sequence_numbers_iterations, size_matrix);
-    // прямой ход
-    // for (int i = 0; i < size_matrix; i++) {
-    //         for (int j = 0; j < size_matrix; j++) {
-    //             std::cout << matrix[i*size_matrix+j] << ' ';
-    //         }
-    //         std::cout << std::endl;
-    //     }
-    // std::cout << std::endl;
-    // for (int i = 0; i < size_matrix; i++) {
-    //     std::cout << right_vector[i] << ' ';
-    // }
-    // std::cout << std::endl;
-    // std::cout << std::endl;
     for (int i = 0; i < size_matrix; i++) {
         double current_matrix_elem = matrix[i*size_matrix+i];
         double current_vector_elem = right_vector[i];
         double coef = 0;
         for (int j = i+1; j < size_matrix; j++) {
             coef = CalculateCoef(current_matrix_elem, matrix[j*size_matrix+i]);
-            // std::cout << "coef = " << coef;
-            // std::cout << std::endl;
             SubtractCurrentRowMatrix(matrix, size_matrix, j, i, current_matrix_elem, coef);
-            SubtractCurrentRowVector(right_vector, size_matrix, j, current_vector_elem, coef);
-            // std::cout << std::endl;
-            // for (int k = 0; k < size_matrix; k++) {
-            //     for (int l = 0; l < size_matrix; l++) {
-            //         std::cout << matrix[k*size_matrix+l] << ' ';
-            //     }
-            //     std::cout << std::endl;
-            // }
-            // std::cout << std::endl;
-            // for (int i = 0; i < size_matrix; i++) {
-            //     std::cout << right_vector[i] << ' ';
-            // }
-            // std::cout << std::endl;
-        
+            SubtractCurrentRowVector(right_vector, size_matrix, j, current_vector_elem, coef);        
         }
     }
-    // std::cout << std::endl;
-    // std::cout << std::endl;
-    // // прямой ход
-    // std::cout << std::endl;
-    // for (int k = 0; k < size_matrix; k++) {
-    //     for (int l = 0; l < size_matrix; l++) {
-    //         std::cout << matrix[k*size_matrix+l] << ' ';
-    //     }
-    //     std::cout << std::endl;
-    // }
-    // std::cout << std::endl;
-    // for (int i = 0; i < size_matrix; i++) {
-    //     std::cout << right_vector[i] << ' ';
-    // }
-    // std::cout << std::endl;
-    // std::cout << std::endl;
     // обратный ход
     for (int i = size_matrix-1; i >= 0; i--) {
         // пересчитываем матрицу
@@ -184,18 +141,25 @@ vector<double> GaussConsequent(int matrix_size) {
         results[i] = right_vector[i] / matrix[i*size_matrix+i];
         // std::cout << "элемент матрицы " << matrix[i*size_matrix+i] << std::endl;
     }
-    // for (int i = 0; i < size_matrix; i++) {
-    //     std::cout << results[i] << ' ';
-    // }
-    // std::cout << std::endl;
-    // std::cout << std::endl;
-    // return right_vector; DEBUG
-    // return matrix;
     return results; // True code
 } 
 
 
 // Сonsequent Gauss End
+
+void PrintMatrixVector(vector<double> &matr, int size_matr) {
+    std::cout << "Матрица и вектор\n";
+    int i = 0;
+    for (int k = 0; k < size_matr * (size_matr + 1); k++) {
+        i++;
+        if (i == size_matr + 1) {
+            std::cout << "| " << matr[k] << std::endl;
+            i = 0;
+        } else {
+            std::cout << matr[k] << ' ';
+        }
+    }
+}
 
 void PrintMatrix(vector<double> matr, int size_matr) {
     std::cout << "Матрица\n";
@@ -207,7 +171,7 @@ void PrintMatrix(vector<double> matr, int size_matr) {
     }
 }
 
-void PrintVector(vector<double> vec, int vec_size) {
+void PrintVector(vector<double> &vec, int vec_size) {
     std::cout << "Правая часть матрицы\n";
     for (int i = 0; i < vec_size; i++) {
         std::cout << vec[i] << ' ';
@@ -215,46 +179,9 @@ void PrintVector(vector<double> vec, int vec_size) {
     std::cout << std::endl;
 }
 
-void DistributionData(vector<double> &matr, vector<double> &r_vec, vector<double> &proc_matr, 
-    vector<double> &proc_r_vec, int size_matr, int row_num, int size_ranks, int proc_rank) {
-    vector<int> send_num(size_ranks); // количество элементов, посланных процессу
-    vector<int> send_indexes(size_ranks); // адрес начала посланных элементов
-    int rest_rows = size_matr;
-    send_num[0] = row_num*size_matr;
-    send_indexes[0] = 0;
-    // std::cout << row_num << std::endl;
-    for (int i = 1; i < size_ranks; i++) {
-        rest_rows -= row_num;
-        row_num = rest_rows/(proc_rank - i);
-        send_num[i] = row_num*size_matr;
-        send_indexes[i] = send_indexes[i-1] + send_num[i-1];
-    }
-    MPI_Scatterv(&matr[0], &send_num[0], &send_indexes[0], MPI_DOUBLE, &proc_matr[0], send_num[proc_rank], MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    
-}
-
-void TestDistribution(vector<double> &pMatrix, vector<double> &pVector, vector<double> &pProcRows,
-    vector<double> &pProcVector, int Size, int RowNum, int ProcNum, int ProcRank) {
-    if (ProcRank == 0) {
-        printf("Initial Matrix: \n");
-        PrintMatrix(pMatrix, Size);
-        printf("Initial Vector: \n");
-        PrintVector(pVector, Size);
-    }
-    for (int i=0; i<ProcNum; i++) {
-        if (ProcRank == i) {
-            printf("\nProcRank = %d \n", ProcRank);
-            printf(" Matrix Stripe:\n");
-            PrintMatrix(pProcRows, RowNum);
-            printf(" Vector: \n");
-        // PrintVector(pProcVector, RowNum);
-        }
-        MPI_Barrier(MPI_COMM_WORLD);
-    }
-}
-
 // Parallel Gauss Start
 
+// not correct variant of algorithm
 vector<double> GaussParallel(vector<double> &matr, vector<double> &right_part, int size_matr) {
     int proc_rank, proc_size;
     vector<double> global_result;
@@ -302,9 +229,6 @@ vector<double> GaussParallel(vector<double> &matr, vector<double> &right_part, i
     vector<int> num_send_elems(proc_size), ind_send_elems(proc_size);
 
     ind_send_elems[0] = 0;
-
-    // указываем сколько элементов будет послано в каждый процесс
-    // и начала этих массивов элементов в массиве матрицы
     for (int i = 0; i < proc_size; i++) {
         if (i < (size_matr % proc_size)) {
             num_send_elems[i] = proc_num_rows * size_matr; 
@@ -318,17 +242,6 @@ vector<double> GaussParallel(vector<double> &matr, vector<double> &right_part, i
             ind_send_elems[i] = (ind_send_elems[i-1] + num_send_elems[i-1]);
         }
     }
-    // for (int i = 0; i < proc_size; i++) {
-    //     if (proc_rank == i) {
-    //         std::cout << "номер процесса = " << proc_rank << std::endl;
-    //         std::cout << "размер данных = " << num_send_elems[i] << std::endl;  
-    //         std::cout << "индексы = " << ind_send_elems[i] << std::endl;  
-    //     }
-    //     MPI_Barrier(MPI_COMM_WORLD);
-    // }
-    // std::cout << "Процесс - " << proc_rank << std::endl;
-    // MPI_Barrier(MPI_COMM_WORLD);   
-    // PrintMatrix(matr, size_matr);
     MPI_Scatterv(matr.data(), num_send_elems.data(), ind_send_elems.data(),
         MPI_DOUBLE, &local_matr[0], proc_num_rows * size_matr, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     
@@ -372,105 +285,140 @@ vector<double> GaussParallel(vector<double> &matr, vector<double> &right_part, i
 
     // прямой ход
     // пока не понятно
-    vector<double> main_row(size_matr+1); // буфер для рассылки
-    double main_elem , coef;
-    if (proc_rank == 0) {
-        for (int i = 0; i < size_matr+1; i++) {
-          main_row[i] = local_matr[i];
-        }
-        main_row[size_matr] = local_right_vector[0];
-        MPI_Bcast(&main_row[0], size_matr+1, MPI_DOUBLE, proc_rank, MPI_COMM_WORLD);
-    }
-
-    for (int i=0; i<proc_size; i++) {
-        if (proc_rank == i) {
-            printf("\nProcRank = %d \n", proc_rank);
-            printf(" Vector_1: \n");
-            for (int j = 0; j < size_matr+1; j++) {
-                std::cout << main_row[i] << ' ';
+   vector<int> num_row_main_global(size_matr),  num_row_iter_loc(proc_num_rows);
+   for (int i = 0; i < proc_num_rows; i++) {
+        num_row_iter_loc[i] = -2;
+   }
+   vector<double> global_main_row(size_matr + 1); // массив - буфер для передач строки другим процессам
+   double min_value; // обратить внимание на эту строчку, может получиться ошибка
+   int main_pos; // позиция выбранной строки
+   struct { int min_value; int proc_rank; } main_proc, current_main;
+   for (int i = 0; i < size_matr; i++) {
+        for (int j = 0; j < proc_num_rows; j++) {
+            if ((num_row_iter_loc[j] == -2) && (min_value > fabs(local_matr[j*size_matr+i]))) {
+                min_value = fabs(local_matr[j*size_matr+i]);
+                main_pos = j;
             }
-            std::cout << std::endl;
         }
-        MPI_Barrier(MPI_COMM_WORLD);
+        main_proc.min_value = min_value;
+        main_proc.proc_rank = proc_rank;
+        MPI_Allreduce(&main_proc, &current_main, 1, MPI_DOUBLE_INT, MPI_MINLOC, MPI_COMM_WORLD);
+        if ( proc_rank == current_main.proc_rank ) {
+            num_row_iter_loc[main_pos] = i;
+            num_row_main_global[i] = proc_row_ind[proc_rank] + main_pos;
+        }
+        MPI_Bcast(&num_row_main_global[i], 1, MPI_INT, current_main.proc_rank, MPI_COMM_WORLD);
+        if ( proc_rank == current_main.proc_rank ){
+            for (int j=0; j < size_matr; j++) {
+                global_main_row[j] = local_matr[main_pos*size_matr + j];
+            }
+            global_main_row[size_matr] = local_right_vector[main_pos];
+        }
+        MPI_Bcast(&global_main_row[0], size_matr+1, MPI_DOUBLE, current_main.proc_rank, MPI_COMM_WORLD);
+        double coef;
+        for (int j=0; j<proc_num_rows; j++) {
+            if (num_row_iter_loc[j] == -2) {
+                coef = local_matr[j*size_matr+i] / global_main_row[i];
+                for (int k=i; k<size_matr; k++) {
+                    local_matr[j*size_matr + k] -= coef* global_main_row[k];
+                }
+                local_right_vector[j] -= coef * global_main_row[size_matr];
+            }
+        }
     }
-    // for (int i = 0; i < local_matr[proc_rank] / size_matr; i++) {
-    //     // берём первый ненулёвой, получается
-    //     for (int j = 0; j < size_matr; j++) {
-    //         main_row[j] = local_matr[i*size_matr+j];
-    //     }
-    //     main_row[size_matr] = local_right_vector[i];
-    //     // std::cout << "proc - " << proc_rank << "\n";
-    //     // for (int j = 0; j < size_matr+1; j++) {
-    //     //     std::cout << main_row[j] << ' ';
-    //     // }
-    //     // std::cout << std::endl;
-    //     MPI_Bcast(&main_row[0], size_matr+1, MPI_DOUBLE, proc_rank, MPI_COMM_WORLD);
-        
-        // for (int k=0; k<proc_size; k++) {
-        // if (proc_rank == k) {
-        //     printf("\nProcRank = %d \n", proc_rank);
-        //     printf(" Vector_Main: \n");
-        //     for (int j = 0; j < size_matr+1; j++) {
-        //         std::cout << main_row[j] << ' ';
-        //     }
-        //     std::cout << std::endl;
-        // }
-        // MPI_Barrier(MPI_COMM_WORLD);
-    
-    
-    
-    
-    
-
-    // обратный ход
-    // сбор результатов
-
     return global_result;
 }
 
-vector<double> GaussParallels(int size_matr) {
-    int size_ranks, current_rank;
-    MPI_Comm_size(MPI_COMM_WORLD, &size_ranks);
-    MPI_Comm_rank(MPI_COMM_WORLD, &current_rank);
-    // int num_rows = size_matr / size_ranks;
-    
-    
-    
-    
-    int part = size_matr / size_ranks; // part - число строк в процессе
-    // выделяем массивы для частей матрицы и вектора
-    vector<double> proc_matr(part*size_matr);
-    vector<double> proc_right_part(part);
-    vector<double> proc_result(part);
-    vector<double> matr;
-    vector<double> right_part;
-    vector<double> result;
-
-    MPI_Bcast(&size_matr, 1, MPI_INT, 0, MPI_COMM_WORLD);
-    int rest_rows = size_matr;
-    for (int i=0; i<size_matr; i++)
-        rest_rows = rest_rows-rest_rows/(size_ranks-i);
-    part = rest_rows/(size_ranks-current_rank);
-
-    // готовим данные в нулевом процессе
-    if (current_rank == 0) {
-        part = size_matr - part * (size_ranks-1);
-        // std::cout << part << std::endl;
+vector<double> GaussParallels(vector<double> &matr, int size_matr) {
+    int proc_size, proc_rank;
+    MPI_Comm_size(MPI_COMM_WORLD, &proc_size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &proc_rank);
+    int num_rows = size_matr / proc_size;
+    int remaining_rows = size_matr % proc_size;
+    int local_num_rows = num_rows;
+    if (proc_rank < remaining_rows)
+        local_num_rows++;
+    vector<double> local_matr;
+    vector<int> num_send_counts(proc_size);
+    vector<int> num_send_ind(proc_size);
+    // create local vector
+    if (local_num_rows == 0) {
+        local_matr.resize(1);
     } else {
-        // std::cout << part << std::endl;
+        local_matr.resize(local_num_rows * (size_matr + 1));
     }
-    if (current_rank == 0) {
-        matr.resize(size_matr*size_matr);
-        right_part.resize(size_matr);
-        result.resize(size_matr);
-        CreateMatrix(matr, size_matr);
-        CreateVector(right_part, size_matr);
-        PrintMatrix(matr, size_matr);
-        PrintVector(right_part, size_matr);
+    num_send_ind[0] = 0;
+    for (int i = 0; i < proc_size; i++) {
+        if (i < (size_matr % proc_size))
+            num_send_counts[i] = (num_rows + 1) * (size_matr + 1);
+        else
+            num_send_counts[i] = num_rows * (size_matr + 1);
+        if (i > 0)
+            num_send_ind[i] = (num_send_ind[i - 1] + num_send_counts[i - 1]);
     }
-    
-    return matr;
-    // у нас уже готовы данные, получается, нужно начинать вычислять
-    // я хочу способом, когда часть выделяется процессам, а остатки нулевому
+    MPI_Scatterv(matr.data(), num_send_counts.data(), num_send_ind.data(),
+        MPI_DOUBLE, &local_matr[0], local_num_rows * (size_matr + 1), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    vector<double> main_row((size_matr + 1));
+    for (int i = 0; i < num_send_ind[proc_rank] / (size_matr + 1); i++) {
+        int root_proc = 0;
+        int sum = 0;
+        for (int j = 0; j < proc_size; j++, root_proc++) {
+            sum += num_send_counts[j] / (size_matr + 1);
+            if (i < sum) {
+                root_proc = j; break;
+            }
+        }
+        MPI_Bcast(&main_row[0], (size_matr + 1), MPI_DOUBLE, root_proc, MPI_COMM_WORLD);
+
+        for (int j = 0; j < num_send_counts[proc_rank] / (size_matr + 1); j++) {
+            double coef = main_row[i] / local_matr[j * (size_matr + 1) + i];
+            for (int tmp = i; tmp < (size_matr + 1); tmp++)
+                local_matr[j * (size_matr + 1) + tmp] = coef * local_matr[j * (size_matr + 1) + tmp]
+                - main_row[tmp];
+        }
+    }
+
+    for (int i = 0; i < num_send_counts[proc_rank] / (size_matr + 1); i++) {
+        for (int j = 0; j < (size_matr + 1); j++)
+            main_row[j] = local_matr[i * (size_matr + 1) + j];
+        MPI_Bcast(&main_row[0], (size_matr + 1), MPI_DOUBLE, proc_rank, MPI_COMM_WORLD);
+        for (int j = i + 1; j < num_send_counts[proc_rank] / (size_matr + 1); j++) {
+            double coef = main_row[num_send_ind[proc_rank] / (size_matr + 1) + i] /
+                local_matr[j * (size_matr + 1) + i + num_send_ind[proc_rank] / (size_matr + 1)];
+            for (int tmp = i + num_send_ind[proc_rank] / (size_matr + 1); tmp < (size_matr + 1); tmp++)
+                local_matr[j * (size_matr + 1) + tmp] = coef * local_matr[j * (size_matr + 1) + tmp]
+                - main_row[tmp];
+        }
+    }
+    int root_proc = 0;
+    for (int i = num_send_ind[proc_rank] / (size_matr + 1) + num_send_counts[proc_rank] / (size_matr + 1);
+        i < size_matr; i++) {
+        int sum = 0;
+        for (int j = 0; j < proc_size; j++, root_proc++) {
+            sum += num_send_counts[j] / (size_matr + 1);
+            if (i < sum) {
+                root_proc = j; 
+                break;
+            }
+        }
+        MPI_Bcast(&main_row[0], (size_matr + 1), MPI_DOUBLE, root_proc, MPI_COMM_WORLD);
+    }
+    vector<double> res_matr(0);
+    if (proc_rank == 0) {
+        res_matr.resize(size_matr * (size_matr + 1));
+    }
+    MPI_Gatherv(local_matr.data(), local_num_rows * (size_matr + 1), MPI_DOUBLE, res_matr.data(),
+        num_send_counts.data(), num_send_ind.data(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    vector<double> result_vector_x(0);
+    if (proc_rank == 0) {
+        result_vector_x.resize(size_matr);
+        for (int i = size_matr - 1; i >= 0; --i) {
+            double b = res_matr[i * (size_matr + 1) + (size_matr + 1) - 1];
+            for (int j = size_matr - 1; j >= i + 1; --j)
+                b -= res_matr[i * (size_matr + 1) + j] * result_vector_x[j];
+            result_vector_x[i] = b / res_matr[i * (size_matr + 1) + i];
+        }
+    }
+    return result_vector_x;
 }
 // Parallel Gauss End
