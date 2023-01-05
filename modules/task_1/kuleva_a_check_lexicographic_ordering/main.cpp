@@ -51,7 +51,7 @@ TEST(Parallel_Operations_MPI, Comparing_strings_with_different_sizes) {
 TEST(Parallel_Operations_MPI, Large_string_comparison_equal) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    std::string str1 = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" ;
+    std::string str1 = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     std::string str2 = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     size_t len = std::min(str1.length(), str2.length());
     int res1 = getParallelOperations(str1, str2, len);
@@ -64,7 +64,7 @@ TEST(Parallel_Operations_MPI, Large_string_comparison_equal) {
 TEST(Parallel_Operations_MPI, Large_string_comparison1) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    std::string str1 = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" ;
+    std::string str1 = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     std::string str2 = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab";
     size_t len = std::min(str1.length(), str2.length());
     int res1 = getParallelOperations(str1, str2, len);
@@ -77,7 +77,7 @@ TEST(Parallel_Operations_MPI, Large_string_comparison1) {
 TEST(Parallel_Operations_MPI, Large_string_comparison2) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    std::string str1 = "aaaaaaaaaaaaaaaaaaaaabaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" ;
+    std::string str1 = "aaaaaaaaaaaaaaaaaaaaabaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     std::string str2 = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     size_t len = std::min(str1.length(), str2.length());
     int res1 = getParallelOperations(str1, str2, len);

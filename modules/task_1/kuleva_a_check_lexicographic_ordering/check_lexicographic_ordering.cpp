@@ -8,7 +8,7 @@
 
 std::string getRandomString(const int strLen) {
     std::string valid_chars =
-        "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";   
+        "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     std::random_device dev;
     std::mt19937 gen(dev());
     std::string str;
@@ -24,16 +24,17 @@ std::string getRandomString(const int strLen) {
 int getSequentialOperations(std::string str_inp1, std::string str_inp2) {
     const size_t len1 = str_inp1.length();
     const size_t len2 = str_inp2.length();
-    if (str_inp1 == str_inp2) return 0;
+    if (str_inp1 == str_inp2) {
+        return 0;
+    }
     else {
         for (int i = 0; i < std::min(len1, len2); i++) {
             if (str_inp1[i] < str_inp2[i]) return -1;
-            if (str_inp1[i] > str_inp2[i]) return 1; 
+            if (str_inp1[i] > str_inp2[i]) return 1;
         }
         if (str_inp1.length() > str_inp2.length()) {
             return 1;
-        }
-        else if (str_inp1.length() < str_inp2.length()) {
+        } else if (str_inp1.length() < str_inp2.length()) {
             return -1;
         }
     }
@@ -52,8 +53,8 @@ int getParallelOperations(std::string global_str_inp1, std::string global_str_in
     loc_str1.reserve(delta);
     std::string loc_str2;
     loc_str2.reserve(delta);
-    
-    if (rank == 0) {      
+
+    if (rank == 0) {
         for (int proc = 1; proc < size; proc++) {
             MPI_Send(global_str_inp1.c_str() + proc * delta, static_cast<int>(delta),
                 MPI_CHAR, proc, 0, MPI_COMM_WORLD);
@@ -62,7 +63,7 @@ int getParallelOperations(std::string global_str_inp1, std::string global_str_in
         }
     }
 
-    if (rank != 0 ) {
+    if (rank != 0) {
         MPI_Status status;
         char* buf1, * buf2;
         buf1 = new char[delta];
@@ -75,8 +76,7 @@ int getParallelOperations(std::string global_str_inp1, std::string global_str_in
             loc_str1.push_back(buf1[i]);
             loc_str2.push_back(buf2[i]);
         }
-    }
-    else if (rank == 0) {
+    } else if (rank == 0) {
         for (int i = 0; i < delta; i++) {
             loc_str1.push_back(global_str_inp1[i]);
             loc_str2.push_back(global_str_inp2[i]);
@@ -93,27 +93,24 @@ int getParallelOperations(std::string global_str_inp1, std::string global_str_in
             rem_str1.push_back(global_str_inp1[i]);
             rem_str2.push_back(global_str_inp2[i]);
         }
-        
+
     if (rank == 0) {
         for (const auto& result : glob_result) {
             if (result == 1) {
                 return result;
-            } 
-            else if (result == -1) {
+            } else if (result == -1) {
                 return result;
             }
         }
         int rem_res = getSequentialOperations(rem_str1, rem_str2);
         if (rem_res == 1) {
             return rem_res;
-        } 
-        else if (rem_res == -1) {
+        } else if (rem_res == -1) {
             return rem_res;
         }
         if (global_str_inp1.length() > global_str_inp2.length()) {
             return 1;
-        }
-        else if (global_str_inp1.length() < global_str_inp2.length()) {
+        } else if (global_str_inp1.length() < global_str_inp2.length()) {
             return -1;
         }
         return 0;
