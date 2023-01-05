@@ -5,8 +5,7 @@
 #include <vector>
 #include <random>
 
-#include "mpi.h";
-
+#include <mpi.h>;
 
 std::vector<int> getRandomVector(int size);
 
@@ -14,5 +13,4 @@ int getScalarProductSequential(std::vector<int> v1, std::vector<int> v2);
 
 int getScalarProductParallel(std::vector<int> v1, std::vector<int> v2);
 
-#endif  // MODULES_TASK_1_SHAROVATOV_D_SCALAR_PRODUCT_H_
-
+#endif  // MODULES_TASK_1_SHAROVATOV_D_SCALAR_PRODUCT_SCALAR_PRODUCT_H_
