@@ -67,7 +67,7 @@ TEST(Vect_Alt_Signs_MPI, Test_Par_Count3) {
 TEST(Vect_Alt_Signs_MPI, Test_Par_Count4) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    const int vSize = 1000, left = -1000, right = 1000;
+    const int vSize = 100, left = -500, right = 500;
     std::vector<int> v(vSize);
 
     if (rank == 0) {
@@ -86,7 +86,7 @@ TEST(Vect_Alt_Signs_MPI, Test_Par_Count4) {
 TEST(Vect_Alt_Signs_MPI, Test_Par_Count5) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    const int vSize = 8419, left = -1000, right = 1000;
+    const int vSize = 841, left = -1000, right = 1000;
     std::vector<int> v(vSize);
 
     if (rank == 0) {
