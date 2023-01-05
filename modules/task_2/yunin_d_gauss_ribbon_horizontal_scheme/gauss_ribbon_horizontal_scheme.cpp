@@ -66,29 +66,36 @@ vector<double> CreateVector(int size) {
     return vec;
 }
 
-void CreateMatrixRandom(vector<double> &matrix, int size, mt19937 *gen) {
+vector<double> CreateMatrixRandom(int size, mt19937 *gen) {
     // дело случая
+    vector<double> matrix(size * size);
     for (int i = 0; i < size * size; i++) {
-        matrix[i] = (*gen)() % size; 
-    }   
+        matrix[i] = (*gen)() % size;
+    }
+    return matrix;
 }
 
-void CreateVectorRandom(vector<double> &vec, int size, mt19937 *gen) {
+vector<double> CreateVectorRandom(int size, mt19937 *gen) {
     // дело случая
-    for (int i = 0; i < size; i++) {    
+    vector<double> vec(size);
+    for (int i = 0; i < size; i++) {
         vec[i] = (*gen)() % size + 1;
     }
+    return vec;
 }
 
 // add this function
-void InitHelpingVector(vector<int> &vec, int size) {
+vector<int> InitHelpingVector(int size) {
+    vector<int> vec(size);
     for (int i = 0; i < size; i++) {
-        vec[i] = -1; // указывает, что данная строка не была ещё выбрана в качестве ведущей
-    }   
+        vec[i] = -1;  // указывает, что данная строка не была ещё выбрана в качестве ведущей
+    }
+    return vec;
 }
 
 // add this function in header file
-void SubtractCurrentRowMatrix(vector<double> &matr, int size, int num_row, int num_column, double main_elem, double coef) {
+void SubtractCurrentRowMatrix(vector<double> &matr, int size, int num_row, 
+    int num_column, double main_elem, double coef) {
     for (int j = num_column; j < size; j++) {
         // std::cout << std::endl << "Вычитаю элемент - (" << num_row << ',' << j << ')' << std::endl; 
         matr[num_row*size+j] = matr[num_row*size+j] - coef*matr[num_column*size+j]; //можно использовать num_column, так как в данном случае = номеру главной строки
@@ -121,7 +128,7 @@ vector<double> GaussConsequent(int matrix_size) {
     // инициализирую матрицу и вектор значениями
     matrix = CreateMatrix(size_matrix);
     right_vector = CreateVector(size_matrix);
-    InitHelpingVector(sequence_numbers_iterations, size_matrix);
+    sequence_numbers_iterations = InitHelpingVector(size_matrix);
     for (int i = 0; i < size_matrix; i++) {
         double current_matrix_elem = matrix[i*size_matrix+i];
         double current_vector_elem = right_vector[i];
