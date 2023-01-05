@@ -1,5 +1,5 @@
 // Copyright 2022 Yunin Daniil
-#include "../../../modules/task_2/yunin_d_gauss_ribbon_horizontal_scheme/gauss_ribbon_horizontal_scheme.h"
+#include "../../../modules/task_2/yunin_d_gauss_horiz/gauss_horiz.h"
 #include <mpi.h>
 #include <vector>
 #include <string>

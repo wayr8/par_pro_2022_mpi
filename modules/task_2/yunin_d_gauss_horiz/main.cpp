@@ -3,7 +3,7 @@
 #include <gtest/gtest.h>
 #include <vector>
 #include <gtest-mpi-listener.hpp>
-#include "./gauss_ribbon_horizontal_scheme.h"
+#include "./gauss_horiz.h"
 
 
 TEST(Solving_Method_Gauss_Ribbon_Horizontal_Scheme, Test_matrix_100x100) {
