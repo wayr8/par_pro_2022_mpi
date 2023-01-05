@@ -45,8 +45,6 @@ int SendRingParallel(int information, int count, MPI_Datatype datatype,
     if (local_rank == 0) {
       MPI_Send(&information, 1, MPI_INT, (local_rank + 1) % local_size, 0, new_comm);
       int source = local_size - 1;
-      if (local_rank == 0)
-        source = local_size - 1;
       MPI_Recv(&information, 1, MPI_INT, source, 0, new_comm, &status);
       return information;
     } else {
