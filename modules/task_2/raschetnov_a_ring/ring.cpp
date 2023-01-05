@@ -65,8 +65,6 @@ int SendRingParallel(int information, int count, MPI_Datatype datatype,
       MPI_Send(&information, 1, MPI_INT, (prime_rank + 1) % prime_size, 0, new_comm);
       //  MPI_Send(&information, 1, MPI_INT, (prime_rank + 1) % (max + 1), 0, new_comm);
       int source = prime_rank - 1;
-      if (prime_rank == 0)
-        source = prime_size - 1;
       MPI_Recv(&information, 1, MPI_INT, source, 0, new_comm, &status);
       return information;
       //  std::cout << "Result from proc: " << prime_rank << ", information received: " << information << std::endl;
@@ -82,6 +80,8 @@ int SendRingParallel(int information, int count, MPI_Datatype datatype,
     }
     //  std::cout << prime_rank << std::endl;
   }
+
+  return information;
 
   // if (rank == root) {
   //   int dest = (rank + 1) % n;
