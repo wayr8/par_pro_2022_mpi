@@ -2,8 +2,9 @@
 #include <mpi.h>
 #include <gtest/gtest.h>
 #include <gtest-mpi-listener.hpp>
-#include "./gauss_ribbon_horizontal_scheme.h"
 #include <vector>
+#include "./gauss_ribbon_horizontal_scheme.h"
+
 
 TEST(Solving_Method_Gauss_Ribbon_Horizontal_Scheme, Test_matrix_100x100) {
     int rank;
