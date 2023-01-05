@@ -6,7 +6,7 @@
 #include <vector>
 #include <algorithm>
 
-#include "mpi.h";
+#include <mpi.h>;
 
 std::vector<std::vector<int>> getRandomImage(int width, int height);
 
@@ -23,5 +23,4 @@ std::vector<std::vector<int>> sobelOperatorSequential(std::vector<std::vector<in
 
 std::vector<std::vector<int>> sobelOperatorParallel( std::vector<std::vector<int>> image);
 
-#endif  // MODULES_TASK_3_SHAROVATOV_D_SOBEL_OPERATOR_H_
-
+#endif  // MODULES_TASK_3_SHAROVATOV_D_SOBEL_OPERATOR_SOBEL_OPERATOR_H_

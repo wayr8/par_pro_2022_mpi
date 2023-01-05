@@ -155,4 +155,3 @@ std::vector<std::vector<int>> sobelOperatorParallel(
 
   return newImageMatrix;
 }
-
