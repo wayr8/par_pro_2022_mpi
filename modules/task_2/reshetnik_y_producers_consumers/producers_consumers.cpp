@@ -67,7 +67,7 @@ int task(int buffer_size) {
     for (int i = 0; i < buffer_size; i++) {
         check += requests[i];
     }
-    
+
     delete[] buffer;
     delete[] requests;
     return check;
