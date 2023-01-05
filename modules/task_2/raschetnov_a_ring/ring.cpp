@@ -12,7 +12,6 @@ int getResult(int information, int size, int delta) {
 
 // int constructPath(int* result, int root, int destination, int size) {
 //   return 0;
-  
 // }
 
 std::vector<int> constructPath(int root, int destination, int size) {

@@ -3,6 +3,7 @@
 #define MODULES_TASK_2_RASCHETNOV_A_RING_RING_H_
 
 #include <mpi.h>
+#include <vector>
 
 int SendRingParallel(int information, int count, MPI_Datatype datatype,
                      int root, int destination, int tag, MPI_Comm comm);
