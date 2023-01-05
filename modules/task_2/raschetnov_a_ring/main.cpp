@@ -82,11 +82,11 @@ TEST(Parallel_Operations_MPI, test_2) {
   MPI_Bcast(&destination, 1, MPI_INT, 0, MPI_COMM_WORLD);
   MPI_Bcast(&root, 1, MPI_INT, 0, MPI_COMM_WORLD);
   par_result = SendRingParallel(2, 1, MPI_INT, root, destination, 0, MPI_COMM_WORLD);
-  //if (rank == root)
-    
+  // if (rank == root)
+
   if (rank == root) {
     int seq_result = 2 + 1 * constructPath(root, destination, size).size() - 1;
-    ASSERT_EQ(par_result, seq_result);    
+    ASSERT_EQ(par_result, seq_result);
   }
 }
 

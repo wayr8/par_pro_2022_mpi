@@ -18,9 +18,9 @@ int getResult(int information, int size, int delta) {
 std::vector<int> constructPath(int root, int destination, int size) {
   std::vector<int> result;
   int i = root;
-  //std::cout << size << std::endl;
+  //  std::cout << size << std::endl;
   while (i != destination) {
-    //std::cout << i << std::endl;
+    //  std::cout << i << std::endl;
     result.push_back(i);
     i = (i + 1) % size;
   }
@@ -35,10 +35,10 @@ int SendRingParallel(int information, int count, MPI_Datatype datatype,
   int world_size, world_rank;
   MPI_Comm new_comm;
   MPI_Group old_group, new_group;
-  //const int ranks[4] = {3, 0, 1, 2};
-  //std::vector<int> ranks = {3, 0, 1, 2};
-  //int max = getMax(ranks, n);
-  //std::cout << max << std::endl;
+  //  const int ranks[4] = {3, 0, 1, 2};
+  //  std::vector<int> ranks = {3, 0, 1, 2};
+  //  int max = getMax(ranks, n);
+  //  std::cout << max << std::endl;
 
   MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
   MPI_Comm_size(MPI_COMM_WORLD, &world_size);
@@ -56,32 +56,32 @@ int SendRingParallel(int information, int count, MPI_Datatype datatype,
   int prime_rank, prime_size;
 
   if (MPI_COMM_NULL != new_comm) {
-
     MPI_Status status;
     MPI_Comm_rank(new_comm, &prime_rank);
     MPI_Comm_size(new_comm, &prime_size);
-    //std::cout << "Prime rank: " << prime_rank << world_rank << std::endl;
-    //std::cout << "World rank: " << world_rank << std::endl;
-    //printf("Prime rank: %d, World rank %d", prime_rank, world_rank);
+    //  std::cout << "Prime rank: " << prime_rank << world_rank << std::endl;
+    //  std::cout << "World rank: " << world_rank << std::endl;
+    //  printf("Prime rank: %d, World rank %d", prime_rank, world_rank);
     if (prime_rank == 0) {
       MPI_Send(&information, 1, MPI_INT, (prime_rank + 1) % prime_size, 0, new_comm);
-      //MPI_Send(&information, 1, MPI_INT, (prime_rank + 1) % (max + 1), 0, new_comm);
+      //  MPI_Send(&information, 1, MPI_INT, (prime_rank + 1) % (max + 1), 0, new_comm);
       int source = prime_rank - 1;
       if (prime_rank == 0)
         source = prime_size - 1;
       MPI_Recv(&information, 1, MPI_INT, source, 0, new_comm, &status);
       return information;
-      //std::cout << "Result from proc: " << prime_rank << ", information received: " << information << std::endl;
+      //  std::cout << "Result from proc: " << prime_rank << ", information received: " << information << std::endl;
     } else {
     int source = prime_rank - 1;
     if (prime_rank == 0)
       source = prime_size - 1;
     MPI_Recv(&information, 1, MPI_INT, source, 0, new_comm, &status);
-    //std::cout << "Received from proc: " << source << " to proc " << prime_rank << " value: " << information << std::endl;
+    //  std::cout << "Received from proc: " << source <<
+    // " to proc " << prime_rank << " value: " << information << std::endl;
     information += 1;
     MPI_Send(&information, 1, MPI_INT, (prime_rank + 1) % prime_size, 0, new_comm);
     }
-    //std::cout << prime_rank << std::endl;
+    //  std::cout << prime_rank << std::endl;
   }
 
   // if (rank == root) {
