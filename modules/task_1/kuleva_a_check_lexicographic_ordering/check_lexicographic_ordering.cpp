@@ -26,8 +26,7 @@ int getSequentialOperations(std::string str_inp1, std::string str_inp2) {
     const size_t len2 = str_inp2.length();
     if (str_inp1 == str_inp2) {
         return 0;
-    }
-    else {
+    } else {
         for (int i = 0; i < std::min(len1, len2); i++) {
             if (str_inp1[i] < str_inp2[i]) return -1;
             if (str_inp1[i] > str_inp2[i]) return 1;
