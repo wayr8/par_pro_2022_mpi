@@ -10,13 +10,13 @@ using std::mt19937;
 
 vector<double> GaussConsequent(int matrix_size);
 void UpdateRandNumbers(mt19937 *gen);
-void CreateMatrix(vector<double> &matrix, int size);
-void CreateVector(vector<double> &vec, int size);
+vector<double> CreateMatrix(int size);
+vector<double> CreateVector(int size);
 void CreateMatrixRandom(vector<double> &matrix, int size, mt19937 *gen);
 void CreateVectorRandom(vector<double> &vec, int size, mt19937 *gen);
 vector<double> GaussParallel(vector<double> &matr, vector<double> &right_part, int size_matr);
 vector<double> GaussParallels(vector<double> &matr, int size_matr);
-vector<double> UnionMatrVect(vector<double> &matr, vector<double> &right_vec, int size_matr);
+vector<double> UnionMatrVect(const vector<double> &matr, const vector<double> &right_vec, int size_matr);
 void PrintMatrixVector(vector<double> &matr, int size_matr);
 void PrintVector(vector<double> &vec, int vec_size);
 

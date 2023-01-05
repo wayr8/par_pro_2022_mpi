@@ -13,9 +13,7 @@ using std::random_device;
 
 // Метод Гаусса используется для решения систем алгебраических уравнений
 // Матрицы являются плотными - большинство элементов отличны от нуля
-// Если СЛУ - невырожденная (определить матрицы коэффициентов системы отличен от нуля) - решение с определённой точностью
 // Подразумевается, что решаем квадратные матрицы
-// Решение системы линейных уравнений существует только в случае, когда матрица системы линейных уравнений невырожденная (определитель отличен от нуля)
 
 // Help functions start
 void UpdateRandNumbers(mt19937 *gen) {
@@ -23,7 +21,7 @@ void UpdateRandNumbers(mt19937 *gen) {
     (*gen).seed(rd());
 }
 
-void CreateMatrix(vector<double> &matrix, int size) {
+vector<double> CreateMatrix(int size) {
     // чтобы сразу было всё хорошо (невырожденная матрица типа)
     /*
     1 2 3 4
@@ -31,6 +29,7 @@ void CreateMatrix(vector<double> &matrix, int size) {
     3 2 1 2
     4 3 2 1
     */
+    vector<double> matrix(size * size);
     int number = 1;
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
@@ -39,9 +38,10 @@ void CreateMatrix(vector<double> &matrix, int size) {
         }
         number = i+2;
     }
+    return matrix;
 }
 
-vector<double> UnionMatrVect(vector<double> &matr, vector<double> &right_vec, int size_matr) {
+vector<double> UnionMatrVect(const vector<double> &matr, const vector<double> &right_vec, int size_matr) {
     vector<double> result(size_matr * (size_matr + 1));
     int j = 0, k = 0, iter = 0;
     for (int i = 0; i < size_matr * (size_matr + 1); i++) {
@@ -58,10 +58,12 @@ vector<double> UnionMatrVect(vector<double> &matr, vector<double> &right_vec, in
     return result;
 }
 
-void CreateVector(vector<double> &vec, int size) {
+vector<double> CreateVector(int size) {
+    vector<double> vec(size);
     for (int i = 0; i < size; i++) {
         vec[i] = i*i*i;
     }
+    return vec;
 }
 
 void CreateMatrixRandom(vector<double> &matrix, int size, mt19937 *gen) {
@@ -117,8 +119,8 @@ vector<double> GaussConsequent(int matrix_size) {
     mt19937 gen;
     UpdateRandNumbers(&gen);
     // инициализирую матрицу и вектор значениями
-    CreateMatrix(matrix, size_matrix);
-    CreateVector(right_vector, size_matrix);
+    matrix = CreateMatrix(size_matrix);
+    right_vector = CreateVector(size_matrix);
     InitHelpingVector(sequence_numbers_iterations, size_matrix);
     for (int i = 0; i < size_matrix; i++) {
         double current_matrix_elem = matrix[i*size_matrix+i];

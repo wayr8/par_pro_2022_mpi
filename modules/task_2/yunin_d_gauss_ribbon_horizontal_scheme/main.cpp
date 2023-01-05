@@ -11,8 +11,8 @@ TEST(Solving_Method_Gauss_Ribbon_Horizontal_Scheme, Test_matrix_100x100) {
     const int count_size_vector = 100;
     std::vector<double> matr(count_size_vector * count_size_vector);
     std::vector<double> right_vect(count_size_vector);
-    CreateMatrix(matr, count_size_vector);
-    CreateVector(right_vect, count_size_vector);
+    matr =  CreateMatrix(count_size_vector);
+    right_vect = CreateVector(count_size_vector);
     std::vector<double> matr_vect = UnionMatrVect(matr, right_vect, count_size_vector);
     // if (rank == 0) {
     //     // PrintVector(right_vect, count_size_vector);
@@ -36,8 +36,8 @@ TEST(Solving_Method_Gauss_Ribbon_Horizontal_Scheme, Test_matrix_6x6) {
     const int count_size_vector = 6;
     std::vector<double> matr(count_size_vector * count_size_vector);
     std::vector<double> right_vect(count_size_vector);
-    CreateMatrix(matr, count_size_vector);
-    CreateVector(right_vect, count_size_vector);
+    matr =  CreateMatrix(count_size_vector);
+    right_vect = CreateVector(count_size_vector);
     std::vector<double> matr_vect = UnionMatrVect(matr, right_vect, count_size_vector);
     // if (rank == 0) {
     //     PrintVector(right_vect, count_size_vector);
@@ -61,8 +61,8 @@ TEST(Solving_Method_Gauss_Ribbon_Horizontal_Scheme, Test_matrix_3x3) {
     const int count_size_vector = 3;
     std::vector<double> matr(count_size_vector * count_size_vector);
     std::vector<double> right_vect(count_size_vector);
-    CreateMatrix(matr, count_size_vector);
-    CreateVector(right_vect, count_size_vector);
+    matr =  CreateMatrix(count_size_vector);
+    right_vect = CreateVector(count_size_vector);
     std::vector<double> matr_vect = UnionMatrVect(matr, right_vect, count_size_vector);
     // if (rank == 0) {
     //     PrintVector(right_vect, count_size_vector);
@@ -86,8 +86,8 @@ TEST(Solving_Method_Gauss_Ribbon_Horizontal_Scheme, Test_matrix_10x10) {
     const int count_size_vector = 10;
     std::vector<double> matr(count_size_vector * count_size_vector);
     std::vector<double> right_vect(count_size_vector);
-    CreateMatrix(matr, count_size_vector);
-    CreateVector(right_vect, count_size_vector);
+    matr =  CreateMatrix(count_size_vector);
+    right_vect = CreateVector(count_size_vector);
     std::vector<double> matr_vect = UnionMatrVect(matr, right_vect, count_size_vector);
     // if (rank == 0) {
     //     PrintVector(right_vect, count_size_vector);
@@ -111,8 +111,8 @@ TEST(Solving_Method_Gauss_Ribbon_Horizontal_Scheme, Test_matrix_1x1) {
     const int count_size_vector = 1;
     std::vector<double> matr(count_size_vector * count_size_vector);
     std::vector<double> right_vect(count_size_vector);
-    CreateMatrix(matr, count_size_vector);
-    CreateVector(right_vect, count_size_vector);
+    matr = CreateMatrix(count_size_vector);
+    right_vect = CreateVector(count_size_vector);
     std::vector<double> matr_vect = UnionMatrVect(matr, right_vect, count_size_vector);
     // if (rank == 0) {
     //     PrintVector(right_vect, count_size_vector);
@@ -136,8 +136,8 @@ TEST(Solving_Method_Gauss_Ribbon_Horizontal_Scheme, Test_matrix_2x2) {
     const int count_size_vector = 2;
     std::vector<double> matr(count_size_vector * count_size_vector);
     std::vector<double> right_vect(count_size_vector);
-    CreateMatrix(matr, count_size_vector);
-    CreateVector(right_vect, count_size_vector);
+    matr = CreateMatrix(count_size_vector);
+    right_vect = CreateVector(count_size_vector);
     std::vector<double> matr_vect = UnionMatrVect(matr, right_vect, count_size_vector);
     // if (rank == 0) {
     //     PrintVector(right_vect, count_size_vector);
