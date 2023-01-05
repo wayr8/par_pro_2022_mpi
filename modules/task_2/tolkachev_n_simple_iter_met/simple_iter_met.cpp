@@ -43,32 +43,48 @@ std::vector<double> simple_iter_met_parallel(const std::vector<double>& A,
     MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     int loc_size = n / comm_size;
+    int rem = n % comm_size;
     std::vector<double> local_A(loc_size * n);
     std::vector<double> local_b(loc_size);
     std::vector<double> local_x(loc_size);
     if (rank == 0) {
-        local_A = std::vector<double>(A.begin(), A.begin() + loc_size * n);
-        local_b = std::vector<double>(b.begin(), b.begin() + loc_size);
         for (int i = 1; i < comm_size; i++) {
-            MPI_Send(A.data() + i * loc_size * n, loc_size * n,
+            MPI_Send(A.data() + (rem + i * loc_size) * n, loc_size * n,
                 MPI_DOUBLE, i, 1,
                 MPI_COMM_WORLD);
-            MPI_Send(b.data() + i * loc_size, loc_size, MPI_DOUBLE, i, 2,
+            MPI_Send(b.data() + rem + i * loc_size, loc_size, MPI_DOUBLE, i, 2,
                 MPI_COMM_WORLD);
         }
-
+        loc_size = loc_size + rem;
+        local_A.resize(loc_size * n);
+        local_b.resize(loc_size);
+        local_x.resize(loc_size);
+        local_A = std::vector<double>(A.begin(), A.begin() + loc_size * n);
+        local_b = std::vector<double>(b.begin(), b.begin() + loc_size);
     } else {
         MPI_Recv(local_A.data(), loc_size * n, MPI_DOUBLE, 0, 1, MPI_COMM_WORLD,
             &status);
         MPI_Recv(local_b.data(), loc_size, MPI_DOUBLE, 0, 2, MPI_COMM_WORLD,
             &status);
     }
-    for (int i = 0; i < loc_size; i++) {
-        double diagonal_element = local_A[i * n + i + rank * loc_size];
-        local_A[i * n + i + rank * loc_size] = 0.0;
-        local_b[i] = local_b[i] / diagonal_element;
-        for (int j = 0; j < n; j++) {
-            local_A[i * n + j] = local_A[i * n + j] / diagonal_element;
+    if (rank == 0) {
+        for (int i = 0; i < loc_size; i++) {
+            double diagonal_element = local_A[i * n + i];
+            local_A[i * n + i ] = 0.0;
+            local_b[i] = local_b[i] / diagonal_element;
+            for (int j = 0; j < n; j++) {
+                local_A[i * n + j] = local_A[i * n + j] / diagonal_element;
+            }
+        }
+    } else {
+        for (int i = 0; i < loc_size; i++) {
+            double diagonal_element = local_A[i * n + i + rem +
+                rank * loc_size];
+            local_A[i * n + i + rem + rank * loc_size] = 0.0;
+            local_b[i] = local_b[i] / diagonal_element;
+            for (int j = 0; j < n; j++) {
+                local_A[i * n + j] = local_A[i * n + j] / diagonal_element;
+            }
         }
     }
     int counter = 0;
@@ -81,9 +97,16 @@ std::vector<double> simple_iter_met_parallel(const std::vector<double>& A,
             local_x[i] += local_b[i];
         }
         local_diff = 0.0;
-        for (int i = 0; i < loc_size; i++) {
-            if (abs(local_x[i] - x[i + rank * loc_size]) > local_diff)
-                local_diff = abs(local_x[i] - x[i + rank * loc_size]);
+        if (rank == 0) {
+            for (int i = 0; i < loc_size; i++) {
+                if (abs(local_x[i] - x[i]) > local_diff)
+                    local_diff = abs(local_x[i] - x[i]);
+            }
+        } else {
+            for (int i = 0; i < loc_size; i++) {
+                if (abs(local_x[i] - x[i + rem + rank*loc_size]) > local_diff)
+                    local_diff = abs(local_x[i] - x[i + rem + rank * loc_size]);
+            }
         }
         MPI_Reduce(&local_diff, &max_diff, 1, MPI_DOUBLE, MPI_MAX, 0,
             MPI_COMM_WORLD);
@@ -92,7 +115,7 @@ std::vector<double> simple_iter_met_parallel(const std::vector<double>& A,
             if (rank == 0) {
                 std::copy(local_x.begin(), local_x.end(), x.begin());
                 for (int i = 1; i < comm_size; i++) {
-                    MPI_Recv(x.data() + i * loc_size, loc_size,
+                    MPI_Recv(x.data() + rem + i * (loc_size-rem), loc_size-rem,
                         MPI_DOUBLE, i, 3,
                         MPI_COMM_WORLD, &status);
                 }

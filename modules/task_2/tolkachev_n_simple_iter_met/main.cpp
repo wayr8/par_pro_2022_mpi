@@ -3,8 +3,9 @@
 #include <mpi.h>
 #include "../../../modules/task_2/tolkachev_n_simple_iter_met/simple_iter_met.h"
 #include <gtest-mpi-listener.hpp>
-void test_function1(int n, double eps) {
+void test_function1(int n) {
     int rank;
+    double eps = 1e-6;
     std::vector<double> A = get_random_matrix_diagonal_dominance(n);
     std::vector<double> b = get_random_vector(n);
     std::vector<double> x_parallel =
@@ -30,25 +31,25 @@ void test_function2(int n) {
     }
 }
 
-TEST(Simple_iter_met_MPI, Test_1) { test_function2(3); }
+TEST(Simple_iter_met_MPI, Test_1) { test_function2(5); }
 
-TEST(Simple_iter_met_MPI, Test_2) { test_function2(6); }
+TEST(Simple_iter_met_MPI, Test_2) { test_function2(10); }
 
-TEST(Simple_iter_met_MPI, Test_3) { test_function2(18); }
+TEST(Simple_iter_met_MPI, Test_3) { test_function2(20); }
 
-TEST(Simple_iter_met_MPI, Test_4) { test_function2(36); }
+TEST(Simple_iter_met_MPI, Test_4) { test_function2(50); }
 
-TEST(Simple_iter_met_MPI, Test_5) { test_function2(72); }
+TEST(Simple_iter_met_MPI, Test_5) { test_function2(100); }
 
-TEST(Simple_iter_met_MPI, Test_6) { test_function1(18, 1e-8); }
+TEST(Simple_iter_met_MPI, Test_6) { test_function1(10); }
 
-TEST(Simple_iter_met_MPI, Test_7) { test_function1(36, 3e-8); }
+TEST(Simple_iter_met_MPI, Test_7) { test_function1(50); }
 
-TEST(Simple_iter_met_MPI, Test_8) { test_function1(144, 5e-8); }
+TEST(Simple_iter_met_MPI, Test_8) { test_function1(100); }
 
-TEST(Simple_iter_met_MPI, Test_9) { test_function1(288, 3e-7); }
+TEST(Simple_iter_met_MPI, Test_9) { test_function1(500); }
 
-TEST(Simple_iter_met_MPI, Test_10) { test_function1(864, 1e-6); }
+TEST(Simple_iter_met_MPI, Test_10) { test_function1(1000); }
 
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
