@@ -5,7 +5,7 @@
 #include <list>
 #include <algorithm>
 #include "../../../modules/task_2/reshetnik_y_producers_consumers/producers_consumers.h"
-#include <iostream>
+
 int generate_resource() {
     static std::random_device ran_dev;
     static std::mt19937 gener(ran_dev());
