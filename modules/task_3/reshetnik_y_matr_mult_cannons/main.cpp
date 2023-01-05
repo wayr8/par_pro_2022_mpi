@@ -13,7 +13,6 @@ TEST(Cannons_Multiplication, Test_Simple) {
     double* m1 = new double[sz * sz];
     double* m2 = new double[sz * sz];
     double* p = new double[sz * sz];
-    double* s = new double[sz * sz];
 
     if (rank == 0) {
         fill_matrix(m1, sz, sz);
@@ -21,15 +20,16 @@ TEST(Cannons_Multiplication, Test_Simple) {
     }
     cannon_parallel_multiply(p, m1, sz, sz, m2, sz, sz);
     if (rank == 0) {
+        double* s = new double[sz * sz];
         multiply_matrix(s, m1, sz, sz, m2, sz, sz);
         for (int i = 0; i < sz * sz; i++)
             ASSERT_DOUBLE_EQ(s[i], p[i]);
+        delete[] s;
     }
 
     delete[] m1;
     delete[] m2;
     delete[] p;
-    delete[] s;
 }
 
 TEST(Cannons_Multiplication, Test_M1x1_M1x1) {
@@ -44,7 +44,6 @@ TEST(Cannons_Multiplication, Test_M1x1_M1x1) {
     double* m1 = new double[m1c * m1r];
     double* m2 = new double[m2c * m2r];
     double* p = new double[m1r * m2c];
-    double* s = new double[m1r * m2c];
 
     if (rank == 0) {
         fill_matrix(m1, m1c, m1r);
@@ -52,15 +51,16 @@ TEST(Cannons_Multiplication, Test_M1x1_M1x1) {
     }
     cannon_parallel_multiply(p, m1, m1c, m1r, m2, m2c, m2r);
     if (rank == 0) {
+        double* s = new double[m1r * m2c];
         multiply_matrix(s, m1, m1c, m1r, m2, m2c, m2r);
         for (int i = 0; i < m1r * m2c; i++)
             ASSERT_DOUBLE_EQ(s[i], p[i]);
+        delete[] s;
     }
 
     delete[] m1;
     delete[] m2;
     delete[] p;
-    delete[] s;
 }
 
 TEST(Cannons_Multiplication, Test_M7x1_M1x7) {
@@ -75,22 +75,23 @@ TEST(Cannons_Multiplication, Test_M7x1_M1x7) {
     double* m1 = new double[m1c * m1r];
     double* m2 = new double[m2c * m2r];
     double* p = new double[m1r * m2c];
-    double* s = new double[m1r * m2c];
+
     if (rank == 0) {
         fill_matrix(m1, m1c, m1r);
         fill_matrix(m2, m2c, m2r);
     }
     cannon_parallel_multiply(p, m1, m1c, m1r, m2, m2c, m2r);
     if (rank == 0) {
+        double* s = new double[m1r * m2c];
         multiply_matrix(s, m1, m1c, m1r, m2, m2c, m2r);
         for (int i = 0; i < m1r * m2c; i++)
             ASSERT_DOUBLE_EQ(s[i], p[i]);
+        delete[] s;
     }
 
     delete[] m1;
     delete[] m2;
     delete[] p;
-    delete[] s;
 }
 
 TEST(Cannons_Multiplication, Test_M16x1_M16x16) {
@@ -105,7 +106,6 @@ TEST(Cannons_Multiplication, Test_M16x1_M16x16) {
     double* m1 = new double[m1c * m1r];
     double* m2 = new double[m2c * m2r];
     double* p = new double[m1r * m2c];
-    double* s = new double[m1r * m2c];
 
     if (rank == 0) {
         fill_matrix(m1, m1c, m1r);
@@ -113,15 +113,16 @@ TEST(Cannons_Multiplication, Test_M16x1_M16x16) {
     }
     cannon_parallel_multiply(p, m1, m1c, m1r, m2, m2c, m2r);
     if (rank == 0) {
+        double* s = new double[m1r * m2c];
         multiply_matrix(s, m1, m1c, m1r, m2, m2c, m2r);
         for (int i = 0; i < m1r * m2c; i++)
             ASSERT_DOUBLE_EQ(s[i], p[i]);
+        delete[] s;
     }
 
     delete[] m1;
     delete[] m2;
     delete[] p;
-    delete[] s;
 }
 
 TEST(Cannons_Multiplication, Test_M16x16_M16x16) {
@@ -136,7 +137,6 @@ TEST(Cannons_Multiplication, Test_M16x16_M16x16) {
     double* m1 = new double[m1c * m1r];
     double* m2 = new double[m2c * m2r];
     double* p = new double[m1r * m2c];
-    double* s = new double[m1r * m2c];
 
     if (rank == 0) {
         fill_matrix(m1, m1c, m1r);
@@ -144,15 +144,16 @@ TEST(Cannons_Multiplication, Test_M16x16_M16x16) {
     }
     cannon_parallel_multiply(p, m1, m1c, m1r, m2, m2c, m2r);
     if (rank == 0) {
+        double* s = new double[m1r * m2c];
         multiply_matrix(s, m1, m1c, m1r, m2, m2c, m2r);
         for (int i = 0; i < m1r * m2c; i++)
             ASSERT_DOUBLE_EQ(s[i], p[i]);
+        delete[] s;
     }
 
     delete[] m1;
     delete[] m2;
     delete[] p;
-    delete[] s;
 }
 
 TEST(Cannons_Multiplication, Test_M24x24_M24x24) {
@@ -167,7 +168,6 @@ TEST(Cannons_Multiplication, Test_M24x24_M24x24) {
     double* m1 = new double[m1c * m1r];
     double* m2 = new double[m2c * m2r];
     double* p = new double[m1r * m2c];
-    double* s = new double[m1r * m2c];
 
     if (rank == 0) {
         fill_matrix(m1, m1c, m1r);
@@ -175,15 +175,16 @@ TEST(Cannons_Multiplication, Test_M24x24_M24x24) {
     }
     cannon_parallel_multiply(p, m1, m1c, m1r, m2, m2c, m2r);
     if (rank == 0) {
+        double* s = new double[m1r * m2c];
         multiply_matrix(s, m1, m1c, m1r, m2, m2c, m2r);
         for (int i = 0; i < m1r * m2c; i++)
             ASSERT_DOUBLE_EQ(s[i], p[i]);
+        delete[] s;
     }
 
     delete[] m1;
     delete[] m2;
     delete[] p;
-    delete[] s;
 }
 
 int main(int argc, char** argv) {
