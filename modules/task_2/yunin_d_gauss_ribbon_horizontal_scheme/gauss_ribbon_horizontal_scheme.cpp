@@ -165,9 +165,7 @@ void PrintMatrixVector(const vector<double> &matr, int size_matr) {
         if (i == size_matr + 1) {
             std::cout << "| " << matr[k] << std::endl;
             i = 0;
-        }
-        else 
-        {
+        } else {
             std::cout << matr[k] << ' ';
         }
     }
@@ -203,15 +201,12 @@ vector<double> GaussParallel(vector<double> &matr, vector<double> &right_part, i
     vector<int> proc_row_ind(proc_size), proc_row_num(proc_size);
     int num_rows = size_matr / proc_size;
     int remaining_rows = size_matr % proc_size;
-
     // чтобы распределить строки между процессами равномерно,
     // положим в те процессы, чей ранк меньше остатка на одну строку больше
     int proc_num_rows;
     if (proc_rank < remaining_rows) {
         proc_num_rows = num_rows + 1;
-    }
-    else 
-    {
+    } else {
         proc_num_rows = num_rows;
     }
     // отлаживаем число строк в процессе
@@ -251,14 +246,12 @@ vector<double> GaussParallel(vector<double> &matr, vector<double> &right_part, i
     }
     MPI_Scatterv(matr.data(), num_send_elems.data(), ind_send_elems.data(),
         MPI_DOUBLE, &local_matr[0], proc_num_rows * size_matr, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    
     proc_row_ind[0] = 0;  // номер первой строки в нулевом процессе
     proc_row_num[0] = proc_num_rows;  // сколько строк на нулевом процессе
     for (int i = 0; i < proc_size; i++) {
         if (i < (size_matr % proc_size)) {
             proc_row_num[i] = proc_num_rows;
-        }
-        else {
+        } else {
             proc_row_num[i] = num_rows;
         }
         if (i != 0) {
@@ -322,9 +315,9 @@ vector<double> GaussParallel(vector<double> &matr, vector<double> &right_part, i
         double coef;
         for (int j = 0; j < proc_num_rows; j++) {
             if (num_row_iter_loc[j] == -2) {
-                coef = local_matr[j*size_matr+i] / global_main_row[i];
-                for (int k=i; k<size_matr; k++) {
-                    local_matr[j*size_matr + k] -= coef* global_main_row[k];
+                coef = local_matr[j * size_matr + i] / global_main_row[i];
+                for (int k = i; k < size_matr; k++) {
+                    local_matr[j * size_matr + k] -= coef * global_main_row[k];
                 }
                 local_right_vector[j] -= coef * global_main_row[size_matr];
             }
@@ -355,8 +348,7 @@ vector<double> GaussParallels(vector<double> &matr, int size_matr) {
     for (int i = 0; i < proc_size; i++) {
         if (i < (size_matr % proc_size)) {
             num_send_counts[i] = (num_rows + 1) * (size_matr + 1);
-        } 
-        else {
+        } else {
             num_send_counts[i] = num_rows * (size_matr + 1);
         }
         if (i > 0) {
