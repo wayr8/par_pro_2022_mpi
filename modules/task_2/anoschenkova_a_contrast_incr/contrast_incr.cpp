@@ -1,5 +1,10 @@
 // Copyright 2023 Anoschenkova Anna
 #include "../../../modules/task_2/anoschenkova_a_contrast_incr/contrast_incr.h"
+#include <mpi.h>
+#include <algorithm>
+#include <ctime>
+#include <iostream>
+#include <random>
 
 std::vector<int> genImage(int rows, int cols) {
     std::vector<int> image(rows * cols);
@@ -147,8 +152,7 @@ std::vector<int> incrContrastParallel(const std::vector<int>& img, int rows,
 
 std::vector<int> incrContrast(const std::vector<int>& img, int rows, int cols,
                               int correct) {
-    if (static_cast<int>(img.size()) != rows * cols || correct < 1)
-        throw -1;
+    if (static_cast<int>(img.size()) != rows * cols || correct < 1) throw -1;
     std::vector<int> res(rows * cols);
 
     int middle = 0;
