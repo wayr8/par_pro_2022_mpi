@@ -9,7 +9,7 @@ vector<int> Labeling(const vector<vector<int>> &image, int width, int height);
 void PrintImage(const vector<vector<int>> &image, int width, int height);
 void PrintImage(const vector<int> &image, int width, int height);
 void CreateLabelingImage(int image[], int width, int height);
-bool Fill(const vector<vector<int>> &image, vector<vector<int>> *label_image, 
+bool Fill(const vector<vector<int>> &image, vector<vector<int>> *label_image,
     int x, int y, int label, int height, int width);
 vector<int> CountComponents(const vector<int> &image, int width, int height);
 vector<int> PointsComponents(const vector<int>& components_num_points, const vector<int>& image, int width);
