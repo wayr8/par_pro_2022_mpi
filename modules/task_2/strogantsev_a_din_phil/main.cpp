@@ -1,6 +1,6 @@
 // Copyright 2022 Strogantsev Anton
 #include <gtest/gtest.h>
-#include "./din_phil.h""
+#include "./din_phil.h"
 #include <gtest-mpi-listener.hpp>
 
 
