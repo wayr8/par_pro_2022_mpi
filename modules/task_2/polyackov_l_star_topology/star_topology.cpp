@@ -1,11 +1,12 @@
 // Copyright 2022 Polyackov Lev
 #include "../../../modules/task_2/polyackov_l_star_topology/star_topology.h"
 
-void MPI_Send_With_Star(void* message, int count, MPI_Datatype datatype, int from, int dest, int tag, MPI_Comm comm, std::vector<int>& path) {
-    path.clear();
+void MPI_Send_With_Star(void* message, int count, MPI_Datatype datatype, int from,
+                        int dest, int tag, MPI_Comm comm, std::vector<int>* path) {
+    (*path).clear();
     if (from == dest) {
-        path.push_back(from);
-        path.push_back(dest);
+        (*path).push_back(from);
+        (*path).push_back(dest);
         return;
     }
 
@@ -19,19 +20,19 @@ void MPI_Send_With_Star(void* message, int count, MPI_Datatype datatype, int fro
             MPI_Datatype* buf = new MPI_Datatype[count];
 
             MPI_Recv(buf, count, datatype, from, tag, comm, &status);
-            path.push_back(from);
+            (*path).push_back(from);
             MPI_Send(buf, count, datatype, dest, tag, comm);
-            path.push_back(dest);
+            (*path).push_back(dest);
             delete[] buf;
-            path.push_back(rank);
+            (*path).push_back(rank);
         }
         return;
     } else {
         if (from != 0 && dest != 0) {
-            path.push_back(rank);
+            (*path).push_back(rank);
             MPI_Send(message, count, datatype, 0, tag, comm);
         } else {
-            path.push_back(rank);
+            (*path).push_back(rank);
             MPI_Send(message, count, datatype, dest, tag, comm);
         }
         return;
