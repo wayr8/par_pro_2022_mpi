@@ -88,21 +88,21 @@ TEST(Hypercube_MPI, Test_Hypercube_Send_Big_Data) {
   MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
 
   if (ProcNum >= 2) {
-    int *data = new int[1'000'000];
-    int *correctData = getRandomVector(1'000'000, 42);
+    int *data = new int[1000000];
+    int *correctData = getRandomVector(1000000, 42);
 
     if (ProcRank == 0) {
-      for (int i = 0; i < 1'000'000; i++) {
+      for (int i = 0; i < 1000000; i++) {
         data[i] = correctData[i];
       }
     }
 
     std::vector<int> pathToDest;
-    sendHyperCube(data, 1'000'000, MPI_INT, 0, 1, 0, MPI_COMM_WORLD,
+    sendHyperCube(data, 1000000, MPI_INT, 0, 1, 0, MPI_COMM_WORLD,
                   &pathToDest);
 
     if (ProcRank == 1) {
-      for (int i = 0; i < 1'000'000; i++) {
+      for (int i = 0; i < 1000000; i++) {
         ASSERT_EQ(data[i], correctData[i]);
       }
     }
