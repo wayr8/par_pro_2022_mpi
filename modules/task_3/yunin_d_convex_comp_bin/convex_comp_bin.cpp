@@ -11,29 +11,10 @@
 
 using std::vector;
 
-//TODO
-//1) Получение данных
-//2) Определение компонент изображения
-//3) Чистим изображение от лишних точек
-//4) Алгоритм Грэхема
-/*
-// Изображение буду формировать самостоятельно
-// Задача определение компонент изображения
-    Пример изображения
-(0,0) - 0 0 0 0 0 0 0
-        0 0 1 0 0 0 0
-        0 1 1 1 0 0 0
-        0 1 1 0 0 0 0
-        0 0 0 0 0 1 0
-        0 0 0 1 1 1 0
-        0 0 0 0 0 0 0 - (6,6) координаты   
-*/
-
 // 1 - Labeling
 vector<int> Labeling(const vector<vector<int>> &image, int width, int height) {
     int label = 1;
     int labeling_image_arr[height][width];
-
     // start init array
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
@@ -41,7 +22,6 @@ vector<int> Labeling(const vector<vector<int>> &image, int width, int height) {
         }
     }
     // end init array
-    
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
             if (Fill(image, reinterpret_cast<int *>(labeling_image_arr), x, y, label, height, width)) {
@@ -50,7 +30,6 @@ vector<int> Labeling(const vector<vector<int>> &image, int width, int height) {
             // std::cout << "\nNext point\n\n";
         }   
     }
-
     // start print array
     // for (int i = 0; i < height; i++) {
     //     for (int j = 0; j < width; j++) {
@@ -59,7 +38,6 @@ vector<int> Labeling(const vector<vector<int>> &image, int width, int height) {
     //     std::cout << std::endl;   
     // }
     // end print array
-
     vector<int> labeling_image(width*height);
     // start init vector
     for (int i = 0; i < height; i++) {
@@ -134,7 +112,6 @@ void CreateLabelingImage(int image[], int width, int height) {
     }
 }
 
-// посчитать количество компонент и точки, что этому принадлежат
 vector<int> CountComponents(const vector<int> &image, int width, int height) {
     int num_components = 0;
     for (int i = 0; i < width * height; i++) {
@@ -184,7 +161,6 @@ int FindNumComponents(const vector<int> &image) {
     return num_components;
 }
 
-// у каждой точки 2 координаты + разделитель (-1) их будет на 1 меньше чем компонент
 vector<int> PointsComponents(vector<int>& components_num_points, vector<int>& image, int width) {
     int size = 0;
     for (int i = 1; i < components_num_points.size(); i+=2) {
@@ -232,7 +208,6 @@ vector<int> PointsComponents(vector<int>& components_num_points, vector<int>& im
 // 1 - Labeling
 
 // 2 - start make min points
-
 int CountNumPointsComponent(vector<int> image) {
     int num_points = 0;
     for (int i = 0; i < image.size(); i++) {
@@ -427,7 +402,7 @@ void CreateComponent1(vector<vector<int>> *matr) {
     (*matr)[9][6] = 1; (*matr)[9][5] = 1; (*matr)[9][4] = 1;
     (*matr)[9][1] = 1; (*matr)[4][4] = 1; (*matr)[4][5] = 1;
     (*matr)[4][3] = 1; (*matr)[4][6] = 1; (*matr)[3][6] = 1;
-    (*matr)[8][2] = 1;
+    (*matr)[8][2] = 1; (*matr)[7][8] = 1; (*matr)[6][2] = 1;
 }
 
 void CreateComponent2(vector<vector<int>> *matr) {
@@ -534,11 +509,11 @@ vector<int> MainFunParallel(vector<int> image, int width, int height, int num_co
     }
     int part = num_components / num_active_proc;
     int remainder = num_components % num_active_proc;
-    // int local_part = part;
-    // if (rank < remainder) {
-    //     local_part++;
-    // }
-    vector<int> local_components(part);
+    int local_parts = part;
+    if (rank < remainder) {
+        local_parts++;
+    }
+    vector<int> local_components(local_parts);
     vector<int> local_image(width * height);
     if (rank == 0) {
         local_image = image;
@@ -551,20 +526,28 @@ vector<int> MainFunParallel(vector<int> image, int width, int height, int num_co
         // std::cout << "Recv 1\n";
         MPI_Recv(local_image.data(), width * height, MPI_INT, 0, 0, MPI_COMM_WORLD, &stat);
     }
+    if (rank != 0) {
+        MPI_Send(&local_parts, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
+    }
     if (rank == 0) {
         int index = 0;
         for (int i = 1; i < num_active_proc; i++) {
-            index = (i-1) * part;
-            // std::cout << "rank = " << rank << " index = " << index << " part " << part << "\n";
+            // index = (i-1) * part;
+            int proc_part;
+            MPI_Status stat;
+            MPI_Recv(&proc_part, 1, MPI_INT, i, 0, MPI_COMM_WORLD, &stat);
+            // std::cout << "rank = " << rank << " index = " << index << " proc_part " << proc_part << "\n";
             // std::cout << "Send 2\n";
-            MPI_Send(components.data() + index, part, MPI_INT, i, 0, MPI_COMM_WORLD);
+            // std::cout << " rank = " << i << " part = " << proc_part << "\n";
+            MPI_Send(components.data() + index, proc_part, MPI_INT, i, 0, MPI_COMM_WORLD);
+            index += proc_part;
         }
-        index += part;
-        if (num_active_proc == 1) {
-            index--;
-        }
-        // std::cout << "rank = " << rank << " index = " << index << " part " << part << "\n";
-        local_components.resize(part + remainder);
+        // index += part;
+        // if (num_active_proc == 1) {
+        //     index--;
+        // }
+        // std::cout << "rank = " << rank << " index = " << index << " part " << local_parts << "\n";
+        local_components.resize(local_parts);
         int j = 0;
         for (int i = index; i < num_components; i++) {
             local_components[j] = components[i];
@@ -574,7 +557,7 @@ vector<int> MainFunParallel(vector<int> image, int width, int height, int num_co
     } else {
         MPI_Status stat;
         // std::cout << "Recv 1\n";
-        MPI_Recv(local_components.data(), part, MPI_INT, 0, 0, MPI_COMM_WORLD, &stat);
+        MPI_Recv(local_components.data(), local_parts, MPI_INT, 0, 0, MPI_COMM_WORLD, &stat);
     }
     // std::cout << "Proc " << rank << "\n";
     // PrintImage(local_image, width, height);
@@ -611,10 +594,10 @@ vector<int> MainFunParallel(vector<int> image, int width, int height, int num_co
             MPI_Status stat;
             MPI_Recv(buffer.data(), size, MPI_INT, i, 0, MPI_COMM_WORLD, &stat);
             // print
-            // std::cout << "Rank = " << i << std::endl;
+            // std::cout << "\nRank = " << i << std::endl;
             // for (int i = 0; i < size; i++) {
-            //     if (buffer[i] == -1) {
-            //         std::cout << buffer[i]; 
+            //     if (buffer[i] == -1 && buffer[i+1] == 0) {
+            //         std::cout << buffer[i] << " "; 
             //         break;
             //     }
             //     std::cout << buffer[i] << " "; 
@@ -622,22 +605,22 @@ vector<int> MainFunParallel(vector<int> image, int width, int height, int num_co
             // std::cout << "\n";
             // print
             for (int i = 0; i < size; i++) {
-                if (buffer[i] == -1) {
+                if (buffer[i] == -1 && buffer[i+1] == 0) {
                     result.push_back(buffer[i]);
                     break;
                 }
                 result.push_back(buffer[i]);
             }
         }
+        // print
+        // for (int i = 0; i < local_result.size(); i++) {
+        //     std::cout << local_result[i] << " ";
+        // }
+        // std::cout << "\n";
+        // print
         for (int i = 0; i < local_result.size(); i++) {
             result.push_back(local_result[i]);
         }
     }
     return result;
 }
-// в каждом процессе у нас пока есть image
-// рассылаем каждому процессу image
-// рассылаем количество компонент
-// из него каждый процесс делает набор точек
-// и по этому набору точек строит оболочку
-// после чего 0 процесс собирает данные

@@ -23,5 +23,3 @@ void CreateComponent2(vector<vector<int>> *matr);
 void CreateComponent3(vector<vector<int>> *matr, int width, int height);
 void CreateComponent4(vector<vector<int>> *matr, int width, int height);
 void CreateComponent5(vector<vector<int>> *matr, int width, int height);
-
-

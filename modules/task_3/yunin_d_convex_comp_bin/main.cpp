@@ -5,12 +5,6 @@
 #include <gtest-mpi-listener.hpp>
 #include "./convex_comp_bin.h"
 
-// итак, что мы имеем на входе - бинарное изображение (массив, значения которого 0 и 1, с несколькими компонентами связности)
-// выход - массив точек, которые образуют выпуклую оболочку этих компонент
-
-// по идеи, получается, что я должен написать параллельную реализацию алгоритма для построения выпуклой оболочки и последовательную и на этом всё.
-
-
 TEST(Convex_Shell_Binary_Image, Test_1) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -24,10 +18,13 @@ TEST(Convex_Shell_Binary_Image, Test_1) {
     // }
     CreateComponent1(&global_vec);
     labeling_image = Labeling(global_vec, width, height);
+    if (rank == 0) {
+        // PrintImage(labeling_image, width, height);
+    }
     vector<int> convex_shell_par = MainFunParallel(labeling_image, width, height, FindNumComponents(labeling_image));
     if (rank == 0) {
         vector<int> convex_shell_seq = MainFuncSequence(labeling_image, width, height, FindNumComponents(labeling_image)); 
-        // std::cout << "Сравниваем\n";
+        // std::cout << "Checked\n";
         // std::cout << "Seq " << convex_shell_seq.size() << " Par " <<  convex_shell_par.size() << "\n";
         // for (int i = 0; i < convex_shell_seq.size(); i++) {
         //     std::cout << "Value seq = " << convex_shell_seq[i] << " Value par " << convex_shell_par[i] << "\n";
@@ -56,7 +53,7 @@ TEST(Convex_Shell_Binary_Image, Test_2) {
     vector<int> convex_shell_par = MainFunParallel(labeling_image, width, height, FindNumComponents(labeling_image));
     if (rank == 0) {
         vector<int> convex_shell_seq = MainFuncSequence(labeling_image, width, height, FindNumComponents(labeling_image)); 
-        // std::cout << "Сравниваем\n";
+        // std::cout << "Checked\n";
         // std::cout << "Seq " << convex_shell_seq.size() << " Par " <<  convex_shell_par.size() << "\n";
         // for (int i = 0; i < convex_shell_seq.size(); i++) {
         //     std::cout << "Value seq = " << convex_shell_seq[i] << " Value par " << convex_shell_par[i] << "\n";
@@ -85,7 +82,7 @@ TEST(Convex_Shell_Binary_Image, Test_3) {
     vector<int> convex_shell_par = MainFunParallel(labeling_image, width, height, FindNumComponents(labeling_image));
     if (rank == 0) {
         vector<int> convex_shell_seq = MainFuncSequence(labeling_image, width, height, FindNumComponents(labeling_image)); 
-        // std::cout << "Сравниваем\n";
+        // std::cout << "Checked\n";
         // std::cout << "Seq " << convex_shell_seq.size() << " Par " <<  convex_shell_par.size() << "\n";
         // for (int i = 0; i < convex_shell_seq.size(); i++) {
         //     std::cout << "Value seq = " << convex_shell_seq[i] << " Value par " << convex_shell_par[i] << "\n";
@@ -115,7 +112,7 @@ TEST(Convex_Shell_Binary_Image, Test_4) {
     vector<int> convex_shell_par = MainFunParallel(labeling_image, width, height, FindNumComponents(labeling_image));
     if (rank == 0) {
         vector<int> convex_shell_seq = MainFuncSequence(labeling_image, width, height, FindNumComponents(labeling_image)); 
-        // std::cout << "Сравниваем\n";
+        // std::cout << "Checked\n";
         // std::cout << "Seq " << convex_shell_seq.size() << " Par " <<  convex_shell_par.size() << "\n";
         // for (int i = 0; i < convex_shell_seq.size(); i++) {
         //     std::cout << "Value seq = " << convex_shell_seq[i] << " Value par " << convex_shell_par[i] << "\n";
@@ -145,7 +142,7 @@ TEST(Convex_Shell_Binary_Image, Test_5) {
     vector<int> convex_shell_par = MainFunParallel(labeling_image, width, height, FindNumComponents(labeling_image));
     if (rank == 0) {
         vector<int> convex_shell_seq = MainFuncSequence(labeling_image, width, height, FindNumComponents(labeling_image)); 
-        // std::cout << "Сравниваем\n";
+        // std::cout << "Checked\n";
         // std::cout << "Seq " << convex_shell_seq.size() << " Par " <<  convex_shell_par.size() << "\n";
         // for (int i = 0; i < convex_shell_seq.size(); i++) {
         //     std::cout << "Value seq = " << convex_shell_seq[i] << " Value par " << convex_shell_par[i] << "\n";
