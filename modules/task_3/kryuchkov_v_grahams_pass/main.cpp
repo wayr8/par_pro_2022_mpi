@@ -1,10 +1,8 @@
 // Copyright 2022 Kryuchkov Vladimir
 #include <gtest/gtest.h>
-
-#include <gtest-mpi-listener.hpp>
 #include <vector>
-
 #include "./grahams_pass.h"
+#include <gtest-mpi-listener.hpp>
 
 TEST(grahams_pass_test, correct_finding_of_a_convex_hull_on_a_set_of_5_points) {
   int size = 5;
