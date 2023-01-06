@@ -58,6 +58,10 @@ std::vector<double> getParallelOperations(std::vector<double> global_image, int 
         throw std::runtime_error("Invalid parameters");
     }
 
+    if (size == 1) {
+        return getSequentialOperations(global_image, rows, cols);
+    }
+
     const int delta = (rows / size) * cols;
     const int epsilon = (rows % size) * cols;
 
