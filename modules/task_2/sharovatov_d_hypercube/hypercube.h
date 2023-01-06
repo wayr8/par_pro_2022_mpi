@@ -2,10 +2,10 @@
 #ifndef MODULES_TASK_2_SHAROVATOV_D_HYPERCUBE_HYPERCUBE_H_
 #define MODULES_TASK_2_SHAROVATOV_D_HYPERCUBE_HYPERCUBE_H_
 
+#include <mpi.h>
+
 #include <vector>
 #include <random>
-
-#include <mpi.h>
 
 int* getRandomVector(int size, int seed);
 
