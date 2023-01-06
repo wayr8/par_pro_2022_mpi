@@ -2,10 +2,10 @@
 #ifndef MODULES_TASK_1_SHAROVATOV_D_SCALAR_PRODUCT_SCALAR_PRODUCT_H_
 #define MODULES_TASK_1_SHAROVATOV_D_SCALAR_PRODUCT_SCALAR_PRODUCT_H_
 
+#include <mpi.h>
+
 #include <vector>
 #include <random>
-
-#include <mpi.h>;
 
 std::vector<int> getRandomVector(int size);
 
