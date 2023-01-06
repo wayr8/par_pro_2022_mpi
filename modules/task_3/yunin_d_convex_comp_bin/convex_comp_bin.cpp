@@ -161,7 +161,7 @@ int FindNumComponents(const vector<int> &image) {
     return num_components;
 }
 
-vector<int> PointsComponents(const vector<int>& components_num_points,const vector<int>& image, int width) {
+vector<int> PointsComponents(const vector<int>& components_num_points, const vector<int>& image, int width) {
     int size = 0;
     for (int i = 1; i < components_num_points.size(); i+=2) {
         size += components_num_points[i];
