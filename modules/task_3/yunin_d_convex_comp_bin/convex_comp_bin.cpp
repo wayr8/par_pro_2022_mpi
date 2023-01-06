@@ -28,14 +28,14 @@ vector<int> Labeling(const vector<vector<int>> &image, int width, int height) {
                 label++;
             }
             // std::cout << "\nNext point\n\n";
-        }   
+        }
     }
     // start print array
     // for (int i = 0; i < height; i++) {
     //     for (int j = 0; j < width; j++) {
     //         std::cout << labeling_image_arr[i][j] << ' ';
     //     }
-    //     std::cout << std::endl;   
+    //     std::cout << std::endl;
     // }
     // end print array
     vector<int> labeling_image(width*height);
@@ -161,7 +161,7 @@ int FindNumComponents(const vector<int> &image) {
     return num_components;
 }
 
-vector<int> PointsComponents(vector<int>& components_num_points, vector<int>& image, int width) {
+vector<int> PointsComponents(const vector<int>& components_num_points,const vector<int>& image, int width) {
     int size = 0;
     for (int i = 1; i < components_num_points.size(); i+=2) {
         size += components_num_points[i];
@@ -199,7 +199,7 @@ vector<int> PointsComponents(vector<int>& components_num_points, vector<int>& im
     }
     // start print
     // for (int i = 0; i < size; i++) {
-    //     std::cout << points[i] << " ";     
+    //     std::cout << points[i] << " ";
     // }
     // std::cout << std::endl;
     // end print
@@ -229,7 +229,7 @@ vector<int> MakeMinPointsLocal(const vector<int> &image, int width, int height, 
                             local_image[i * width + j] = 0;
                         }
                     } else {
-                        if (((image[i * width + j - 1] == component) && (image[i * width + j + 1] == component)) || 
+                        if (((image[i * width + j - 1] == component) && (image[i * width + j + 1] == component)) ||
                             ((image[(i + 1) * width + j] == component) && (image[(i - 1) * width + j] == component))) {
                             local_image[i * width + j] = 0;
                         }
@@ -238,11 +238,12 @@ vector<int> MakeMinPointsLocal(const vector<int> &image, int width, int height, 
                 }
                 if ((i > 0) && (i < height - 1)) {
                     if ((j == 0) || (j == width - 1)) {
-                        if ((image[(i - 1) * width + j] == component) && (image[(i + 1) * width + j + 1] == component)) {
+                        if ((image[(i - 1) * width + j] == component) &&
+                            (image[(i + 1) * width + j + 1] == component)) {
                             local_image[i * width + j] = 0;
                         }
                     } else {
-                        if (((image[i * width + j - 1] == component) && (image[i * width + j + 1] == component)) || 
+                        if (((image[i * width + j - 1] == component) && (image[i * width + j + 1] == component)) ||
                             ((image[(i + 1) * width + j] == component) && (image[(i - 1) * width + j] == component))) {
                             local_image[i * width + j] = 0;
                         }
@@ -264,13 +265,13 @@ vector<int> MakeMinPointsLocal(const vector<int> &image, int width, int height, 
                 points[k] = j;  // write x coord
                 k++;
                 points[k] = i;  // write y coord
-                k++; 
+                k++;
             }
         }
     }
     // print
     // for (int i = 0; i < points.size(); i+=2) {
-    //     std::cout << "(" << points[i] << "," << points[i + 1] << ")" << " ";     
+    //     std::cout << "(" << points[i] << "," << points[i + 1] << ")" << " ";
     // }
     // std::cout << std::endl;
     // end print
@@ -287,14 +288,15 @@ vector<int> SortingPoints(const vector<int> &points, int x_min, int y_min) {
     vector<int> result(points);
     // print
     // for (int i = 0; i < result.size(); i+=2) {
-    //     std::cout << "(" << result[i] << "," << result[i + 1] << ")" << " ";     
+    //     std::cout << "(" << result[i] << "," << result[i + 1] << ")" << " ";
     // }
     // std::cout << std::endl;
     // end print
     int size = points.size() / 2;
     for (int i = 1; i < size; i++) {
         int j = i;
-        while ((j > 0) && (rotate(x_min, y_min, result[2 * j - 2], result[2 * j - 1], result[2 * j], result[2 * j + 1]) < 0)) {
+        while ((j > 0) && (rotate(x_min, y_min, result[2 * j - 2],
+            result[2 * j - 1], result[2 * j], result[2 * j + 1]) < 0)) {
             int temp = result[2 * j - 2];
             result[2 * j - 2] = result[2 * j];
             result[2 * j] = temp;
@@ -306,7 +308,7 @@ vector<int> SortingPoints(const vector<int> &points, int x_min, int y_min) {
     }
     // print
     // for (int i = 0; i < result.size(); i+=2) {
-    //     std::cout << "(" << result[i] << "," << result[i + 1] << ")" << " ";     
+    //     std::cout << "(" << result[i] << "," << result[i + 1] << ")" << " ";
     // }
     // std::cout << std::endl;
     // end print
@@ -340,7 +342,7 @@ vector<int> GrahamAlgo(vector<int> points) {
         points = SortingPoints(points, x_min, y_min);
         // start print
         // for (int i = 0; i < points.size(); i+=2) {
-        //     std::cout << "(" << points[i] << "," << points[i + 1] << ")" << " ";     
+        //     std::cout << "(" << points[i] << "," << points[i + 1] << ")" << " ";
         // }
         // std::cout << std::endl;
         // end print
@@ -380,10 +382,10 @@ vector<int> GrahamAlgo(vector<int> points) {
         }
         // start print
         // for (int i = 0; i < result.size(); i+=2) {
-        //     std::cout << "(" << result[i] << "," << result[i + 1] << ")" << " ";     
+        //     std::cout << "(" << result[i] << "," << result[i + 1] << ")" << " ";
         // }
         // std::cout << std::endl;
-        // end print 
+        // end print
     } else {
         result.resize(2);
         result[0] = points[0];
@@ -437,14 +439,14 @@ void CreateComponent4(vector<vector<int>> *matr, int width, int height) {
         } else {
             for (int j = 1; j < width; j+=2) {
                 (*matr)[i][j] = 1;
-            } 
+            }
         }
     }
 }
 
 void CreateComponent5(vector<vector<int>> *matr, int width, int height) {
     for (int i = 0; i < height; i++) {
-        if (i == 0 || i == height- 1 ) {
+        if (i == 0 || i == height - 1) {
            for (int j = 0; j < width; j++) {
                (*matr)[i][j] = 1;
             }
@@ -467,7 +469,7 @@ vector<int> MainFuncSequence(const vector<int> &image, int width, int height, in
         // start print
         // std::cout << "convex shell" <<std::endl;
         // for (int i = 0; i < convex_shell.size(); i+=2) {
-        //     std::cout << "(" << convex_shell[i] << "," << convex_shell[i + 1] << ")" << " ";     
+        //     std::cout << "(" << convex_shell[i] << "," << convex_shell[i + 1] << ")" << " ";
         // }
         // std::cout << std::endl;
         // end print
@@ -483,7 +485,7 @@ vector<int> MainFuncSequence(const vector<int> &image, int width, int height, in
     //         std::cout << result[i] << " ";
     //         i++;
     //     }
-    //     std::cout << "(" << result[i] << "," << result[i + 1] << ")" << " ";     
+    //     std::cout << "(" << result[i] << "," << result[i + 1] << ")" << " ";
     // }
     // std::cout << std::endl;
     // end print
@@ -553,7 +555,6 @@ vector<int> MainFunParallel(vector<int> image, int width, int height, int num_co
             local_components[j] = components[i];
             j++;
         }
-        
     } else {
         MPI_Status stat;
         // std::cout << "Recv 1\n";
@@ -597,10 +598,10 @@ vector<int> MainFunParallel(vector<int> image, int width, int height, int num_co
             // std::cout << "\nRank = " << i << std::endl;
             // for (int i = 0; i < size; i++) {
             //     if (buffer[i] == -1 && buffer[i+1] == 0) {
-            //         std::cout << buffer[i] << " "; 
+            //         std::cout << buffer[i] << " ";
             //         break;
             //     }
-            //     std::cout << buffer[i] << " "; 
+            //     std::cout << buffer[i] << " ";
             // }
             // std::cout << "\n";
             // print

@@ -11,7 +11,7 @@ void PrintImage(const vector<int> &image, int width, int height);
 void CreateLabelingImage(int image[], int width, int height);
 bool Fill(const vector<vector<int>> &image, int label_image[], int x, int y, int label, int height, int width);
 vector<int> CountComponents(const vector<int> &image, int width, int height);
-vector<int> PointsComponents(vector<int>& components_num_points, vector<int>& image, int width);
+vector<int> PointsComponents(const vector<int>& components_num_points, const vector<int>& image, int width);
 int FindNumComponents(const vector<int> &image);
 vector<int> MakeMinPointsLocal(const vector<int> &image, int width, int height, int component);
 vector<int> GrahamAlgo(vector<int> points);
