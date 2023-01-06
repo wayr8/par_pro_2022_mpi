@@ -59,7 +59,8 @@ vector<int> Labeling(const vector<vector<int>> &image, int width, int height) {
     return labeling_image;
 }
 
-bool Fill(const vector<vector<int>> &image, vector<vector<int>> *label_image, int x, int y, int label, int height, int width) {
+bool Fill(const vector<vector<int>> &image, vector<vector<int>> *label_image, 
+    int x, int y, int label, int height, int width) {
     // std::cout << label << std::endl;
     bool next_step = false;
     if (((*label_image)[y][x] == 0) && (image[y][x] == 1)) {
