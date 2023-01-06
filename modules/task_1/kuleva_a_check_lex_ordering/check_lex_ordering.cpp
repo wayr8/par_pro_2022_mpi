@@ -49,18 +49,18 @@ int getParallelOperations(std::string global_str_inp1, std::string global_str_in
     const size_t remainder = global_len % size;
 
     std::string loc_str1;
-    loc_str1.reserve(delta);
+    loc_str1.reserve(delta + remainder);
     std::string loc_str2;
-    loc_str2.reserve(delta);
+    loc_str2.reserve(delta + remainder);
 
     if (rank == 0) {
         for (int proc = 1; proc < size; proc++) {
             char* buf1, * buf2;
-            buf1 = new char[delta];
-            buf2 = new char[delta];
+            buf1 = new char[delta + remainder];
+            buf2 = new char[delta + remainder];
             for (int i = 0; i < delta; i++) {
-                buf1[i] = global_str_inp1[proc * delta + i];
-                buf2[i] = global_str_inp2[proc * delta + i];
+                buf1[i] = global_str_inp1[(proc - 1) * delta + i];
+                buf2[i] = global_str_inp2[(proc - 1) * delta + i];
             }
             MPI_Send(buf1, static_cast<int>(delta),
                 MPI_CHAR, proc, 0, MPI_COMM_WORLD);
@@ -72,8 +72,8 @@ int getParallelOperations(std::string global_str_inp1, std::string global_str_in
     if (rank != 0) {
         MPI_Status status;
         char* buf1, * buf2;
-        buf1 = new char[delta];
-        buf2 = new char[delta];
+        buf1 = new char[delta + remainder];
+        buf2 = new char[delta + remainder];
         MPI_Recv(buf1, static_cast<int>(delta),
             MPI_CHAR, 0, 0, MPI_COMM_WORLD, &status);
         MPI_Recv(buf2, static_cast<int>(delta),
@@ -95,6 +95,9 @@ int getParallelOperations(std::string global_str_inp1, std::string global_str_in
                MPI_COMM_WORLD);
 
     std::string rem_str1, rem_str2;
+    rem_str1.reserve(remainder);
+    rem_str2.reserve(remainder);
+
     for (int i = global_len - remainder; i < global_len; i++) {
             rem_str1.push_back(global_str_inp1[i]);
             rem_str2.push_back(global_str_inp2[i]);
