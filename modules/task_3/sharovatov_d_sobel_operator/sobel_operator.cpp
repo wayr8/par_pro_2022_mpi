@@ -72,7 +72,6 @@ int calculateNewPixelColor(std::vector<std::vector<int>> image, int x, int y) {
   }
 
   int resColor = clamp((sqrt(pow(resultX, 2) + pow(resultY, 2))), 0, 255);
-  
   return resColor;
 }
 

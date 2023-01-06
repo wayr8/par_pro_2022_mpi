@@ -1,6 +1,5 @@
 // Copyright 2022 Sharovatov Daniil
 #include <gtest/gtest.h>
-
 #include <gtest-mpi-listener.hpp>
 
 #include "./sobel_operator.h"
