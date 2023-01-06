@@ -3,7 +3,7 @@
 #include <vector>
 #include <random>
 #include <algorithm>
-#include "../../../modules/task_1/strogantsev_a_matrix_column_sum/matrix_column_sum.h"
+#include "../../../modules/task_1/strogantsev_a_mat_sum/mat_sum.h"
 
 std::vector<int> generateRandomMatrix(int xSize, int ySize) {
     std::mt19937 gen(10);
