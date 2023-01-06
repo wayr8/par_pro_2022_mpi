@@ -58,7 +58,7 @@ TEST(Scalar_Product_MPI, Test_Scalar_Product_Large_Size) {
   MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
   MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
 
-  const int vectorSize = 10'000'000;
+  const int vectorSize = 10000000;
 
   std::vector<int> v1(vectorSize);
   std::vector<int> v2(vectorSize);
