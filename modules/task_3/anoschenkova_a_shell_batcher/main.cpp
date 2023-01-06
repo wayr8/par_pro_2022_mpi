@@ -1,9 +1,7 @@
 // Copyright 2023 Anoschenkova Anna
-#include <gtest-mpi-listener.hpp>
 #include <gtest/gtest.h>
-#include <stdio.h>
-#include <mpi.h>
 #include "./shell_batcher.h"
+#include <gtest-mpi-listener.hpp>
 
 TEST(SortBatcher, SortBatcher_Can_Throw_Assert) {
     std::vector<int> testVec(0);
