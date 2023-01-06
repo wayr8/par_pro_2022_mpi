@@ -493,7 +493,7 @@ vector<int> MainFuncSequence(const vector<int> &image, int width, int height, in
 }
 
 
-vector<int> MainFunParallel(vector<int> image, int width, int height, int num_components) {
+vector<int> MainFunParallel(const vector<int> &image, int width, int height, int num_components) {
     vector<int> result;
     int comm_size, rank;
     MPI_Comm_size(MPI_COMM_WORLD, &comm_size);

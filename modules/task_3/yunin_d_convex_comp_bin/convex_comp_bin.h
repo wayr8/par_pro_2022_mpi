@@ -16,7 +16,7 @@ int FindNumComponents(const vector<int> &image);
 vector<int> MakeMinPointsLocal(const vector<int> &image, int width, int height, int component);
 vector<int> GrahamAlgo(vector<int> points);
 vector<int> MainFuncSequence(const vector<int> &image, int width, int height, int num_components);
-vector<int> MainFunParallel(vector<int> image, int width, int height, int num_components);
+vector<int> MainFunParallel(const vector<int> &image, int width, int height, int num_components);
 int CountNumPointsComponent(vector<int> image);
 void CreateComponent1(vector<vector<int>> *matr);
 void CreateComponent2(vector<vector<int>> *matr);
