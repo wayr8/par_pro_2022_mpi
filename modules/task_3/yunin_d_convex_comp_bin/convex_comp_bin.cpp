@@ -14,7 +14,7 @@ using std::vector;
 // 1 - Labeling
 vector<int> Labeling(const vector<vector<int>> &image, int width, int height) {
     int label = 1;
-    int labeling_image_arr[height][width];
+    vector<vector<int>> labeling_image_arr(height, vector<int>(width));
     // start init array
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
@@ -24,7 +24,7 @@ vector<int> Labeling(const vector<vector<int>> &image, int width, int height) {
     // end init array
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
-            if (Fill(image, reinterpret_cast<int *>(labeling_image_arr), x, y, label, height, width)) {
+            if (Fill(image, &labeling_image_arr, x, y, label, height, width)) {
                 label++;
             }
             // std::cout << "\nNext point\n\n";
@@ -59,12 +59,12 @@ vector<int> Labeling(const vector<vector<int>> &image, int width, int height) {
     return labeling_image;
 }
 
-bool Fill(const vector<vector<int>> &image, int label_image[], int x, int y, int label, int height, int width) {
+bool Fill(const vector<vector<int>> &image, vector<vector<int>> *label_image, int x, int y, int label, int height, int width) {
     // std::cout << label << std::endl;
     bool next_step = false;
-    if ((label_image[y * height + x] == 0) && (image[y][x] == 1)) {
+    if (((*label_image)[y][x] == 0) && (image[y][x] == 1)) {
         next_step = true;
-        label_image[y * height + x] = label;
+        (*label_image)[y][x] = label;
         if (x > 0) {
             // std::cout << "Left\n";
             Fill(image, label_image, x - 1, y, label, height, width);
