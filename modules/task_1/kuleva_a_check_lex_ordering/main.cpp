@@ -1,7 +1,7 @@
 // Copyright 2023 Kuleva Anna
 #include <gtest/gtest.h>
 #include <vector>
-#include "./check_lexicographic_ordering.h"
+#include "./check_lex_ordering.h"
 #include <gtest-mpi-listener.hpp>
 
 TEST(Generate_Random_String_MPI, Test_Negative_length) {

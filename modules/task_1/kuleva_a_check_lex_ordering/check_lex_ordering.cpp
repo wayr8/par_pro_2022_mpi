@@ -4,7 +4,7 @@
 #include <string>
 #include <random>
 #include <algorithm>
-#include "../../../modules/task_1/kuleva_a_check_lexicographic_ordering/check_lexicographic_ordering.h"
+#include "../../../modules/task_1/kuleva_a_check_lex_ordering/check_lex_ordering.h"
 
 std::string getRandomString(const int strLen) {
     std::string valid_chars =
@@ -55,9 +55,16 @@ int getParallelOperations(std::string global_str_inp1, std::string global_str_in
 
     if (rank == 0) {
         for (int proc = 1; proc < size; proc++) {
-            MPI_Send(global_str_inp1.c_str() + proc * delta, static_cast<int>(delta),
+            char* buf1, * buf2;
+            buf1 = new char[delta];
+            buf2 = new char[delta];
+            for (int i = 0; i < delta; i++) {
+                buf1[i] = global_str_inp1[proc * delta + i];
+                buf2[i] = global_str_inp2[proc * delta + i];
+            }
+            MPI_Send(buf1, static_cast<int>(delta),
                 MPI_CHAR, proc, 0, MPI_COMM_WORLD);
-            MPI_Send(global_str_inp2.c_str() + proc * delta, static_cast<int>(delta),
+            MPI_Send(buf2, static_cast<int>(delta),
                 MPI_CHAR, proc, 1, MPI_COMM_WORLD);
         }
     }
