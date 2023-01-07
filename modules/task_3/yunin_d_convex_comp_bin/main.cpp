@@ -21,7 +21,8 @@ TEST(Convex_Shell_Binary_Image, Test_1) {
     // if (rank == 0) {
     //     // PrintImage(labeling_image, width, height);
     // }
-    std::vector<int> convex_shell_par = MainFunParallel(labeling_image, width, height, FindNumComponents(labeling_image));
+    std::vector<int> convex_shell_par = MainFunParallel(labeling_image, width,
+        height, FindNumComponents(labeling_image));
     if (rank == 0) {
         std::vector<int> convex_shell_seq = MainFuncSequence(labeling_image,
             width, height, FindNumComponents(labeling_image));
@@ -51,7 +52,8 @@ TEST(Convex_Shell_Binary_Image, Test_2) {
     // PrintImage(global_vec, width, height);
     labeling_image = Labeling(global_vec, width, height);
     // PrintImage(labeling_image, width, height);
-    std::vector<int> convex_shell_par = MainFunParallel(labeling_image, width, height, FindNumComponents(labeling_image));
+    std::vector<int> convex_shell_par = MainFunParallel(labeling_image,
+        width, height, FindNumComponents(labeling_image));
     if (rank == 0) {
         std::vector<int> convex_shell_seq = MainFuncSequence(labeling_image,
             width, height, FindNumComponents(labeling_image));
@@ -81,7 +83,8 @@ TEST(Convex_Shell_Binary_Image, Test_3) {
     // PrintImage(global_vec, width, height);
     labeling_image = Labeling(global_vec, width, height);
     // PrintImage(labeling_image, width, height);
-    std::vector<int> convex_shell_par = MainFunParallel(labeling_image, width, height, FindNumComponents(labeling_image));
+    std::vector<int> convex_shell_par = MainFunParallel(labeling_image,
+        width, height, FindNumComponents(labeling_image));
     if (rank == 0) {
         std::vector<int> convex_shell_seq = MainFuncSequence(labeling_image,
             width, height, FindNumComponents(labeling_image));
@@ -112,7 +115,8 @@ TEST(Convex_Shell_Binary_Image, Test_4) {
     // std::cout << "\n";
     labeling_image = Labeling(global_vec, width, height);
     // PrintImage(labeling_image, width, height);
-    std::vector<int> convex_shell_par = MainFunParallel(labeling_image, width, height, FindNumComponents(labeling_image));
+    std::vector<int> convex_shell_par = MainFunParallel(labeling_image,
+        width, height, FindNumComponents(labeling_image));
     if (rank == 0) {
         std::vector<int> convex_shell_seq = MainFuncSequence(labeling_image,
             width, height, FindNumComponents(labeling_image));
@@ -143,7 +147,8 @@ TEST(Convex_Shell_Binary_Image, Test_5) {
     // std::cout << "\n";
     labeling_image = Labeling(global_vec, width, height);
     // PrintImage(labeling_image, width, height);
-    std::vector<int> convex_shell_par = MainFunParallel(labeling_image, width, height, FindNumComponents(labeling_image));
+    std::vector<int> convex_shell_par = MainFunParallel(labeling_image,
+        width, height, FindNumComponents(labeling_image));
     if (rank == 0) {
         std::vector<int> convex_shell_seq = MainFuncSequence(labeling_image,
             width, height, FindNumComponents(labeling_image));
