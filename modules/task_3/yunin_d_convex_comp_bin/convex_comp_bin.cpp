@@ -229,7 +229,8 @@ vector<int> MakeMinPointsLocal(const vector<int> &image, int width, int height, 
                         if ((image[i * width + j - 1] == component) && (image[i * width + j + 1] == component)) {
                             local_image[i * width + j] = 0;
                         }
-                    } else {
+                    }
+                    if ((i > 0) && (i < height - 1)) {
                         if (((image[i * width + j - 1] == component) && (image[i * width + j + 1] == component)) ||
                             ((image[(i + 1) * width + j] == component) && (image[(i - 1) * width + j] == component))) {
                             local_image[i * width + j] = 0;
@@ -240,10 +241,11 @@ vector<int> MakeMinPointsLocal(const vector<int> &image, int width, int height, 
                 if ((i > 0) && (i < height - 1)) {
                     if ((j == 0) || (j == width - 1)) {
                         if ((image[(i - 1) * width + j] == component) &&
-                            (image[(i + 1) * width + j + 1] == component)) {
+                            (image[(i + 1) * width + j] == component)) {
                             local_image[i * width + j] = 0;
                         }
-                    } else {
+                    }
+                    if ((j > 0) && (j < width - 1)) {
                         if (((image[i * width + j - 1] == component) && (image[i * width + j + 1] == component)) ||
                             ((image[(i + 1) * width + j] == component) && (image[(i - 1) * width + j] == component))) {
                             local_image[i * width + j] = 0;
@@ -284,6 +286,7 @@ vector<int> MakeMinPointsLocal(const vector<int> &image, int width, int height, 
 int rotate(int x1, int y1, int x2, int y2, int x3, int y3) {
     return ((x2 - x1) * (y3 - y2) - (x3 - x2) * (y2 - y1));
 }
+
 
 vector<int> SortingPoints(const vector<int> &points, int x_min, int y_min) {
     vector<int> result(points);
