@@ -412,6 +412,8 @@ void CreateComponent2(vector<vector<int>> *matr) {
     (*matr)[1][1] = 1;
     (*matr)[2][1] = 1;
     (*matr)[3][1] = 1;
+    (*matr)[2][2] = 1;
+    (*matr)[0][1] = 1;
 }
 
 void CreateComponent3(vector<vector<int>> *matr, int width, int height) {
