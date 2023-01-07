@@ -596,13 +596,13 @@ vector<int> MainFunParallel(const vector<int> &image, int width, int height, int
             MPI_Status stat;
             MPI_Recv(buffer.data(), size, MPI_INT, i, 0, MPI_COMM_WORLD, &stat);
             // print
-            // std::cout << "\nRank = " << i << std::endl;
+            // std::cout << "\nRank = " << i << " Size = " << size << std::endl;
             // for (int i = 0; i < size; i++) {
-            //     if (buffer[i] == -1 && buffer[i+1] == 0) {
-            //         std::cout << buffer[i] << " ";
-            //         break;
-            //     }
-            //     std::cout << buffer[i] << " ";
+                // if (buffer[i] == -1 && buffer[i+1] == 0) {
+                //     std::cout << buffer[i] << " ";
+                //     break;
+                // }
+                // std::cout << buffer[i] << " ";
             // }
             // std::cout << "\n";
             // print
